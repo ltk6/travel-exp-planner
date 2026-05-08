@@ -1,5 +1,6 @@
 {
-  "sig_k": 2,
+  "text_k": 2,
+  "tags_k": 2,
   "preprocessed": {
     "text": "Đi chơi cuối tuần nhẹ nhàng với người yêu",
     "aug_text": "Đi chơi cuối tuần nhẹ nhàng với người yêu with romantic partner wanting intimate private emotionally connected and romantically beautiful shared experience two-day break period when short-distance destinations and nearby outdoor environments see increased visitor activity",

@@ -1,13 +1,10 @@
 from __future__ import annotations
 
 import json
-from typing import Any, Dict
+from typing import Any
 from pathlib import Path
 import sys
 
-# ─────────────────────────────────────────────
-# SAFE IMPORT PATH (dynamic project root)
-# ─────────────────────────────────────────────
 CURRENT = Path(__file__).resolve()
 
 for parent in CURRENT.parents:
@@ -17,20 +14,12 @@ for parent in CURRENT.parents:
 else:
     raise RuntimeError("Could not locate project root containing 'backend'")
 
-from backend.modules.n1_embedding import embed
+from backend.modules.n1_embedding import embed, embed_batch
 
-
-# ─────────────────────────────────────────────
-# OUTPUT DIRECTORY
-# ─────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_DIR = BASE_DIR
 OUTPUT_DIR.mkdir(exist_ok=True)
 
-
-# ─────────────────────────────────────────────
-# JSON SAVE
-# ─────────────────────────────────────────────
 def save_json(result: dict, filename: str):
     def sanitize(obj: Any):
         if isinstance(obj, dict):
@@ -45,11 +34,6 @@ def save_json(result: dict, filename: str):
         json.dump(sanitize(result), f, ensure_ascii=False, indent=2)
 
     print(f"[saved] {output_path}")
-
-
-# ─────────────────────────────────────────────
-# TEST DATA
-# ─────────────────────────────────────────────
 
 USER_TESTS = [
     {
@@ -93,17 +77,13 @@ LOCATION_TESTS = [
     },
 ]
 
-
-# ─────────────────────────────────────────────
-# RUNNER
-# ─────────────────────────────────────────────
 def run_tests(test_set: list[dict], prefix: str):
     for t in test_set:
-        result = embed([{
+        result = embed({
             "text": t.get("text"),
             "tags": t.get("tags"),
             "img_desc": t.get("img_desc"),
-        }])[0]
+        })
 
         save_json(result, f"{prefix}_{t['name']}.json")
 
@@ -115,7 +95,7 @@ def run_batch_tests(test_set: list[dict], filename: str):
         "img_desc": t.get("img_desc"),
     } for t in test_set]
     
-    results = embed(inputs)
+    results = embed_batch(inputs)
     
     output = []
     for t, res in zip(test_set, results):
@@ -126,9 +106,7 @@ def run_batch_tests(test_set: list[dict], filename: str):
         
     save_json(output, filename)
 
-# ─────────────────────────────────────────────
-# MAIN
-# ─────────────────────────────────────────────
+
 if __name__ == "__main__":
     print("Running USER tests (individual)...")
     run_tests(USER_TESTS, "user")
