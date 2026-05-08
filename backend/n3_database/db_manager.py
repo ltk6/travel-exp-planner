@@ -14,7 +14,6 @@ logging.basicConfig(
 logger = logging.getLogger("N3")
 
 from config.settings import PG_URI
-
 def _get_connection():
     """Tạo kết nối DB và đăng ký kiểu vector."""
     conn = psycopg2.connect(PG_URI, cursor_factory=RealDictCursor)
