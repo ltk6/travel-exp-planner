@@ -29,15 +29,14 @@ SECTION INDEX
   D. CLIMATE & SEASON      — weather windows, temperature zones
   E. CULTURE & HERITAGE    — history, religion, ethnicity, arts
   F. URBAN & SETTLEMENT    — city types, neighbourhoods, markets
-  G. ACTIVITIES — LAND     — trekking, cycling, overland adventure
+  G. ACTIVITIES — LAND     — trekking, cycling, aerial, overland adventure
   H. ACTIVITIES — WATER    — diving, paddling, boat experiences
-  I. ACTIVITIES — AIR      — aerial, extreme
-  J. ACTIVITIES — LEISURE  — wellness, classes, soft experiences
-  K. FOOD & DRINK          — cuisine types, dining styles, specialties
-  L. VIBE & MOOD           — atmosphere, aesthetic, emotional tone
-  M. TRIP PROFILE          — duration, pace, group composition
-  N. BUDGET & STYLE        — spend level, accommodation style
-  O. SPECIAL INTEREST      — niche travel segments
+  I. ACTIVITIES — LEISURE  — wellness, classes, soft experiences
+  J. FOOD & DRINK          — cuisine types, dining styles, specialties
+  K. VIBE & MOOD           — atmosphere, aesthetic, emotional tone
+  L. TRIP PROFILE          — duration, pace, group composition
+  M. BUDGET & STYLE        — spend level, accommodation style
+  N. SPECIAL INTEREST      — niche travel segments
 """
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -51,11 +50,9 @@ TERRAIN = {
     "karst"             : "limestone karst tower pinnacle dramatic geology",
     "valley"            : "valley basin lowland surrounded by peaks",
     "plateau"           : "highland plateau open sky grassland tableland",
-    "canyon"            : "deep gorge canyon river carved cliff walls",
-    "volcano"           : "volcanic crater lava landscape geological wonder",
     "cliff"             : "sea cliff coastal rock face dramatic drop",
     "cave"              : "cave cavern underground stalactite hidden world",
-    "sand dune"         : "sand dune desert arid golden landscape shifting",
+    "sand dune"         : "sand dune arid golden landscape shifting Mui Ne",
 
     # Lowland & delta
     "delta"             : "river delta flat wetland sediment fertile plain",
@@ -63,7 +60,7 @@ TERRAIN = {
 
     # Agricultural landscape
     "rice terrace"      : "terraced rice field hillside cultivation harvest scenic",
-    "farm"              : "agricultural farm orchard orchard countryside agro",
+    "farm"              : "agricultural farm orchard countryside agro-tourism",
     "flower field"      : "flower meadow blossom field colourful seasonal bloom",
 }
 
@@ -121,14 +118,13 @@ SEASON = {
     "dry season"        : "dry season clear skies sunny ideal travel weather",
     "rainy season"      : "rainy season lush green rivers full dramatic",
     "summer trip"       : "summer school holiday hot beach sea swimming",
-    "winter trip"       : "winter cold season snow frost highland unique",
+    "winter trip"       : "winter cold season frost highland unique Sa Pa",
     "spring trip"       : "spring blossom mild weather comfortable outdoor",
     "autumn trip"       : "autumn harvest golden rice cool comfortable trekking",
 
     # Specific phenomena
-    "snow"              : "snowfall frost winter rare cold mountain experience",
+    "snow"              : "snowfall frost winter rare cold mountain Sa Pa Fansipan",
     "cloud sea"         : "cloud sea fog inversion highland sunrise mystical",
-    "cherry blossom"    : "cherry blossom spring flower bloom romantic seasonal",
     "flower season"     : "flower blooming season colourful landscape photography",
     "harvest season"    : "harvest season golden rice terrace autumn rural beauty",
 }
@@ -179,7 +175,7 @@ URBAN = {
     "fishing village"   : "fishing village boat dock morning catch coastal life",
     "market"            : "local market fresh produce commerce noise colour",
     "night market"      : "night market street food stalls lantern bargain buzz",
-    "floating market"   : "floating market Mekong river boat vendor dawn cai rang",
+    "floating market"   : "floating market Mekong river boat vendor dawn Cai Rang",
     "walking street"    : "pedestrian walking street evening crowd souvenir cafe",
     "rooftop bar"       : "rooftop bar skyline city view cocktail sunset panorama",
     "coworking"         : "coworking space fast wifi remote work digital nomad hub",
@@ -190,6 +186,7 @@ URBAN = {
 # ──────────────────────────────────────────────────────────────────────────────
 
 ACTIVITIES_LAND = {
+    # Overland & trail
     "trekking"          : "multi-day trekking mountain trail jungle endurance rewarding",
     "hiking"            : "day hike trail nature walk scenic viewpoint fitness",
     "motorbiking"       : "motorbike road trip winding pass freedom open road",
@@ -200,13 +197,17 @@ ACTIVITIES_LAND = {
     "zip lining"        : "zip lining canopy aerial forest fly speed thrill",
     "camping"           : "camping tent outdoor overnight stargazing nature immersion",
     "jeep tour"         : "off-road jeep 4WD rugged terrain highland adventure",
-    "ATV"               : "ATV quad bike off-road sand dune desert racing fun",
+    "ATV"               : "ATV quad bike off-road sand dune Mui Ne racing fun",
     "train journey"     : "scenic train slow travel railway mountain coastal pass",
     "cyclo"             : "cyclo pedicab city tour slow old quarter colonial streets",
-    "sightseeing"       : "guided sightseeing landmark tour iconic popular attraction",
     "photography"       : "landscape photography golden hour composition travel art",
     "shopping"          : "shopping souvenir retail handicraft boutique market",
-    "golf"              : "golf resort course green sport premium leisure",
+    "golf"              : "golf resort course green sport premium leisure Da Nang",
+
+    # Aerial
+    "paragliding"       : "paragliding tandem aerial rice terrace mountain valley glide",
+    "hot air balloon"   : "hot air balloon sunrise aerial float landscape photography",
+    "cable car"         : "cable car gondola mountain record aerial scenic Ba Na Fansipan",
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -220,7 +221,7 @@ ACTIVITIES_WATER = {
     "kayaking"          : "kayaking paddle sea cave lagoon mangrove self-propelled",
     "stand up paddle"   : "stand up paddleboard SUP flat water balance sunrise",
     "surfing"           : "surfing ocean swell wave board sport adrenaline beach",
-    "kitesurfing"       : "kitesurfing wind kite board speed coastal sport",
+    "kitesurfing"       : "kitesurfing wind kite board speed Mui Ne coastal sport",
     "boat cruise"       : "boat cruise scenic waterway overnight luxury sunset",
     "junk boat"         : "traditional junk boat overnight bay cruise heritage",
     "basket boat"       : "coracle basket boat traditional fisherman bay",
@@ -234,19 +235,7 @@ ACTIVITIES_WATER = {
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
-# I. ACTIVITIES — AIR
-# ──────────────────────────────────────────────────────────────────────────────
-
-ACTIVITIES_AIR = {
-    "paragliding"       : "paragliding tandem aerial rice terrace mountain valley glide",
-    "hot air balloon"   : "hot air balloon sunrise aerial float landscape photography",
-    "cable car"         : "cable car gondola mountain record aerial scenic descent",
-    "helicopter tour"   : "helicopter aerial tour bird's eye coastline city luxury",
-    "skydiving"         : "skydiving freefall extreme sport aerial adrenaline rush",
-}
-
-# ──────────────────────────────────────────────────────────────────────────────
-# J. ACTIVITIES — LEISURE, WELLNESS & LEARNING
+# I. ACTIVITIES — LEISURE, WELLNESS & LEARNING
 # ──────────────────────────────────────────────────────────────────────────────
 
 ACTIVITIES_LEISURE = {
@@ -261,22 +250,20 @@ ACTIVITIES_LEISURE = {
     "cooking class"     : "Vietnamese cooking class recipe local market ingredient hands-on",
     "pottery class"     : "pottery class artisan wheel clay craft traditional village",
     "lantern making"    : "lantern making craft workshop Hoi An silk frame traditional",
-    "language class"    : "Vietnamese language class learning exchange cultural bridge",
     "farm tour"         : "agro farm tour pick fruit vegetable rural sustainable food",
     "tea tasting"       : "tea tasting highland plantation ceremony ritual flavor",
     "coffee tour"       : "coffee plantation tour tasting Central Highlands local brew",
     "cultural show"     : "cultural performance folk dance ethnic show traditional costume",
 
     # Family & recreation
-    "theme park"        : "amusement theme park rides family fun entertainment thrills",
-    "water park"        : "water park slides pool wave artificial aquatic family",
+    "theme park"        : "amusement theme park rides family fun VinWonders entertainment",
+    "water park"        : "water park slides pool wave aquatic family leisure",
     "picnic"            : "picnic lakeside meadow relaxed outdoor leisure casual",
-    "horse riding"      : "horse riding trail mountain countryside rural leisure",
     "night tour"        : "night tour city illuminated ghost history lantern atmospheric",
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
-# K. FOOD & DRINK
+# J. FOOD & DRINK
 # ──────────────────────────────────────────────────────────────────────────────
 
 FOOD = {
@@ -303,11 +290,11 @@ FOOD = {
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
-# L. VIBE & MOOD
+# K. VIBE & MOOD
 # ──────────────────────────────────────────────────────────────────────────────
 
 VIBE = {
-    # Pace & energy
+    # Peace & energy
     "peaceful"          : "peaceful serene quiet undisturbed calm retreat nature",
     "vibrant"           : "vibrant energetic buzzing lively social dynamic city",
     "chill"             : "chill laid-back slow afternoon hammock no rush",
@@ -336,7 +323,7 @@ VIBE = {
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
-# M. TRIP PROFILE
+# L. TRIP PROFILE
 # ──────────────────────────────────────────────────────────────────────────────
 
 TRIP_PROFILE = {
@@ -361,7 +348,7 @@ TRIP_PROFILE = {
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
-# N. BUDGET & ACCOMMODATION STYLE
+# M. BUDGET & ACCOMMODATION STYLE
 # ──────────────────────────────────────────────────────────────────────────────
 
 BUDGET = {
@@ -379,7 +366,7 @@ BUDGET = {
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
-# O. SPECIAL INTEREST SEGMENTS
+# N. SPECIAL INTEREST SEGMENTS
 # ──────────────────────────────────────────────────────────────────────────────
 
 SPECIAL_INTEREST = {
@@ -394,8 +381,6 @@ SPECIAL_INTEREST = {
     "religious tourism" : "pilgrimage temple pagoda church sacred festival devotion",
     "sports tourism"    : "sports active marathon cycling golf surfing competition event",
     "photography tour"  : "photography tour golden hour guided landscape portrait composition",
-    "volunteer"         : "volunteer community project teaching marine conservation social",
-    "study tour"        : "educational study tour school group history culture learning",
     "nightlife"         : "nightlife bar club live music late night social entertainment",
     "luxury travel"     : "ultra luxury exclusive private yacht villa helicopter concierge",
 }
@@ -413,7 +398,6 @@ ALL_TAGS: dict[str, str] = {
     **URBAN,
     **ACTIVITIES_LAND,
     **ACTIVITIES_WATER,
-    **ACTIVITIES_AIR,
     **ACTIVITIES_LEISURE,
     **FOOD,
     **VIBE,
