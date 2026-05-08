@@ -1,5 +1,6 @@
 {
-  "sig_k": 3,
+  "text_k": 3,
+  "tags_k": 1,
   "preprocessed": {
     "text": "Tôi muốn một chuyến đi yên tĩnh gần thiên nhiên",
     "aug_text": "Tôi muốn một chuyến đi yên tĩnh gần thiên nhiên natural outdoor environments away from urban development, characterized by vegetation, open terrain, and non-built scenery environment characterized by low noise, minimal human activity, and a calm undisturbed physical atmosphere a familiar and local place with a comfortable feel",

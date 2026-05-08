@@ -17,7 +17,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from backend.n3_database.seeds.seed_data import LOCATIONS
-from backend.modules.n1_embedding import embed
+from backend.modules.n1_embedding import embed, embed_batch
 
 print("[N1] Using REAL BGE-M3 embeddings")
 
@@ -54,7 +54,7 @@ def run() -> list[dict]:
         
     # 2. Execute batch
     print(f"Running batch embed for {len(inputs)} items...")
-    results = embed(inputs)
+    results = embed_batch(inputs)
     
     ms = (time.time() - t0) * 1000
     print(f"Batch embed completed in {ms:.0f}ms")

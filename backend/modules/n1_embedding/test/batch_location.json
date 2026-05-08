@@ -2,7 +2,8 @@
   {
     "name": "loc_1",
     "result": {
-      "sig_k": 2,
+      "text_k": 2,
+      "tags_k": 3,
       "preprocessed": {
         "text": "Busy coastal city with nightlife and beaches",
         "aug_text": "Busy coastal city with nightlife and beaches sandy coastal shoreline environment with direct sea access, wave conditions, and open ocean views land edge meeting the sea, featuring cliffs, beaches, coves, and coastal geological formations",
@@ -3095,7 +3096,8 @@
   {
     "name": "loc_2",
     "result": {
-      "sig_k": 3,
+      "text_k": 3,
+      "tags_k": 2,
       "preprocessed": {
         "text": "Quiet mountain town surrounded by forests and mist",
         "aug_text": "Quiet mountain town surrounded by forests and mist elevated peak terrain with steep slopes, high-altitude views, and distinct geological character dense tree-covered environment with canopy, undergrowth, shade, and wildlife habitat environment with low ambient noise, minimal human activity, and an undisturbed physical character",
@@ -6188,7 +6190,8 @@
   {
     "name": "loc_3",
     "result": {
-      "sig_k": 2,
+      "text_k": 2,
+      "tags_k": 1,
       "preprocessed": {
         "text": "Historic city with temples, culture, and street food",
         "aug_text": "Historic city with temples, culture, and street food informal food served from street-level vendors, stalls, and mobile carts in open market environments religious structure dedicated to spiritual worship and ritual practice in a sacred environment",

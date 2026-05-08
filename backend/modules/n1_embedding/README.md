@@ -1,31 +1,38 @@
 # Embedding Module
 
-Provides a single public interface to convert user or location data into multi-channel embeddings.
+Provides public interfaces to convert raw inputs into multi-channel embeddings.
+
+* Support multi-language inputs (BAAI/bge-m3).
+* Efficiently handle single input and batch inputs.
 
 ## API
 
 ```python
-embed(data: dict) -> dict
+embed(data: dict[str, Any]) -> dict[str, Any]
+embed_batch(data_list: list[dict[str, Any]]) -> list[dict[str, Any]]
 ```
 
-### Input
+### Single Dict Input
 
 * `text`: raw text input
-* `tags`: list of tag keys
+* `tags`: list of tags
 * `img_desc`: visual description
 
-### Output
+### Single Dict Output
 
-* `sig_k`: keyword expansion count, determine weighting of each vector
+* `text_k`: text keywords expansion count
+* `tags_k`: tags expansion count
 * `preprocessed`: normalized + expanded inputs with keys:
-  * `text`: raw text input
+  * `text`: raw text input (pass through)
   * `aug_text`: expanded text input
   * `aug_tags`: expanded tag input
-  * `img_desc`: visual description
+  * `img_desc`: visual description (pass through)
 * `vectors`: embeddings for `text`, `aug_text`, `aug_tags`, `img_desc`
 
-## Responsibilities
+### Batch Inputs
 
-* Build augmented inputs (text + tags)
-* Generate embeddings via BGE-M3
-* Return aligned multi-channel vectors for downstream comparison
+* `data_list`: list of single dict inputs
+
+### Batch Outputs
+
+* `results`: list of single dict outputs

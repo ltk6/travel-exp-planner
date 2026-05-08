@@ -41,7 +41,7 @@ if _root not in sys.path:
 from n3_database import get_all_locations
 
 # ── Modules ───────────────────────────────────────────────────
-from modules.n1_embedding import embed
+from modules.n1_embedding import embed, embed_batch
 from modules.n2_image_processing import process_image
 from modules.n4_location_ranking import rank_locations
 from modules.n5_activity_generation.n5_activity_generator import generate_activities
@@ -134,11 +134,11 @@ def recommend():
 
     # ── N1 — Embed user input ──────────────────
     # N1 contract: { text, tags, img_desc } → { sig_k, preprocessed, vectors }
-    n1_result = embed([{
+    n1_result = embed({
         "text": text,
         "tags": tags,
         "img_desc": img_desc
-    }])[0]
+    })
 
     text_k = n1_result.get("text_k", 0)
     tags_k = n1_result.get("tags_k", 0)
@@ -342,7 +342,7 @@ def get_activities():
         
     # Execute batch embedding
     if n1_inputs:
-        n1_batch_results = embed(n1_inputs)
+        n1_batch_results = embed_batch(n1_inputs)
         
         # Re-assign vectors to activities
         for activity, embed_res in zip(activities, n1_batch_results):
