@@ -5,6 +5,7 @@ Performance improvements:
 - Fetches ALL missing activities in a single pass before any rerun
 - Eliminates the N-rerun-per-location loop from the original
 - Single rerun after all locations are fetched
+- Supports multiple images with a carousel in location cards
 """
 import streamlit as st
 import logging
@@ -13,7 +14,6 @@ from .api import fetch_activities
 logger = logging.getLogger("alt_n7.result")
 
 _DEFAULT_SHOW = 5
-
 
 def render_result_view(data: dict) -> None:
     if "activity_results" not in st.session_state:
@@ -29,7 +29,8 @@ def render_result_view(data: dict) -> None:
     img_desc: str = user_trace.get("n2_image", {}).get("img_desc", "")
     user_text: str = user_input.get("text", "")
     tags: list = user_input.get("tags", [])
-    image_b64: str = user_input.get("image", "")
+    # Now expecting a list of images (from the new backend contract)
+    images_b64: list[str] = user_input.get("images", [])
 
     # ── Header ──
     st.success(f"✅ Tìm thấy {len(locations)} địa điểm phù hợp")
@@ -39,31 +40,41 @@ def render_result_view(data: dict) -> None:
         st.markdown("**📋 Thông tin tìm kiếm của bạn:**")
 
         # Prioritize local bytes for preview, fall back to backend base64
-        local_img = st.session_state.get("saved_image_bytes")
-        preview_img = local_img if local_img is not None else (f"data:image/jpeg;base64,{image_b64}" if image_b64 else None)
+        local_images = st.session_state.get("saved_images_bytes", [])
+        
+        preview_images = []
+        if local_images:
+            preview_images = local_images
+        elif images_b64:
+            preview_images = [f"data:image/jpeg;base64,{img}" for img in images_b64]
 
         if tags:
             badges = "".join(f'<span class="tag-badge">{t}</span> ' for t in tags)
             st.markdown(f'<div style="margin-bottom: 12px;">{badges}</div>', unsafe_allow_html=True)
 
-        col_text, col_img = st.columns([2, 1] if preview_img else [1, 0.001])
+        col_text, col_img = st.columns([2, 1] if preview_images else [1, 0.001])
         
         with col_text:
             if user_text:
                 st.markdown(f"> *\"{user_text}\"*")
-            elif not tags and not preview_img:
+            elif not tags and not preview_images:
                 st.markdown("> *Không có văn bản mô tả*")
             
             if not user_text and tags:
                 st.caption("Dựa trên các từ khóa bạn đã chọn ở phần trắc nghiệm.")
 
-        if preview_img:
+        if preview_images:
             with col_img:
-                with st.container():
-                    try:
-                        st.image(preview_img, caption="Phong cảnh trong mơ", use_container_width=True)
-                    except Exception:
-                        st.caption("📷 Đã gửi hình ảnh")
+                # Show first image or a small grid if multiple
+                if len(preview_images) == 1:
+                    st.image(preview_images[0], caption="Phong cảnh trong mơ", width='stretch')
+                else:
+                    st.caption(f"🖼️ {len(preview_images)} hình ảnh đã tải lên")
+                    # Show a tiny grid for the summary
+                    mini_cols = st.columns(3)
+                    for i, img in enumerate(preview_images[:3]):
+                        with mini_cols[i]:
+                            st.image(img, use_container_width=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
     st.subheader("📍 Địa điểm gợi ý")
@@ -132,7 +143,11 @@ def _render_location_card(loc: dict) -> st.delta_generator.DeltaGenerator:
     score: float = loc.get("score", 0)
     reason: str = loc.get("reason", "")
     desc: str = meta.get("description", "")
-    img_path: str = loc.get("image_path", "")
+    
+    # Support multiple images
+    images: list[str] = loc.get("images", [])
+    if not images and loc.get("image_path"):
+        images = [loc.get("image_path")]
 
     col_loc, col_act = st.columns(2, gap="large")
 
@@ -143,11 +158,41 @@ def _render_location_card(loc: dict) -> st.delta_generator.DeltaGenerator:
             st.info(f"💡 {reason}")
         if desc:
             st.write(desc)
-        if img_path:
-            try:
-                st.image(img_path, caption=name, use_container_width=True)
-            except Exception:
-                st.caption("🖼️ Hình ảnh không khả dụng")
+        
+        if images:
+            # Image Carousel State
+            idx_key = f"img_idx_{loc_id}"
+            if idx_key not in st.session_state:
+                st.session_state[idx_key] = 0
+            
+            curr_idx = st.session_state[idx_key]
+            if curr_idx >= len(images):
+                curr_idx = 0
+                st.session_state[idx_key] = 0
+
+            # Carousel UI with "arrow heads" inside columns
+            # We use a column layout to simulate the arrows being on the side of the image
+            st.markdown('<div class="carousel-container">', unsafe_allow_html=True)
+            c_prev, c_img, c_next = st.columns([1, 10, 1])
+            
+            with c_prev:
+                if st.button("<", key=f"prev_{loc_id}", help="Previous Image"):
+                    st.session_state[idx_key] = (curr_idx - 1) % len(images)
+                    st.rerun()
+            
+            with c_img:
+                try:
+                    st.image(images[curr_idx], caption=f"{name} ({curr_idx + 1}/{len(images)})", width='stretch')
+                except Exception:
+                    st.caption("🖼️ Hình ảnh không khả dụng")
+            
+            with c_next:
+                if st.button(">", key=f"next_{loc_id}", help="Next Image"):
+                    st.session_state[idx_key] = (curr_idx + 1) % len(images)
+                    st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
+        else:
+            st.caption("🖼️ Không có hình ảnh")
 
     with col_act:
         with st.container(border=True):
@@ -220,7 +265,7 @@ def _render_activities(
                 if st.button(
                     f"Xem thêm {hidden} hoạt động ▾",
                     key=f"more_{loc_id}_{selected_type}",
-                    use_container_width=True,
+                    width='stretch',
                 ):
                     st.session_state[show_all_key] = True
                     st.rerun()
@@ -228,7 +273,7 @@ def _render_activities(
                 if st.button(
                     "Thu gọn ▴",
                     key=f"less_{loc_id}_{selected_type}",
-                    use_container_width=True,
+                    width='stretch',
                 ):
                     st.session_state[show_all_key] = False
                     st.rerun()

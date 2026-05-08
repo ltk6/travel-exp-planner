@@ -169,7 +169,7 @@ def _render_question(q_id: str, q_data: dict, tags: list) -> None:
             for opt in options
         )
         badge = f" · {total_spec_selected} đã chọn" if total_spec_selected > 0 else ""
-        with st.popover(f"▸ Tùy chọn chi tiết{badge}", use_container_width=True):
+        with st.popover(f"▸ Tùy chọn chi tiết{badge}", width='stretch'):
             for section_name, options in specifics.items():
                 _render_specifics_section(q_id, section_name, options, tags)
 

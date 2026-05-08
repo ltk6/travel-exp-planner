@@ -2,6 +2,7 @@
 views/input/__init__.py
 
 Renders the active input mode and handles submission.
+Supports multiple images.
 """
 import base64
 import streamlit as st
@@ -56,15 +57,21 @@ def _save_all_input_state() -> None:
 
     # ── Image upload ──
     elif current_mode == "📸 Hình ảnh":
-        raw = st.session_state.get("freeform_image_uploader")
-        if raw is not None:
-            st.session_state["saved_uploaded_file"] = raw
-            try:
-                raw.seek(0)
-                st.session_state["saved_image_bytes"] = raw.read()
-                raw.seek(0)
-            except Exception:
-                pass
+        raw_list = st.session_state.get("freeform_image_uploader")
+        if raw_list:
+            st.session_state["saved_uploaded_files"] = raw_list
+            bytes_list = []
+            for up in raw_list:
+                try:
+                    up.seek(0)
+                    bytes_list.append(up.read())
+                    up.seek(0)
+                except Exception:
+                    pass
+            st.session_state["saved_images_bytes"] = bytes_list
+        else:
+            st.session_state["saved_uploaded_files"] = []
+            st.session_state["saved_images_bytes"] = []
 
 
 def render_input_view() -> dict | None:
@@ -72,8 +79,8 @@ def render_input_view() -> dict | None:
 
     # Ensure all backup keys exist
     st.session_state.setdefault("saved_freeform_text", "")
-    st.session_state.setdefault("saved_uploaded_file", None)
-    st.session_state.setdefault("saved_image_bytes", None)
+    st.session_state.setdefault("saved_uploaded_files", [])
+    st.session_state.setdefault("saved_images_bytes", [])
     st.session_state.setdefault("saved_questionnaire_tags", [])
     st.session_state.setdefault("saved_questionnaire_keys", [])
     st.session_state.setdefault("mode", "📋 Trắc nghiệm")
@@ -106,10 +113,10 @@ def render_input_view() -> dict | None:
             submit_clicked = st.button(
                 "🗺️ Gợi ý trải nghiệm du lịch",
                 type="primary",
-                use_container_width=True,
+                width='stretch',
             )
         with col_reset:
-            if st.button("🔄 Đặt lại", use_container_width=True, type="secondary"):
+            if st.button("🔄 Đặt lại", width='stretch', type="secondary"):
                 _reset_questionnaire()
                 st.rerun()
 
@@ -123,26 +130,26 @@ def render_input_view() -> dict | None:
     user_text: str = st.session_state.get("saved_freeform_text", "")
     all_tags: list[str] = st.session_state.get("saved_questionnaire_tags", [])
 
-    image_b64: str = ""
-    # Use saved_image_bytes for maximum reliability
-    img_bytes = st.session_state.get("saved_image_bytes")
-    if img_bytes is not None:
+    images_b64: list[str] = []
+    # Use saved_images_bytes for maximum reliability
+    img_bytes_list = st.session_state.get("saved_images_bytes", [])
+    for b in img_bytes_list:
         try:
-            image_b64 = base64.b64encode(img_bytes).decode("utf-8")
+            images_b64.append(base64.b64encode(b).decode("utf-8"))
         except Exception:
-            image_b64 = ""
+            pass
 
-    if not user_text and not all_tags and not image_b64:
+    if not user_text and not all_tags and not images_b64:
         st.warning("⚠️ Vui lòng cung cấp ít nhất một thông tin để tiếp tục.")
         return None
 
     st.session_state.mode = "📊 Kết quả"
 
-    logger.info(f"Payload aggregation: {len(all_tags)} tags, {len(user_text)} chars text, image={bool(image_b64)}")
+    logger.info(f"Payload aggregation: {len(all_tags)} tags, {len(user_text)} chars text, images={len(images_b64)}")
 
     return {
         "text": user_text,
-        "image": image_b64,
+        "images": images_b64,
         "tags": all_tags,
         "constraint": [],
     }
@@ -170,8 +177,8 @@ def _reset_questionnaire() -> None:
         del st.session_state[k]
 
     st.session_state["saved_freeform_text"] = ""
-    st.session_state["saved_uploaded_file"] = None
-    st.session_state["saved_image_bytes"] = None
+    st.session_state["saved_uploaded_files"] = []
+    st.session_state["saved_images_bytes"] = []
     st.session_state["saved_questionnaire_tags"] = []
     st.session_state["saved_questionnaire_keys"] = []
 

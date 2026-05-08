@@ -1,5 +1,6 @@
 """
 freeform.py — Text and Image input tabs with persistent state.
+Supports multiple image uploads.
 """
 import streamlit as st
 from PIL import Image
@@ -14,16 +15,21 @@ def on_text_change() -> None:
 
 
 def on_image_change() -> None:
-    """Snapshot both the file object and its raw bytes for maximum reliability."""
-    uploaded = st.session_state.get("freeform_image_uploader")
-    if uploaded is not None:
-        logger.info(f"Image uploaded: {uploaded.name} ({uploaded.size} bytes)")
-        st.session_state["saved_uploaded_file"] = uploaded
-        # Read bytes once and store them; this is the most reliable way to 
-        # persist an image across widget unmounts in Streamlit.
-        uploaded.seek(0)
-        st.session_state["saved_image_bytes"] = uploaded.read()
-        uploaded.seek(0) # Reset for others
+    """Snapshot both the file objects and their raw bytes for maximum reliability."""
+    uploaded_list = st.session_state.get("freeform_image_uploader")
+    if uploaded_list:
+        logger.info(f"Uploaded {len(uploaded_list)} images")
+        st.session_state["saved_uploaded_files"] = uploaded_list
+        
+        bytes_list = []
+        for up in uploaded_list:
+            up.seek(0)
+            bytes_list.append(up.read())
+            up.seek(0)
+        st.session_state["saved_images_bytes"] = bytes_list
+    else:
+        st.session_state["saved_uploaded_files"] = []
+        st.session_state["saved_images_bytes"] = []
 
 
 def render_text_input_tab() -> None:
@@ -49,32 +55,32 @@ def render_text_input_tab() -> None:
 
 
 def render_image_input_tab() -> None:
-    st.info("Hãy tải lên một bức ảnh mô tả phong cảnh trong mơ của bạn.")
+    st.info("Hãy tải lên các bức ảnh mô tả phong cảnh trong mơ của bạn.")
 
-    st.session_state.setdefault("saved_uploaded_file", None)
-    st.session_state.setdefault("saved_image_bytes", None)
+    st.session_state.setdefault("saved_uploaded_files", [])
+    st.session_state.setdefault("saved_images_bytes", [])
 
     st.file_uploader(
-        "Tải lên một bức ảnh",
+        "Tải lên các bức ảnh",
         type=["png", "jpg", "jpeg"],
         key="freeform_image_uploader",
-        accept_multiple_files=False,
+        accept_multiple_files=True,
         on_change=on_image_change,
     )
 
     # Resolve display: prefer live widget, fall back to bytes backup
-    live = st.session_state.get("freeform_image_uploader")
-    backup_bytes = st.session_state.get("saved_image_bytes")
+    live_list = st.session_state.get("freeform_image_uploader")
+    backup_bytes_list = st.session_state.get("saved_images_bytes")
 
-    if live is not None:
-        try:
-            live.seek(0)
-            st.image(live, caption="Phong cảnh bạn vừa chọn", width=400)
-        except Exception:
-            st.warning("⚠️ Không thể hiển thị ảnh.")
-    elif backup_bytes is not None:
-        st.caption("📎 Ảnh đã tải trước đó vẫn được giữ lại.")
-        try:
-            st.image(backup_bytes, caption="Phong cảnh trong mơ (đã lưu)", width=400)
-        except Exception:
-            st.warning("⚠️ Không thể hiển thị ảnh đã lưu.")
+    display_list = live_list if live_list else backup_bytes_list
+
+    if display_list:
+        cols = st.columns(3)
+        for i, img_data in enumerate(display_list):
+            with cols[i % 3]:
+                try:
+                    if hasattr(img_data, "seek"):
+                        img_data.seek(0)
+                    st.image(img_data, width='stretch')
+                except Exception:
+                    st.warning(f"⚠️ Lỗi hiển thị ảnh {i+1}")

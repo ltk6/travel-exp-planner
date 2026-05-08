@@ -115,27 +115,37 @@ def recommend():
     logger.info("--- START RECOMMENDATION PIPELINE ---")
 
     text = body.get("text", "").strip()
-    image_b64 = body.get("image", "")
+    image_b64 = body.get("image", "")  # Legacy single image support
+    images_b64 = body.get("images", []) # New multiple images support
+    
+    if image_b64 and not images_b64:
+        images_b64 = [image_b64]
+        
     tags = body.get("tags", [])
     constraints = body.get("constraints", {})
     context_data = body.get("context", {})
     top_k = int(body.get("top_k_locations", 5))
     top_k_activities = int(body.get("top_k_activities", 5))
 
-    if not text and not tags:
-        return _err("Provide text or tags")
+    if not text and not tags and not images_b64:
+        return _err("Provide text, tags, or images")
 
     # ── N2 — Image → img_desc ──────────────────
-    img_desc = ""
-    if image_b64:
-        logger.info("Stage: N2 (Image Processing)")
-        try:
-            img_bytes = base64.b64decode(image_b64)
-            n2_result = process_image({"image": img_bytes})
-            img_desc = n2_result.get("img_desc", "")
-            logger.info(f"N2 Output: {img_desc[:50]}...")
-        except Exception as e:
-            logger.warning(f"N2 failed: {e}")
+    img_descs = []
+    if images_b64:
+        logger.info(f"Stage: N2 (Image Processing) for {len(images_b64)} images")
+        for i, b64_str in enumerate(images_b64):
+            try:
+                img_bytes = base64.b64decode(b64_str)
+                n2_result = process_image({"image": img_bytes})
+                desc = n2_result.get("img_desc", "")
+                if desc:
+                    img_descs.append(desc)
+                    logger.info(f"N2 Output (Image {i+1}): {desc[:50]}...")
+            except Exception as e:
+                logger.warning(f"N2 failed for image {i+1}: {e}")
+    
+    img_desc = ". ".join(img_descs)
 
     # ── N1 — Embed user input ──────────────────
     logger.info("Stage: N1 (User Embedding)")
@@ -214,6 +224,7 @@ def recommend():
                 "metadata": loc_map.get(r["location_id"], {}).get("metadata", {}),
                 "geo": loc_map.get(r["location_id"], {}).get("geo", {}),
                 "image_path": loc_map.get(r["location_id"], {}).get("image_path", ""),
+                "images": loc_map.get(r["location_id"], {}).get("images", []),
             }
             for r in ranked
         ],
@@ -229,10 +240,11 @@ def recommend():
                     "tags": tags,
                     "constraints": constraints,
                     "context": context_data,
-                    "has_image": bool(image_b64),
+                    "image_count": len(images_b64),
                 },
                 "n2_image": {
-                    "img_desc": img_desc,
+                    "img_descs": img_descs,
+                    "combined_desc": img_desc,
                 },
                 "n1_embedding": {
                     "text_k": text_k,

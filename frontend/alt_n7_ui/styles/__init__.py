@@ -233,6 +233,37 @@ def inject_custom_css():
             transition: border-color 0.15s ease;
         }
         .activity-card:hover { border-color: var(--border-hover); }
+
+        /* ── Carousel ── */
+        .carousel-container [data-testid="column"] {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .carousel-container button {
+            border: none !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            color: white !important;
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            border-radius: 50% !important;
+            line-height: 1 !important;
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.3s ease !important;
+            backdrop-filter: blur(5px);
+        }
+        
+        .carousel-container button:hover {
+            background-color: rgba(255, 255, 255, 0.4) !important;
+            transform: scale(1.2) !important;
+        }
         </style>
         """,
         unsafe_allow_html=True,
