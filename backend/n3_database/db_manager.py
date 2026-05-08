@@ -181,7 +181,36 @@ def get_all_locations() -> Dict[str, Any]:
         }
 
     except Exception as e:
-        logger.error(f"Lỗi truy vấn: {e}")
+        logger.error(f"Lỗi truy vấn DB: {e}. Đang chuyển sang chế độ Fallback JSON...")
+        
+        # FALLBACK: Đọc từ file JSON seeds nếu DB lỗi
+        try:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            fallback_path = os.path.join(current_dir, "seeds", "locations_with_vectors.json")
+            
+            if os.path.exists(fallback_path):
+                with open(fallback_path, "r", encoding="utf-8") as f:
+                    json_data = json.load(f)
+                
+                results = []
+                for item in json_data:
+                    # Gắn image_path nếu chưa có
+                    if "image_path" not in item:
+                        item = _attach_image(item)
+                    results.append(item)
+                
+                logger.info(f"✅ Fallback thành công: Load {len(results)} locations từ JSON.")
+                return {
+                    "status": "success",
+                    "total": len(results),
+                    "data": results,
+                    "is_fallback": True
+                }
+            else:
+                logger.error(f"❌ Không tìm thấy file fallback: {fallback_path}")
+        except Exception as fallback_err:
+            logger.error(f"❌ Fallback JSON cũng thất bại: {fallback_err}")
+
         return {"status": "error", "message": str(e), "data": []}
 
 def save_user_profile(user_data: Dict[str, Any]) -> Dict[str, Any]:

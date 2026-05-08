@@ -1,6 +1,7 @@
 ﻿# --- Model Execution ---
 sentence-transformers
 torch
+torchvision
 transformers
 accelerate
 

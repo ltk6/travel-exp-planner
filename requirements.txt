@@ -2,13 +2,15 @@
 numpy>=1.24.0
 python-dotenv
 pydantic>=2.0.0
+requests
+Pillow
 
 # --- Module Recursive Imports ---
--r backend/modules/n1_embedding/requirements.txt
--r backend/modules/n2_image_processing/requirements.txt
--r backend/modules/n4_location_ranking/requirements.txt
--r backend/modules/n5_activity_generation/requirements.txt
--r backend/modules/n6_activity_ranking/requirements.txt
--r backend/n3_database/requirements.txt
--r backend/n8_api/requirements.txt
--r frontend/n7_ui/requirements.txt
+-r src/backend/modules/n1_embedding/requirements.txt
+-r src/backend/modules/n2_image_processing/requirements.txt
+-r src/backend/modules/n4_location_ranking/requirements.txt
+-r src/backend/modules/n5_activity_generation/requirements.txt
+-r src/backend/modules/n6_activity_ranking/requirements.txt
+-r src/backend/n3_database/requirements.txt
+-r src/backend/n8_api/requirements.txt
+-r src/frontend/n7_ui/requirements.txt

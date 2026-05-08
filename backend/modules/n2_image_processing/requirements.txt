@@ -1,2 +1,1 @@
-google.generativeai
-pillow
+google-generativeai
