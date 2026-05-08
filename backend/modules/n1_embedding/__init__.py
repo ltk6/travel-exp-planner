@@ -51,7 +51,7 @@ from .preprocessor import preprocess
 
 logger = logging.getLogger("N1")
 
-def embed(data: Dict[str, Any]) -> Dict[str, Any]:
+def embed(data: dict[str, any]) -> dict[str, any]:
     """
     Entry point to embed a single multi-channel input.
     """
@@ -59,7 +59,7 @@ def embed(data: Dict[str, Any]) -> Dict[str, Any]:
     return results[0]
 
 
-def embed_batch(data_list: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
+def embed_batch(data_list: list[dict[str, any]]) -> list[dict[str, any]]:
     """
     Entry point to embed multiple multi-channel inputs efficiently.
     Performs exactly one forward pass through the model.

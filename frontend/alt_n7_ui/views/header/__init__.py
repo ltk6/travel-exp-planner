@@ -62,15 +62,21 @@ def _save_all_input_state() -> None:
 
     # ── Image upload ──
     elif current_mode == MODES[2]:
-        raw = st.session_state.get("freeform_image_uploader")
-        if raw is not None:
-            st.session_state["saved_uploaded_file"] = raw
-            try:
-                raw.seek(0)
-                st.session_state["saved_image_bytes"] = raw.read()
-                raw.seek(0)
-            except Exception:
-                pass
+        raw_list = st.session_state.get("freeform_image_uploader")
+        if raw_list:
+            st.session_state["saved_uploaded_files"] = raw_list
+            bytes_list = []
+            for up in raw_list:
+                try:
+                    up.seek(0)
+                    bytes_list.append(up.read())
+                    up.seek(0)
+                except Exception:
+                    pass
+            st.session_state["saved_images_bytes"] = bytes_list
+        else:
+            st.session_state["saved_uploaded_files"] = []
+            st.session_state["saved_images_bytes"] = []
 
 
 def render_sticky_header(title: str = "🧭 Travel Planner") -> None:
@@ -98,7 +104,7 @@ def render_sticky_header(title: str = "🧭 Travel Planner") -> None:
                 label = f"[ {mode} ]" if is_active else mode
                 if st.button(
                     label,
-                    use_container_width=True,
+                    width='stretch',
                     type="secondary",
                     key=f"nav_{mode}",
                 ):
