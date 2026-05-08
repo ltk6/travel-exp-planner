@@ -7,7 +7,10 @@ Performance improvements:
 - Single rerun after all locations are fetched
 """
 import streamlit as st
+import logging
 from .api import fetch_activities
+
+logger = logging.getLogger("alt_n7.result")
 
 _DEFAULT_SHOW = 5
 
@@ -35,30 +38,32 @@ def render_result_view(data: dict) -> None:
     with st.container(border=True):
         st.markdown("**📋 Thông tin tìm kiếm của bạn:**")
 
+        # Prioritize local bytes for preview, fall back to backend base64
+        local_img = st.session_state.get("saved_image_bytes")
+        preview_img = local_img if local_img is not None else (f"data:image/jpeg;base64,{image_b64}" if image_b64 else None)
+
         if tags:
             badges = "".join(f'<span class="tag-badge">{t}</span> ' for t in tags)
-            st.markdown(f'<div style="margin-bottom: 8px;">{badges}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="margin-bottom: 12px;">{badges}</div>', unsafe_allow_html=True)
 
-        summary_cols = st.columns([3, 1] if image_b64 else [1])
-        with summary_cols[0]:
+        col_text, col_img = st.columns([2, 1] if preview_img else [1, 0.001])
+        
+        with col_text:
             if user_text:
                 st.markdown(f"> *\"{user_text}\"*")
-            elif not tags and not image_b64:
+            elif not tags and not preview_img:
                 st.markdown("> *Không có văn bản mô tả*")
+            
+            if not user_text and tags:
+                st.caption("Dựa trên các từ khóa bạn đã chọn ở phần trắc nghiệm.")
 
-        if image_b64 and len(summary_cols) > 1:
-            with summary_cols[1]:
-                st.markdown(
-                    """<div style="background-color:#21262d; border:1px solid #30363d;
-                    border-radius:4px; padding:6px 12px; text-align:center; font-size:0.85rem;">
-                        📷 Đã gửi hình ảnh</div>""",
-                    unsafe_allow_html=True,
-                )
-                with st.popover("Xem ảnh", use_container_width=True):
+        if preview_img:
+            with col_img:
+                with st.container():
                     try:
-                        st.image(f"data:image/jpeg;base64,{image_b64}", use_container_width=True)
+                        st.image(preview_img, caption="Phong cảnh trong mơ", use_container_width=True)
                     except Exception:
-                        st.caption("Không thể hiển thị hình ảnh")
+                        st.caption("📷 Đã gửi hình ảnh")
 
     st.markdown("<br>", unsafe_allow_html=True)
     st.subheader("📍 Địa điểm gợi ý")
@@ -89,8 +94,10 @@ def render_result_view(data: dict) -> None:
 
     # ── Batch-fetch all missing locations, rendering each as it arrives ──
     if missing:
+        logger.info(f"Fetching activities for {len(missing)} missing locations")
         for loc in missing:
             loc_id = loc.get("location_id", "unknown")
+            logger.info(f"Fetching activities for: {loc_id}")
             meta = loc.get("metadata", {})
             try:
                 activities = fetch_activities(
@@ -102,8 +109,10 @@ def render_result_view(data: dict) -> None:
                     sig_k=sig_k,
                     user_vectors=user_vectors,
                 )
+                logger.info(f"Retrieved {len(activities)} activities for {loc_id}")
                 st.session_state.activity_results[loc_id] = activities
             except Exception as exc:
+                logger.error(f"Error fetching activities for {loc_id}: {exc}")
                 st.session_state.activity_results[loc_id] = []
                 with placeholders[loc_id].container():
                     st.error(f"Không tải được hoạt động: {exc}")

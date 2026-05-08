@@ -45,10 +45,11 @@ BATCH OUTPUT:
 
 from __future__ import annotations
 
-from typing import Dict, Any
-
+import logging
 from .embedder import embed_strings
 from .preprocessor import preprocess
+
+logger = logging.getLogger("N1")
 
 def embed(data: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -67,6 +68,7 @@ def embed_batch(data_list: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
         return []
 
     # 1. Preprocess all inputs
+    logger.info(f"Preprocessing {len(data_list)} inputs...")
     all_preprocessed = []
     for data in data_list:
         p = preprocess(
@@ -84,9 +86,11 @@ def embed_batch(data_list: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
             flat_strings.append(p[ch])
 
     # 3. Batch encode (SentenceTransformer natively handles batching optimally)
+    logger.info(f"Batch encoding {len(flat_strings)} strings ({len(data_list)} items * {len(channels)} channels)...")
     flat_vectors = embed_strings(flat_strings)
 
     # 4. Unflatten back into per-item outputs
+    logger.info("Unflattening vectors back to items...")
     results = []
     num_channels = len(channels)
     for i, p in enumerate(all_preprocessed):

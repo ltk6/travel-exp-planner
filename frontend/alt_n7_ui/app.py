@@ -10,6 +10,15 @@ Routing logic:
 """
 import streamlit as st
 import requests
+import logging
+
+# ── Logging Configuration ──
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    datefmt="%H:%M:%S",
+)
+logger = logging.getLogger("alt_n7.app")
 
 from styles import inject_custom_css
 from views.header import render_sticky_header
@@ -49,9 +58,11 @@ def _inject_scroll_to_top() -> None:
 
 # ── Routing ──
 if st.session_state.mode != "📊 Kết quả":
+    logger.info(f"Rendering input view (mode: {st.session_state.mode})")
     _inject_scroll_to_top()
     payload = render_input_view()
     if payload:
+        logger.info("Payload received from input view, switching to results mode")
         st.session_state.payload = payload
         st.session_state.mode = "📊 Kết quả"
         st.session_state["_scroll_pending"] = True
@@ -60,6 +71,7 @@ if st.session_state.mode != "📊 Kết quả":
 else:
     # Phase 1: pending payload → call backend
     if st.session_state.payload:
+        logger.info("Sending request to backend API (localhost:5000)")
         _inject_scroll_to_top()
         with st.spinner("⏳ Đang phân tích hồ sơ du lịch của bạn…"):
             try:
@@ -69,23 +81,28 @@ else:
                     timeout=60,
                 )
                 if res.status_code == 200:
+                    logger.info("Backend call successful (200 OK)")
                     st.session_state.results = res.json()
                     st.session_state.activity_results = {}
                     st.session_state.payload = None
                     st.session_state["_scroll_pending"] = True
                     st.rerun()
                 else:
+                    logger.error(f"Backend API error: {res.status_code} - {res.text}")
                     st.error(f"Lỗi từ máy chủ: {res.status_code} — {res.text}")
                     st.session_state.payload = None
             except requests.exceptions.ConnectionError:
+                logger.error("Connection error: backend unreachable")
                 st.error("❌ Không thể kết nối đến backend (localhost:5000). Hãy kiểm tra máy chủ.")
                 st.session_state.payload = None
             except requests.exceptions.Timeout:
+                logger.error("Timeout error during backend call")
                 st.error("⏱️ Yêu cầu quá thời gian chờ. Hãy thử lại.")
                 st.session_state.payload = None
 
     # Phase 2: results ready → show result view
     elif st.session_state.results:
+        logger.info(f"Rendering result view with {len(st.session_state.results.get('locations', []))} locations")
         _inject_scroll_to_top()
         render_result_view(st.session_state.results)
 

@@ -75,7 +75,7 @@ except ImportError:
     def is_llm_available(): return False
     def generate_from_llm(*args, **kwargs): return None
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("N5")
 
 # =============================================================================
 # CONSTANTS
@@ -369,6 +369,7 @@ def _generate_for_location(
 
     # ─── Step 1: LLM generation (primary) ────────────────────────────────────
     if LLM_AVAILABLE and is_llm_available():
+        logger.info(f"Invoking LLM for location '{location_name}'...")
         raw = generate_from_llm(
             location_name         = location_name,
             location_description  = profile.get("description", ""),
@@ -655,23 +656,15 @@ def _ensure_sightseeing_ratio(
 ) -> List[Dict]:
     """
     Đảm bảo ít nhất target_ratio (40%) activities trong target_total đầu tiên là sightseeing.
-    
-    Chiến lược:
-    - Tách sightseeing và non-sightseeing
-    - Tính số lượng sightseeing cần đạt trong target_total
-    - Nếu thiếu → sinh thêm sightseeing và đưa lên đầu
-    - Kết quả: sightseeing ở đầu, non-sightseeing ở sau → khi trim về target_total sẽ đúng ratio
     """
     sightseeing_pool    = [a for a in activities if _is_sightseeing(a)]
     non_sightseeing_pool = [a for a in activities if not _is_sightseeing(a)]
 
-    sightseeing_needed = int(target_total * target_ratio)   # 40
+    sightseeing_needed = int(target_total * target_ratio)
     current_sg_count   = len(sightseeing_pool)
 
     if current_sg_count < sightseeing_needed:
         extra_count = sightseeing_needed - current_sg_count
-
-        # Sinh thêm sightseeing từ nature/relaxation templates
         loc_tags = set(profile.get("tags", []))
         sg_templates = []
 
@@ -688,7 +681,7 @@ def _ensure_sightseeing_ratio(
         base_idx = len(activities)
         for i in range(extra_count):
             tmpl     = sg_templates[i % len(sg_templates)]
-            modifier = VARIATION_MODIFIERS[(i + 3) % len(VARIATION_MODIFIERS)]  # offset để tránh trùng
+            modifier = VARIATION_MODIFIERS[(i + 3) % len(VARIATION_MODIFIERS)]
             act = _instantiate_template(
                 template             = tmpl,
                 modifier             = modifier,
@@ -701,26 +694,19 @@ def _ensure_sightseeing_ratio(
 
         sightseeing_pool = sightseeing_pool + extra
 
-    # Sắp xếp: sightseeing trước, non-sightseeing sau
-    # Khi trim về target_total sẽ đảm bảo đủ ratio
     return sightseeing_pool + non_sightseeing_pool
 
 
 def _is_sightseeing(activity: Dict) -> bool:
-    """
-    Xác định activity có phải sightseeing hay không.
-    Bao gồm: nature type, các subtype ngắm cảnh, và relaxation có yếu tố cảnh quan.
-    """
+    """Xác định activity có phải sightseeing hay không."""
     meta      = activity.get("metadata", {})
     a_type    = meta.get("activity_type", "")
     a_subtype = (meta.get("activity_subtype") or "").lower()
     name      = (meta.get("name") or "").lower()
 
-    # Tất cả nature activities đều là sightseeing
     if a_type == "nature":
         return True
 
-    # Relaxation có yếu tố ngắm cảnh
     sightseeing_subtypes = {
         "sunrise_viewing", "sunset_viewing", "panorama_viewpoint",
         "landscape_photography", "flower_viewing", "stargazing",
@@ -730,13 +716,9 @@ def _is_sightseeing(activity: Dict) -> bool:
     if a_subtype in sightseeing_subtypes:
         return True
 
-    # Keyword trong tên/subtype
     sightseeing_keywords = ["ngắm", "cảnh", "panorama", "view", "scenic", "hoàng hôn", "bình minh"]
     if any(kw in name for kw in sightseeing_keywords):
         return True
-    if any(kw in a_subtype for kw in ["viewing", "panorama", "photography", "scenic"]):
-        return True
-
     return False
 
 
@@ -760,74 +742,40 @@ def _build_activity_output(
     weather_dependent:    bool,
     time_of_day_suitable: Optional[str],
 ) -> Dict:
-    """
-    Tạo output activity theo schema chuẩn trong __init__.py.
-    Đây là hàm duy nhất tạo ra activity dict → đảm bảo schema nhất quán.
-    """
+    """Tạo output activity theo schema chuẩn."""
     return {
         "activity_id": activity_id,
         "location_id": location_id,
         "metadata": {
-            # ─── CORE IDENTITY ─────────────────────────────
             "name":                 name,
             "description":          description,
-
-            # ─── SEMANTIC CLASSIFICATION ───────────────────
             "activity_type":        activity_type,
             "activity_subtype":     activity_subtype,
-
-            # ─── EXPERIENCE DYNAMICS ───────────────────────
             "intensity":            round(float(intensity), 2),
             "physical_level":       round(float(physical_level), 2) if physical_level is not None else None,
             "social_level":         round(float(social_level), 2)   if social_level   is not None else None,
-
-            # ─── CONSTRAINT FIT ────────────────────────────
             "estimated_duration":   float(estimated_duration),
             "price_level":          round(float(price_level), 1),
             "indoor_outdoor":       indoor_outdoor,
             "weather_dependent":    bool(weather_dependent),
-
-            # ─── CONTEXT FIT SIGNALS ───────────────────────
             "time_of_day_suitable": time_of_day_suitable,
         }
     }
 
 
-# =============================================================================
-# HELPERS
-# =============================================================================
-
 def _make_id(location_id: str, suffix: str) -> str:
-    """
-    Tạo activity_id ổn định từ location_id + suffix.
-    Format: act_{location_short}_{suffix}
-    Dùng hash ngắn để tránh trùng khi location_id dài.
-    """
-    loc_short = location_id[:8].replace(" ", "_").lower()
-    h = hashlib.md5(f"{location_id}_{suffix}".encode()).hexdigest()[:6]
-    return f"act_{loc_short}_{h}"
+    """Tạo ID duy nhất."""
+    raw = f"{location_id}_{suffix}"
+    return hashlib.md5(raw.encode()).hexdigest()[:12]
 
 
 def _deduplicate(activities: List[Dict]) -> List[Dict]:
-    """
-    Loại bỏ duplicate dựa trên (name, activity_subtype).
-    Ưu tiên giữ activity xuất hiện trước (LLM activities được ưu tiên).
-    """
-    seen: set = set()
-    result: List[Dict] = []
-    for act in activities:
-        meta = act.get("metadata", {})
-        key  = (
-            meta.get("name", "").lower().strip(),
-            meta.get("activity_subtype") or "",
-        )
-        if key not in seen:
-            seen.add(key)
-            result.append(act)
-    return result
-
-
-# =============================================================================
-# MODULE RE-EXPORT (theo __init__.py)
-# =============================================================================
-__all__ = ["generate_activities"]
+    """Xóa các activity trùng tên."""
+    seen = set()
+    unique = []
+    for a in activities:
+        name = a["metadata"]["name"].lower()
+        if name not in seen:
+            seen.add(name)
+            unique.append(a)
+    return unique

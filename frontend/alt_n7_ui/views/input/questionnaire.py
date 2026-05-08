@@ -1,25 +1,27 @@
 """
 questionnaire.py — Renders travel preferences with complete progress and state persistence.
-
-Performance improvements vs original:
-- _restore_checkbox_states_from_backup() runs only once per session (guarded by a flag)
-- _count_answered_questions() uses a single pass with early-exit per question
-- _update_saved_tags() is unchanged in logic but only called via callbacks (no extra calls)
 """
 import streamlit as st
+import logging
 from .questionnaire_data import QUESTIONNAIRE_CONFIG, EMOJI_MAP
 
-# ─── Public Entry Point ──────────────────────────────────────────────────────
+logger = logging.getLogger("alt_n7.questionnaire")
+
+# ─── Public Entry Point ───────────────────────────────────────────────────────
 
 
 def render_questionnaire_ui(tags: list) -> None:
     """Renders the full questionnaire. Appends selected tags to `tags` in place."""
     st.session_state.setdefault("saved_questionnaire_tags", [])
+    st.session_state.setdefault("saved_questionnaire_keys", [])
 
-    # Restore checkbox state from backup only once per session load
-    if not st.session_state.get("_qstate_restored", False):
-        _restore_checkbox_states_from_backup()
-        st.session_state["_qstate_restored"] = True
+    # Always restore on every render. We use setdefault inside the restore
+    # function so live checkbox values (already in session_state) are never
+    # overwritten — only missing keys get filled from backup. This is safe to
+    # call every frame and is the only reliable way to survive mode switches,
+    # because Streamlit DOES clear widget keys for unmounted widgets in some
+    # execution paths (e.g. st.rerun() triggered from a different component).
+    _restore_checkbox_states_from_backup()
 
     total = len(QUESTIONNAIRE_CONFIG)
     answered = _count_answered_questions()
@@ -29,38 +31,40 @@ def render_questionnaire_ui(tags: list) -> None:
         _render_question(q_id, q_data, tags)
 
 
-# ─── State Synchronization & Recovery ────────────────────────────────────────
+# ─── State Synchronization & Recovery ─────────────────────────────────────────
 
 
 def _restore_checkbox_states_from_backup() -> None:
-    saved_tags = st.session_state.get("saved_questionnaire_tags", [])
-    if not saved_tags:
+    """Write checkbox widget keys from the saved-keys backup."""
+    saved_keys = set(st.session_state.get("saved_questionnaire_keys", []))
+    logger.info(f"Restoring {len(saved_keys)} checkbox keys from backup")
+    if not saved_keys:
         return
 
-    saved_set = set(saved_tags)  # O(1) lookups
+    for q_id, q_data in QUESTIONNAIRE_CONFIG.items():
+        for cat_opts in q_data.get("categories", {}).values():
+            for opt_name, _ in cat_opts.items():
+                key = f"chk_{q_id}_{opt_name}"
+                st.session_state.setdefault(key, key in saved_keys)
+
+        for section_name, options in q_data.get("specifics", {}).items():
+            for opt, _ in options.items():
+                key = f"chk_opt_{q_id}_{section_name}_{opt}"
+                st.session_state.setdefault(key, key in saved_keys)
+
+
+def _update_saved_tags() -> None:
+    """Re-derive the canonical tag list and keys from live checkbox states."""
+    selected_tags: list[str] = []
+    selected_keys: list[str] = []
+    seen: set[str] = set()
 
     for q_id, q_data in QUESTIONNAIRE_CONFIG.items():
         for cat_opts in q_data.get("categories", {}).values():
             for opt_name, tag_list in cat_opts.items():
                 key = f"chk_{q_id}_{opt_name}"
-                if key not in st.session_state:
-                    st.session_state[key] = any(t in saved_set for t in tag_list)
-
-        for section_name, options in q_data.get("specifics", {}).items():
-            for opt, tag_list in options.items():
-                key = f"chk_opt_{q_id}_{section_name}_{opt}"
-                if key not in st.session_state:
-                    st.session_state[key] = any(t in saved_set for t in tag_list)
-
-
-def _update_saved_tags() -> None:
-    selected_tags = []
-    seen: set = set()
-
-    for q_id, q_data in QUESTIONNAIRE_CONFIG.items():
-        for cat_opts in q_data.get("categories", {}).values():
-            for opt_name, tag_list in cat_opts.items():
-                if st.session_state.get(f"chk_{q_id}_{opt_name}", False):
+                if st.session_state.get(key, False):
+                    selected_keys.append(key)
                     for t in tag_list:
                         if t not in seen:
                             selected_tags.append(t)
@@ -68,28 +72,32 @@ def _update_saved_tags() -> None:
 
         for section_name, options in q_data.get("specifics", {}).items():
             for opt, tag_list in options.items():
-                if st.session_state.get(f"chk_opt_{q_id}_{section_name}_{opt}", False):
+                key = f"chk_opt_{q_id}_{section_name}_{opt}"
+                if st.session_state.get(key, False):
+                    selected_keys.append(key)
                     for t in tag_list:
                         if t not in seen:
                             selected_tags.append(t)
                             seen.add(t)
 
     st.session_state["saved_questionnaire_tags"] = selected_tags
+    st.session_state["saved_questionnaire_keys"] = selected_keys
+    logger.info(f"Updated saved tags: {len(selected_tags)} tags, {len(selected_keys)} keys")
 
 
-# ─── Progress ────────────────────────────────────────────────────────────────
+# ─── Progress ─────────────────────────────────────────────────────────────────
 
 
 def _count_answered_questions() -> int:
     answered = 0
     for q_id, q_data in QUESTIONNAIRE_CONFIG.items():
-        # Check category checkboxes
+        found = False
         for cat_opts in q_data.get("categories", {}).values():
             if any(st.session_state.get(f"chk_{q_id}_{opt}", False) for opt in cat_opts):
                 answered += 1
+                found = True
                 break
-        else:
-            # Only check specifics if no category was selected
+        if not found:
             for section_name, options in q_data.get("specifics", {}).items():
                 if any(
                     st.session_state.get(f"chk_opt_{q_id}_{section_name}_{opt}", False)
@@ -116,7 +124,7 @@ def _render_progress(answered: int, total: int) -> None:
     )
 
 
-# ─── Question Renderer ───────────────────────────────────────────────────────
+# ─── Question Renderer ────────────────────────────────────────────────────────
 
 
 def _render_question(q_id: str, q_data: dict, tags: list) -> None:
@@ -221,7 +229,7 @@ def _multi_select_callback() -> None:
     _update_saved_tags()
 
 
-# ─── Specifics Section ────────────────────────────────────────────────────────
+# ─── Specifics Section ─────────────────────────────────────────────────────────
 
 
 def _cap_spec_selection(changed_key: str, spec_keys: list, max_spec: int) -> None:
