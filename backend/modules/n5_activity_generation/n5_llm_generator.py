@@ -34,10 +34,10 @@ logger = logging.getLogger(__name__)
 
 from config.settings import GEMINI_API_KEY
 
-GEMINI_MODEL   = "gemini-2.0-flash"
-GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models"
+GEMINI_MODEL   = "gemini-2.5-flash"
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
 
-LLM_ACTIVITIES_PER_CALL = 25
+LLM_ACTIVITIES_PER_CALL = 10
 
 # Danh sách tags chuẩn để LLM tham khảo
 VALID_TAGS = [
@@ -66,29 +66,19 @@ def _build_prompt(
     budget_per_activity: int,
     max_time_per_activity: int,
     num_activities: int = LLM_ACTIVITIES_PER_CALL,
+    user_text: str = "",
 ) -> str:
-    """
-    Xây dựng prompt chất lượng cao cho LLM (PHIÊN BẢN CẢI TIẾN MẠNH).
-
-    Prompt được thiết kế theo nguyên tắc:
-      - Rõ ràng về vai trò (role): chuyên gia du lịch Việt Nam
-      - Cung cấp đầy đủ context: địa điểm, sở thích, ràng buộc
-      - Yêu cầu output format JSON chuẩn theo schema v2
-      - Chỉ dẫn cụ thể về nội dung: thực tế, phù hợp Việt Nam
-      - Ràng buộc số lượng: 8-10 hoạt động đa dạng
-      - Tags phong phú 5-7 tags mỗi activity
-    """
     tags_str = ", ".join(user_tags) if user_tags else "không có sở thích cụ thể"
     budget_str = f"{budget_per_activity:,}".replace(",", ".")
 
-    # Tạo location_id từ tên
-    loc_id = f"loc_{location_name.lower().replace(' ', '_').replace('đ', 'd').replace('ă', 'a').replace('â', 'a').replace('ê', 'e').replace('ô', 'o').replace('ơ', 'o').replace('ư', 'u').replace('à', 'a').replace('á', 'a').replace('ả', 'a').replace('ã', 'a').replace('ạ', 'a').replace('è', 'e').replace('é', 'e').replace('ẻ', 'e').replace('ẽ', 'e').replace('ẹ', 'e').replace('ì', 'i').replace('í', 'i').replace('ỉ', 'i').replace('ĩ', 'i').replace('ị', 'i').replace('ò', 'o').replace('ó', 'o').replace('ỏ', 'o').replace('õ', 'o').replace('ọ', 'o').replace('ù', 'u').replace('ú', 'u').replace('ủ', 'u').replace('ũ', 'u').replace('ụ', 'u').replace('ỳ', 'y').replace('ý', 'y').replace('ỷ', 'y').replace('ỹ', 'y').replace('ỵ', 'y')}"
+    loc_id = f"loc_{location_name.lower().replace(' ', '_')}"
+    user_context = f"\n🗣️ Yêu cầu của du khách: \"{user_text}\"" if user_text.strip() else ""
 
     prompt = f"""Bạn là chuyên gia du lịch Việt Nam với 20 năm kinh nghiệm. Hãy tạo đúng 10 activities CHI TIẾT, ĐA DẠNG, THỰC TẾ cho địa điểm: {location_name}.
 
 📍 Địa điểm: {location_name}
 📝 Mô tả: {location_description}
-❤️ Sở thích du khách: {tags_str}
+❤️ Sở thích du khách: {tags_str}{user_context}
 💰 Ngân sách tối đa mỗi hoạt động: {budget_str} VNĐ
 ⏰ Thời gian tối đa mỗi hoạt động: {max_time_per_activity} phút
 
@@ -162,7 +152,7 @@ TRẢ LỜI BẰNG JSON ARRAY THUẦN TÚY:"""
 
 
 def _parse_llm_response(response_text: str) -> Optional[List[Dict]]:
-    """Parse JSON từ LLM response. Xử lý các trường hợp: pure JSON, markdown code block, JSON trong text."""
+    """Parse JSON từ LLM response. Xử lý: pure JSON, markdown code block, JSON trong text."""
     if not response_text or not response_text.strip():
         return None
 
@@ -176,18 +166,7 @@ def _parse_llm_response(response_text: str) -> Optional[List[Dict]]:
     except json.JSONDecodeError:
         pass
 
-    # Case 2: markdown code block
-    for pattern in [r'```json\s*\n?(.*?)\n?\s*```', r'```\s*\n?(.*?)\n?\s*```']:
-        matches = re.findall(pattern, text, re.DOTALL)
-        for match in matches:
-            try:
-                data = json.loads(match.strip())
-                if isinstance(data, list):
-                    return data
-            except json.JSONDecodeError:
-                continue
-
-    # Case 3: tìm mảng JSON đầu tiên
+    # Case 2: tìm mảng JSON đầu tiên trong text (bao gồm cả trong markdown code block)
     bracket_start = text.find('[')
     bracket_end   = text.rfind(']')
     if bracket_start != -1 and bracket_end > bracket_start:
@@ -318,48 +297,60 @@ def _convert_v2_to_v1(act: Dict) -> Dict:
     }
 
 
-def call_gemini_api(prompt: str) -> Optional[str]:
-    """Gọi Gemini API, trả về text response hoặc None nếu lỗi."""
+def call_gemini_api(prompt: str, retries: int = 2) -> Optional[str]:
+    """Gọi Gemini API, trả về text response hoặc None nếu lỗi. Retry tối đa 2 lần cho lỗi tạm thời."""
     if not is_llm_available():
         return None
 
     import urllib.request
     import urllib.error
+    import time
 
-    url = f"{GEMINI_API_URL}/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
-
+    url = GEMINI_API_URL.format(model=GEMINI_MODEL, key=GEMINI_API_KEY)
     payload = {
+        "system_instruction": {
+            "parts": [{"text": "You are a travel expert. Always respond with pure JSON only — no markdown, no code blocks, no explanation. Start your response directly with ["}]
+        },
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
             "temperature": 0.8,
-            "topP": 0.9,
-            "maxOutputTokens": 4096,   # Tăng lên cho schema v2 (nhiều trường hơn)
-        }
+            "maxOutputTokens": 8192,
+            "responseMimeType": "application/json",
+            "thinkingConfig": {"thinkingBudget": 0},
+        },
     }
+    data = json.dumps(payload).encode("utf-8")
 
-    try:
-        data = json.dumps(payload).encode("utf-8")
-        req  = urllib.request.Request(
-            url, data=data,
-            headers={"Content-Type": "application/json"},
-            method="POST",
-        )
-        
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            result = json.loads(resp.read().decode("utf-8"))
+    for attempt in range(retries + 1):
+        try:
+            req = urllib.request.Request(
+                url, data=data,
+                headers={"Content-Type": "application/json"},
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                result = json.loads(resp.read().decode("utf-8"))
 
-        candidates = result.get("candidates", [])
-        if candidates:
-            parts = candidates[0].get("content", {}).get("parts", [])
-            if parts:
-                return parts[0].get("text", "")
+            candidates = result.get("candidates", [])
+            if candidates:
+                parts = candidates[0].get("content", {}).get("parts", [])
+                if parts:
+                    return parts[0].get("text", "")
 
-        logger.warning("Gemini unexpected response format: %s", str(result)[:200])
-        return None
+            logger.warning("Gemini unexpected response format: %s", str(result)[:200])
+            return None
 
-    except Exception as e:
-        logger.error("Gemini API error: %s", e)
-        return None
+        except urllib.error.HTTPError as e:
+            if e.code in (503, 529) and attempt < retries:
+                wait = 3 * (attempt + 1)
+                logger.warning("Gemini %d, retry in %ds (attempt %d/%d)", e.code, wait, attempt + 1, retries)
+                time.sleep(wait)
+            else:
+                logger.error("Gemini API error: %s", e)
+                return None
+        except Exception as e:
+            logger.error("Gemini API error: %s", e)
+            return None
 
 
 def generate_from_llm(
@@ -370,30 +361,13 @@ def generate_from_llm(
     budget_per_activity: int,
     max_time_per_activity: int,
     num_activities: int = LLM_ACTIVITIES_PER_CALL,
-    schema_v2: bool = False,
+    schema_v2: bool = True,
+    user_text: str = "",
 ) -> Optional[List[Dict]]:
     """
-    Sinh hoạt động du lịch bằng LLM (Gemini API).
-    
-    Quy trình:
-      1. Xây dựng prompt từ context người dùng
-      2. Gọi Gemini API
-      3. Parse JSON response
-      4. Validate từng activity
-      5. Chuyển đổi sang schema v1 nếu cần (backward-compatible)
-      6. Trả về danh sách đã validate
-    
-    Args:
-        location_name: Tên địa điểm (VD: "Sa Pa")
-        location_description: Mô tả ngắn về địa điểm
-        user_tags: Sở thích của user (VD: ["nature", "food"])
-        budget: Ngân sách tối đa mỗi hoạt động (VNĐ)
-        max_time_per_activity: Thời gian tối đa mỗi hoạt động (phút)
-        schema_v2: True để trả về schema v2, False cho v1 (backward-compatible)
-    
-    Returns:
-        List[Dict] đã validate nếu thành công.
-        None nếu LLM không khả dụng hoặc thất bại.
+    Sinh hoạt động du lịch bằng LLM (xAI Grok).
+    Trả về schema v2 theo mặc định.
+    None nếu LLM không khả dụng hoặc thất bại.
     """
     if not is_llm_available():
         return None
@@ -406,6 +380,7 @@ def generate_from_llm(
         budget_per_activity=budget_per_activity,
         max_time_per_activity=max_time_per_activity,
         num_activities=num_activities,
+        user_text=user_text,
     )
 
     logger.info("Calling Gemini for location: %s (requesting %d activities)", location_name, num_activities)

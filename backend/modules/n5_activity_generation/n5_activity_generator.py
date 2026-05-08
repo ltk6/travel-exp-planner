@@ -6,18 +6,18 @@
 # Entry point duy nhất: generate_activities(data: dict) -> dict
 # Schema I/O theo đúng __init__.py
 #
-# KIẾN TRÚC:
+# KIẾN TRÚC (LLM-first):
 #   ┌─────────────────────────────────────────────────────────┐
 #   │  generate_activities(data)                              │
 #   │       │                                                 │
 #   │       ▼                                                 │
-#   │  _parse_input()  → user, locations, constraints         │
+#   │  _parse_input()  → user (text+tags), locations, constraints │
 #   │       │                                                 │
 #   │       ▼  (per location)                                 │
 #   │  _generate_for_location()                               │
-#   │       ├── LLM path: generate_from_llm()  ~25 acts       │
-#   │       └── Template path: _expand_templates() ~75 acts   │
-#   │       │   (combine → 100/location)                      │
+#   │       ├── PRIMARY: generate_from_llm()  10 acts         │
+#   │       │     └── _map_llm_v2_to_output() → N5 schema     │
+#   │       └── FALLBACK: _expand_templates() nếu LLM fail    │
 #   │       ▼                                                 │
 #   │  _build_activity_output()  → schema theo __init__.py    │
 #   │       │                                                 │
@@ -25,11 +25,10 @@
 #   │  {"activities": [...]}                                  │
 #   └─────────────────────────────────────────────────────────┘
 #
-# SCALABILITY:
-#   - TARGET_PER_LOCATION = 100 (configurable)
-#   - Template expansion dùng VARIATION_MODIFIERS để biến thể templates
-#   - LLM bổ sung ~25 activities với nội dung phong phú hơn
-#   - Khi không có LLM: template expansion tự điền đủ 100
+# LLM-FIRST STRATEGY:
+#   - LLM_QUOTA = 10: xAI Grok sinh 10 activities cá nhân hóa theo user text + tags
+#   - Nếu LLM trả về ≥ 5 valid → sử dụng, bù template nếu thiếu
+#   - Nếu LLM fail → fall back hoàn toàn về template bank
 #
 # OUTPUT theo __init__.py:
 #   {
@@ -82,10 +81,12 @@ logger = logging.getLogger(__name__)
 # CONSTANTS
 # =============================================================================
 
-DEFAULT_TARGET_PER_LOCATION = 20    # Mục tiêu số activities mỗi location mặc định
-LLM_QUOTA           = 0     # LLM tắt để tiết kiệm compute
-TEMPLATE_QUOTA      = DEFAULT_TARGET_PER_LOCATION - LLM_QUOTA  # 20 từ template
-TARGET_PER_LOCATION = TEMPLATE_QUOTA
+DEFAULT_TARGET_PER_LOCATION = 10    # LLM sinh đủ 10 activities/location
+LLM_QUOTA           = 10            # LLM là primary source
+TEMPLATE_QUOTA      = 0             # Template chỉ dùng khi LLM fail
+TARGET_PER_LOCATION = DEFAULT_TARGET_PER_LOCATION
+
+LLM_MIN_VALID = 5   # Ngưỡng tối thiểu — nếu LLM trả về < 5 valid thì fall back template
 
 # Sightseeing priority boost — activity types được ưu tiên
 SIGHTSEEING_PRIORITY_TYPES = {"nature", "relaxation"}
@@ -252,6 +253,97 @@ def _get_profile(loc_name: str, loc_tags: List[str], loc_desc: str) -> Dict:
 
 
 # =============================================================================
+# LLM V2 → N5 OUTPUT SCHEMA MAPPING
+# =============================================================================
+
+def _cost_to_price_level(cost: int) -> float:
+    """Chuyển cost VNĐ → price_level 1–5 theo mặt bằng giá Việt Nam."""
+    if cost == 0:           return 1.0
+    if cost < 50_000:       return 1.5
+    if cost < 150_000:      return 2.0
+    if cost < 500_000:      return 3.0
+    if cost < 1_500_000:    return 4.0
+    return 5.0
+
+
+def _best_time_to_suitable(best_time: List[str]) -> str:
+    """Chuyển danh sách best_time → chuỗi time_of_day_suitable."""
+    if not best_time or len(best_time) >= 3:
+        return "anytime"
+    if best_time == ["morning"]:
+        return "morning"
+    if best_time == ["afternoon"]:
+        return "afternoon"
+    if best_time == ["evening"]:
+        return "evening"
+    return "anytime"
+
+
+_TAG_TO_TYPE: List[Tuple[str, set]] = [
+    ("food",        {"food", "cuisine", "local_food", "street_food"}),
+    ("adventure",   {"adventure", "trekking", "kayak", "diving", "snorkeling", "cycling", "motorbiking", "camping", "climbing", "road_trip"}),
+    ("culture",     {"culture", "history", "heritage", "temple", "architecture", "spiritual", "tradition", "ethnic", "art", "craft"}),
+    ("nightlife",   {"nightlife", "music", "entertainment", "fun"}),
+    ("shopping",    {"shopping", "market"}),
+    ("relaxation",  {"relax", "spa", "sunset", "sunrise", "romantic"}),
+    ("nature",      {"nature", "wildlife", "eco", "forest", "mountain", "waterfall", "scenic", "flower", "lake", "river", "beach", "sea", "island", "cave", "sightseeing"}),
+]
+
+_OUTDOOR_TAGS = {"nature", "beach", "sea", "trekking", "mountain", "waterfall", "cycling", "kayak", "camping", "scenic", "eco", "wildlife", "island", "cave", "river", "lake", "motorbiking", "road_trip", "snorkeling", "diving", "sunrise", "sunset"}
+_INDOOR_TAGS  = {"shopping", "spa", "heritage", "architecture", "art", "craft", "education", "spiritual"}
+_WEATHER_TAGS = {"beach", "sea", "diving", "snorkeling", "kayak", "trekking", "cycling", "camping", "sunrise", "sunset", "scenic", "nature", "wildlife", "outdoor"}
+
+
+def _tags_to_activity_type(tags: set) -> str:
+    for type_name, type_tags in _TAG_TO_TYPE:
+        if tags & type_tags:
+            return type_name
+    return "nature"
+
+
+def _tags_to_indoor_outdoor(tags: set) -> str:
+    outdoor = len(tags & _OUTDOOR_TAGS)
+    indoor  = len(tags & _INDOOR_TAGS)
+    if outdoor > indoor:  return "outdoor"
+    if indoor  > outdoor: return "indoor"
+    return "both"
+
+
+def _tags_to_weather_dependent(tags: set) -> bool:
+    return bool(tags & _WEATHER_TAGS)
+
+
+def _difficulty_to_intensity(difficulty: str) -> float:
+    return {"easy": 0.25, "medium": 0.55, "hard": 0.85}.get(difficulty, 0.4)
+
+
+def _map_llm_v2_to_output(act: Dict, location_id: str, idx: int) -> Dict:
+    """Chuyển đổi activity schema v2 từ LLM → N5 output schema."""
+    tags        = set(t.lower().strip() for t in act.get("tags", []))
+    difficulty  = act.get("difficulty", "easy")
+    intensity   = _difficulty_to_intensity(difficulty)
+    cost        = int(act.get("cost", 0))
+    best_time   = act.get("best_time", [])
+
+    return _build_activity_output(
+        activity_id          = _make_id(location_id, f"llm_{idx:03d}"),
+        location_id          = location_id,
+        name                 = act.get("name", ""),
+        description          = act.get("description", ""),
+        activity_type        = _tags_to_activity_type(tags),
+        activity_subtype     = None,
+        intensity            = intensity,
+        physical_level       = min(1.0, intensity + 0.1),
+        social_level         = 0.5,
+        estimated_duration   = float(act.get("estimated_duration", 90)),
+        price_level          = _cost_to_price_level(cost),
+        indoor_outdoor       = _tags_to_indoor_outdoor(tags),
+        weather_dependent    = _tags_to_weather_dependent(tags),
+        time_of_day_suitable = _best_time_to_suitable(best_time),
+    )
+
+
+# =============================================================================
 # PER-LOCATION GENERATION
 # =============================================================================
 
@@ -264,86 +356,79 @@ def _generate_for_location(
     target_count:  int,
 ) -> List[Dict]:
     """
-    Sinh đủ target_count activities cho một location.
-    
-    Chiến lược:
-      1. LLM (nếu có): sinh LLM_QUOTA=25 activities chất lượng cao
-      2. Template expansion: sinh TEMPLATE_QUOTA=75 activities từ template bank
-      3. Nếu LLM không có: template expansion bù đủ 100
-      4. Deduplicate theo (name + subtype)
-      5. Đảm bảo ≥40% là sightseeing activities
+    Sinh activities cho một location theo chiến lược LLM-first:
+      1. Gọi LLM (xAI Grok) → 10 activities chất lượng cao, cá nhân hóa theo user
+      2. Nếu LLM trả về ≥ LLM_MIN_VALID → dùng kết quả LLM (fill thêm từ template nếu thiếu)
+      3. Nếu LLM fail hoặc < LLM_MIN_VALID → fall back hoàn toàn về template
     """
     loc_tags  = profile.get("tags", [])
     user_tags = user.get("tags", [])
+    user_text = user.get("text") or ""
 
-    llm_activities      : List[Dict] = []
-    template_activities : List[Dict] = []
+    llm_activities: List[Dict] = []
 
-    # ─── Step 1: LLM generation ───────────────────────────────────────────────
+    # ─── Step 1: LLM generation (primary) ────────────────────────────────────
     if LLM_AVAILABLE and is_llm_available():
         raw = generate_from_llm(
-            location_name        = location_name,
-            location_description = profile.get("description", ""),
-            location_tags        = loc_tags,
-            user_tags            = user_tags,
-            budget_per_activity  = constraints["budget_per_activity"],
-            max_time_per_activity= constraints["max_time_per_activity"],
-            num_activities       = LLM_QUOTA,
+            location_name         = location_name,
+            location_description  = profile.get("description", ""),
+            location_tags         = loc_tags,
+            user_tags             = user_tags,
+            budget_per_activity   = constraints["budget_per_activity"],
+            max_time_per_activity = constraints["max_time_per_activity"],
+            num_activities        = LLM_QUOTA,
+            schema_v2             = True,
+            user_text             = user_text,
         )
         if raw:
             for i, act in enumerate(raw):
-                activity = _build_activity_output(
-                    activity_id   = _make_id(location_id, f"llm_{i:03d}"),
-                    location_id   = location_id,
-                    name          = act["name"],
-                    description   = act["description"],
-                    activity_type = act.get("activity_type", "nature"),
-                    activity_subtype = act.get("activity_subtype"),
-                    intensity     = act.get("intensity", 0.5),
-                    physical_level= act.get("physical_level", 0.3),
-                    social_level  = act.get("social_level", 0.5),
-                    estimated_duration = act.get("estimated_duration", 120),
-                    price_level   = act.get("price_level", 2.0),
-                    indoor_outdoor= act.get("indoor_outdoor", "outdoor"),
-                    weather_dependent = act.get("weather_dependent", True),
-                    time_of_day_suitable = act.get("time_of_day_suitable", "anytime"),
-                )
-                llm_activities.append(activity)
+                if not act.get("name") or not act.get("description"):
+                    continue
+                llm_activities.append(_map_llm_v2_to_output(act, location_id, i))
             logger.info("LLM generated %d activities for '%s'", len(llm_activities), location_name)
 
-    # ─── Step 2: Template expansion ───────────────────────────────────────────
-    template_target = target_count - len(llm_activities)
-    template_activities = _expand_templates(
+    # ─── Step 2: Đủ ngưỡng → dùng LLM, bù template nếu thiếu ───────────────
+    if len(llm_activities) >= LLM_MIN_VALID:
+        combined = _deduplicate(llm_activities)
+        if len(combined) < target_count:
+            extra = _expand_templates(
+                location_id   = location_id,
+                location_name = location_name,
+                profile       = profile,
+                user_tags     = user_tags,
+                constraints   = constraints,
+                target_count  = target_count - len(combined),
+                start_index   = len(combined),
+            )
+            combined.extend(extra)
+        return combined[:target_count]
+
+    # ─── Step 3: Fall back hoàn toàn về template ─────────────────────────────
+    logger.warning("LLM insufficient for '%s' (%d activities) — using templates", location_name, len(llm_activities))
+    combined = _expand_templates(
         location_id   = location_id,
         location_name = location_name,
         profile       = profile,
         user_tags     = user_tags,
         constraints   = constraints,
-        target_count  = template_target,
-        start_index   = len(llm_activities),
+        target_count  = target_count,
+        start_index   = 0,
     )
-
-    # ─── Step 3: Combine & deduplicate ────────────────────────────────────────
-    combined = llm_activities + template_activities
     combined = _deduplicate(combined)
 
-    # ─── Step 4: Nếu vẫn thiếu sau dedup → expand thêm ───────────────────────
     if len(combined) < target_count:
-        extra_needed = target_count - len(combined)
         extra = _expand_templates(
             location_id   = location_id,
             location_name = location_name,
             profile       = profile,
             user_tags     = user_tags,
             constraints   = constraints,
-            target_count  = extra_needed,
+            target_count  = target_count - len(combined),
             start_index   = len(combined),
-            force_diverse = True,   # Buộc dùng nhiều modifier hơn
+            force_diverse = True,
         )
         combined.extend(extra)
 
-    # ─── Step 5: Đảm bảo sightseeing ratio ≥ 40% (trước khi trim) ───────────
-    # Hoạt động trên toàn bộ pool, sau đó mới trim về 100
     combined = _ensure_sightseeing_ratio(
         activities    = combined,
         location_id   = location_id,
@@ -352,8 +437,6 @@ def _generate_for_location(
         target_ratio  = 0.40,
         target_total  = target_count,
     )
-
-    # Trim về đúng target_count — sightseeing đã được đưa lên đầu nên không bị mất
     return combined[:target_count]
 
 

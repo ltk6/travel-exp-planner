@@ -261,42 +261,77 @@ def _context_score(metadata, context, constraints):
     return total/len(list_score)
 
 #--------------------------------------------------------------------------------
-# * Hàm 5: tạo lý do để giải thích có user
+# * Hàm 5: tạo lý do để giải thích cho user
+
+# Template lý do theo loại hoạt động — đa dạng, tránh lặp
+_REASON_BY_TYPE = {
+    "nature":      ["Cảnh quan {location_hint}phù hợp với bạn", "Thiên nhiên {intensity_hint}—lý tưởng để khám phá", "Ngắm {location_hint}tự nhiên, đúng gu du lịch của bạn"],
+    "adventure":   ["Thử thách {intensity_hint}cho người thích khám phá", "Hoạt động mạo hiểm {intensity_hint}—sẽ nhớ mãi", "Cường độ {intensity_hint}phù hợp sức khỏe và sở thích"],
+    "food":        ["Ẩm thực địa phương {price_hint}—không thể bỏ qua", "Trải nghiệm vị ngon {location_hint}với ngân sách hợp lý", "Khẩu vị của bạn sẽ hài lòng với lựa chọn này"],
+    "culture":     ["Chiều sâu văn hóa {location_hint}—khác biệt hoàn toàn", "Tìm hiểu bản sắc địa phương {price_hint}", "Trải nghiệm văn hóa độc đáo, phù hợp hành trình của bạn"],
+    "relaxation":  ["Thư giãn {time_hint}{price_hint}—đúng lúc cần nghỉ ngơi", "Nhịp điệu chậm, phù hợp sau ngày dài khám phá", "Tái tạo năng lượng {time_hint}với chi phí {price_hint}"],
+    "nightlife":   ["Về đêm sẽ thú vị hơn với lựa chọn này", "Điểm nhấn cho buổi tối {location_hint}", "Khám phá Đà Nẵng {location_hint}lúc đêm xuống"],
+    "shopping":    ["Mua sắm {price_hint}—quà lưu niệm ý nghĩa", "Tìm đồ địa phương độc đáo {location_hint}", "Trải nghiệm chợ và cửa hàng bản địa"],
+}
+_REASON_DEFAULT = [
+    "Phù hợp với hành trình và sở thích của bạn",
+    "Lựa chọn cân bằng giữa trải nghiệm và chi phí",
+    "Hoạt động đáng thử trong chuyến đi này",
+]
+
+_INTENSITY_LABELS = [(0.7, "cường độ cao"), (0.4, "vừa sức"), (0.0, "nhẹ nhàng")]
+_PRICE_LABELS     = [(4.0, "cao cấp"), (2.5, "tầm trung"), (0.0, "tiết kiệm")]
+_TIME_LABELS      = {"morning": "buổi sáng ", "afternoon": "buổi chiều ", "evening": "buổi tối "}
+
+
+def _pick(labels, value):
+    for threshold, label in labels:
+        if value >= threshold:
+            return label
+    return labels[-1][1]
+
 
 def _build_reason(metadata, sem_score, cons_score, ctx_score):
     """
-    giải thích ngắn gọn tại sao hoạt động này được xếp hạng cao
-    output: một câu ngắn gọn giải thích tại sao hoạt động này được xếp hạng cao
-    ví dụ: đồi thông đà lạt: rất phù hợp với sở thích, trong tầm ngân sách.
+    Sinh lý do cụ thể, đa dạng cho từng hoạt động dựa trên đặc điểm riêng của nó.
+    Tránh các cụm từ chung chung lặp lại giữa các activities.
     """
-    name_act = metadata.get("name"," Hoạt động")
-    parts =[]
-    # 5.1: sở thích
-    if sem_score >= 0.75:
-        parts.append("Rất khớp với sở thích")
-    elif sem_score >= 0.55:
-        parts.append("Khá phù hợp với sở thích")
+    import random
 
-    #5.2:điểm ràng buộc
-    if cons_score >= 0.75:
-        parts.append("rất phù hợp với ngân sách và thời gian")
-    elif cons_score >= 0.55:
-        parts.append("ổn về ngân sách và thời gian")
+    activity_type = metadata.get("activity_type", "nature")
+    name_act      = metadata.get("name", "Hoạt động này")
+    price_level   = float(metadata.get("price_level") or 2.5)
+    intensity     = float(metadata.get("intensity") or 0.5)
+    tod           = metadata.get("time_of_day_suitable", "anytime")
+    indoor_out    = metadata.get("indoor_outdoor", "outdoor")
 
-    # 5.3: ngữ cảnh
-    if ctx_score >= 0.75:
-        parts.append("hợp khung giờ và thời tiết")
-    elif ctx_score >= 0.55:
-        parts.append("khung giờ và thời tiết chấp nhận được ")
+    intensity_hint = _pick(_INTENSITY_LABELS, intensity) + " "
+    price_hint     = _pick(_PRICE_LABELS, price_level)
+    time_hint      = _TIME_LABELS.get(tod, "")
+    location_hint  = "" if indoor_out == "indoor" else "ngoài trời "
 
-    # 5.4: nếu không có lý do nổi bậc nào
-    if len(parts) == 0:
-        parts.append("đáp ứng các tiêu chí cơ bản")
+    templates = _REASON_BY_TYPE.get(activity_type, _REASON_DEFAULT)
+    # Dùng hash tên để chọn template cố định (không random mỗi lần call)
+    idx = hash(name_act) % len(templates)
+    reason_body = templates[idx].format(
+        intensity_hint=intensity_hint,
+        price_hint=price_hint,
+        time_hint=time_hint,
+        location_hint=location_hint,
+    )
 
-    # 5.5: ghép lại thành một câu hoàn chỉnh
-    result = name_act + ": " + ", ".join(parts) + "."
+    # Thêm điểm nổi bật nếu có
+    highlights = []
+    if cons_score >= 0.80:
+        highlights.append("trong tầm ngân sách")
+    if ctx_score >= 0.75 and tod != "anytime":
+        highlights.append(f"hợp {time_hint.strip()}")
+    if intensity < 0.3:
+        highlights.append("không tốn nhiều sức")
 
-    return result
+    if highlights:
+        return f"{name_act}: {reason_body} ({', '.join(highlights)})."
+    return f"{name_act}: {reason_body}."
 #=============================================================================
 # ENTRY POINT
 #=============================================================================
@@ -343,9 +378,12 @@ def rank_activities(data):
         cons_score=_constraint_score(metadata,constraints)#điểm ràng buộc
         ctx_score=_context_score(metadata, context, constraints)#điểm ngữ cảnh
 
+        # Scale sem_score ra khỏi dead-zone [0.5,1.0] → [0,1]
+        # BGE embeddings cùng domain cluster cao, cần kéo giãn để phân biệt
+        sem_score_scaled = max(0.0, min(1.0, (sem_score - 0.5) * 2.0))
 
         # 3.3 tính điểm theo công thức
-        sum_score=0.50*sem_score + 0.25*(cons_score+ctx_score)
+        sum_score=0.50*sem_score_scaled + 0.25*(cons_score+ctx_score)
 
         # Đảm bảo điểm nằm trong [0,1]
 
@@ -366,8 +404,24 @@ def rank_activities(data):
             "reason":     reason,
         })
     #----------------------------------------------------------------------------
-    # BƯỚC4: sắp xếp giảm gần theo điểm và lấy top_k
+    # BƯỚC 4: sắp xếp giảm dần theo điểm và lấy top_k
     scored_activities.sort(key=lambda x: x["score"], reverse=True)
-    result=scored_activities[:top_k]
 
+    # BƯỚC 5: min-max normalization để kéo giãn khoảng điểm
+    # Giữ nguyên thứ hạng, chỉ spread score ra [0.4, 1.0] để dễ đọc hơn
+    if len(scored_activities) >= 2:
+        max_s = scored_activities[0]["score"]
+        min_s = scored_activities[-1]["score"]
+        spread = max_s - min_s
+        LOW, HIGH = 0.40, 1.0
+        if spread > 0.01:
+            for a in scored_activities:
+                normalized = LOW + (a["score"] - min_s) / spread * (HIGH - LOW)
+                a["score"] = round(normalized, 4)
+        else:
+            # Tất cả bằng nhau → gán đều từ 0.75 đến 0.55
+            for i, a in enumerate(scored_activities):
+                a["score"] = round(0.75 - i * 0.05, 4)
+
+    result=scored_activities[:top_k]
     return {"activities":result}
