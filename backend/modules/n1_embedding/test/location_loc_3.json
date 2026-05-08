@@ -1,5 +1,6 @@
 {
-  "sig_k": 2,
+  "text_k": 2,
+  "tags_k": 1,
   "preprocessed": {
     "text": "Historic city with temples, culture, and street food",
     "aug_text": "Historic city with temples, culture, and street food informal food served from street-level vendors, stalls, and mobile carts in open market environments religious structure dedicated to spiritual worship and ritual practice in a sacred environment",

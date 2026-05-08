@@ -2,42 +2,65 @@
 n1_embedding — Unified embedding API.
 Preprocesses multi-channel inputs, generates vectors, and returns signal metadata.
 
-INPUT:
+embed(data: Dict[str, Any]) -> Dict[str, Any]
+embed_batch(data_list: list[Dict[str, Any]]) -> list[Dict[str, Any]]
+
+SINGLE DICT INPUT:
 {
-    "text": str,
-    "tags": list[str],
+    "text":     str,
+    "tags":     list[str],
     "img_desc": str
 }
 
-OUTPUT:
+SINGLE DICT INPUT:
 {
-    "text_k": int,
-    "tags_k": int,
+    "text_k":     int,
+    "tags_k":     int,
     "vectors": {
-        "text": list[float],
-        "aug_text": list[float],
-        "aug_tags": list[float],
-        "img_desc": list[float],
+        "text":     list[float] | None,
+        "aug_text": list[float] | None,
+        "aug_tags": list[float] | None,
+        "img_desc": list[float] | None,
     },
     "preprocessed": {
-        "text": str,
+        "text":     str,
         "aug_text": str,
         "aug_tags": str,
         "img_desc": str,
     }
 }
+
+BATCH INPUT:
+[
+    SINGLE DICT INPUT,
+    ...
+]
+
+BATCH OUTPUT:
+[
+    SINGLE DICT OUTPUT,
+    ...
+]
 """
 
 from __future__ import annotations
 
 from typing import Dict, Any
 
-from .embedder import embed_texts
-from .preprocessor import build_inputs
+from .embedder import embed_strings
+from .preprocessor import preprocess
 
-def embed(data_list: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
+def embed(data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Batch entry point for embedding one or multiple items efficiently.
+    Entry point to embed a single multi-channel input.
+    """
+    results = embed_batch([data])
+    return results[0]
+
+
+def embed_batch(data_list: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
+    """
+    Entry point to embed multiple multi-channel inputs efficiently.
     Performs exactly one forward pass through the model.
     """
     if not data_list:
@@ -46,7 +69,7 @@ def embed(data_list: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
     # 1. Preprocess all inputs
     all_preprocessed = []
     for data in data_list:
-        p = build_inputs(
+        p = preprocess(
             text     = data.get("text", ""),
             tags     = data.get("tags", []),
             img_desc = data.get("img_desc", ""),
@@ -61,7 +84,7 @@ def embed(data_list: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
             flat_strings.append(p[ch])
 
     # 3. Batch encode (SentenceTransformer natively handles batching optimally)
-    flat_vectors = embed_texts(flat_strings)
+    flat_vectors = embed_strings(flat_strings)
 
     # 4. Unflatten back into per-item outputs
     results = []
@@ -89,4 +112,4 @@ def embed(data_list: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
 
     return results
 
-__all__ = ["embed"]
+__all__ = ["embed", "embed_batch"]
