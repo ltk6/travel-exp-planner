@@ -171,14 +171,16 @@ def _render_location_card(loc: dict) -> st.delta_generator.DeltaGenerator:
                 st.session_state[idx_key] = 0
 
             # Carousel UI with "arrow heads" inside columns
-            # We use a column layout to simulate the arrows being on the side of the image
             st.markdown('<div class="carousel-container">', unsafe_allow_html=True)
             c_prev, c_img, c_next = st.columns([1, 10, 1])
             
+            def _change_idx(delta, key=idx_key, total=len(images)):
+                old_val = st.session_state[key]
+                st.session_state[key] = (old_val + delta) % total
+                logger.info(f"Carousel {loc_id} index changed: {old_val} -> {st.session_state[key]} (total={total})")
+
             with c_prev:
-                if st.button("<", key=f"prev_{loc_id}", help="Previous Image"):
-                    st.session_state[idx_key] = (curr_idx - 1) % len(images)
-                    st.rerun()
+                st.button("<", key=f"prev_{loc_id}", on_click=_change_idx, args=(-1,))
             
             with c_img:
                 try:
@@ -187,9 +189,7 @@ def _render_location_card(loc: dict) -> st.delta_generator.DeltaGenerator:
                     st.caption("🖼️ Hình ảnh không khả dụng")
             
             with c_next:
-                if st.button(">", key=f"next_{loc_id}", help="Next Image"):
-                    st.session_state[idx_key] = (curr_idx + 1) % len(images)
-                    st.rerun()
+                st.button(">", key=f"next_{loc_id}", on_click=_change_idx, args=(1,))
             st.markdown('</div>', unsafe_allow_html=True)
         else:
             st.caption("🖼️ Không có hình ảnh")
@@ -259,21 +259,24 @@ def _render_activities(
                 st.markdown(label)
                 st.caption(f"Điểm: {a_score:.2f} — {a_reason}")
 
+        def _toggle_all(val, k=show_all_key):
+            st.session_state[k] = val
+
         if len(filtered) > _DEFAULT_SHOW:
             hidden = len(filtered) - _DEFAULT_SHOW
             if not st.session_state[show_all_key]:
-                if st.button(
+                st.button(
                     f"Xem thêm {hidden} hoạt động ▾",
                     key=f"more_{loc_id}_{selected_type}",
                     width='stretch',
-                ):
-                    st.session_state[show_all_key] = True
-                    st.rerun()
+                    on_click=_toggle_all,
+                    args=(True,)
+                )
             else:
-                if st.button(
+                st.button(
                     "Thu gọn ▴",
                     key=f"less_{loc_id}_{selected_type}",
                     width='stretch',
-                ):
-                    st.session_state[show_all_key] = False
-                    st.rerun()
+                    on_click=_toggle_all,
+                    args=(False,)
+                )

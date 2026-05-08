@@ -196,7 +196,12 @@ def recommend():
             "metadata": loc.get("metadata", {}),
             "geo": loc.get("geo", {}),
             "image_path": loc.get("image_path", ""),
+            "images": loc.get("images", []),
         }
+        
+    if n4_locations:
+        first_loc = n4_locations[0]["location_id"]
+        logger.info(f"Debug loc_map for {first_loc}: images={len(loc_map[first_loc].get('images', []))}")
 
     # ── N4 — Rank locations ────────────────────
     logger.info(f"Stage: N4 (Location Ranking) for top_k={top_k}")

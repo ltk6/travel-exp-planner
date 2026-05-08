@@ -243,26 +243,28 @@ def inject_custom_css():
         }
         
         .carousel-container button {
-            border: none !important;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            background-color: rgba(255, 255, 255, 0.2) !important;
-            color: white !important;
-            width: 32px !important;
-            height: 32px !important;
-            min-width: 32px !important;
+            border: 1px solid var(--border) !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4) !important;
+            background-color: var(--bg-tertiary) !important;
+            color: var(--accent) !important;
+            width: 40px !important;
+            height: 40px !important;
+            min-width: 40px !important;
             border-radius: 50% !important;
-            line-height: 1 !important;
-            padding: 0 !important;
+            font-size: 1.2rem !important;
+            font-weight: 700 !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            transition: all 0.3s ease !important;
-            backdrop-filter: blur(5px);
+            transition: all 0.2s ease !important;
+            cursor: pointer !important;
         }
         
         .carousel-container button:hover {
-            background-color: rgba(255, 255, 255, 0.4) !important;
-            transform: scale(1.2) !important;
+            background-color: var(--border) !important;
+            border-color: var(--accent) !important;
+            transform: scale(1.15) !important;
+            box-shadow: 0 0 15px var(--accent-glow) !important;
         }
         </style>
         """,
