@@ -2,9 +2,12 @@ import google.generativeai as genai
 from PIL import Image
 import io
 from config.settings import GEMINI_API_KEY
+import logging
 
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-2.5-flash')
+
+logger = logging.getLogger("N2")
 
 def process_image(data: dict) -> dict:
     """
@@ -14,12 +17,13 @@ def process_image(data: dict) -> dict:
     """
     image_bytes = data.get("image")
     if not image_bytes:
+        logger.warning("No image provided to N2")
         return {
             "img_desc": "",
             "error": "No image provided"
         }
 
-
+    logger.info(f"Processing image ({len(image_bytes)} bytes) via Gemini...")
 
     try:
         # Xử lý ảnh
@@ -50,22 +54,27 @@ def process_image(data: dict) -> dict:
         
         # Trả về đúng định dạng dict yêu cầu
         if not result:
+            logger.error("Empty response from Gemini")
             return {
                 "img_desc": "",
                 "error": "Empty response from model"
             }
 
         if not hasattr(result, "text") or not result.text:
+            logger.error("No text returned from Gemini (possible safety block)")
             return {
                 "img_desc": "",
                 "error": "No text returned (possible safety block or invalid image)"
             }
 
+        img_desc = result.text.strip()
+        logger.info(f"Gemini image description: {img_desc[:100]}...")
         return {
-            "img_desc": result.text.strip()
+            "img_desc": img_desc
         }
 
     except Exception as e:
+        logger.exception(f"Exception in N2 image processing: {e}")
         return {
             "img_desc": "",
             "error": str(e)

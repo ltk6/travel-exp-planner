@@ -21,7 +21,7 @@ import logging
 import math
 from typing import Any
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("N4")
 
 from backend.shared.weights import get_weights
 
@@ -164,6 +164,8 @@ def rank_locations(data: dict) -> dict:
 
     # ── resolve weights from text_k & tags_k ──────────────────
     weights = get_weights(text_k, tags_k)
+    logger.info(f"Ranking {len(locations)} locations (signals: text_k={text_k}, tags_k={tags_k})")
+    logger.info(f"Resolved weights: {weights}")
 
     scored: list[dict] = []
     for loc in locations:

@@ -7,7 +7,10 @@ Performance improvements:
 - Single rerun after all locations are fetched
 """
 import streamlit as st
+import logging
 from .api import fetch_activities
+
+logger = logging.getLogger("alt_n7.result")
 
 _DEFAULT_SHOW = 5
 
@@ -91,8 +94,10 @@ def render_result_view(data: dict) -> None:
 
     # ── Batch-fetch all missing locations, rendering each as it arrives ──
     if missing:
+        logger.info(f"Fetching activities for {len(missing)} missing locations")
         for loc in missing:
             loc_id = loc.get("location_id", "unknown")
+            logger.info(f"Fetching activities for: {loc_id}")
             meta = loc.get("metadata", {})
             try:
                 activities = fetch_activities(
@@ -104,8 +109,10 @@ def render_result_view(data: dict) -> None:
                     sig_k=sig_k,
                     user_vectors=user_vectors,
                 )
+                logger.info(f"Retrieved {len(activities)} activities for {loc_id}")
                 st.session_state.activity_results[loc_id] = activities
             except Exception as exc:
+                logger.error(f"Error fetching activities for {loc_id}: {exc}")
                 st.session_state.activity_results[loc_id] = []
                 with placeholders[loc_id].container():
                     st.error(f"Không tải được hoạt động: {exc}")

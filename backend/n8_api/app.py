@@ -109,7 +109,10 @@ def health():
 def recommend():
     body, err = _get_json()
     if err:
+        logger.error(f"Failed to parse JSON for recommendation: {err}")
         return err
+
+    logger.info("--- START RECOMMENDATION PIPELINE ---")
 
     text = body.get("text", "").strip()
     image_b64 = body.get("image", "")
@@ -125,20 +128,24 @@ def recommend():
     # ── N2 — Image → img_desc ──────────────────
     img_desc = ""
     if image_b64:
+        logger.info("Stage: N2 (Image Processing)")
         try:
             img_bytes = base64.b64decode(image_b64)
             n2_result = process_image({"image": img_bytes})
             img_desc = n2_result.get("img_desc", "")
+            logger.info(f"N2 Output: {img_desc[:50]}...")
         except Exception as e:
             logger.warning(f"N2 failed: {e}")
 
     # ── N1 — Embed user input ──────────────────
+    logger.info("Stage: N1 (User Embedding)")
     # N1 contract: { text, tags, img_desc } → { sig_k, preprocessed, vectors }
     n1_result = embed({
         "text": text,
         "tags": tags,
         "img_desc": img_desc
     })
+    logger.info(f"N1 Signals: text_k={n1_result.get('text_k')}, tags_k={n1_result.get('tags_k')}")
 
     text_k = n1_result.get("text_k", 0)
     tags_k = n1_result.get("tags_k", 0)
@@ -153,8 +160,10 @@ def recommend():
     }
 
     # ── N3 — Fetch locations from DB ───────────
+    logger.info("Stage: N3 (Database Fetch)")
     db_result = get_all_locations()
     locations = db_result.get("data", []) if isinstance(db_result, dict) else []
+    logger.info(f"N3 Found: {len(locations)} raw locations")
 
     # ── Build N4 input ─────────────────────────
     n4_locations = []
@@ -180,6 +189,7 @@ def recommend():
         }
 
     # ── N4 — Rank locations ────────────────────
+    logger.info(f"Stage: N4 (Location Ranking) for top_k={top_k}")
     n4_result = rank_locations({
         "text_k": text_k,
         "tags_k": tags_k,
@@ -189,6 +199,8 @@ def recommend():
     })
 
     ranked = n4_result.get("locations", [])
+    logger.info(f"--- RECOMMENDATION PIPELINE COMPLETE (Top {len(ranked)} locations) ---")
+
     return jsonify({
         # ─────────────────────────────
         # MAIN CONTRACT (DO NOT CHANGE)
@@ -299,11 +311,15 @@ def get_activities():
     context_data = body.get("context", {})
     location = body.get("location", {})
     top_k_activities = int(body.get("top_k_activities", 20))
+    
+    loc_id = location.get("location_id", "unknown")
+    logger.info(f"--- START ACTIVITIES PIPELINE for {loc_id} ---")
 
     if not location:
         return _err("Missing location data")
 
     # ── N5 — Generate Activities ───────────────
+    logger.info("Stage: N5 (Activity Generation)")
     n5_input = {
         "user": {
             "text": text,
@@ -316,6 +332,7 @@ def get_activities():
     }
     n5_result = generate_activities(n5_input)
     activities = n5_result.get("activities", [])
+    logger.info(f"N5 Generated: {len(activities)} activities")
 
     # ── Embed Activities via N1 ────────────────
     logger.info("Embedding %d activities for location '%s' via N1 (BATCH MODE)...", len(activities), location.get("location_id"))
@@ -352,6 +369,7 @@ def get_activities():
             }
 
     # ── N6 — Rank Activities ───────────────────
+    logger.info("Stage: N6 (Activity Ranking)")
     n6_input = {
         "text_k": text_k,
         "tags_k": tags_k,
@@ -368,6 +386,7 @@ def get_activities():
     }
     n6_result = rank_activities(n6_input)
     ranked_activities = n6_result.get("activities", [])
+    logger.info(f"N6 Ranked: {len(ranked_activities)} activities")
 
     # Enrich ranked activities with metadata from N5
     act_map = {act.get("activity_id"): act for act in activities}

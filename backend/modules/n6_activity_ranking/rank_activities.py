@@ -24,7 +24,10 @@
 #   Sau khi tính xong, sắp xếp giảm dần và lấy top_k.
 # =============================================================================
 
-import math   # dùng math.sqrt để tính cosine similarity
+import math
+import logging
+
+logger = logging.getLogger("N6")
 
 #=============================================================================
 #DANH SÁCH CÁC HÀM PHỤ HỖ TRỢ
@@ -358,7 +361,10 @@ def rank_activities(data):
     #---------------------------------------------------
     # BƯỚC 2: trường hợp đặc biệt(không có gì để xếp hạng)
     if len(activities)==0 or top_k <=0:
+        logger.warning("No activities to rank in N6")
         return {"activities": []}
+
+    logger.info(f"Ranking {len(activities)} activities for top_k={top_k} (signals: text_k={text_k}, tags_k={tags_k})")
 
     #-------------------------------------------------------
     # BƯỚC 3: duyệt qua từng hoạt động và tính điểm

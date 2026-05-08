@@ -5,6 +5,9 @@ Renders the active input mode and handles submission.
 """
 import base64
 import streamlit as st
+import logging
+
+logger = logging.getLogger("alt_n7.input")
 
 from .questionnaire import render_questionnaire_ui
 from .questionnaire_data import QUESTIONNAIRE_CONFIG
@@ -14,6 +17,7 @@ from .freeform import render_text_input_tab, render_image_input_tab
 def _save_all_input_state() -> None:
     """Snapshot the currently active input channel into session_state backups."""
     current_mode = st.session_state.get("mode")
+    logger.info(f"Snapshotting state for mode: {current_mode}")
 
     # ── Questionnaire ──
     if current_mode == "📋 Trắc nghiệm":
@@ -113,6 +117,7 @@ def render_input_view() -> dict | None:
         return None
 
     # ── SUBMIT PRESSED ──
+    logger.info("Submit button clicked")
     _save_all_input_state()
 
     user_text: str = st.session_state.get("saved_freeform_text", "")
@@ -132,6 +137,8 @@ def render_input_view() -> dict | None:
         return None
 
     st.session_state.mode = "📊 Kết quả"
+
+    logger.info(f"Payload aggregation: {len(all_tags)} tags, {len(user_text)} chars text, image={bool(image_b64)}")
 
     return {
         "text": user_text,
@@ -158,6 +165,7 @@ def _render_tag_summary(tags: list[str]) -> None:
 
 
 def _reset_questionnaire() -> None:
+    logger.info("Resetting all questionnaire and freeform state")
     for k in [k for k in st.session_state if k.startswith("chk_")]:
         del st.session_state[k]
 

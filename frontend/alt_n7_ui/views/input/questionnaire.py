@@ -2,7 +2,10 @@
 questionnaire.py — Renders travel preferences with complete progress and state persistence.
 """
 import streamlit as st
+import logging
 from .questionnaire_data import QUESTIONNAIRE_CONFIG, EMOJI_MAP
+
+logger = logging.getLogger("alt_n7.questionnaire")
 
 # ─── Public Entry Point ───────────────────────────────────────────────────────
 
@@ -34,6 +37,7 @@ def render_questionnaire_ui(tags: list) -> None:
 def _restore_checkbox_states_from_backup() -> None:
     """Write checkbox widget keys from the saved-keys backup."""
     saved_keys = set(st.session_state.get("saved_questionnaire_keys", []))
+    logger.info(f"Restoring {len(saved_keys)} checkbox keys from backup")
     if not saved_keys:
         return
 
@@ -78,6 +82,7 @@ def _update_saved_tags() -> None:
 
     st.session_state["saved_questionnaire_tags"] = selected_tags
     st.session_state["saved_questionnaire_keys"] = selected_keys
+    logger.info(f"Updated saved tags: {len(selected_tags)} tags, {len(selected_keys)} keys")
 
 
 # ─── Progress ─────────────────────────────────────────────────────────────────

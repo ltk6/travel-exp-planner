@@ -1,4 +1,7 @@
 import streamlit as st
+import logging
+
+logger = logging.getLogger("alt_n7.header")
 
 MODES = [
     "📋 Trắc nghiệm",
@@ -20,6 +23,7 @@ def _save_all_input_state() -> None:
 
     # We use the mode BEFORE it gets updated to decide what to save.
     current_mode = st.session_state.get("mode")
+    logger.info(f"Flushing state for mode: {current_mode}")
 
     # ── Questionnaire ──
     if current_mode == MODES[0]:
@@ -99,6 +103,7 @@ def render_sticky_header(title: str = "🧭 Travel Planner") -> None:
                     key=f"nav_{mode}",
                 ):
                     if not is_active:
+                        logger.info(f"Nav button clicked: switching to {mode}")
                         # Save state of the CURRENT mode before switching to the NEW one
                         _save_all_input_state()
                         st.session_state.mode = mode

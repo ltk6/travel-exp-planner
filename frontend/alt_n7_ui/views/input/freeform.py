@@ -3,9 +3,13 @@ freeform.py — Text and Image input tabs with persistent state.
 """
 import streamlit as st
 from PIL import Image
+import logging
+
+logger = logging.getLogger("alt_n7.freeform")
 
 
 def on_text_change() -> None:
+    logger.info("Text input changed, updating backup")
     st.session_state["saved_freeform_text"] = st.session_state["freeform_text_input"]
 
 
@@ -13,6 +17,7 @@ def on_image_change() -> None:
     """Snapshot both the file object and its raw bytes for maximum reliability."""
     uploaded = st.session_state.get("freeform_image_uploader")
     if uploaded is not None:
+        logger.info(f"Image uploaded: {uploaded.name} ({uploaded.size} bytes)")
         st.session_state["saved_uploaded_file"] = uploaded
         # Read bytes once and store them; this is the most reliable way to 
         # persist an image across widget unmounts in Streamlit.
