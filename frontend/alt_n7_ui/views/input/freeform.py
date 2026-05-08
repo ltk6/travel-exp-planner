@@ -1,62 +1,75 @@
+"""
+freeform.py — Text and Image input tabs with persistent state.
+"""
 import streamlit as st
 from PIL import Image
-import base64
 
-def on_text_change():
-    """Callback to instantly persist the text input to session state."""
+
+def on_text_change() -> None:
     st.session_state["saved_freeform_text"] = st.session_state["freeform_text_input"]
 
-def on_image_change():
-    """Callback to instantly persist the uploaded file to session state."""
-    st.session_state["saved_uploaded_file"] = st.session_state["freeform_image_uploader"]
 
-def render_text_input_tab():
-    st.info("Hãy mô tả chi tiết chuyến du lịch trong mơ của bạn. Hãy đề cập đến những hoạt động bạn muốn tham gia, những địa điểm bạn muốn ghé thăm và bất kỳ yêu cầu đặc biệt nào khác.")
-    
-    # Initialize the backup variable if not yet set
-    if "saved_freeform_text" not in st.session_state:
-        st.session_state["saved_freeform_text"] = ""
+def on_image_change() -> None:
+    """Snapshot both the file object and its raw bytes for maximum reliability."""
+    uploaded = st.session_state.get("freeform_image_uploader")
+    if uploaded is not None:
+        st.session_state["saved_uploaded_file"] = uploaded
+        # Read bytes once and store them; this is the most reliable way to 
+        # persist an image across widget unmounts in Streamlit.
+        uploaded.seek(0)
+        st.session_state["saved_image_bytes"] = uploaded.read()
+        uploaded.seek(0) # Reset for others
 
-    user_text = st.text_area(
+
+def render_text_input_tab() -> None:
+    st.info(
+        "Hãy mô tả chi tiết chuyến du lịch trong mơ của bạn. Hãy đề cập đến những hoạt động "
+        "bạn muốn tham gia, những địa điểm bạn muốn ghé thăm và bất kỳ yêu cầu đặc biệt nào khác."
+    )
+
+    st.session_state.setdefault("saved_freeform_text", "")
+
+    st.text_area(
         "Describe your dream trip",
         value=st.session_state["saved_freeform_text"],
-        placeholder="e.g., Tôi muốn thức dậy bằng tiếng sóng vỗ vào bờ, ăn hải sản tươi sống, đi lặn, và tìm một nơi yên tĩnh để đọc sách...",
+        placeholder=(
+            "e.g., Tôi muốn thức dậy bằng tiếng sóng vỗ vào bờ, ăn hải sản tươi sống, "
+            "đi lặn, và tìm một nơi yên tĩnh để đọc sách..."
+        ),
         label_visibility="collapsed",
         height=250,
         key="freeform_text_input",
-        on_change=on_text_change
+        on_change=on_text_change,
     )
-    return user_text
 
-def render_image_input_tab():
+
+def render_image_input_tab() -> None:
     st.info("Hãy tải lên một bức ảnh mô tả phong cảnh trong mơ của bạn.")
 
-    # Initialize the backup variable if not yet set
-    if "saved_uploaded_file" not in st.session_state:
-        st.session_state["saved_uploaded_file"] = None
+    st.session_state.setdefault("saved_uploaded_file", None)
+    st.session_state.setdefault("saved_image_bytes", None)
 
-    uploaded = st.file_uploader(
+    st.file_uploader(
         "Tải lên một bức ảnh",
         type=["png", "jpg", "jpeg"],
         key="freeform_image_uploader",
         accept_multiple_files=False,
-        on_change=on_image_change
+        on_change=on_image_change,
     )
 
-    # If the user switches away and returns, match widget's internal value to our persistent state
-    if uploaded is None and st.session_state["saved_uploaded_file"] is not None:
-        uploaded = st.session_state["saved_uploaded_file"]
+    # Resolve display: prefer live widget, fall back to bytes backup
+    live = st.session_state.get("freeform_image_uploader")
+    backup_bytes = st.session_state.get("saved_image_bytes")
 
-    image_b64 = ""
-
-    if uploaded is not None:
-        # Prevent PIL from throwing errors if the file pointer was exhausted
-        uploaded.seek(0)
-        img = Image.open(uploaded)
-        st.image(img, caption="Phong cảnh trong mơ", width=400)
-
-        # Reset pointer again for reading
-        uploaded.seek(0)
-        image_b64 = base64.b64encode(uploaded.read()).decode("utf-8")
-
-    return image_b64
+    if live is not None:
+        try:
+            live.seek(0)
+            st.image(live, caption="Phong cảnh bạn vừa chọn", width=400)
+        except Exception:
+            st.warning("⚠️ Không thể hiển thị ảnh.")
+    elif backup_bytes is not None:
+        st.caption("📎 Ảnh đã tải trước đó vẫn được giữ lại.")
+        try:
+            st.image(backup_bytes, caption="Phong cảnh trong mơ (đã lưu)", width=400)
+        except Exception:
+            st.warning("⚠️ Không thể hiển thị ảnh đã lưu.")
