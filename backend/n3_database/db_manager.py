@@ -73,10 +73,14 @@ def _format_vectors(row: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 def _attach_image(location_dict: Dict[str, Any]) -> Dict[str, Any]:
-    """Hàm nội bộ gắn link ảnh (Đã sửa lại đường dẫn chuẩn)."""
+    """Hàm nội bộ gắn link ảnh (Đã sửa lại hỗ trợ 3 ảnh chuẩn yêu cầu sếp)."""
     loc_id = location_dict.get("location_id")
-    # Đã bỏ chữ "modules" đi theo cấu trúc mới của sếp
-    location_dict["image_path"] = f"backend/n3_database/images/{loc_id}.jpg" 
+    location_dict["images"] = [
+        f"backend/n3_database/images/{loc_id}_1.jpg",
+        f"backend/n3_database/images/{loc_id}_2.jpg",
+        f"backend/n3_database/images/{loc_id}_3.jpg"
+    ]
+    location_dict["image_path"] = f"backend/n3_database/images/{loc_id}_1.jpg" 
     return location_dict
 
 def save_location(location_data: Dict[str, Any]) -> Dict[str, Any]:
