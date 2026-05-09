@@ -179,6 +179,10 @@ def inject_custom_css():
             border-color: var(--border-hover) !important;
             background-color: var(--border) !important;
         }
+        div[data-testid="stPopoverBody"] {
+            max-height: 300px !important;
+            overflow-y: auto !important;
+        }
 
         /* ── Spinner ── */
         div[data-testid="stSpinner"] {
