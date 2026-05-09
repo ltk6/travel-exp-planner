@@ -95,9 +95,14 @@ def _safe_vec(v):
 
 @app.get("/health")
 def health():
+    from modules.n5_activity_generation import cache as llm_cache
+    from modules.n5_activity_generation.providers import get_fallback_chain
+    chain = get_fallback_chain()
     return jsonify({
         "status": "ok",
-        "pipeline": ["n1", "n2", "n3", "n4", "n5", "n6"]
+        "pipeline": ["n1", "n2", "n3", "n4", "n5", "n6"],
+        "llm_chain": [{"name": p.name, "model": p.model, "rpm_limit": p.rpm_limit} for p in chain],
+        "llm_cache": llm_cache.stats(),
     })
 
 
@@ -299,6 +304,7 @@ def get_activities():
     context_data = body.get("context", {})
     location = body.get("location", {})
     top_k_activities = int(body.get("top_k_activities", 20))
+    llm_provider = body.get("provider") or None  # runtime override, None = env
 
     if not location:
         return _err("Missing location data")
@@ -312,10 +318,12 @@ def get_activities():
         },
         "locations": [location],
         "constraints": constraints,
-        "target_count": 10
+        "target_count": 10,
+        "llm_provider": llm_provider,
     }
     n5_result = generate_activities(n5_input)
     activities = n5_result.get("activities", [])
+    llm_metas  = n5_result.get("llm_meta", [])
 
     # ── Embed Activities via N1 ────────────────
     logger.info("Embedding %d activities for location '%s' via N1 (BATCH MODE)...", len(activities), location.get("location_id"))
@@ -352,6 +360,8 @@ def get_activities():
             }
 
     # ── N6 — Rank Activities ───────────────────
+    # Contract mới: N6 chỉ còn dùng user_input + user_vectors + context.time_of_day.
+    # Các field budget / duration / people / weather đã bị loại bỏ khỏi N6.
     n6_input = {
         "text_k": text_k,
         "tags_k": tags_k,
@@ -362,8 +372,7 @@ def get_activities():
         },
         "user_vectors": user_vectors,
         "activities": activities,
-        "constraints": constraints,
-        "context": context_data,
+        "context": {"time_of_day": context_data.get("time_of_day")},
         "top_k": top_k_activities
     }
     n6_result = rank_activities(n6_input)
@@ -385,7 +394,8 @@ def get_activities():
     return jsonify({
         "status": "success",
         "location_id": location.get("location_id"),
-        "activities": enriched_ranked_activities
+        "activities": enriched_ranked_activities,
+        "meta": llm_metas[0] if llm_metas else {},
     })
 
 

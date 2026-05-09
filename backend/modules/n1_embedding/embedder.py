@@ -4,18 +4,19 @@ Model: BAAI/bge-m3 (568M params, 1024-dim, 100+ languages, top VN-MTEB score).
 """
 
 from __future__ import annotations
-
 from typing import List, Optional
+import torch
 
 MODEL_NAME = "BAAI/bge-m3"
 
 try:
     from sentence_transformers import SentenceTransformer
-    print(f"[Embedding] Loading '{MODEL_NAME}' into memory...")
-    _MODEL = SentenceTransformer(MODEL_NAME)
+    print(f"[Embedding] Loading '{MODEL_NAME}' onto GPU...")
+    _device = "cuda" if torch.cuda.is_available() else "cpu"
+    _MODEL = SentenceTransformer(MODEL_NAME, device=_device)
     print(f"[Embedding] Ready. Device: {_MODEL.device}")
 except ImportError:
-    raise RuntimeError("sentence-transformers not installed")
+    raise RuntimeError("sentence-transformers or torch not installed")
 except Exception as e:
     raise RuntimeError(f"Failed to load embedding model: {e}")
 

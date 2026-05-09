@@ -68,12 +68,13 @@ from .n5_activity_templates import (
 )
 
 try:
-    from .n5_llm_generator import generate_from_llm, is_llm_available
+    from .n5_llm_generator import generate_from_llm, generate_from_llm_with_meta, is_llm_available
     LLM_AVAILABLE = True
 except ImportError:
     LLM_AVAILABLE = False
     def is_llm_available(): return False
     def generate_from_llm(*args, **kwargs): return None
+    def generate_from_llm_with_meta(*args, **kwargs): return None, {}
 
 logger = logging.getLogger(__name__)
 
@@ -138,7 +139,9 @@ def generate_activities(data: dict) -> dict:
     }
     """
     user, locations, constraints, target_count = _parse_input(data)
+    provider = data.get("llm_provider") or None
     all_activities: List[Dict] = []
+    llm_metas: List[Dict] = []  # 1 entry per location
 
     for loc in locations:
         loc_id   = loc["location_id"]
@@ -149,6 +152,7 @@ def generate_activities(data: dict) -> dict:
         # Enrich từ LOCATION_PROFILES nếu có
         profile = _get_profile(loc_name, loc_tags, loc_desc)
 
+        meta_out: Dict = {}
         activities = _generate_for_location(
             location_id   = loc_id,
             location_name = loc_name,
@@ -156,7 +160,10 @@ def generate_activities(data: dict) -> dict:
             user          = user,
             constraints   = constraints,
             target_count  = target_count,
+            provider      = provider,
+            meta_out      = meta_out,
         )
+        llm_metas.append({"location_id": loc_id, **meta_out})
 
         all_activities.extend(activities)
         logger.info(
@@ -164,7 +171,7 @@ def generate_activities(data: dict) -> dict:
             loc_name, loc_id, len(activities)
         )
 
-    return {"activities": all_activities}
+    return {"activities": all_activities, "llm_meta": llm_metas}
 
 
 # =============================================================================
@@ -340,6 +347,7 @@ def _map_llm_v2_to_output(act: Dict, location_id: str, idx: int) -> Dict:
         indoor_outdoor       = _tags_to_indoor_outdoor(tags),
         weather_dependent    = _tags_to_weather_dependent(tags),
         time_of_day_suitable = _best_time_to_suitable(best_time),
+        tags                 = list(tags),
     )
 
 
@@ -354,12 +362,17 @@ def _generate_for_location(
     user:          Dict,
     constraints:   Dict,
     target_count:  int,
+    provider:      Optional[str] = None,
+    meta_out:      Optional[Dict] = None,
 ) -> List[Dict]:
     """
     Sinh activities cho một location theo chiến lược LLM-first:
-      1. Gọi LLM (xAI Grok) → 10 activities chất lượng cao, cá nhân hóa theo user
+      1. Gọi LLM → 10 activities chất lượng cao, cá nhân hóa theo user
       2. Nếu LLM trả về ≥ LLM_MIN_VALID → dùng kết quả LLM (fill thêm từ template nếu thiếu)
       3. Nếu LLM fail hoặc < LLM_MIN_VALID → fall back hoàn toàn về template
+
+    provider: override LLM_PROVIDER runtime (UI chọn). None = dùng env.
+    meta_out: nếu truyền dict, sẽ được điền provider_used/cache_hit/latency_ms.
     """
     loc_tags  = profile.get("tags", [])
     user_tags = user.get("tags", [])
@@ -369,7 +382,7 @@ def _generate_for_location(
 
     # ─── Step 1: LLM generation (primary) ────────────────────────────────────
     if LLM_AVAILABLE and is_llm_available():
-        raw = generate_from_llm(
+        raw, llm_meta = generate_from_llm_with_meta(
             location_name         = location_name,
             location_description  = profile.get("description", ""),
             location_tags         = loc_tags,
@@ -379,7 +392,10 @@ def _generate_for_location(
             num_activities        = LLM_QUOTA,
             schema_v2             = True,
             user_text             = user_text,
+            provider              = provider,
         )
+        if meta_out is not None:
+            meta_out.update(llm_meta)
         if raw:
             for i, act in enumerate(raw):
                 if not act.get("name") or not act.get("description"):
@@ -759,6 +775,7 @@ def _build_activity_output(
     indoor_outdoor:       str,
     weather_dependent:    bool,
     time_of_day_suitable: Optional[str],
+    tags:                 Optional[List[str]] = None,
 ) -> Dict:
     """
     Tạo output activity theo schema chuẩn trong __init__.py.
@@ -789,6 +806,9 @@ def _build_activity_output(
 
             # ─── CONTEXT FIT SIGNALS ───────────────────────
             "time_of_day_suitable": time_of_day_suitable,
+
+            # ─── SEMANTIC TAGS ─────────────────────────────
+            "tags":                 sorted(tags) if tags else [],
         }
     }
 
