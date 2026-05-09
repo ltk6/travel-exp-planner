@@ -4,11 +4,11 @@ N6 — ACTIVITY RANKING MODULE (MULTI-SIGNAL SCORING ENGINE)
 ─────────────────────────────────────────────
 
 This module ranks generated activities (from N5) using precomputed
-embeddings and structured metadata constraints.
+embeddings and simple metadata processing.
 
 PURPOSE:
-- Rank candidate activities based on user intent and context
-- Combine semantic similarity + constraint satisfaction
+- Rank candidate activities based on user intent
+- Combine semantic similarity + simple level processing
 - Return top-k most relevant activities per user query
 
 IMPORTANT:
@@ -23,28 +23,12 @@ INPUT
     "text_k": int,
     "tags_k": int,
 
-    # ───────── USER INPUT ─────────
-    "user_input": {
-        "text": str | None,
-        "img_desc": str | None,
-        "tags": list[str] | None
-    },
-
     # ───────── USER VECTORS ─────────
     "user_vectors": {
         "text": list[float] | None,
         "aug_text": list[float] | None,
         "aug_tags": list[float] | None,
         "img_desc": list[float] | None
-    },
-
-    # ───────── CONTEXT ─────────
-    "context": {
-        "user_location": {
-            "lat": float | None,
-            "lng": float | None
-        },
-        "time_of_day": str | None
     },
 
     # ───────── ACTIVITIES ─────────
@@ -54,39 +38,17 @@ INPUT
             "location_id": str,
 
             "metadata": {
-                "name": str,
-                "description": str,
-
-                "activity_type": str,
-                "activity_subtype": str | None,
-
-                "intensity": float,
+                "intensity":      float,
                 "physical_level": float | None,
-                "social_level": float | None,
-
-                "estimated_duration": float,
-                "price_level": float,
-
-                "indoor_outdoor": str,
-                "weather_dependent": bool,
-
-                "time_of_day_suitable": str | None
+                "social_level":   float | None
             },
 
             "vectors": {
                 "text": list[float] | None,
-                "tag": list[float] | None,
+                "aug_tags": list[float] | None,
             }
         }
     ],
-
-    # ───────── CONSTRAINTS ─────────
-    "constraints": {
-        "budget": float | None,
-        "duration": float | None,
-        "people": int | None,
-        "weather": str | None
-    },
 
     "top_k": int
 }
@@ -112,18 +74,8 @@ Semantic Matching:
 - user_vectors ↔ activity_vectors (text/tag/intent)
 - weighted cosine similarity fusion
 
-Constraint Scoring:
-- budget fit penalty / boost
-- duration fit alignment
-- group size compatibility (if applicable)
-
-Context Scoring:
-- time_of_day match
-- weather_dependency alignment
-- indoor/outdoor preference alignment
-
-Geographic influence (optional):
-- derived from location layer (if propagated)
+Activity Levels Scoring:
+- intensity / physical_level / social_level combined to influence the score slightly
 
 ─────────────────────────────────────────────
 DESIGN PRINCIPLES
@@ -132,7 +84,7 @@ DESIGN PRINCIPLES
 - Missing vectors must be safely ignored (no failure propagation)
 - No generation or embedding logic
 - Explainable output via reason field
-- Shared scoring architecture with N4 but activity-specialized signals
+- Shared scoring architecture with N4
 ─────────────────────────────────────────────
 """
 
