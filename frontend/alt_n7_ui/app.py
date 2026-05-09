@@ -1,16 +1,18 @@
 """
 app.py — Travel Experience Planner
 Entry point for the Streamlit application.
-
-Routing logic:
-  - Any mode except "📊 Kết quả" → render input view
-  - "📊 Kết quả" + pending payload → call backend, then rerun
-  - "📊 Kết quả" + cached results → render result view
-  - "📊 Kết quả" + nothing → show fallback with nav back
 """
 import streamlit as st
 import requests
 import logging
+import os
+
+from styles import inject_custom_css
+from views.header import render_sticky_header
+from views.input import render_input_view
+from views.result import render_result_view
+from state import init_session_state
+from utils import inject_scroll_to_top
 
 # ── Logging Configuration ──
 logging.basicConfig(
@@ -20,10 +22,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger("alt_n7.app")
 
-from styles import inject_custom_css
-from views.header import render_sticky_header
-from views.input import render_input_view
-from views.result import render_result_view
+_INTERNAL_KEY = os.environ.get("INTERNAL_API_KEY", "")
+_BACKEND_HEADERS = {"X-Internal-Key": _INTERNAL_KEY}
+_BACKEND_URL = "http://localhost:5000/recommend"
 
 # ── Page config ──
 st.set_page_config(
@@ -34,33 +35,13 @@ st.set_page_config(
 inject_custom_css()
 render_sticky_header(title="🗺️ Travel Experience Planner")
 
-# ── Session state defaults ──
-st.session_state.setdefault("results", None)
-st.session_state.setdefault("mode", "📋 Trắc nghiệm")
-st.session_state.setdefault("payload", None)
-st.session_state.setdefault("_scroll_pending", False)
-
-
-def _inject_scroll_to_top() -> None:
-    """Injects JavaScript to scroll once, guarded by session flag."""
-    if not st.session_state.get("_scroll_pending"):
-        return
-    st.session_state["_scroll_pending"] = False
-    st.iframe(
-        "data:text/html;charset=utf-8," + 
-        """<script>
-            var body = window.parent.document.querySelector(".main");
-            if (body) body.scrollTo({ top: 0, behavior: 'auto' });
-        </script>""",
-        height=1,
-        width=1,
-    )
-
+# ── Init ──
+init_session_state()
 
 # ── Routing ──
 if st.session_state.mode != "📊 Kết quả":
     logger.info(f"Rendering input view (mode: {st.session_state.mode})")
-    _inject_scroll_to_top()
+    inject_scroll_to_top()
     payload = render_input_view()
     if payload:
         logger.info("Payload received from input view, switching to results mode")
@@ -72,13 +53,14 @@ if st.session_state.mode != "📊 Kết quả":
 else:
     # Phase 1: pending payload → call backend
     if st.session_state.payload:
-        logger.info("Sending request to backend API (localhost:5000)")
-        _inject_scroll_to_top()
+        logger.info(f"Sending request to backend API ({_BACKEND_URL})")
+        inject_scroll_to_top()
         with st.spinner("⏳ Đang phân tích hồ sơ du lịch của bạn…"):
             try:
                 res = requests.post(
-                    "http://localhost:5000/recommend",
+                    _BACKEND_URL,
                     json=st.session_state.payload,
+                    headers=_BACKEND_HEADERS,
                     timeout=60,
                 )
                 if res.status_code == 200:
@@ -92,19 +74,15 @@ else:
                     logger.error(f"Backend API error: {res.status_code} - {res.text}")
                     st.error(f"Lỗi từ máy chủ: {res.status_code} — {res.text}")
                     st.session_state.payload = None
-            except requests.exceptions.ConnectionError:
-                logger.error("Connection error: backend unreachable")
-                st.error("❌ Không thể kết nối đến backend (localhost:5000). Hãy kiểm tra máy chủ.")
-                st.session_state.payload = None
-            except requests.exceptions.Timeout:
-                logger.error("Timeout error during backend call")
-                st.error("⏱️ Yêu cầu quá thời gian chờ. Hãy thử lại.")
+            except Exception as e:
+                logger.error(f"Backend call failed: {e}")
+                st.error(f"❌ Không thể kết nối đến backend. Hãy kiểm tra máy chủ. ({e})")
                 st.session_state.payload = None
 
     # Phase 2: results ready → show result view
     elif st.session_state.results:
         logger.info(f"Rendering result view with {len(st.session_state.results.get('locations', []))} locations")
-        _inject_scroll_to_top()
+        inject_scroll_to_top()
         render_result_view(st.session_state.results)
 
     # Phase 3: arrived here with no data

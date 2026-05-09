@@ -62,6 +62,8 @@ TERRAIN = {
     "rice terrace"      : "terraced rice field hillside cultivation harvest scenic",
     "farm"              : "agricultural farm orchard countryside agro-tourism",
     "flower field"      : "flower meadow blossom field colourful seasonal bloom",
+    "tea plantation"    : "tea plantation terraced hills green harvest Moc Chau Thai Nguyen",
+    "salt field"        : "salt field harvest dawn reflection coastal traditional labor Hon Khoi",
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -138,8 +140,9 @@ CULTURE = {
     "history"           : "historical heritage site war ancient dynasty cultural depth",
     "war history"       : "Vietnam War battlefield bunker tunnel military history memorial",
     "colonial heritage" : "French colonial architecture villa mansion old quarter",
-    "imperial"          : "imperial citadel royal palace dynastic forbidden city",
-    "cham culture"      : "Cham civilization ancient tower Hindu temple red brick",
+    "imperial"          : "imperial citadel royal palace dynastic forbidden city Hue",
+    "royal tomb"        : "royal tomb emperor mausoleum architecture heritage Hue",
+    "cham culture"      : "Cham civilization ancient tower Hindu temple red brick My Son",
     "prehistoric"       : "prehistoric archaeological ancient cave painting site",
 
     # Religion & spiritual
@@ -153,9 +156,11 @@ CULTURE = {
     "ethnic minority"   : "highland ethnic minority tribe indigenous culture village",
     "ethnic village"    : "traditional ethnic minority village homestay customs dress",
     "craft village"     : "traditional craft village artisan pottery lacquer silk weaving",
+    "silk village"      : "silk village weaving traditional textile artisan craft Van Phuc",
 
     # Arts & performance
     "traditional music" : "traditional music water puppet cai luong folk performance",
+    "water puppet"      : "water puppet show traditional theatre Hanoi folk art performance",
     "festival"          : "local festival celebration lantern fire flower crowd ceremony",
     "art"               : "contemporary art gallery creative district exhibition",
     "lantern festival"  : "lantern festival Hoi An candlelight river romantic glow",
@@ -176,6 +181,7 @@ URBAN = {
     "market"            : "local market fresh produce commerce noise colour",
     "night market"      : "night market street food stalls lantern bargain buzz",
     "floating market"   : "floating market Mekong river boat vendor dawn Cai Rang",
+    "ethnic market"     : "ethnic minority market weekend gathering colorful dress highland Bac Ha",
     "walking street"    : "pedestrian walking street evening crowd souvenir cafe",
     "rooftop bar"       : "rooftop bar skyline city view cocktail sunset panorama",
     "coworking"         : "coworking space fast wifi remote work digital nomad hub",
@@ -190,19 +196,24 @@ ACTIVITIES_LAND = {
     "trekking"          : "multi-day trekking mountain trail jungle endurance rewarding",
     "hiking"            : "day hike trail nature walk scenic viewpoint fitness",
     "motorbiking"       : "motorbike road trip winding pass freedom open road",
+    "motorbike loop"    : "motorbike loop Ha Giang winding pass adventure mountain road trip",
     "cycling"           : "cycling bike countryside rural road slow discovery",
     "rock climbing"     : "rock climbing bouldering vertical sport outdoor challenge",
     "caving"            : "caving spelunking underground dark adventure headlamp",
+    "cave expedition"   : "cave expedition Son Doong Phong Nha giant cavern spelunking extreme",
     "canyoning"         : "canyoning waterfall rappel water jump adrenaline gorge",
     "zip lining"        : "zip lining canopy aerial forest fly speed thrill",
     "camping"           : "camping tent outdoor overnight stargazing nature immersion",
     "jeep tour"         : "off-road jeep 4WD rugged terrain highland adventure",
     "ATV"               : "ATV quad bike off-road sand dune Mui Ne racing fun",
     "train journey"     : "scenic train slow travel railway mountain coastal pass",
+    "night train"       : "night train sleeper cabin reunification express slow journey",
     "cyclo"             : "cyclo pedicab city tour slow old quarter colonial streets",
     "photography"       : "landscape photography golden hour composition travel art",
     "shopping"          : "shopping souvenir retail handicraft boutique market",
     "golf"              : "golf resort course green sport premium leisure Da Nang",
+    "trail running"     : "trail running mountain race endurance sport outdoor fitness",
+    "scooter tour"      : "scooter tour motorbike passenger city sight exploration",
 
     # Aerial
     "paragliding"       : "paragliding tandem aerial rice terrace mountain valley glide",
@@ -229,9 +240,12 @@ ACTIVITIES_WATER = {
     "fishing"           : "fishing boat local catch rod sea experience",
     "squid fishing"     : "squid night fishing boat lamp sea experience local",
     "river cruise"      : "river cruise Mekong delta slow boat floating village",
+    "limestone boat ride": "limestone boat ride Trang An Tam Coc rowing sampan karst river",
     "rafting"           : "river rafting white water rapids adrenaline jungle",
     "mud bath"          : "mineral mud bath therapeutic soak relaxation spa Nha Trang",
     "swimming"          : "swimming beach ocean pool refreshing resort leisure",
+    "bamboo rafting"    : "bamboo rafting slow river scenic traditional float",
+    "waterfall jumping" : "waterfall jump cliff diving deep pool adventure",
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -260,6 +274,8 @@ ACTIVITIES_LEISURE = {
     "water park"        : "water park slides pool wave aquatic family leisure",
     "picnic"            : "picnic lakeside meadow relaxed outdoor leisure casual",
     "night tour"        : "night tour city illuminated ghost history lantern atmospheric",
+    "martial arts class": "martial arts class Vovinam Tai Chi traditional defense sport",
+    "volunteering"      : "volunteer community work social impact giving back",
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -274,6 +290,11 @@ FOOD = {
     "food tour"         : "guided food tour tasting multiple stops culinary discovery",
     "royal cuisine"     : "imperial royal court cuisine elaborate refined Hue heritage",
 
+    # Iconic Dishes & Ingredients
+    "pho"               : "pho noodle soup beef chicken broth national dish breakfast",
+    "banh mi"           : "banh mi baguette sandwich street food iconic quick bite",
+    "fish sauce"        : "fish sauce factory barrel traditional fermentation Phu Quoc Phan Thiet",
+
     # Dietary
     "seafood"           : "fresh seafood grilled crab prawn squid coastal feast",
     "vegetarian"        : "vegetarian plant-based friendly menu Buddhist temple food",
@@ -283,7 +304,9 @@ FOOD = {
 
     # Drinks
     "coffee"            : "Vietnamese coffee phin drip ca phe trung egg cafe culture",
+    "street coffee"     : "street coffee sidewalk iced milk tea ca phe sua da local morning",
     "craft beer"        : "craft beer local microbrewery bia hoi social sidewalk",
+    "bia hoi"           : "bia hoi fresh draft beer corner street local gathering cheap Hanoi",
     "tropical fruit"    : "exotic tropical fruit market taste fresh seasonal Vietnam",
     "local wine"        : "local rice wine ruou traditional fermented highland spirits",
     "tea"               : "highland tea plantation artisan green oolong ceremony taste",

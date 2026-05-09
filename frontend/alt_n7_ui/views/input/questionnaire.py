@@ -170,8 +170,9 @@ def _render_question(q_id: str, q_data: dict, tags: list) -> None:
         )
         badge = f" · {total_spec_selected} đã chọn" if total_spec_selected > 0 else ""
         with st.popover(f"▸ Tùy chọn chi tiết{badge}", width='stretch'):
+            use_expander = len(specifics) > 1
             for section_name, options in specifics.items():
-                _render_specifics_section(q_id, section_name, options, tags)
+                _render_specifics_section(q_id, section_name, options, tags, use_expander)
 
     _render_divider()
 
@@ -240,37 +241,45 @@ def _cap_spec_selection(changed_key: str, spec_keys: list, max_spec: int) -> Non
     _update_saved_tags()
 
 
-def _render_specifics_section(q_id, section_name, options, tags):
+def _render_specifics_section(q_id, section_name, options, tags, use_expander=True):
     spec_keys = [f"chk_opt_{q_id}_{section_name}_{opt}" for opt in options]
     max_spec = 3
 
-    st.markdown(
-        f"<div style='font-weight:700; font-size:0.85rem; color:#ff6b6b;"
-        f"margin: 10px 0 4px 0; padding-bottom: 4px; border-bottom: 1px solid #30363d;'>"
-        f"{section_name}</div>",
-        unsafe_allow_html=True,
-    )
-
     current_count = sum(st.session_state.get(k, False) for k in spec_keys)
-    remaining = max_spec - current_count
-    msg = f"Còn {remaining} lựa chọn" if remaining > 0 else f"✅ Đã chọn đủ {max_spec}"
-    st.caption(msg)
 
-    for opt, tag_list in options.items():
-        key = f"chk_opt_{q_id}_{section_name}_{opt}"
-        st.session_state.setdefault(key, False)
-        is_checked = st.session_state[key]
-        disabled = (current_count >= max_spec) and not is_checked
-        emoji = EMOJI_MAP.get(opt, "✨")
-        st.checkbox(
-            f"{emoji} {opt}",
-            key=key,
-            disabled=disabled,
-            on_change=_cap_spec_selection,
-            kwargs={"changed_key": key, "spec_keys": spec_keys, "max_spec": max_spec},
+    def _render_content():
+        remaining = max_spec - current_count
+        msg = f"Còn {remaining} lựa chọn" if remaining > 0 else f"✅ Đã chọn đủ {max_spec}"
+        st.caption(msg)
+
+        for opt, tag_list in options.items():
+            key = f"chk_opt_{q_id}_{section_name}_{opt}"
+            st.session_state.setdefault(key, False)
+            is_checked = st.session_state[key]
+            disabled = (current_count >= max_spec) and not is_checked
+            emoji = EMOJI_MAP.get(opt, "✨")
+            st.checkbox(
+                f"{emoji} {opt}",
+                key=key,
+                disabled=disabled,
+                on_change=_cap_spec_selection,
+                kwargs={"changed_key": key, "spec_keys": spec_keys, "max_spec": max_spec},
+            )
+            if st.session_state[key]:
+                tags.extend(tag_list)
+
+    if use_expander:
+        badge = f" · {current_count}/{max_spec} đã chọn" if current_count > 0 else ""
+        with st.expander(f"{section_name}{badge}"):
+            _render_content()
+    else:
+        st.markdown(
+            f"<div style='font-weight:700; font-size:0.85rem; color:#ff6b6b;"
+            f"margin: 10px 0 4px 0; padding-bottom: 4px; border-bottom: 1px solid #30363d;'>"
+            f"{section_name}</div>",
+            unsafe_allow_html=True,
         )
-        if st.session_state[key]:
-            tags.extend(tag_list)
+        _render_content()
 
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
