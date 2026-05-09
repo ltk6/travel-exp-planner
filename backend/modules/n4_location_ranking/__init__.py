@@ -15,7 +15,8 @@ It combines:
 INPUT
 ─────────────────────────────────────────────
 {
-    "sig_k": int,
+    "text_k": int,
+    "tags_k": int,
 
     "user_vectors": {
         "text":     list[float] | None,
@@ -29,19 +30,17 @@ INPUT
             "location_id": str,
 
             "location_vectors": {
-                "text": list[float] | None,
-                "tag":  list[float] | None
+                "text":     list[float] | None,
+                "aug_tags": list[float] | None
             },
 
-            "metadata": {                    # used for constraint penalty
-                "price_level":        int   | None,  # VNĐ, integer
-                "estimated_duration": int   | None,  # giờ, integer
-                "name":               str | None,
-                "description":        str | None,
-                "tags":               list[str] | None
+            "metadata": {
+                "name":        str | None,
+                "description": str | None,
+                "tags":        list[str] | None
             },
 
-            "geo": {                         # received but not used in scoring
+            "geo": {
                 "lat": float | None,
                 "lng": float | None
             }
