@@ -5,6 +5,7 @@ from typing import List, Dict, Any
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from pgvector.psycopg2 import register_vector
+import base64
 
 logging.basicConfig(
     level=logging.INFO,
@@ -76,14 +77,30 @@ def _format_vectors(row: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 def _attach_image(location_dict: Dict[str, Any]) -> Dict[str, Any]:
-    """Hàm nội bộ gắn link ảnh (Đã sửa lại hỗ trợ 3 ảnh chuẩn yêu cầu sếp)."""
+    """Hàm nội bộ gắn actual image (base64) thay vì path."""
     loc_id = location_dict.get("location_id")
-    location_dict["images"] = [
-        f"backend/n3_database/images/{loc_id}_1.jpg",
-        f"backend/n3_database/images/{loc_id}_2.jpg",
-        f"backend/n3_database/images/{loc_id}_3.jpg"
-    ]
-    location_dict["image_path"] = f"backend/n3_database/images/{loc_id}_1.jpg" 
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    encoded_images = []
+    
+    for i in range(1, 4):
+        img_path = os.path.join(current_dir, "images", f"{loc_id}_{i}.jpg")
+        if os.path.exists(img_path):
+            try:
+                with open(img_path, "rb") as f:
+                    b64_str = base64.b64encode(f.read()).decode("utf-8")
+                    encoded_images.append(f"data:image/jpeg;base64,{b64_str}")
+            except Exception as e:
+                logger.warning(f"Lỗi đọc ảnh {img_path}: {e}")
+        else:
+            # Fallback path if we want to keep structure but file is missing
+            pass
+
+    if encoded_images:
+        location_dict["images"] = encoded_images
+    else:
+        location_dict["images"] = []
+
     return location_dict
 
 def save_location(location_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -201,8 +218,8 @@ def get_all_locations() -> Dict[str, Any]:
                 
                 results = []
                 for item in json_data:
-                    # Gắn image_path nếu chưa có
-                    if "image_path" not in item:
+                    # Gắn ảnh nếu chưa có
+                    if "images" not in item or not item["images"]:
                         item = _attach_image(item)
                     results.append(item)
                 
