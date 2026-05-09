@@ -6,8 +6,12 @@ Errors are allowed to propagate naturally — callers handle them.
 """
 import requests
 import logging
+import os
 
 logger = logging.getLogger("alt_n7.result.api")
+
+_INTERNAL_KEY = os.environ.get("INTERNAL_API_KEY", "")
+_BACKEND_HEADERS = {"X-Internal-Key": _INTERNAL_KEY}
 
 
 def fetch_activities(
@@ -16,23 +20,24 @@ def fetch_activities(
     user_text: str,
     img_desc: str,
     tags: list,
-    sig_k: float,
+    text_k: int,
+    tags_k: int,
     user_vectors: dict,
 ) -> list:
     payload = {
         "text": user_text,
         "img_desc": img_desc,
         "tags": tags,
-        "sig_k": sig_k,
+        "text_k": text_k,
+        "tags_k": tags_k,
         "user_vectors": user_vectors,
-        "constraints": {},
-        "context": {},
         "location": {"location_id": loc_id, "metadata": meta},
     }
     logger.info(f"Requesting activities for {loc_id}")
     response = requests.post(
         "http://localhost:5000/activities",
         json=payload,
+        headers=_BACKEND_HEADERS,
         timeout=120,
     )
     if response.status_code == 200:

@@ -9,9 +9,27 @@ Performance improvements:
 """
 import streamlit as st
 import logging
+import base64
 from .api import fetch_activities
 
 logger = logging.getLogger("alt_n7.result")
+
+def _safe_image(img_data, **kwargs):
+    """Safely handle base64 data URIs and raw bytes for st.image."""
+    if 'width' in kwargs and kwargs['width'] == 'stretch':
+        kwargs.pop('width')
+        kwargs['use_container_width'] = True
+        
+    if isinstance(img_data, str) and img_data.startswith("data:image"):
+        try:
+            _, b64_str = img_data.split(",", 1)
+            img_bytes = base64.b64decode(b64_str)
+            st.image(img_bytes, **kwargs)
+            return
+        except Exception as e:
+            logger.error(f"Error decoding base64 image: {e}")
+            pass
+    st.image(img_data, **kwargs)
 
 _DEFAULT_SHOW = 5
 
@@ -25,7 +43,8 @@ def render_result_view(data: dict) -> None:
     user_input: dict = user_trace.get("input", {})
 
     user_vectors: dict = user_trace.get("user_vectors", {})
-    sig_k: float = user_trace.get("n1_embedding", {}).get("sig_k", 0)
+    text_k: int = user_trace.get("n1_embedding", {}).get("text_k", 0)
+    tags_k: int = user_trace.get("n1_embedding", {}).get("tags_k", 0)
     img_desc: str = user_trace.get("n2_image", {}).get("img_desc", "")
     user_text: str = user_input.get("text", "")
     tags: list = user_input.get("tags", [])
@@ -67,14 +86,14 @@ def render_result_view(data: dict) -> None:
             with col_img:
                 # Show first image or a small grid if multiple
                 if len(preview_images) == 1:
-                    st.image(preview_images[0], caption="Phong cảnh trong mơ", width='stretch')
+                    _safe_image(preview_images[0], caption="Phong cảnh trong mơ", use_container_width=True)
                 else:
                     st.caption(f"🖼️ {len(preview_images)} hình ảnh đã tải lên")
                     # Show a tiny grid for the summary
                     mini_cols = st.columns(3)
                     for i, img in enumerate(preview_images[:3]):
                         with mini_cols[i]:
-                            st.image(img, use_container_width=True)
+                            _safe_image(img, use_container_width=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
     st.subheader("📍 Địa điểm gợi ý")
@@ -117,7 +136,8 @@ def render_result_view(data: dict) -> None:
                     user_text=user_text,
                     img_desc=img_desc,
                     tags=tags,
-                    sig_k=sig_k,
+                    text_k=text_k,
+                    tags_k=tags_k,
                     user_vectors=user_vectors,
                 )
                 logger.info(f"Retrieved {len(activities)} activities for {loc_id}")
@@ -146,8 +166,6 @@ def _render_location_card(loc: dict) -> st.delta_generator.DeltaGenerator:
     
     # Support multiple images
     images: list[str] = loc.get("images", [])
-    if not images and loc.get("image_path"):
-        images = [loc.get("image_path")]
 
     col_loc, col_act = st.columns(2, gap="large")
 
@@ -184,7 +202,7 @@ def _render_location_card(loc: dict) -> st.delta_generator.DeltaGenerator:
             
             with c_img:
                 try:
-                    st.image(images[curr_idx], caption=f"{name} ({curr_idx + 1}/{len(images)})", width='stretch')
+                    _safe_image(images[curr_idx], caption=f"{name} ({curr_idx + 1}/{len(images)})", use_container_width=True)
                 except Exception:
                     st.caption("🖼️ Hình ảnh không khả dụng")
             
