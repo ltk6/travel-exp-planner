@@ -98,7 +98,7 @@ _AXES = ("intensity", "physical", "social")
 
 # Neutral 0.5, mỗi axis score rơi trong [0,1] sau sigmoid. Nếu tổng signal < NEUTRAL_THRESHOLD
 # thì coi như user không nêu preference cho axis đó → trả None.
-NEUTRAL_THRESHOLD = 0.25
+NEUTRAL_THRESHOLD = 0.10
 
 
 def _sigmoid(x: float) -> float:

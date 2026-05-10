@@ -35,7 +35,7 @@ class GeminiProvider(LLMProvider):
     model = DEFAULT_MODEL
     rpm_limit = 15  # Gemini free tier: 15 RPM cho 2.0-flash
 
-    def __init__(self, model: Optional[str] = None, timeout: int = 60):
+    def __init__(self, model: Optional[str] = None, timeout: int = 30):
         if model:
             self.model = model
         self.timeout = timeout

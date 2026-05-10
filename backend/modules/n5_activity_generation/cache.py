@@ -56,29 +56,17 @@ def make_key(
     location_tags: List[str],
     user_tags: List[str],
     user_text: str,
-    budget_per_activity: int,
-    max_time_per_activity: int,
     num_activities: int,
     schema_v2: bool,
     provider_override: Optional[str] = None,
 ) -> str:
-    """
-    Tạo cache key ổn định theo nội dung — deterministic trên cùng input.
-
-    Sorted tags để thứ tự tag không tạo key khác. Text bị strip + lowercase
-    để các whitespace / case khác nhau vẫn hit.
-
-    provider_override: khi frontend chọn provider cụ thể, inject vào key để
-    kết quả của Gemini và Groq không lẫn vào nhau.
-    """
+    """Tạo cache key ổn định theo nội dung — deterministic trên cùng input."""
     payload = {
         "provider":      _provider_key(provider_override),
         "location":      location_name.strip().lower(),
         "location_tags": sorted(t.lower().strip() for t in (location_tags or [])),
         "user_tags":     sorted(t.lower().strip() for t in (user_tags or [])),
         "user_text":     (user_text or "").strip().lower(),
-        "budget":        int(budget_per_activity or 0),
-        "max_time":      int(max_time_per_activity or 0),
         "num":           int(num_activities or 0),
         "schema_v2":     bool(schema_v2),
     }

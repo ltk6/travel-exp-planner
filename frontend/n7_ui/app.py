@@ -19,6 +19,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from PIL import Image
 import base64
 import os
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
 
 from styles import (
     inject_css,
@@ -36,6 +39,9 @@ MAX_ACTIVITY_CONCURRENCY = 3  # tránh 429 từ Gemini (15 RPM) / Groq (30 RPM)
 _INTERNAL_KEY = os.environ.get("INTERNAL_API_KEY", "")
 API_HEADERS = {"X-Internal-Key": _INTERNAL_KEY}
 
+TOP_K_LOCATIONS = 5
+TOP_K_ACTIVITIES = 5
+
 # ─────────────────────────────────────────────────────────────
 # PAGE CONFIG + CSS
 # ─────────────────────────────────────────────────────────────
@@ -47,53 +53,6 @@ st.set_page_config(
 )
 inject_css()
 
-
-# ─────────────────────────────────────────────────────────────
-# SIDEBAR
-# ─────────────────────────────────────────────────────────────
-with st.sidebar:
-    render_sidebar_brand()
-
-    st.markdown("#### ⚙️ Configuration")
-    provider_choice = st.selectbox(
-        "LLM Provider",
-        options=["auto", "gemini", "groq"],
-        index=0,
-        help="auto = dùng env LLM_PROVIDER. Chọn cụ thể để so sánh chất lượng 2 model.",
-    )
-
-    top_k_locations = st.slider("Số địa điểm gợi ý", 3, 8, 5)
-    top_k_activities = st.slider("Số hoạt động mỗi địa điểm", 3, 10, 5)
-
-    st.markdown("---")
-
-    # Live stats từ /health
-    with st.expander("📊 System Stats", expanded=False):
-        try:
-            r = requests.get(f"{API_BASE}/health", headers=API_HEADERS, timeout=2)
-            if r.ok:
-                h = r.json()
-                cache = h.get("llm_cache", {})
-                chain = h.get("llm_chain", [])
-                col_a, col_b = st.columns(2)
-                col_a.metric("Cache Hits", cache.get("hits", 0))
-                col_b.metric("Hit Rate", f"{cache.get('hit_rate', 0):.0%}")
-                st.caption(f"Cache size: {cache.get('size', 0)}/{cache.get('maxsize', 0)}")
-                if chain:
-                    st.caption("**LLM chain:**")
-                    for p in chain:
-                        st.caption(f"  ◆ {p['name']} ({p['model'][:30]}…)")
-            else:
-                st.caption("Backend not responding")
-        except Exception:
-            st.caption("⚠️ Backend offline")
-
-    st.markdown("---")
-    st.caption(
-        "**Đồ án Tổng hợp 2025 — HCMUS**  \n"
-        "Hệ gợi ý địa điểm du lịch dựa trên ngữ nghĩa + thuộc tính, "
-        "tích hợp Gemini/Groq cho sinh hoạt động."
-    )
 
 
 # ─────────────────────────────────────────────────────────────
@@ -286,7 +245,7 @@ if submit:
         "image": image_b64,
         "tags": tags,
         "constraints": {},
-        "top_k_locations": top_k_locations,
+        "top_k_locations": TOP_K_LOCATIONS,
     }
 
     # Summary strip trước khi call API
@@ -298,7 +257,6 @@ if submit:
             <span>📝 <b>{len(user_text)}</b> ký tự</span>
             <span>🏷️ <b>{len(tags)}</b> tags</span>
             <span>🖼️ ảnh: <b>{"có" if image_b64 else "không"}</b></span>
-            <span>🎯 top-<b>{top_k_locations}</b> địa điểm</span>
         </div>
         """,
         unsafe_allow_html=True,
@@ -357,7 +315,7 @@ if submit:
             )
             ph = st.empty()
             with ph.container():
-                render_activity_skeleton(min(3, top_k_activities))
+                render_activity_skeleton(min(3, TOP_K_ACTIVITIES))
 
             placeholders.append({
                 "placeholder": ph,
@@ -382,11 +340,10 @@ if submit:
             "constraints":  {},
             "context":      {},
             "location":     {"location_id": loc_id, "metadata": meta},
-            "top_k_activities": top_k_activities,
-            "provider":     None if provider_choice == "auto" else provider_choice,
+            "top_k_activities": TOP_K_ACTIVITIES,
         }
         try:
-            r = requests.post(f"{API_BASE}/activities", json=payload, headers=API_HEADERS, timeout=120)
+            r = requests.post(f"{API_BASE}/activities", json=payload, headers=API_HEADERS, timeout=180)
             if r.status_code == 200:
                 resp = r.json()
                 return item, resp.get("activities", []), resp.get("meta", {}), None
@@ -408,17 +365,3 @@ if submit:
             with ph.container():
                 render_activities(activities or [], llm_meta or {})
 
-    # ── Debug panel ─────────────────────────────────────────────
-    with st.expander("🔬 Debug trace (advanced)"):
-        tab1, tab2, tab3 = st.tabs(["Pipeline", "User vectors", "Raw"])
-        with tab1:
-            st.json({
-                "n2_image_desc": user_trace.get("n2_image", {}).get("img_desc", ""),
-                "n1_embedding":  user_trace.get("n1_embedding", {}),
-                "n4_ranking":    trace.get("ranking", {}),
-                "debug":         trace.get("debug", {}),
-            })
-        with tab2:
-            st.json(user_trace.get("vector_dims", {}))
-        with tab3:
-            st.json(data)
