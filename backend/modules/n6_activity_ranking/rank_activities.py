@@ -1,177 +1,279 @@
-"""
-rank_activities.py
-=================
-N6 — Activity Ranking Module
-
-Ranks activities by computing weighted cosine similarity between
-user vectors and activity vectors, plus simple logic for activity levels.
-
-Scoring channels (user → activity):
-    text      → text     : raw intent match
-    aug_text  → text     : expanded semantic match
-    aug_tags  → aug_tags : tag-based anchor
-    img_desc  → text     : visual alignment
-"""
+# =============================================================================
+# rank_activities.py
+# =============================================================================
+# N6 — XẾP HẠNG HOẠT ĐỘNG DU LỊCH
+#
+# INPUT (contract mới):
+#   user_input, user_vectors, text_k, tags_k, activities, top_k
+#   context = { "time_of_day": str | None }
+#
+# CÔNG THỨC:
+#   score = 0.5 * semantic_score  +  0.5 * attribute_score
+#
+#   - semantic_score:  cosine sim giữa user_vectors và activity vectors
+#                      (reuse kiến trúc N4, kéo giãn khỏi dead-zone [0.5, 1.0])
+#   - attribute_score: fit giữa preference user (suy luận từ tags+text)
+#                      với metadata activity (intensity, physical_level,
+#                      social_level) + time_of_day match
+# =============================================================================
 
 from __future__ import annotations
 
-import logging
 import math
-from typing import Any
-
-logger = logging.getLogger("N6")
+from typing import Any, Dict, List, Optional
 
 from backend.shared.weights import get_weights
+from .preferences import infer_user_preferences
 
-# ── Helpers ───────────────────────────────────────────────────
+# Trọng số top-level
+W_SEMANTIC = 0.5
+W_ATTRIBUTE = 0.5
 
-def _dot(a: list[float], b: list[float]) -> float:
-    return sum(x * y for x, y in zip(a, b))
-
-
-def _norm(v: list[float]) -> float:
-    return math.sqrt(sum(x * x for x in v))
+# Trong attribute score: 3 trục preference + time_of_day. Chia đều 4 phần.
+ATTR_AXIS_WEIGHT = 0.25  # mỗi axis trong {intensity, physical, social, tod}
 
 
-def _cosine(a: list[float] | None, b: list[float] | None) -> float:
-    """Return cosine similarity in [-1, 1], or 0.0 if either vector is None/empty."""
-    if not a or not b:
+# =============================================================================
+# SEMANTIC SCORE — giữ nguyên thiết kế cũ
+# =============================================================================
+
+def cosine_similarity(v1: List[float], v2: List[float]) -> float:
+    """Cosine similarity trong [-1, 1]; trả 0 nếu vector rỗng hoặc khác chiều."""
+    if not v1 or not v2 or len(v1) != len(v2):
         return 0.0
-    if len(a) != len(b):
-        logger.warning(f"[N6] Vector length mismatch: {len(a)} vs {len(b)}")
-        return 0.0
-    na, nb = _norm(a), _norm(b)
-    if na == 0.0 or nb == 0.0:
-        return 0.0
-    return _dot(a, b) / (na * nb)
 
-# ── Scoring ───────────────────────────────────────────────────
+    dot = 0.0
+    n1 = 0.0
+    n2 = 0.0
+    for a, b in zip(v1, v2):
+        dot += a * b
+        n1  += a * a
+        n2  += b * b
 
-def _score_activity(
-    user_vectors: dict[str, Any],
-    act_vectors: dict[str, Any],
-    metadata: dict[str, Any],
-    weights: dict[str, float],
-) -> tuple[float, str]:
+    n1 = math.sqrt(n1)
+    n2 = math.sqrt(n2)
+    if n1 == 0 or n2 == 0:
+        return 0.0
+    return dot / (n1 * n2)
+
+
+def _semantic_score(
+    user_vectors: Dict,
+    act_vectors: Dict,
+    text_k: int = 0,
+    tags_k: int = 0,
+) -> float:
     """
-    Compute the weighted similarity score for one activity.
-
-    user_vectors keys expected  : text, aug_text, aug_tags, img_desc
-    act_vectors  keys expected  : text, tag
-
-    Returns (score: float, reason: str).
+    Điểm khớp ngữ nghĩa: weighted cosine giữa user vectors và activity vectors.
+    Reuse `shared.weights.get_weights` để weights khớp N1/N4.
     """
-    u_text     = user_vectors.get("text")
-    u_aug_text = user_vectors.get("aug_text")
-    u_aug_tags = user_vectors.get("aug_tags")
-    u_img_desc = user_vectors.get("img_desc")
+    weights = get_weights(text_k, tags_k)
 
-    act_text = act_vectors.get("text")
-    act_aug_tags = act_vectors.get("aug_tags")
+    channel_pairs = [
+        ("aug_tags", "tag",  weights.get("aug_tags", 0.0)),
+        ("aug_text", "text", weights.get("aug_text", 0.0)),
+        ("text",     "text", weights.get("text",     0.0)),
+    ]
 
-    # ── similarities ─────────────────────────────
-    sim_text     = _cosine(u_text,     act_text)
-    sim_aug_text = _cosine(u_aug_text, act_text)
-    sim_aug_tags = _cosine(u_aug_tags, act_aug_tags)
-    sim_img_desc = _cosine(u_img_desc, act_text)
+    sum_score = 0.0
+    total_weight = 0.0
+    for ch_user, ch_act, w in channel_pairs:
+        v_user = user_vectors.get(ch_user)
+        v_act  = act_vectors.get(ch_act)
+        if not v_user or not v_act:
+            continue
 
-    sem_score = (
-        weights["text"]     * sim_text
-        + weights["aug_text"] * sim_aug_text
-        + weights["aug_tags"] * sim_aug_tags
-        + weights["img_desc"] * sim_img_desc
+        sim = cosine_similarity(v_user, v_act)
+        normalized = (sim + 1.0) / 2.0           # [-1,1] → [0,1]
+        sum_score   += normalized * w
+        total_weight += w
+
+    if total_weight == 0:
+        return 0.5
+    return sum_score / total_weight
+
+
+# =============================================================================
+# ATTRIBUTE SCORE — MỚI: khớp preference với metadata
+# =============================================================================
+
+def _axis_fit(user_pref: Optional[float], act_value: Optional[float]) -> Optional[float]:
+    """
+    Fit score cho 1 axis: càng gần nhau càng cao. Dùng 1 - |diff|.
+
+    Return None nếu user không có preference (pref is None) hoặc activity thiếu
+    metadata — caller sẽ skip axis này khỏi averaging để không phạt oan.
+    """
+    if user_pref is None or act_value is None:
+        return None
+    diff = abs(float(user_pref) - float(act_value))
+    return max(0.0, 1.0 - diff)
+
+
+def _tod_fit(tod_user: Optional[str], tod_act: Optional[str]) -> Optional[float]:
+    """
+    Khớp giờ trong ngày — giữ lại như helper dự phòng, KHÔNG dùng trong
+    attribute score hiện tại (contract chỉ chấm 3 axis: intensity/physical/social).
+    """
+    if not tod_user or not tod_act:
+        return None
+    tu = tod_user.lower().strip()
+    ta = tod_act.lower().strip()
+    if ta == "anytime" or tu == ta:
+        return 1.0
+    return 0.3
+
+
+def _attribute_score(
+    metadata: Dict,
+    user_prefs: Dict[str, Optional[float]],
+    tod_user: Optional[str] = None,  # kept for call-site compat, unused
+) -> float:
+    """
+    Điểm thuộc tính: trung bình fit của 3 axis intensity / physical / social.
+    Axis nào thiếu user_pref hoặc metadata → bỏ qua khỏi averaging.
+    Không axis nào có dữ liệu → trả 0.5 (neutral).
+    """
+    axis_fits: List[float] = []
+
+    for axis, meta_key in [
+        ("intensity", "intensity"),
+        ("physical",  "physical_level"),
+        ("social",    "social_level"),
+    ]:
+        fit = _axis_fit(user_prefs.get(axis), metadata.get(meta_key))
+        if fit is not None:
+            axis_fits.append(fit)
+
+    if not axis_fits:
+        return 0.5
+    return sum(axis_fits) / len(axis_fits)
+
+
+# =============================================================================
+# REASON BUILDER — rút gọn, dùng thông tin mới
+# =============================================================================
+
+_REASON_BY_TYPE = {
+    "nature":     ["Cảnh quan {location_hint}phù hợp sở thích của bạn", "Thiên nhiên {intensity_hint}đúng gu khám phá"],
+    "adventure":  ["Thử thách {intensity_hint}cho người thích khám phá", "Hoạt động mạo hiểm {intensity_hint}đáng nhớ"],
+    "food":       ["Ẩm thực địa phương — không thể bỏ qua", "Khẩu vị của bạn sẽ hài lòng với lựa chọn này"],
+    "culture":    ["Chiều sâu văn hóa {location_hint}khác biệt hoàn toàn", "Trải nghiệm văn hóa độc đáo"],
+    "relaxation": ["Thư giãn {time_hint}— đúng lúc cần nghỉ ngơi", "Nhịp điệu chậm, phù hợp người tìm yên tĩnh"],
+    "nightlife":  ["Về đêm sẽ thú vị hơn với lựa chọn này", "Điểm nhấn cho buổi tối {location_hint}"],
+    "shopping":   ["Mua sắm — quà lưu niệm ý nghĩa", "Tìm đồ địa phương độc đáo {location_hint}"],
+}
+_REASON_DEFAULT = ["Phù hợp với hành trình và sở thích của bạn", "Hoạt động đáng thử trong chuyến đi này"]
+
+_INTENSITY_LABELS = [(0.7, "cường độ cao"), (0.4, "vừa sức"), (0.0, "nhẹ nhàng")]
+_TIME_LABELS      = {"morning": "buổi sáng ", "afternoon": "buổi chiều ", "evening": "buổi tối "}
+
+
+def _pick(labels, value):
+    for threshold, label in labels:
+        if value >= threshold:
+            return label
+    return labels[-1][1]
+
+
+def _build_reason(metadata: Dict, sem_score: float, attr_score: float) -> str:
+    activity_type = metadata.get("activity_type", "nature")
+    name_act      = metadata.get("name", "Hoạt động này")
+    intensity     = float(metadata.get("intensity") or 0.5)
+    tod           = metadata.get("time_of_day_suitable", "anytime")
+    indoor_out    = metadata.get("indoor_outdoor", "outdoor")
+
+    intensity_hint = _pick(_INTENSITY_LABELS, intensity) + " "
+    time_hint      = _TIME_LABELS.get(tod, "")
+    location_hint  = "" if indoor_out == "indoor" else "ngoài trời "
+
+    templates = _REASON_BY_TYPE.get(activity_type, _REASON_DEFAULT)
+    idx = hash(name_act) % len(templates)
+    body = templates[idx].format(
+        intensity_hint=intensity_hint,
+        time_hint=time_hint,
+        location_hint=location_hint,
     )
-    score = max(0.0, sem_score)
 
-    # ── simple logic processing (reason only) ──
-    intensity = metadata.get("intensity")
-    physical_level = metadata.get("physical_level")
-    social_level = metadata.get("social_level")
-    
-    levels = []
-    if intensity is not None: levels.append(float(intensity))
-    if physical_level is not None: levels.append(float(physical_level))
-    if social_level is not None: levels.append(float(social_level))
-        
-    avg_level = sum(levels) / len(levels) if levels else None
+    highlights = []
+    if attr_score >= 0.75:
+        highlights.append("hợp sở thích cá nhân")
+    if sem_score >= 0.75:
+        highlights.append("khớp mô tả của bạn")
 
-    # Build reason from signals that are active (weight > 0) and match well (sim >= 0.3)
-    parts: list[str] = []
-    
-    text_sims = []
-    if weights["text"] > 0 and sim_text >= 0.3:
-        text_sims.append(sim_text)
-    if weights["aug_text"] > 0 and sim_aug_text >= 0.3:
-        text_sims.append(sim_aug_text)
-    
-    if text_sims:
-        max_text_sim = max(text_sims)
-        parts.append(f"phù hợp yêu cầu ({max_text_sim:.2f})")
-    if weights["aug_tags"] > 0 and sim_aug_tags >= 0.3:
-        parts.append(f"phù hợp sở thích ({sim_aug_tags:.2f})")
-    if weights["img_desc"] > 0 and sim_img_desc >= 0.3:
-        parts.append(f"hình ảnh tương đồng ({sim_img_desc:.2f})")
-        
-    if avg_level is not None:
-        if avg_level >= 0.7:
-            parts.append("cường độ cao")
-        elif avg_level <= 0.3:
-            parts.append("nhẹ nhàng thư giãn")
-    
-    reason = " · ".join(parts) if parts else "Hoạt động đề xuất"
-
-    return round(float(score), 4), reason
+    if highlights:
+        return f"{name_act}: {body} ({', '.join(highlights)})."
+    return f"{name_act}: {body}."
 
 
-# ── Public API ────────────────────────────────────────────────
+# =============================================================================
+# ENTRY POINT
+# =============================================================================
 
-def rank_activities(data: dict) -> dict:
+def rank_activities(data: Dict) -> Dict:
     """
-    N6 — Activity Ranking
+    Xếp hạng activities theo công thức:
+        score = 0.5 * semantic_score + 0.5 * attribute_score
+
+    Input (đã rút gọn so với bản cũ):
+        text_k, tags_k           — tín hiệu từ N1 cho weight dynamic
+        user_input               — {text, img_desc, tags} dùng để suy preference
+        user_vectors             — 4 kênh vector từ N1
+        context.time_of_day      — dùng riêng cho attribute matching
+        activities               — list từ N5 + N1 (đã embed)
+        top_k
+
+    Các field cũ (budget / duration / people / weather) đã bị loại bỏ hoàn toàn.
     """
+    user_input   = data.get("user_input", {}) or {}
+    user_vectors = data.get("user_vectors", {}) or {}
+    context      = data.get("context", {}) or {}
+    activities   = data.get("activities", []) or []
+    top_k        = int(data.get("top_k", 5))
     text_k       = int(data.get("text_k", 0))
     tags_k       = int(data.get("tags_k", 0))
-    user_vectors = data.get("user_vectors", {})
-    activities   = data.get("activities", [])
-    top_k        = max(1, int(data.get("top_k", 5)))
 
-    if not activities:
-        logger.warning("[N6] Không có hoạt động nào để xếp hạng")
+    if not activities or top_k <= 0:
         return {"activities": []}
 
-    # ── resolve weights from text_k & tags_k ──────────────────
-    weights = get_weights(text_k, tags_k)
-    logger.info(f"Ranking {len(activities)} activities (signals: text_k={text_k}, tags_k={tags_k})")
-    logger.info(f"Resolved weights: {weights}")
+    tod_user   = context.get("time_of_day")
+    user_prefs = infer_user_preferences(user_input)
 
-    scored: list[dict] = []
-    for act in activities:
-        act_id      = act.get("activity_id", "unknown")
-        loc_id      = act.get("location_id", "unknown")
-        act_vectors = act.get("vectors", {})
-        metadata    = act.get("metadata", {})
+    scored: List[Dict] = []
+    for activity in activities:
+        metadata = activity.get("metadata", {}) or {}
+        vectors  = activity.get("vectors", {}) or {}
 
-        try:
-            score, reason = _score_activity(user_vectors, act_vectors, metadata, weights)
-        except Exception as exc:
-            logger.warning("[N6] Lỗi tính điểm cho %s: %s", act_id, exc)
-            score, reason = 0.0, "Lỗi tính điểm"
+        sem_score = _semantic_score(user_vectors, vectors, text_k, tags_k)
+        # Kéo khỏi dead-zone [0.5, 1.0] cho embeddings cùng domain
+        sem_scaled = max(0.0, min(1.0, (sem_score - 0.5) * 2.0))
+
+        attr_score = _attribute_score(metadata, user_prefs, tod_user)
+
+        total = W_SEMANTIC * sem_scaled + W_ATTRIBUTE * attr_score
+        total = max(0.0, min(1.0, total))
 
         scored.append({
-            "activity_id": act_id,
-            "location_id": loc_id,
-            "score":       score,
-            "reason":      reason,
+            "activity_id": activity.get("activity_id"),
+            "location_id": activity.get("location_id"),
+            "score":       round(total, 4),
+            "reason":      _build_reason(metadata, sem_scaled, attr_score),
         })
 
     scored.sort(key=lambda x: x["score"], reverse=True)
-    result = scored[:top_k]
 
-    # ── normalize scores to 1.0 based on the top result ──
-    if result and result[0]["score"] > 0:
-        max_s = result[0]["score"]
-        for r in result:
-            r["score"] = round(r["score"] / max_s, 4)
+    # Min-max spread [0.40, 1.0] để hiển thị dễ đọc, giữ nguyên thứ hạng
+    if len(scored) >= 2:
+        max_s = scored[0]["score"]
+        min_s = scored[-1]["score"]
+        spread = max_s - min_s
+        LOW, HIGH = 0.40, 1.0
+        if spread > 0.01:
+            for a in scored:
+                norm = LOW + (a["score"] - min_s) / spread * (HIGH - LOW)
+                a["score"] = round(norm, 4)
+        else:
+            for i, a in enumerate(scored):
+                a["score"] = round(0.75 - i * 0.05, 4)
 
-    logger.info("[N6] Đã xếp hạng %d hoạt động → top %d (normalized)", len(activities), len(result))
-    return {"activities": result}
+    return {"activities": scored[:top_k], "user_prefs": user_prefs}

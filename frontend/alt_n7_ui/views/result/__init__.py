@@ -139,6 +139,7 @@ def render_result_view(data: dict) -> None:
                     text_k=text_k,
                     tags_k=tags_k,
                     user_vectors=user_vectors,
+                    provider=st.session_state.get("llm_provider"),
                 )
                 logger.info(f"Retrieved {len(activities)} activities for {loc_id}")
                 st.session_state.activity_results[loc_id] = activities

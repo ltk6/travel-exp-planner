@@ -1,12 +1,12 @@
 # =============================================================================
 # n5_llm_generator.py
 # =============================================================================
-# LLM-based activity generation sử dụng Gemini API.
+# LLM-based activity generation sử dụng Groq API (meta-llama/Llama-4-Scout).
 #
 # HYBRID APPROACH:
-#   - LLM được gọi khi có GEMINI_API_KEY → sinh ~25 activities/location
-#   - Mỗi location gọi LLM 1 lần với prompt yêu cầu 25 activities đa dạng
-#   - Kết quả LLM + template bank = đủ 100 activities/location
+#   - LLM được gọi khi có GROQ_API_KEY → sinh ~10 activities/location
+#   - Mỗi location gọi LLM 1 lần với prompt yêu cầu 10 activities đa dạng
+#   - Kết quả LLM + template bank = đủ activities/location
 #   - Fallback hoàn toàn về template nếu LLM không khả dụng
 #
 # Hybrid approach kết hợp LLM giúp:
@@ -32,10 +32,8 @@ from typing import List, Dict, Any, Optional
 
 logger = logging.getLogger(__name__)
 
-from config.settings import GEMINI_API_KEY
-
-GEMINI_MODEL   = "gemini-2.5-flash"
-GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+from .providers import get_fallback_chain, LLMProvider
+from . import cache as llm_cache
 
 LLM_ACTIVITIES_PER_CALL = 10
 
@@ -55,7 +53,8 @@ VALID_TAGS = [
 
 
 def is_llm_available() -> bool:
-    return bool(GEMINI_API_KEY and GEMINI_API_KEY.strip())
+    """LLM khả dụng nếu có ít nhất 1 provider có API key."""
+    return bool(get_fallback_chain())
 
 
 def _build_prompt(
@@ -297,60 +296,50 @@ def _convert_v2_to_v1(act: Dict) -> Dict:
     }
 
 
-def call_gemini_api(prompt: str, retries: int = 2) -> Optional[str]:
-    """Gọi Gemini API, trả về text response hoặc None nếu lỗi. Retry tối đa 2 lần cho lỗi tạm thời."""
-    if not is_llm_available():
-        return None
+def call_llm(
+    prompt: str,
+    retries: int = 2,
+    provider_override: Optional[str] = None,
+) -> tuple:
+    """
+    Gọi LLM qua fallback chain (config từ env LLM_PROVIDER / LLM_FALLBACK).
 
-    import urllib.request
-    import urllib.error
-    import time
+    Mỗi provider tự retry với exponential backoff + jitter.
+    Nếu provider đầu fail sau mọi retry, chuyển sang provider tiếp theo.
 
-    url = GEMINI_API_URL.format(model=GEMINI_MODEL, key=GEMINI_API_KEY)
-    payload = {
-        "system_instruction": {
-            "parts": [{"text": "You are a travel expert. Always respond with pure JSON only — no markdown, no code blocks, no explanation. Start your response directly with ["}]
-        },
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {
-            "temperature": 0.8,
-            "maxOutputTokens": 8192,
-            "responseMimeType": "application/json",
-            "thinkingConfig": {"thinkingBudget": 0},
-        },
-    }
-    data = json.dumps(payload).encode("utf-8")
+    Args:
+        provider_override: nếu có, dùng provider này làm primary thay env
+                           (vẫn giữ fallback chain theo LLM_FALLBACK).
 
-    for attempt in range(retries + 1):
-        try:
-            req = urllib.request.Request(
-                url, data=data,
-                headers={"Content-Type": "application/json"},
-                method="POST",
-            )
-            with urllib.request.urlopen(req, timeout=60) as resp:
-                result = json.loads(resp.read().decode("utf-8"))
+    Returns:
+        (response_text, provider_used) — provider_used là tên provider đã trả
+        response thành công, None nếu tất cả fail.
+    """
+    if provider_override:
+        chain = get_fallback_chain(primary=provider_override)
+    else:
+        chain = get_fallback_chain()
 
-            candidates = result.get("candidates", [])
-            if candidates:
-                parts = candidates[0].get("content", {}).get("parts", [])
-                if parts:
-                    return parts[0].get("text", "")
+    if not chain:
+        logger.warning("No LLM provider available (check API keys)")
+        return None, None
 
-            logger.warning("Gemini unexpected response format: %s", str(result)[:200])
-            return None
+    for provider in chain:
+        logger.info("Trying LLM provider=%s model=%s", provider.name, provider.model)
+        result = provider.generate(prompt, retries=retries)
+        if result:
+            return result, provider.name
+        logger.warning("Provider %s failed, trying next in chain", provider.name)
 
-        except urllib.error.HTTPError as e:
-            if e.code in (503, 529) and attempt < retries:
-                wait = 3 * (attempt + 1)
-                logger.warning("Gemini %d, retry in %ds (attempt %d/%d)", e.code, wait, attempt + 1, retries)
-                time.sleep(wait)
-            else:
-                logger.error("Gemini API error: %s", e)
-                return None
-        except Exception as e:
-            logger.error("Gemini API error: %s", e)
-            return None
+    logger.error("All LLM providers in chain failed")
+    return None, None
+
+
+# Backward-compat alias — code cũ có thể vẫn import call_groq_api
+# (trả về chỉ text, không tuple — cho compatibility)
+def call_groq_api(prompt: str, retries: int = 2) -> Optional[str]:
+    text, _ = call_llm(prompt, retries=retries)
+    return text
 
 
 def generate_from_llm(
@@ -363,14 +352,76 @@ def generate_from_llm(
     num_activities: int = LLM_ACTIVITIES_PER_CALL,
     schema_v2: bool = True,
     user_text: str = "",
+    provider: Optional[str] = None,
 ) -> Optional[List[Dict]]:
     """
-    Sinh hoạt động du lịch bằng LLM (xAI Grok).
-    Trả về schema v2 theo mặc định.
-    None nếu LLM không khả dụng hoặc thất bại.
+    Sinh hoạt động du lịch bằng LLM (qua provider chain).
+    Trả về schema v2 theo mặc định, None nếu LLM fail.
+
+    Backward-compat wrapper — gọi generate_from_llm_with_meta và discard meta.
     """
+    activities, _meta = generate_from_llm_with_meta(
+        location_name=location_name,
+        location_description=location_description,
+        location_tags=location_tags,
+        user_tags=user_tags,
+        budget_per_activity=budget_per_activity,
+        max_time_per_activity=max_time_per_activity,
+        num_activities=num_activities,
+        schema_v2=schema_v2,
+        user_text=user_text,
+        provider=provider,
+    )
+    return activities
+
+
+def generate_from_llm_with_meta(
+    location_name: str,
+    location_description: str,
+    location_tags: List[str],
+    user_tags: List[str],
+    budget_per_activity: int,
+    max_time_per_activity: int,
+    num_activities: int = LLM_ACTIVITIES_PER_CALL,
+    schema_v2: bool = True,
+    user_text: str = "",
+    provider: Optional[str] = None,
+) -> tuple:
+    """
+    Như generate_from_llm nhưng trả thêm dict meta:
+        {
+            "provider_used": str | None,    # provider thực sự trả response
+            "cache_hit":     bool,
+            "latency_ms":    int,           # 0 nếu cache hit
+        }
+
+    Dùng cho /activities endpoint để hiển thị debug info ở UI.
+    """
+    import time
+    t0 = time.time()
+    meta = {"provider_used": None, "cache_hit": False, "latency_ms": 0}
+
     if not is_llm_available():
-        return None
+        return None, meta
+
+    # ── Cache lookup ────────────────────────────────────────────────
+    cache_key = llm_cache.make_key(
+        location_name         = location_name,
+        location_tags         = location_tags,
+        user_tags             = user_tags,
+        user_text             = user_text,
+        budget_per_activity   = budget_per_activity,
+        max_time_per_activity = max_time_per_activity,
+        num_activities        = num_activities,
+        schema_v2             = schema_v2,
+        provider_override     = provider,
+    )
+    cached = llm_cache.get(cache_key)
+    if cached is not None:
+        logger.info("Returning %d cached activities for %s", len(cached), location_name)
+        meta["cache_hit"] = True
+        meta["provider_used"] = "cache"
+        return cached, meta
 
     prompt = _build_prompt(
         location_name=location_name,
@@ -383,17 +434,19 @@ def generate_from_llm(
         user_text=user_text,
     )
 
-    logger.info("Calling Gemini for location: %s (requesting %d activities)", location_name, num_activities)
-    response_text = call_gemini_api(prompt)
+    logger.info("Calling LLM for location: %s (requesting %d activities)", location_name, num_activities)
+    response_text, provider_used = call_llm(prompt, provider_override=provider)
+    meta["provider_used"] = provider_used
+    meta["latency_ms"] = int((time.time() - t0) * 1000)
 
     if response_text is None:
-        logger.warning("Gemini returned no response for %s", location_name)
-        return None
+        logger.warning("LLM returned no response for %s", location_name)
+        return None, meta
 
     raw_list = _parse_llm_response(response_text)
     if raw_list is None:
-        logger.warning("Failed to parse Gemini response for %s", location_name)
-        return None
+        logger.warning("Failed to parse LLM response for %s", location_name)
+        return None, meta
     
     # Bước 4: Detect schema version từ response
     # Nếu response có trường "description" → schema v2
@@ -429,7 +482,8 @@ def generate_from_llm(
     
     if not valid_activities:
         logger.warning(f"Không có activity hợp lệ từ LLM cho {location_name}")
-        return None
+        return None, meta
 
     logger.info("LLM generated %d valid activities for %s", len(valid_activities), location_name)
-    return valid_activities
+    llm_cache.put(cache_key, valid_activities)
+    return valid_activities, meta

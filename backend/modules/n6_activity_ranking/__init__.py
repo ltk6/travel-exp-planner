@@ -1,20 +1,16 @@
 """
 ─────────────────────────────────────────────
-N6 — ACTIVITY RANKING MODULE (MULTI-SIGNAL SCORING ENGINE)
+N6 — ACTIVITY RANKING MODULE
 ─────────────────────────────────────────────
 
-This module ranks generated activities (from N5) using precomputed
-embeddings and simple metadata processing.
+Ranks activities from N5 using:
+  - semantic similarity (reuse N4-style weighted cosine on user/activity vectors)
+  - attribute fit (intensity / physical_level / social_level + time_of_day)
 
-PURPOSE:
-- Rank candidate activities based on user intent
-- Combine semantic similarity + simple level processing
-- Return top-k most relevant activities per user query
+User preferences on the 3 attribute axes are inferred rule-based from
+`user_input` (tags + free text + image description). See `preferences.py`.
 
-IMPORTANT:
-- NO embedding generation
-- NO activity creation
-- ONLY scoring + ranking logic
+Score = 0.5 * semantic + 0.5 * attribute
 
 ─────────────────────────────────────────────
 INPUT
@@ -23,7 +19,12 @@ INPUT
     "text_k": int,
     "tags_k": int,
 
-    # ───────── USER VECTORS ─────────
+    "user_input": {
+        "text": str | None,
+        "img_desc": str | None,
+        "tags": list[str] | None
+    },
+
     "user_vectors": {
         "text": list[float] | None,
         "aug_text": list[float] | None,
@@ -31,27 +32,42 @@ INPUT
         "img_desc": list[float] | None
     },
 
-    # ───────── ACTIVITIES ─────────
+    "context": {
+        "time_of_day": str | None        # morning / afternoon / evening / anytime
+    },
+
     "activities": [
         {
             "activity_id": str,
             "location_id": str,
-
             "metadata": {
-                "intensity":      float,
-                "physical_level": float | None,
-                "social_level":   float | None
-            },
+                "name": str,
+                "description": str,
+                "activity_type": str,
+                "activity_subtype": str | None,
 
+                # 3 trục attribute dùng để match với user_prefs
+                "intensity": float,
+                "physical_level": float | None,
+                "social_level": float | None,
+
+                "estimated_duration": float,
+                "price_level": float,
+                "indoor_outdoor": str,
+                "weather_dependent": bool,
+                "time_of_day_suitable": str | None
+            },
             "vectors": {
                 "text": list[float] | None,
-                "aug_tags": list[float] | None,
+                "tag":  list[float] | None
             }
         }
     ],
 
     "top_k": int
 }
+
+NOTE: các field budget / duration / people / weather đã bị loại bỏ.
 
 ─────────────────────────────────────────────
 OUTPUT
@@ -64,30 +80,16 @@ OUTPUT
             "score": float,
             "reason": str
         }
-    ]
+    ],
+    "user_prefs": {                       # debug, optional
+        "intensity": float | None,
+        "physical":  float | None,
+        "social":    float | None
+    }
 }
-
-─────────────────────────────────────────────
-SCORING DESIGN (HIGH LEVEL)
-─────────────────────────────────────────────
-Semantic Matching:
-- user_vectors ↔ activity_vectors (text/tag/intent)
-- weighted cosine similarity fusion
-
-Activity Levels Scoring:
-- intensity / physical_level / social_level combined to influence the score slightly
-
-─────────────────────────────────────────────
-DESIGN PRINCIPLES
-─────────────────────────────────────────────
-- Fully deterministic scoring
-- Missing vectors must be safely ignored (no failure propagation)
-- No generation or embedding logic
-- Explainable output via reason field
-- Shared scoring architecture with N4
-─────────────────────────────────────────────
 """
 
 from .rank_activities import rank_activities
+from .preferences import infer_user_preferences
 
-__all__ = ["rank_activities"]
+__all__ = ["rank_activities", "infer_user_preferences"]
