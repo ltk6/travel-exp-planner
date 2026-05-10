@@ -33,7 +33,7 @@ class GroqProvider(LLMProvider):
     model = DEFAULT_MODEL
     rpm_limit = 30  # Groq free tier tham khảo
 
-    def __init__(self, model: Optional[str] = None, timeout: int = 60):
+    def __init__(self, model: Optional[str] = None, timeout: int = 30):
         if model:
             self.model = model
         self.timeout = timeout

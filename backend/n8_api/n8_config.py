@@ -1,11 +1,15 @@
 import os
 import sys
 import logging
+from dotenv import load_dotenv
 
 # ── Path setup ────────────────────────────────────────────────
 _root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _root not in sys.path:
     sys.path.insert(0, _root)
+
+# ── Load .env từ project root ─────────────────────────────────
+load_dotenv(os.path.join(_root, ".env"))
 
 # ── Logging ───────────────────────────────────────────────────
 logging.basicConfig(

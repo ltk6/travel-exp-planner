@@ -30,14 +30,11 @@ start "Travel Planner - Backend" cmd /k "call venv\Scripts\activate.bat && set P
 
 @echo off
 echo =======================================
-echo 3. Starting Streamlit UIs
+echo 3. Starting Streamlit UI
 echo =======================================
 
-:: Start original N7 UI (Port 8501)
+:: Start N7 UI (Port 8501)
 start "Travel Planner - Frontend" cmd /k "call venv\Scripts\activate.bat && set PYTHONPATH=%cd% && python -m streamlit run frontend\n7_ui\app.py --server.port 8501"
-
-:: Start Alt N7 UI (Port 8502)
-start "Travel Planner - Alt Frontend" cmd /k "call venv\Scripts\activate.bat && set PYTHONPATH=%cd% && python -m streamlit run frontend\alt_n7_ui\app.py --server.port 8502"
 
 echo.
 echo [SUCCESS] Both servers are starting up in separate windows!

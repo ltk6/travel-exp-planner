@@ -58,8 +58,10 @@ CORS(app, origins=ALLOWED_ORIGINS)
 
 @app.before_request
 def _check_internal_key():
+    if not INTERNAL_KEY:
+        return  # Key chưa cấu hình → dev/local mode, cho qua
     if request.path in PROTECTED_ROUTES:
-        if not INTERNAL_KEY or request.headers.get("X-Internal-Key") != INTERNAL_KEY:
+        if request.headers.get("X-Internal-Key") != INTERNAL_KEY:
             abort(401)
 
 @app.get("/health")
@@ -267,7 +269,6 @@ def get_activities():
     context_data = body.get("context", {})
     location = body.get("location", {})
     top_k_activities = int(body.get("top_k_activities", 20))
-    llm_provider = body.get("provider") or None  # runtime override, None = env
 
     if not location:
         return _err("Missing location data")
@@ -281,8 +282,7 @@ def get_activities():
         },
         "locations": [location],
         "constraints": constraints,
-        "target_count": 10,
-        "llm_provider": llm_provider,
+        "target_count": max(top_k_activities * 2, 10),
     }
     n5_result = generate_activities(n5_input)
     activities = n5_result.get("activities", [])
@@ -297,29 +297,39 @@ def get_activities():
         meta = activity.get("metadata", {})
         act_name = meta.get("name", "")
         act_desc = meta.get("description", "")
-        act_text = f"{act_name} - {act_desc}".strip(" -")
-        
+        # Include activity tags in text for richer embedding signal
+        act_tags_str = " ".join(meta.get("tags", []))
+        act_text = f"{act_name}. {act_desc}. {act_tags_str}".strip(". ")
+
         act_tags = []
         if meta.get("activity_type"):
             act_tags.append(meta.get("activity_type"))
         if meta.get("activity_subtype"):
             act_tags.append(meta.get("activity_subtype"))
-            
+
         n1_inputs.append({
             "text": act_text,
             "tags": act_tags,
             "img_desc": ""
         })
-        
+
     # Execute batch embedding
     if n1_inputs:
         n1_batch_results = embed_batch(n1_inputs)
-        
-        # Re-assign vectors to activities
+
+        if len(n1_batch_results) != len(activities):
+            logger.error(
+                "Embedding batch mismatch: %d inputs → %d results for location '%s'. "
+                "Last %d activities will have no vectors.",
+                len(activities), len(n1_batch_results), location.get("location_id"),
+                len(activities) - len(n1_batch_results),
+            )
+
+        # Re-assign vectors to activities (zip stops at shorter list)
         for activity, embed_res in zip(activities, n1_batch_results):
             activity["vectors"] = {
                 "text": _safe_vec(embed_res.get("vectors", {}).get("text")),
-                "tag":  _safe_vec(embed_res.get("vectors", {}).get("aug_tags"))
+                "tag":  _safe_vec(embed_res.get("vectors", {}).get("aug_tags")),
             }
 
     # ── N6 — Rank Activities ───────────────────

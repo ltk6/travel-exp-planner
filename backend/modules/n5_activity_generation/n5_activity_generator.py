@@ -194,16 +194,8 @@ def _parse_input(data: dict) -> Tuple[Dict, List[Dict], Dict, int]:
 
     # Normalize constraints với defaults
     constraints = {
-        "budget":                float(constraints.get("budget") or 10_000_000),
-        "duration":              float(constraints.get("duration") or 3),
-        "people":                int(constraints.get("people") or 2),
-        "time_of_day":           constraints.get("time_of_day") or "anytime",
-        # Derived
-        "budget_per_activity":   None,   # tính bên dưới
-        "max_time_per_activity": 360,    # phút
+        "time_of_day": constraints.get("time_of_day") or "anytime",
     }
-    # Budget per activity: tối đa 25% tổng budget
-    constraints["budget_per_activity"] = int(constraints["budget"] * 0.25)
 
     # Normalize locations
     normalized_locs = []
@@ -324,13 +316,28 @@ def _difficulty_to_intensity(difficulty: str) -> float:
     return {"easy": 0.25, "medium": 0.55, "hard": 0.85}.get(difficulty, 0.4)
 
 
+def _suitable_for_to_social_level(suitable_for: List[str]) -> float:
+    """Tính social_level từ suitable_for của LLM."""
+    if not suitable_for:
+        return 0.5
+    group_tags      = {"friends", "family"}
+    individual_tags = {"solo"}
+    has_group  = bool(set(suitable_for) & group_tags)
+    has_solo   = bool(set(suitable_for) & individual_tags)
+    if has_group and not has_solo:
+        return 0.75
+    if has_solo and not has_group:
+        return 0.15
+    return 0.5
+
+
 def _map_llm_v2_to_output(act: Dict, location_id: str, idx: int) -> Dict:
     """Chuyển đổi activity schema v2 từ LLM → N5 output schema."""
     tags        = set(t.lower().strip() for t in act.get("tags", []))
     difficulty  = act.get("difficulty", "easy")
     intensity   = _difficulty_to_intensity(difficulty)
-    cost        = int(act.get("cost", 0))
     best_time   = act.get("best_time", [])
+    suitable    = act.get("suitable_for", [])
 
     return _build_activity_output(
         activity_id          = _make_id(location_id, f"llm_{idx:03d}"),
@@ -341,9 +348,7 @@ def _map_llm_v2_to_output(act: Dict, location_id: str, idx: int) -> Dict:
         activity_subtype     = None,
         intensity            = intensity,
         physical_level       = min(1.0, intensity + 0.1),
-        social_level         = 0.5,
-        estimated_duration   = float(act.get("estimated_duration", 90)),
-        price_level          = _cost_to_price_level(cost),
+        social_level         = _suitable_for_to_social_level(suitable),
         indoor_outdoor       = _tags_to_indoor_outdoor(tags),
         weather_dependent    = _tags_to_weather_dependent(tags),
         time_of_day_suitable = _best_time_to_suitable(best_time),
@@ -384,16 +389,14 @@ def _generate_for_location(
     if LLM_AVAILABLE and is_llm_available():
         logger.info(f"Invoking LLM for location '{location_name}'...")
         raw, llm_meta = generate_from_llm_with_meta(
-            location_name         = location_name,
-            location_description  = profile.get("description", ""),
-            location_tags         = loc_tags,
-            user_tags             = user_tags,
-            budget_per_activity   = constraints["budget_per_activity"],
-            max_time_per_activity = constraints["max_time_per_activity"],
-            num_activities        = LLM_QUOTA,
-            schema_v2             = True,
-            user_text             = user_text,
-            provider              = provider,
+            location_name        = location_name,
+            location_description = profile.get("description", ""),
+            location_tags        = loc_tags,
+            user_tags            = user_tags,
+            num_activities       = LLM_QUOTA,
+            schema_v2            = True,
+            user_text            = user_text,
+            provider             = provider,
         )
         if meta_out is not None:
             meta_out.update(llm_meta)
@@ -629,8 +632,6 @@ def _instantiate_template(
     i_lo, i_hi = template["intensity_range"]
     p_lo, p_hi = template["physical_level_range"]
     s_lo, s_hi = template["social_level_range"]
-    d_lo, d_hi = template["duration_range"]
-    pl_lo, pl_hi = template["price_level_range"]
 
     intensity = rand_in(i_lo, i_hi)
     if modifier:
@@ -650,8 +651,6 @@ def _instantiate_template(
         intensity            = intensity,
         physical_level       = rand_in(p_lo, p_hi),
         social_level         = rand_in(s_lo, s_hi),
-        estimated_duration   = float(random.randint(d_lo, d_hi)),
-        price_level          = round(rand_in(pl_lo, pl_hi), 1),
         indoor_outdoor       = template["indoor_outdoor"],
         weather_dependent    = template["weather_dependent"],
         time_of_day_suitable = time_of_day,
@@ -752,8 +751,6 @@ def _build_activity_output(
     intensity:            float,
     physical_level:       Optional[float],
     social_level:         Optional[float],
-    estimated_duration:   float,
-    price_level:          float,
     indoor_outdoor:       str,
     weather_dependent:    bool,
     time_of_day_suitable: Optional[str],
@@ -771,8 +768,6 @@ def _build_activity_output(
             "intensity":            round(float(intensity), 2),
             "physical_level":       round(float(physical_level), 2) if physical_level is not None else None,
             "social_level":         round(float(social_level), 2)   if social_level   is not None else None,
-            "estimated_duration":   float(estimated_duration),
-            "price_level":          round(float(price_level), 1),
             "indoor_outdoor":       indoor_outdoor,
             "weather_dependent":    bool(weather_dependent),
             "time_of_day_suitable": time_of_day_suitable,
