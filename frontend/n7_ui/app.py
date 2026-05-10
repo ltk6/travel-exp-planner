@@ -269,6 +269,7 @@ submit = st.button(
     type="primary",
 )
 
+st.divider()
 
 # ═════════════════════════════════════════════════════════════
 # OUTPUT SECTION — locations + activities

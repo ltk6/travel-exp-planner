@@ -9,14 +9,21 @@ Input:
     "location_id": str,
 
     "vectors": {
-        "text": str,
-        "aug_text": str,
-        "aug_tags": str,
-        "img_desc": str
+        "text":     list[float] | None,
+        "aug_text": list[float] | None,
+        "aug_tags": list[float] | None,
+        "img_desc": list[float] | None
     },
 
-    "metadata": dict,
-    "geo": dict
+    "metadata": {
+        "name":        str,
+        "description": str,
+        "tags":        list[str]
+    },
+    "geo": {
+        "lat": float,
+        "lng": float
+    }
 }
 
 Output:
@@ -27,21 +34,34 @@ Output:
 
 GET ALL LOCATIONS:
 Output:
-[
-    {
-        "location_id": str,
+{
+    "status": "success",
+    "total": int,
+    "data": [
+        {
+            "location_id": str,
 
-        "vectors": {
-            "text": str,
-            "aug_text": str,
-            "aug_tags": str,
-            "img_desc": str
-        },
+            "vectors": {
+                "text":     list[float] | None,
+                "aug_text": list[float] | None,
+                "aug_tags": list[float] | None,
+                "img_desc": list[float] | None
+            },
 
-        "metadata": dict,
-        "geo": dict
-    }
-]
+            "metadata": {
+                "name":        str,
+                "description": str,
+                "tags":        list[str]
+            },
+            "geo": {
+                "lat": float,
+                "lng": float
+            },
+            
+            "images": list[str] # base64 strings
+        }
+    ]
+}
 """
 
 from .db_manager import (

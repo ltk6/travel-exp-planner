@@ -55,9 +55,9 @@ LOCATIONS = [
                 # Climate
                 "flower season",
                 # Culture
-                "UNESCO heritage", "ethnic minority", "history",
+                "UNESCO heritage", "ethnic minority", "history", "ethnic market",
                 # Activities — Land
-                "motorbiking", "photography",
+                "motorbike loop", "photography",
                 # Vibe
                 "wild", "off the beaten path", "adventure",
             ],
@@ -169,7 +169,7 @@ LOCATIONS = [
                 # Culture
                 "UNESCO heritage", "history",
                 # Activities — Water
-                "boat cruise",
+                "limestone boat ride",
                 # Activities — Land
                 "hiking", "photography",
                 # Vibe
@@ -200,7 +200,7 @@ LOCATIONS = [
                 # Culture
                 "UNESCO heritage",
                 # Activities — Land
-                "trekking", "zip lining", "caving",
+                "trekking", "zip lining", "cave expedition",
                 # Activities — Water
                 "kayaking",
                 # Vibe

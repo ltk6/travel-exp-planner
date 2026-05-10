@@ -1,5 +1,6 @@
 {
-  "sig_k": 1,
+  "text_k": 1,
+  "tags_k": 0,
   "preprocessed": {
     "text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress",
     "aug_text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress deliberate intention to heal emotionally through restorative peaceful and therapeutic experience",

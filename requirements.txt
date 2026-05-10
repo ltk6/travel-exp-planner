@@ -2,6 +2,8 @@
 numpy>=1.24.0
 python-dotenv
 pydantic>=2.0.0
+requests
+Pillow
 
 # --- Module Recursive Imports ---
 -r backend/modules/n1_embedding/requirements.txt
@@ -12,3 +14,4 @@ pydantic>=2.0.0
 -r backend/n3_database/requirements.txt
 -r backend/n8_api/requirements.txt
 -r frontend/n7_ui/requirements.txt
+-r frontend/alt_n7_ui/requirements.txt

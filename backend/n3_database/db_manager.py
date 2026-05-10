@@ -5,12 +5,16 @@ from typing import List, Dict, Any
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from pgvector.psycopg2 import register_vector
+import base64
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    datefmt="%H:%M:%S",
+)
+logger = logging.getLogger("N3")
 
 from config.settings import PG_URI
-
 def _get_connection():
     """Tạo kết nối DB và đăng ký kiểu vector."""
     conn = psycopg2.connect(PG_URI, cursor_factory=RealDictCursor)
@@ -73,10 +77,30 @@ def _format_vectors(row: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 def _attach_image(location_dict: Dict[str, Any]) -> Dict[str, Any]:
-    """Hàm nội bộ gắn link ảnh (Đã sửa lại đường dẫn chuẩn)."""
+    """Hàm nội bộ gắn actual image (base64) thay vì path."""
     loc_id = location_dict.get("location_id")
-    # Đã bỏ chữ "modules" đi theo cấu trúc mới của sếp
-    location_dict["image_path"] = f"backend/n3_database/images/{loc_id}.jpg" 
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    encoded_images = []
+    
+    for i in range(1, 4):
+        img_path = os.path.join(current_dir, "images", f"{loc_id}_{i}.jpg")
+        if os.path.exists(img_path):
+            try:
+                with open(img_path, "rb") as f:
+                    b64_str = base64.b64encode(f.read()).decode("utf-8")
+                    encoded_images.append(f"data:image/jpeg;base64,{b64_str}")
+            except Exception as e:
+                logger.warning(f"Lỗi đọc ảnh {img_path}: {e}")
+        else:
+            # Fallback path if we want to keep structure but file is missing
+            pass
+
+    if encoded_images:
+        location_dict["images"] = encoded_images
+    else:
+        location_dict["images"] = []
+
     return location_dict
 
 def save_location(location_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -181,7 +205,36 @@ def get_all_locations() -> Dict[str, Any]:
         }
 
     except Exception as e:
-        logger.error(f"Lỗi truy vấn: {e}")
+        logger.error(f"Lỗi truy vấn DB: {e}. Đang chuyển sang chế độ Fallback JSON...")
+        
+        # FALLBACK: Đọc từ file JSON seeds nếu DB lỗi
+        try:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            fallback_path = os.path.join(current_dir, "seeds", "locations_with_vectors.json")
+            
+            if os.path.exists(fallback_path):
+                with open(fallback_path, "r", encoding="utf-8") as f:
+                    json_data = json.load(f)
+                
+                results = []
+                for item in json_data:
+                    # Gắn ảnh nếu chưa có
+                    if "images" not in item or not item["images"]:
+                        item = _attach_image(item)
+                    results.append(item)
+                
+                logger.info(f"✅ Fallback thành công: Load {len(results)} locations từ JSON.")
+                return {
+                    "status": "success",
+                    "total": len(results),
+                    "data": results,
+                    "is_fallback": True
+                }
+            else:
+                logger.error(f"❌ Không tìm thấy file fallback: {fallback_path}")
+        except Exception as fallback_err:
+            logger.error(f"❌ Fallback JSON cũng thất bại: {fallback_err}")
+
         return {"status": "error", "message": str(e), "data": []}
 
 def save_user_profile(user_data: Dict[str, Any]) -> Dict[str, Any]:

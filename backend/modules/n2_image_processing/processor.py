@@ -4,9 +4,12 @@ import urllib.request
 from PIL import Image
 import io
 from config.settings import XAI_API_KEY
+import logging
 
 XAI_VISION_MODEL = "grok-2-vision-1212"
 XAI_API_URL = "https://api.x.ai/v1/chat/completions"
+
+logger = logging.getLogger("N2")
 
 def process_image(data: dict) -> dict:
     """
@@ -16,10 +19,14 @@ def process_image(data: dict) -> dict:
     """
     image_bytes = data.get("image")
     if not image_bytes:
+        logger.warning("No image provided to N2")
         return {
             "img_desc": "",
             "error": "No image provided"
         }
+
+
+    logger.info(f"Processing image ({len(image_bytes)} bytes) via Gemini...")
 
     try:
         img = Image.open(io.BytesIO(image_bytes))
@@ -91,6 +98,7 @@ def process_image(data: dict) -> dict:
         return {"img_desc": text.strip()}
 
     except Exception as e:
+        logger.exception(f"Exception in N2 image processing: {e}")
         return {
             "img_desc": "",
             "error": str(e)

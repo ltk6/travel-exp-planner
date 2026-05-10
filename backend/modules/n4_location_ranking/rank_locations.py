@@ -21,7 +21,7 @@ import logging
 import math
 from typing import Any
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("N4")
 
 from backend.shared.weights import get_weights
 
@@ -58,7 +58,7 @@ def _score_location(
     Compute the weighted similarity score for one location.
 
     user_vectors keys expected  : text, aug_text, aug_tags, img_desc
-    loc_vectors  keys expected  : text, tag
+    loc_vectors  keys expected  : text, aug_tags
 
     Returns (score: float, reason: str).
     """
@@ -68,7 +68,7 @@ def _score_location(
     u_img_desc = user_vectors.get("img_desc")
 
     loc_text = loc_vectors.get("text")
-    loc_tag  = loc_vectors.get("tag")
+    loc_tag  = loc_vectors.get("aug_tags")
 
     # ── similarities ─────────────────────────────
     sim_text     = _cosine(u_text,     loc_text)
@@ -82,7 +82,7 @@ def _score_location(
         + weights["aug_tags"] * sim_aug_tags
         + weights["img_desc"] * sim_img_desc
     )
-    score = max(0.0, min(1.0, score))
+    score = max(0.0, score)
 
     # Build reason from signals that are active (weight > 0) and match well (sim >= 0.3)
     parts: list[str] = []
@@ -127,12 +127,13 @@ def rank_locations(data: dict) -> dict:
             {
                 "location_id": str,
                 "location_vectors": {
-                    "text": list[float],
-                    "tag":  list[float]
+                    "text":     list[float],
+                    "aug_tags": list[float]
                 },
-                "metadata": {                # optional — enables constraint penalty
-                    "price_level":        int | None,  # VNĐ
-                    "estimated_duration": int | None   # giờ
+                "metadata": {                # optional
+                    "name":        str | None,
+                    "description": str | None,
+                    "tags":        list[str] | None
                 },
                 "geo": {}                    # received, not used in scoring
             }
@@ -164,6 +165,8 @@ def rank_locations(data: dict) -> dict:
 
     # ── resolve weights from text_k & tags_k ──────────────────
     weights = get_weights(text_k, tags_k)
+    logger.info(f"Ranking {len(locations)} locations (signals: text_k={text_k}, tags_k={tags_k})")
+    logger.info(f"Resolved weights: {weights}")
 
     scored: list[dict] = []
     for loc in locations:

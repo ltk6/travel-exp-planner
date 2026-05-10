@@ -1,5 +1,6 @@
 {
-  "sig_k": 2,
+  "text_k": 2,
+  "tags_k": 3,
   "preprocessed": {
     "text": "Busy coastal city with nightlife and beaches",
     "aug_text": "Busy coastal city with nightlife and beaches sandy coastal shoreline environment with direct sea access, wave conditions, and open ocean views land edge meeting the sea, featuring cliffs, beaches, coves, and coastal geological formations",

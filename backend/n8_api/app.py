@@ -2,96 +2,26 @@
 n8_api/app.py
 =============
 N8 – API Orchestrator (Flask)
-
-Pipeline:
-N2 (image → img_desc) → N1 (embed) → N3 (db) → N4 (rank locations) → N5 (generate activities) → N6 (rank activities)
-
-Contract summary:
-─────────────────────────────────────────────
-N2 input:  { image: bytes }
-N2 output: { img_desc: str }
-
-N1 input:  { text, tags, img_desc }
-N1 output: { sig_k, preprocessed, vectors: { text, aug_text, aug_tags, img_desc } }
-
-N3 output: { status, total, data: [{ location_id, vectors: { text, aug_text, aug_tags, img_desc }, metadata, geo }] }
-
-N4 input:  { sig_k, user_vectors: { text, aug_text, aug_tags, img_desc }, locations: [{ location_id, location_vectors: { text, tag } }], top_k }
-N4 output: { locations: [{ location_id, score, reason }] }
-─────────────────────────────────────────────
 """
 
 from __future__ import annotations
-
-import sys
 import os
-import logging
-import base64
-from typing import Any
-
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
 
-# ── Path setup ────────────────────────────────────────────────
-_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _root not in sys.path:
-    sys.path.insert(0, _root)
+# Import config first to handle path setup
+from .n8_config import logger, INTERNAL_KEY, ALLOWED_ORIGINS, PROTECTED_ROUTES, HOST, PORT, DEBUG
+from .utils import err, get_json
+from .logic import run_recommendation_pipeline, run_activities_pipeline
 
-# ── Database ──────────────────────────────────────────────────
-from n3_database import get_all_locations
-
-# ── Modules ───────────────────────────────────────────────────
-from modules.n1_embedding import embed
-from modules.n2_image_processing import process_image
-from modules.n4_location_ranking import rank_locations
-from modules.n5_activity_generation.n5_activity_generator import generate_activities
-from modules.n6_activity_ranking.rank_activities import rank_activities
-
-# ── Shared ────────────────────────────────────────────────────
-from shared.weights import get_weights
-
-# ── Logging ───────────────────────────────────────────────────
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("N8")
-
-# ── App ───────────────────────────────────────────────────────
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=ALLOWED_ORIGINS)
 
-
-# ═════════════════════════════════════════════════════════════
-# HELPERS
-# ═════════════════════════════════════════════════════════════
-
-def _err(msg: str, code: int = 400):
-    return jsonify({"error": msg}), code
-
-
-def _get_json():
-    data = request.get_json(silent=True)
-    if not data:
-        return None, _err("Invalid JSON body")
-    return data, None
-
-
-def _safe_vec(v):
-    """Ensure value is a Python list. Handles numpy arrays from pgvector."""
-    if v is None:
-        return []
-    if isinstance(v, list):
-        return v
-    # numpy arrays from pgvector
-    if hasattr(v, 'tolist'):
-        return v.tolist()
-    try:
-        return list(v)
-    except (TypeError, ValueError):
-        return []
-
-
-# ═════════════════════════════════════════════════════════════
-# HEALTH
-# ═════════════════════════════════════════════════════════════
+@app.before_request
+def _check_internal_key():
+    if request.path in PROTECTED_ROUTES:
+        if not INTERNAL_KEY or request.headers.get("X-Internal-Key") != INTERNAL_KEY:
+            abort(401)
 
 @app.get("/health")
 def health():
@@ -104,11 +34,6 @@ def health():
         "llm_chain": [{"name": p.name, "model": p.model, "rpm_limit": p.rpm_limit} for p in chain],
         "llm_cache": llm_cache.stats(),
     })
-
-
-# ═════════════════════════════════════════════════════════════
-# FULL PIPELINE
-# ═════════════════════════════════════════════════════════════
 
 @app.post("/recommend")
 def recommend():
@@ -404,4 +329,4 @@ def get_activities():
 # ═════════════════════════════════════════════════════════════
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    app.run(host=HOST, port=PORT, debug=DEBUG)

@@ -2,7 +2,8 @@
   {
     "name": "user_1",
     "result": {
-      "sig_k": 3,
+      "text_k": 3,
+      "tags_k": 1,
       "preprocessed": {
         "text": "Tôi muốn một chuyến đi yên tĩnh gần thiên nhiên",
         "aug_text": "Tôi muốn một chuyến đi yên tĩnh gần thiên nhiên natural outdoor environments away from urban development, characterized by vegetation, open terrain, and non-built scenery environment characterized by low noise, minimal human activity, and a calm undisturbed physical atmosphere a familiar and local place with a comfortable feel",
@@ -4120,7 +4121,8 @@
   {
     "name": "user_2",
     "result": {
-      "sig_k": 1,
+      "text_k": 1,
+      "tags_k": 0,
       "preprocessed": {
         "text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress",
         "aug_text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress deliberate intention to heal emotionally through restorative peaceful and therapeutic experience",
@@ -7213,7 +7215,8 @@
   {
     "name": "user_3",
     "result": {
-      "sig_k": 2,
+      "text_k": 2,
+      "tags_k": 2,
       "preprocessed": {
         "text": "Đi chơi cuối tuần nhẹ nhàng với người yêu",
         "aug_text": "Đi chơi cuối tuần nhẹ nhàng với người yêu with romantic partner wanting intimate private emotionally connected and romantically beautiful shared experience two-day break period when short-distance destinations and nearby outdoor environments see increased visitor activity",
