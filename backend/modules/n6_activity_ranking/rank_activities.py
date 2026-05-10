@@ -19,6 +19,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import math
 from typing import Any, Dict, List, Optional
 
@@ -28,9 +29,6 @@ from .preferences import infer_user_preferences
 # Trọng số top-level
 W_SEMANTIC = 0.5
 W_ATTRIBUTE = 0.5
-
-# Trong attribute score: 3 trục preference + time_of_day. Chia đều 4 phần.
-ATTR_AXIS_WEIGHT = 0.25  # mỗi axis trong {intensity, physical, social, tod}
 
 
 # =============================================================================
@@ -110,24 +108,9 @@ def _axis_fit(user_pref: Optional[float], act_value: Optional[float]) -> Optiona
     return max(0.0, 1.0 - diff)
 
 
-def _tod_fit(tod_user: Optional[str], tod_act: Optional[str]) -> Optional[float]:
-    """
-    Khớp giờ trong ngày — giữ lại như helper dự phòng, KHÔNG dùng trong
-    attribute score hiện tại (contract chỉ chấm 3 axis: intensity/physical/social).
-    """
-    if not tod_user or not tod_act:
-        return None
-    tu = tod_user.lower().strip()
-    ta = tod_act.lower().strip()
-    if ta == "anytime" or tu == ta:
-        return 1.0
-    return 0.3
-
-
 def _attribute_score(
     metadata: Dict,
     user_prefs: Dict[str, Optional[float]],
-    tod_user: Optional[str] = None,  # kept for call-site compat, unused
 ) -> float:
     """
     Điểm thuộc tính: trung bình fit của 3 axis intensity / physical / social.
@@ -188,7 +171,7 @@ def _build_reason(metadata: Dict, sem_score: float, attr_score: float) -> str:
     location_hint  = "" if indoor_out == "indoor" else "ngoài trời "
 
     templates = _REASON_BY_TYPE.get(activity_type, _REASON_DEFAULT)
-    idx = hash(name_act) % len(templates)
+    idx = int(hashlib.md5(name_act.encode()).hexdigest(), 16) % len(templates)
     body = templates[idx].format(
         intensity_hint=intensity_hint,
         time_hint=time_hint,
@@ -236,7 +219,6 @@ def rank_activities(data: Dict) -> Dict:
     if not activities or top_k <= 0:
         return {"activities": []}
 
-    tod_user   = context.get("time_of_day")
     user_prefs = infer_user_preferences(user_input)
 
     scored: List[Dict] = []
@@ -248,7 +230,7 @@ def rank_activities(data: Dict) -> Dict:
         # Kéo khỏi dead-zone [0.5, 1.0] cho embeddings cùng domain
         sem_scaled = max(0.0, min(1.0, (sem_score - 0.5) * 2.0))
 
-        attr_score = _attribute_score(metadata, user_prefs, tod_user)
+        attr_score = _attribute_score(metadata, user_prefs)
 
         total = W_SEMANTIC * sem_scaled + W_ATTRIBUTE * attr_score
         total = max(0.0, min(1.0, total))
@@ -271,9 +253,12 @@ def rank_activities(data: Dict) -> Dict:
         if spread > 0.01:
             for a in scored:
                 norm = LOW + (a["score"] - min_s) / spread * (HIGH - LOW)
-                a["score"] = round(norm, 4)
+                a["score"] = round(max(0.0, min(1.0, norm)), 4)
         else:
+            # Tight cluster — trải đều từ HIGH xuống LOW, clamp trong [0,1]
+            n = len(scored)
+            step = (HIGH - LOW) / n if n > 1 else 0.0
             for i, a in enumerate(scored):
-                a["score"] = round(0.75 - i * 0.05, 4)
+                a["score"] = round(max(0.0, min(1.0, HIGH - i * step)), 4)
 
     return {"activities": scored[:top_k], "user_prefs": user_prefs}

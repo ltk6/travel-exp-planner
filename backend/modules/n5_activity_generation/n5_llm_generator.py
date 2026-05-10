@@ -62,14 +62,10 @@ def _build_prompt(
     location_description: str,
     location_tags: List[str],
     user_tags: List[str],
-    budget_per_activity: int,
-    max_time_per_activity: int,
     num_activities: int = LLM_ACTIVITIES_PER_CALL,
     user_text: str = "",
 ) -> str:
     tags_str = ", ".join(user_tags) if user_tags else "không có sở thích cụ thể"
-    budget_str = f"{budget_per_activity:,}".replace(",", ".")
-
     loc_id = f"loc_{location_name.lower().replace(' ', '_')}"
     user_context = f"\n🗣️ Yêu cầu của du khách: \"{user_text}\"" if user_text.strip() else ""
 
@@ -78,8 +74,6 @@ def _build_prompt(
 📍 Địa điểm: {location_name}
 📝 Mô tả: {location_description}
 ❤️ Sở thích du khách: {tags_str}{user_context}
-💰 Ngân sách tối đa mỗi hoạt động: {budget_str} VNĐ
-⏰ Thời gian tối đa mỗi hoạt động: {max_time_per_activity} phút
 
 YÊU CẦU NGHIÊM NGẶT:
 1. Tạo đúng 10 hoạt động, mỗi hoạt động PHẢI KHÁC LOẠI (ngắm cảnh, trekking, ẩm thực, văn hóa, chụp ảnh, mạo hiểm, thư giãn, mua sắm, hidden gem, nightlife...).
@@ -91,8 +85,6 @@ YÊU CẦU NGHIÊM NGẶT:
   "name": "Tên hoạt động tiếng Việt ngắn gọn",
   "description": "2-4 câu mô tả chi tiết, hấp dẫn, thực tế. Gợi cảm xúc cho du khách.",
   "tags": ["5-7 tags tiếng Anh từ danh sách chuẩn"],
-  "cost": số_nguyên_VND,
-  "estimated_duration": số_phút,
   "best_time": ["morning" hoặc "afternoon" hoặc "evening"],
   "suitable_for": ["solo", "couple", "family", "friends"],
   "difficulty": "easy" hoặc "medium" hoặc "hard",
@@ -102,12 +94,11 @@ YÊU CẦU NGHIÊM NGẶT:
 
 3. Tags PHẢI chọn từ danh sách: nature, food, culture, adventure, relax, photography, history, sports, shopping, entertainment, health, education, sea, beach, fun, music, family, sightseeing, trekking, mountain, waterfall, cave, island, temple, market, nightlife, romantic, ethnic, village, cycling, kayak, diving, snorkeling, sunrise, sunset, cuisine, local_food, street_food, heritage, architecture, hidden_gem, scenic, wildlife, eco, spiritual, art, craft, unique, motorbiking, road_trip, camping, homestay, experience, flower, lake, river, forest, agriculture, tradition.
 
-4. Chi phí PHẢI ≤ {budget_str} VNĐ. Thời gian PHẢI ≤ {max_time_per_activity} phút. Chi phí 0 cho hoạt động miễn phí.
-5. Ưu tiên hoạt động phù hợp sở thích: {tags_str}.
-6. Hoạt động PHẢI thực tế, có thể thực hiện tại {location_name}, phản ánh đúng đặc trưng địa phương.
-7. Đa dạng: có cả hoạt động miễn phí, budget thấp, và cao cấp.
-8. season là danh sách tháng viết tắt 3 chữ cái (jan, feb, mar, ...).
-9. reason_template dùng placeholder {{matching_tags}} để cá nhân hóa.
+4. Ưu tiên hoạt động phù hợp sở thích: {tags_str}.
+5. Hoạt động PHẢI thực tế, có thể thực hiện tại {location_name}, phản ánh đúng đặc trưng địa phương.
+6. Đa dạng loại hoạt động, tránh lặp.
+7. season là danh sách tháng viết tắt 3 chữ cái (jan, feb, mar, ...).
+8. reason_template dùng placeholder {{matching_tags}} để cá nhân hóa.
 
 TRẢ LỜI BẰNG JSON ARRAY THUẦN TÚY (không markdown, không giải thích thêm):
 [
@@ -192,17 +183,12 @@ def _validate_activity(act: Dict, schema_v2: bool = True) -> bool:
     Đảm bảo dữ liệu từ LLM tuân thủ schema trước khi đưa vào pipeline.
     """
     if schema_v2:
-        # Schema v2: kiểm tra đầy đủ các trường mới
-        required_fields = [
-            "name", "description", "cost", "estimated_duration", "tags",
-            "activity_id", "location_id"
-        ]
+        required_fields = ["name", "description", "tags", "activity_id", "location_id"]
         optional_fields = [
             "best_time", "suitable_for", "difficulty", "season", "reason_template"
         ]
     else:
-        # Schema v1: backward-compatible
-        required_fields = ["name", "desc", "cost", "time", "tags"]
+        required_fields = ["name", "desc", "tags"]
         optional_fields = []
     
     # Kiểm tra đủ trường bắt buộc
@@ -211,36 +197,19 @@ def _validate_activity(act: Dict, schema_v2: bool = True) -> bool:
             logger.warning(f"Activity thiếu trường '{field}': {act.get('name', 'unknown')}")
             return False
     
-    # Kiểm tra kiểu dữ liệu cơ bản
+    # Kiểm tra kiểu dữ liệu và giới hạn cơ bản
     name = act.get("name", "")
-    if not isinstance(name, str) or not name.strip():
+    if not isinstance(name, str) or not name.strip() or len(name) > 120:
         return False
-    
+
     desc_field = "description" if schema_v2 else "desc"
-    if not isinstance(act.get(desc_field, ""), str):
+    desc = act.get(desc_field, "")
+    if not isinstance(desc, str) or len(desc) > 600:
         return False
-    
+
     if not isinstance(act.get("tags", []), list):
         return False
-    
-    # Chuẩn hóa cost và time/estimated_duration về số nguyên
-    try:
-        act["cost"] = int(act["cost"])
-        if schema_v2:
-            act["estimated_duration"] = int(act["estimated_duration"])
-        else:
-            act["time"] = int(act["time"])
-    except (ValueError, TypeError):
-        return False
-    
-    # Cost không âm, time/duration phải dương
-    if act["cost"] < 0:
-        return False
-    
-    time_field = "estimated_duration" if schema_v2 else "time"
-    if act[time_field] <= 0:
-        return False
-    
+
     # Validate difficulty nếu có
     if schema_v2 and "difficulty" in act:
         if act["difficulty"] not in ["easy", "medium", "hard"]:
@@ -298,7 +267,7 @@ def _convert_v2_to_v1(act: Dict) -> Dict:
 
 def call_llm(
     prompt: str,
-    retries: int = 2,
+    retries: int = 1,
     provider_override: Optional[str] = None,
 ) -> tuple:
     """
@@ -337,7 +306,7 @@ def call_llm(
 
 # Backward-compat alias — code cũ có thể vẫn import call_groq_api
 # (trả về chỉ text, không tuple — cho compatibility)
-def call_groq_api(prompt: str, retries: int = 2) -> Optional[str]:
+def call_groq_api(prompt: str, retries: int = 1) -> Optional[str]:
     text, _ = call_llm(prompt, retries=retries)
     return text
 
@@ -347,26 +316,17 @@ def generate_from_llm(
     location_description: str,
     location_tags: List[str],
     user_tags: List[str],
-    budget_per_activity: int,
-    max_time_per_activity: int,
     num_activities: int = LLM_ACTIVITIES_PER_CALL,
     schema_v2: bool = True,
     user_text: str = "",
     provider: Optional[str] = None,
 ) -> Optional[List[Dict]]:
-    """
-    Sinh hoạt động du lịch bằng LLM (qua provider chain).
-    Trả về schema v2 theo mặc định, None nếu LLM fail.
-
-    Backward-compat wrapper — gọi generate_from_llm_with_meta và discard meta.
-    """
+    """Sinh hoạt động du lịch bằng LLM. Trả về None nếu fail."""
     activities, _meta = generate_from_llm_with_meta(
         location_name=location_name,
         location_description=location_description,
         location_tags=location_tags,
         user_tags=user_tags,
-        budget_per_activity=budget_per_activity,
-        max_time_per_activity=max_time_per_activity,
         num_activities=num_activities,
         schema_v2=schema_v2,
         user_text=user_text,
@@ -380,8 +340,6 @@ def generate_from_llm_with_meta(
     location_description: str,
     location_tags: List[str],
     user_tags: List[str],
-    budget_per_activity: int,
-    max_time_per_activity: int,
     num_activities: int = LLM_ACTIVITIES_PER_CALL,
     schema_v2: bool = True,
     user_text: str = "",
@@ -406,15 +364,13 @@ def generate_from_llm_with_meta(
 
     # ── Cache lookup ────────────────────────────────────────────────
     cache_key = llm_cache.make_key(
-        location_name         = location_name,
-        location_tags         = location_tags,
-        user_tags             = user_tags,
-        user_text             = user_text,
-        budget_per_activity   = budget_per_activity,
-        max_time_per_activity = max_time_per_activity,
-        num_activities        = num_activities,
-        schema_v2             = schema_v2,
-        provider_override     = provider,
+        location_name     = location_name,
+        location_tags     = location_tags,
+        user_tags         = user_tags,
+        user_text         = user_text,
+        num_activities    = num_activities,
+        schema_v2         = schema_v2,
+        provider_override = provider,
     )
     cached = llm_cache.get(cache_key)
     if cached is not None:
@@ -428,8 +384,6 @@ def generate_from_llm_with_meta(
         location_description=location_description,
         location_tags=location_tags,
         user_tags=user_tags,
-        budget_per_activity=budget_per_activity,
-        max_time_per_activity=max_time_per_activity,
         num_activities=num_activities,
         user_text=user_text,
     )

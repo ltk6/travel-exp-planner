@@ -557,10 +557,7 @@ def render_location_card(rank: int, name: str, score: float, reason: str,
     # Score bar — clamp 0-100%
     pct = max(0, min(100, round(float(score) * 100)))
 
-    # Description truncate
     desc = description or ""
-    if len(desc) > 220:
-        desc = desc[:217] + "…"
 
     reason_html = (
         f'<div class="tx-reason">💡 {html.escape(reason)}</div>' if reason else ""
