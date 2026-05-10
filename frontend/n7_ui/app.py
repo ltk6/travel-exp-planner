@@ -18,6 +18,7 @@ import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from PIL import Image
 import base64
+import os
 
 from styles import (
     inject_css,
@@ -32,7 +33,8 @@ from styles import (
 
 API_BASE = "http://localhost:5000"
 MAX_ACTIVITY_CONCURRENCY = 3  # tránh 429 từ Gemini (15 RPM) / Groq (30 RPM)
-
+_INTERNAL_KEY = os.environ.get("INTERNAL_API_KEY", "")
+API_HEADERS = {"X-Internal-Key": _INTERNAL_KEY}
 
 # ─────────────────────────────────────────────────────────────
 # PAGE CONFIG + CSS
@@ -41,7 +43,7 @@ st.set_page_config(
     page_title="Travel Planner — AI Recommender",
     page_icon="🧭",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 inject_css()
 
@@ -68,7 +70,7 @@ with st.sidebar:
     # Live stats từ /health
     with st.expander("📊 System Stats", expanded=False):
         try:
-            r = requests.get(f"{API_BASE}/health", timeout=2)
+            r = requests.get(f"{API_BASE}/health", headers=API_HEADERS, timeout=2)
             if r.ok:
                 h = r.json()
                 cache = h.get("llm_cache", {})
@@ -305,7 +307,7 @@ if submit:
     # Call /recommend
     try:
         with st.spinner("🔍 Đang phân tích sở thích và tìm địa điểm…"):
-            res = requests.post(f"{API_BASE}/recommend", json=payload, timeout=60)
+            res = requests.post(f"{API_BASE}/recommend", json=payload, headers=API_HEADERS, timeout=60)
     except Exception as e:
         st.error(f"❌ Không kết nối được backend: {e}")
         st.stop()
@@ -338,7 +340,8 @@ if submit:
         score    = loc.get("score", 0)
         reason   = loc.get("reason", "")
         desc     = meta.get("description", "")
-        img_path = loc.get("image_path", "")
+        images   = loc.get("images", [])
+        img_path = images[0] if images else ""
 
         # Mỗi location: 2 cột [loc card | activities]
         col_loc, col_act = st.columns([5, 4], gap="medium")
@@ -383,7 +386,7 @@ if submit:
             "provider":     None if provider_choice == "auto" else provider_choice,
         }
         try:
-            r = requests.post(f"{API_BASE}/activities", json=payload, timeout=120)
+            r = requests.post(f"{API_BASE}/activities", json=payload, headers=API_HEADERS, timeout=120)
             if r.status_code == 200:
                 resp = r.json()
                 return item, resp.get("activities", []), resp.get("meta", {}), None

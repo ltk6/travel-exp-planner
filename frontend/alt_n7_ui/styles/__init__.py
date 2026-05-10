@@ -43,7 +43,10 @@ def inject_custom_css():
         }
 
         /* ── Layout ── */
-        [data-testid="stSidebar"],
+        [data-testid="stSidebar"] {
+            background-color: var(--bg-secondary) !important;
+            border-right: 1px solid var(--border);
+        }
         [data-testid="stSidebarNav"] { display: none !important; }
 
         [data-testid="stAppViewBlockContainer"] {

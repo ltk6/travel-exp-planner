@@ -11,8 +11,47 @@ from flask_cors import CORS
 
 # Import config first to handle path setup
 from .n8_config import logger, INTERNAL_KEY, ALLOWED_ORIGINS, PROTECTED_ROUTES, HOST, PORT, DEBUG
-from .utils import err, get_json
-from .logic import run_recommendation_pipeline, run_activities_pipeline
+
+from n3_database import get_all_locations
+from modules.n1_embedding import embed, embed_batch
+from modules.n2_image_processing import process_image
+from modules.n4_location_ranking import rank_locations
+from modules.n5_activity_generation.n5_activity_generator import generate_activities
+from modules.n6_activity_ranking.rank_activities import rank_activities
+from shared.weights import get_weights
+import base64
+
+def _err(msg: str, code: int = 400):
+    return jsonify({"error": msg}), code
+
+def _get_json():
+    data = request.get_json(silent=True)
+    if not data:
+        return None, _err("Invalid JSON body")
+    return data, None
+
+def _safe_vec(v):
+    if v is None:
+        return []
+    if isinstance(v, list):
+        return v
+    if hasattr(v, 'tolist'):
+        return v.tolist()
+    try:
+        return list(v)
+    except (TypeError, ValueError):
+        return []
+
+_CACHED_LOCATIONS_DATA = None
+
+def get_all_locations_cached():
+    """Fetch locations once and cache them in memory for the life of the process."""
+    global _CACHED_LOCATIONS_DATA
+    if _CACHED_LOCATIONS_DATA is None:
+        logger.info("First request: Fetching and caching locations from N3...")
+        db_result = get_all_locations()
+        _CACHED_LOCATIONS_DATA = db_result.get("data", []) if isinstance(db_result, dict) else []
+    return _CACHED_LOCATIONS_DATA
 
 app = Flask(__name__)
 CORS(app, origins=ALLOWED_ORIGINS)
@@ -64,11 +103,11 @@ def recommend():
 
     # ── N1 — Embed user input ──────────────────
     # N1 contract: { text, tags, img_desc } → { sig_k, preprocessed, vectors }
-    n1_result = embed([{
+    n1_result = embed({
         "text": text,
         "tags": tags,
         "img_desc": img_desc
-    }])[0]
+    })
 
     text_k = n1_result.get("text_k", 0)
     tags_k = n1_result.get("tags_k", 0)
@@ -83,8 +122,7 @@ def recommend():
     }
 
     # ── N3 — Fetch locations from DB ───────────
-    db_result = get_all_locations()
-    locations = db_result.get("data", []) if isinstance(db_result, dict) else []
+    locations = get_all_locations_cached()
 
     # ── Build N4 input ─────────────────────────
     n4_locations = []
@@ -97,8 +135,8 @@ def recommend():
         n4_locations.append({
             "location_id": loc_id,
             "location_vectors": {
-                "text": _safe_vec(db_vectors.get("text")),
-                "tag":  _safe_vec(db_vectors.get("aug_tags")),
+                "text":     _safe_vec(db_vectors.get("text")),
+                "aug_tags": _safe_vec(db_vectors.get("aug_tags")),
             }
         })
 
@@ -106,7 +144,7 @@ def recommend():
             "vectors": db_vectors,
             "metadata": loc.get("metadata", {}),
             "geo": loc.get("geo", {}),
-            "image_path": loc.get("image_path", ""),
+            "images": loc.get("images", [])[:3],
         }
 
     # ── N4 — Rank locations ────────────────────
@@ -131,7 +169,7 @@ def recommend():
 
                 "metadata": loc_map.get(r["location_id"], {}).get("metadata", {}),
                 "geo": loc_map.get(r["location_id"], {}).get("geo", {}),
-                "image_path": loc_map.get(r["location_id"], {}).get("image_path", ""),
+                "images": loc_map.get(r["location_id"], {}).get("images", []),
             }
             for r in ranked
         ],
@@ -275,7 +313,7 @@ def get_activities():
         
     # Execute batch embedding
     if n1_inputs:
-        n1_batch_results = embed(n1_inputs)
+        n1_batch_results = embed_batch(n1_inputs)
         
         # Re-assign vectors to activities
         for activity, embed_res in zip(activities, n1_batch_results):

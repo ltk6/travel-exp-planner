@@ -31,12 +31,44 @@ st.set_page_config(
     page_title="Travel Experience Planner",
     page_icon="🗺️",
     layout="wide",
+    initial_sidebar_state="collapsed",
 )
 inject_custom_css()
 render_sticky_header(title="🗺️ Travel Experience Planner")
 
 # ── Init ──
 init_session_state()
+
+# ── Sidebar ──
+with st.sidebar:
+    st.markdown("#### ⚙️ Configuration")
+    provider_choice = st.selectbox(
+        "LLM Provider",
+        options=["Auto (Env Default)", "Gemini", "Groq"],
+        index=0,
+        help="Choose the model used for activity generation."
+    )
+    st.session_state.llm_provider = None if provider_choice.startswith("Auto") else provider_choice.lower()
+    
+    st.markdown("---")
+    
+    # ── System Stats ──
+    if st.session_state.results and "trace" in st.session_state.results:
+        st.markdown("#### 📊 System Analysis")
+        trace = st.session_state.results["trace"]
+        u_trace = trace.get("user", {})
+        
+        # N1 Embedding
+        n1 = u_trace.get("n1_embedding", {})
+        st.caption(f"N1 Signals: Text={n1.get('text_k',0)}, Tags={n1.get('tags_k',0)}")
+        
+        # Vector Dims
+        dims = u_trace.get("vector_dims", {})
+        if dims:
+            dim_str = " | ".join([f"{k[:3]}:{v}" for k,v in dims.items() if v > 0])
+            st.caption(f"Vector Dims: {dim_str}")
+        
+        st.markdown("---")
 
 # ── Routing ──
 if st.session_state.mode != "📊 Kết quả":
@@ -57,9 +89,14 @@ else:
         inject_scroll_to_top()
         with st.spinner("⏳ Đang phân tích hồ sơ du lịch của bạn…"):
             try:
+                # Inject provider override if set
+                payload = dict(st.session_state.payload)
+                if st.session_state.get("llm_provider"):
+                    payload["provider"] = st.session_state.llm_provider
+
                 res = requests.post(
                     _BACKEND_URL,
-                    json=st.session_state.payload,
+                    json=payload,
                     headers=_BACKEND_HEADERS,
                     timeout=60,
                 )

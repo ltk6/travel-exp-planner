@@ -23,6 +23,7 @@ def fetch_activities(
     text_k: int,
     tags_k: int,
     user_vectors: dict,
+    provider: str = None,
 ) -> list:
     payload = {
         "text": user_text,
@@ -32,6 +33,7 @@ def fetch_activities(
         "tags_k": tags_k,
         "user_vectors": user_vectors,
         "location": {"location_id": loc_id, "metadata": meta},
+        "provider": provider,
     }
     logger.info(f"Requesting activities for {loc_id}")
     response = requests.post(

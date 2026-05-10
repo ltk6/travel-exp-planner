@@ -23,14 +23,14 @@ import streamlit as st
 # =============================================================================
 
 COLORS = {
-    "primary":     "#0369a1",   # sky-700
-    "primary_dim": "#0ea5e9",   # sky-500
+    "primary":     "#0ea5e9",   # sky-500
+    "primary_dim": "#38bdf8",   # sky-400
     "accent":      "#f59e0b",   # amber-500
-    "surface":     "#ffffff",
-    "bg":          "#f8fafc",   # slate-50
-    "border":      "#e2e8f0",   # slate-200
-    "text":        "#0f172a",   # slate-900
-    "text_muted":  "#64748b",   # slate-500
+    "surface":     "#1e293b",   # slate-800
+    "bg":          "#0f172a",   # slate-900
+    "border":      "#334155",   # slate-700
+    "text":        "#f8fafc",   # slate-50
+    "text_muted":  "#94a3b8",   # slate-400
     "success":     "#10b981",
     "error":       "#ef4444",
 }
@@ -47,6 +47,21 @@ CSS = f"""
 
 html, body, [class*="css"] {{
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+}}
+
+/* Force global text colors so dark mode doesn't break contrast */
+.stApp {{
+    background-color: {COLORS["bg"]};
+}}
+h1, h2, h3, h4, h5, h6, p, label, .stMarkdown, .stText {{
+    color: {COLORS["text"]} !important;
+}}
+/* Sidebar has a light background, so it needs dark text */
+[data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, 
+[data-testid="stSidebar"] h4, [data-testid="stSidebar"] h5, [data-testid="stSidebar"] h6, 
+[data-testid="stSidebar"] p, [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stMarkdown, 
+[data-testid="stSidebar"] .stText, [data-testid="stSidebar"] span {{
+    color: #0f172a !important;
 }}
 
 /* ── Streamlit container tweaks ───────────────────────────────── */
@@ -132,6 +147,11 @@ html, body, [class*="css"] {{
     padding: 1.25rem 1.25rem 0.25rem 1.25rem;
     margin-bottom: 0.75rem;
     transition: all 0.15s ease;
+    color: {COLORS["text"]};
+}}
+/* Ensure Streamlit widgets inside tx-q-card have dark text */
+.tx-q-card p, .tx-q-card span, .tx-q-card label {{
+    color: {COLORS["text"]} !important;
 }}
 .tx-q-card:hover {{
     border-color: {COLORS["primary_dim"]};
@@ -151,8 +171,8 @@ html, body, [class*="css"] {{
 
 /* ── Tag summary ──────────────────────────────────────────────── */
 .tx-tags-box {{
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    border: 1px solid #fbbf24;
+    background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+    border: 1px solid #b45309;
     border-radius: 12px;
     padding: 0.85rem 1rem;
     margin: 0.75rem 0;
@@ -160,21 +180,21 @@ html, body, [class*="css"] {{
 .tx-tags-box .tx-tags-label {{
     font-size: 0.75rem;
     font-weight: 700;
-    color: #78350f;
+    color: #fef3c7;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     margin-bottom: 0.5rem;
 }}
 .tx-chip {{
     display: inline-block;
-    background: rgba(255, 255, 255, 0.75);
-    color: #78350f;
+    background: rgba(0, 0, 0, 0.25);
+    color: #fef3c7;
     padding: 0.2rem 0.65rem;
     border-radius: 999px;
     font-size: 0.78rem;
     font-weight: 600;
     margin: 0.15rem 0.3rem 0.15rem 0;
-    border: 1px solid rgba(120, 53, 15, 0.15);
+    border: 1px solid rgba(254, 243, 199, 0.15);
 }}
 
 /* ── Location card ────────────────────────────────────────────── */
@@ -258,7 +278,7 @@ html, body, [class*="css"] {{
 }}
 
 .tx-reason {{
-    background: #f0f9ff;
+    background: #0c4a6e;
     border-left: 3px solid {COLORS["primary_dim"]};
     padding: 0.5rem 0.75rem;
     border-radius: 4px;
@@ -311,8 +331,8 @@ html, body, [class*="css"] {{
 .tx-act-score {{
     font-size: 0.75rem;
     font-weight: 700;
-    color: {COLORS["primary"]};
-    background: #e0f2fe;
+    color: #bae6fd;
+    background: #0c4a6e;
     padding: 0.15rem 0.5rem;
     border-radius: 999px;
     white-space: nowrap;
@@ -351,18 +371,18 @@ html, body, [class*="css"] {{
     border-radius: 999px;
     letter-spacing: 0.02em;
 }}
-.tx-meta-pill.cache  {{ background: #dcfce7; color: #166534; }}
-.tx-meta-pill.gemini {{ background: #e0e7ff; color: #3730a3; }}
-.tx-meta-pill.groq   {{ background: #fef3c7; color: #92400e; }}
-.tx-meta-pill.latency {{ background: #f1f5f9; color: #475569; }}
+.tx-meta-pill.cache  {{ background: #14532d; color: #dcfce7; }}
+.tx-meta-pill.gemini {{ background: #312e81; color: #e0e7ff; }}
+.tx-meta-pill.groq   {{ background: #78350f; color: #fef3c7; }}
+.tx-meta-pill.latency {{ background: #1e293b; color: #cbd5e1; }}
 
 /* ── Skeleton loader ──────────────────────────────────────────── */
 .tx-skeleton {{
     background: linear-gradient(
         90deg,
-        #f1f5f9 0%,
-        #e2e8f0 50%,
-        #f1f5f9 100%
+        #1e293b 0%,
+        #334155 50%,
+        #1e293b 100%
     );
     background-size: 200% 100%;
     animation: txShimmer 1.4s ease-in-out infinite;
@@ -576,13 +596,13 @@ def render_activity_skeleton(n: int = 3):
     """Skeleton loader hiển thị trong lúc chờ activities."""
     cards = ""
     for _ in range(n):
-        cards += """
-        <div class="tx-skel-card">
-            <div class="tx-skeleton tx-skel-line" style="width: 70%;"></div>
-            <div class="tx-skeleton tx-skel-line" style="width: 90%; height: 8px;"></div>
-            <div class="tx-skeleton tx-skel-line" style="width: 60%; height: 8px;"></div>
-        </div>
-        """
+        cards += (
+            '<div class="tx-skel-card">'
+            '<div class="tx-skeleton tx-skel-line" style="width: 70%;"></div>'
+            '<div class="tx-skeleton tx-skel-line" style="width: 90%; height: 8px;"></div>'
+            '<div class="tx-skeleton tx-skel-line" style="width: 60%; height: 8px;"></div>'
+            '</div>'
+        )
     st.markdown(
         f'<div class="tx-act-list">{cards}</div>',
         unsafe_allow_html=True,
@@ -639,23 +659,18 @@ def render_activities(activities: list, llm_meta: dict):
         meta_parts = []
         if a_type:
             meta_parts.append(f'<span class="tx-act-type">● {html.escape(a_type)}</span>')
-        if a_dur:
-            meta_parts.append(f'<span class="tx-act-type">⏱ {int(a_dur)}m</span>')
-        if a_price:
-            dollars = "$" * max(1, min(5, int(round(float(a_price)))))
-            meta_parts.append(f'<span class="tx-act-type">{dollars}</span>')
         meta_line = " ".join(meta_parts)
 
-        cards_html += f"""
-        <div class="tx-act-card">
-            <div class="tx-act-head">
-                <div class="tx-act-name">{html.escape(a_name)}</div>
-                <div class="tx-act-score">{a_score:.2f}</div>
-            </div>
-            {meta_line}
-            <div class="tx-act-reason">{html.escape(a_reason)}</div>
-        </div>
-        """
+        cards_html += (
+            '<div class="tx-act-card">'
+            '<div class="tx-act-head">'
+            f'<div class="tx-act-name">{html.escape(a_name)}</div>'
+            f'<div class="tx-act-score">{a_score:.2f}</div>'
+            '</div>'
+            f'{meta_line}'
+            f'<div class="tx-act-reason">{html.escape(a_reason)}</div>'
+            '</div>'
+        )
 
     st.markdown(
         meta_html + f'<div class="tx-act-list">{cards_html}</div>',
