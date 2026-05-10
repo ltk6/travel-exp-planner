@@ -38,21 +38,24 @@ def process_image(data: dict) -> dict:
         img_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
 
         prompt = """
-        [Context]: Bạn là một chuyên gia phân tích dữ liệu du lịch chuyên nghiệp.
-        [Task]: Hãy phân tích hình ảnh được cung cấp để trích xuất các đặc trưng ngữ nghĩa phục vụ cho hệ thống gợi ý điểm đến.
+        [Context]: Bạn là một Travel Blogger chuyên nghiệp và chuyên gia văn hóa du lịch. 
+        [Task]: Hãy quan sát hình ảnh và viết một bài mô tả giàu tính gợi hình, chi tiết và đầy cảm hứng để giới thiệu địa điểm này cho hệ thống gợi ý du lịch thông minh.
 
-        [Constraints]: Đoạn mô tả phải tập trung vào 3 yếu tố cốt lõi:
-        1. Loại hình địa điểm (Ví dụ: bãi biển, đền chùa, quán cafe, công viên...).
-        2. Kiến trúc hoặc Cảnh quan (Ví dụ: phong cách hiện đại, cổ kính, rừng nguyên sinh...).
-        3. Không khí mang lại (Ví dụ: yên bình, náo nhiệt, hùng vĩ, ấm cúng...).
+        [Guidelines]: Hãy viết văn thật dài, lôi cuốn và đi sâu vào từng ngóc ngách của bức ảnh theo 3 trụ cột:
+        1. Loại hình & Bối cảnh: Xác định rõ địa danh (ví dụ: bãi biển thơ mộng, đền đài cổ kính, con phố hiện đại...). Hãy tả về quy mô và sự sắp đặt của các vật thể trong không gian.
+        2. Kiến trúc & Cảnh quan: Phân tích sâu về phong cách thiết kế, đường nét kiến trúc, chất liệu, màu sắc chủ đạo và sự giao thoa giữa con người với thiên nhiên.
+        3. Cảm xúc & Linh hồn: Tả về 'vibe' (không khí) mà nơi này mang lại. Là sự tĩnh mịch của thời gian, sự hùng vĩ của tạo hóa hay nhịp sống hối hả, năng động?
 
-        [Noise Reduction]:
-        - Tuyệt đối KHÔNG mô tả các chi tiết vụn vặt không liên quan đến du lịch như: biển số xe, màu sắc trang phục của người đi đường, nhãn hiệu đồ dùng cá nhân, hoặc các nhiễu động trong khung hình.
-        - Không có lời dẫn (ví dụ: "Trong ảnh là...", "Tôi thấy...") và không có lời kết.
+        [Narrative Enhancement]: 
+        - Hãy dùng những từ ngữ giàu tính biểu cảm, ví von (ví dụ: 'như một viên ngọc ẩn mình', 'trầm mặc dưới làn sương', 'bừng sáng giữa lòng đô thị').
+        - Loại bỏ hoàn toàn lời dẫn 'Trong ảnh có...' hay 'Tôi thấy...'. Hãy bắt đầu bài viết một cách trực diện và nghệ thuật.
 
-        [Format Enforcement]:
-        - Kết quả phải là MỘT ĐOẠN VĂN DUY NHẤT.
-        - Độ dài tối đa từ 2 ĐẾN 3 CÂU.
+        [Noise Reduction]: 
+        - Tuyệt đối KHÔNG mô tả các chi tiết rác như: biển số xe, nhãn hiệu đồ dùng cá nhân, ngày giờ in trên ảnh, hoặc các nhiễu động kỹ thuật.
+
+        [Format Enforcement]: 
+        - Kết quả phải là một bài văn hoàn chỉnh, chia làm nhiều đoạn văn (tối thiểu 3 đoạn).
+        - KHÔNG giới hạn số câu. Viết càng chi tiết, sâu sắc càng tốt (Khuyến khích trên 200 từ).
         - Ngôn ngữ: Tiếng Việt.
         """
 
