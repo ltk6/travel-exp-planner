@@ -5,13 +5,11 @@ Fetches activity recommendations from the backend for a given location.
 Errors are allowed to propagate naturally — callers handle them.
 """
 import requests
-import logging
-import os
+from config.settings import setup_logging, INTERNAL_API_KEY, API_PORT
+logger = setup_logging("N7.api")
 
-logger = logging.getLogger("alt_n7.result.api")
-
-_INTERNAL_KEY = os.environ.get("INTERNAL_API_KEY", "")
-_BACKEND_HEADERS = {"X-Internal-Key": _INTERNAL_KEY}
+_BACKEND_HEADERS = {"X-Internal-Key": INTERNAL_API_KEY}
+_BACKEND_URL = f"http://localhost:{API_PORT}/activities"
 
 
 def fetch_activities(
@@ -24,7 +22,8 @@ def fetch_activities(
     tags_k: int,
     user_vectors: dict,
     provider: str = None,
-) -> list:
+    top_k_activities: int = 5,
+) -> dict:
     payload = {
         "text": user_text,
         "img_desc": img_desc,
@@ -34,10 +33,11 @@ def fetch_activities(
         "user_vectors": user_vectors,
         "location": {"location_id": loc_id, "metadata": meta},
         "provider": provider,
+        "top_k_activities": top_k_activities,
     }
     logger.info(f"Requesting activities for {loc_id}")
     response = requests.post(
-        "http://localhost:5000/activities",
+        _BACKEND_URL,
         json=payload,
         headers=_BACKEND_HEADERS,
         timeout=120,
@@ -47,4 +47,4 @@ def fetch_activities(
     else:
         logger.error(f"Failed to fetch activities for {loc_id}: {response.status_code}")
     response.raise_for_status()
-    return response.json().get("activities", [])
+    return response.json()

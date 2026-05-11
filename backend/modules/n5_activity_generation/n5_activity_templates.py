@@ -43,10 +43,10 @@ from typing import Dict, List, Any
 
 import json
 import os
-import logging
 from typing import Dict, Any, List, Optional
+from config.settings import setup_logging
 
-logger = logging.getLogger(__name__)
+logger = setup_logging("N5.templates")
 
 # ===========================================================================
 # ĐƯỜNG DẪN TỚI FILE JSON CHÍNH (tạo bởi LLM / script generate)

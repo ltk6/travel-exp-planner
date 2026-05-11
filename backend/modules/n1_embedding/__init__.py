@@ -45,11 +45,11 @@ BATCH OUTPUT:
 
 from __future__ import annotations
 
-import logging
 from .embedder import embed_strings
 from .preprocessor import preprocess
 
-logger = logging.getLogger("N1")
+from config.settings import setup_logging
+logger = setup_logging("N1")
 
 def embed(data: dict[str, any]) -> dict[str, any]:
     """

@@ -7,13 +7,13 @@ from __future__ import annotations
 from typing import List, Optional
 import torch
 
-MODEL_NAME = "BAAI/bge-m3"
+from config.settings import EMBEDDING_MODEL_NAME
 
 try:
     from sentence_transformers import SentenceTransformer
-    print(f"[Embedding] Loading '{MODEL_NAME}' onto GPU...")
+    print(f"[Embedding] Loading '{EMBEDDING_MODEL_NAME}' onto GPU...")
     _device = "cuda" if torch.cuda.is_available() else "cpu"
-    _MODEL = SentenceTransformer(MODEL_NAME, device=_device)
+    _MODEL = SentenceTransformer(EMBEDDING_MODEL_NAME, device=_device)
     print(f"[Embedding] Ready. Device: {_MODEL.device}")
 except ImportError:
     raise RuntimeError("sentence-transformers or torch not installed")

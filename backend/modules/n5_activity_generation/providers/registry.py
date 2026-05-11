@@ -19,7 +19,6 @@ Cách dùng:
 
 from __future__ import annotations
 
-import logging
 import os
 from typing import Dict, List, Optional, Type
 
@@ -27,7 +26,8 @@ from .base import LLMProvider
 from .gemini_provider import GeminiProvider
 from .groq_provider import GroqProvider
 
-logger = logging.getLogger(__name__)
+from config.settings import setup_logging
+logger = setup_logging("N5.provider.registry")
 
 # Registry tên → class
 _PROVIDERS: Dict[str, Type[LLMProvider]] = {

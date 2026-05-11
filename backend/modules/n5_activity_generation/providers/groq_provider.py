@@ -16,11 +16,11 @@ from typing import Optional
 
 from .base import LLMProvider, RetryableError
 
-logger = logging.getLogger(__name__)
+from config.settings import setup_logging
+logger = setup_logging("N5.provider.groq")
 
-GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-DEFAULT_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
-USER_AGENT = "travel-exp-planner/1.0"
+
+from config.settings import GROQ_MODEL_NAME, GROQ_API_URL, USER_AGENT
 
 DEFAULT_SYSTEM = (
     "You are a travel expert. Always respond with pure JSON only — "
@@ -30,7 +30,7 @@ DEFAULT_SYSTEM = (
 
 class GroqProvider(LLMProvider):
     name = "groq"
-    model = DEFAULT_MODEL
+    model = GROQ_MODEL_NAME
     rpm_limit = 30  # Groq free tier tham khảo
 
     def __init__(self, model: Optional[str] = None, timeout: int = 30):

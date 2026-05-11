@@ -13,12 +13,11 @@ logging có cấu trúc. Các subclass KHÔNG tự retry.
 from __future__ import annotations
 
 import abc
-import logging
-import random
 import time
+import random
 from typing import Optional
-
-logger = logging.getLogger(__name__)
+from config.settings import setup_logging
+logger = setup_logging("N5.provider.base")
 
 
 class RetryableError(Exception):

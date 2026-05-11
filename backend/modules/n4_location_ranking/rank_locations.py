@@ -21,7 +21,8 @@ import logging
 import math
 from typing import Any
 
-logger = logging.getLogger("N4")
+from config.settings import setup_logging
+logger = setup_logging("N4")
 
 from backend.shared.weights import get_weights
 
