@@ -14,4 +14,3 @@ Pillow
 -r backend/n3_database/requirements.txt
 -r backend/n8_api/requirements.txt
 -r frontend/n7_ui/requirements.txt
--r frontend/alt_n7_ui/requirements.txt

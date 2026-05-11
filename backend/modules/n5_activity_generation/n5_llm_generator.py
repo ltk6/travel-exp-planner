@@ -25,31 +25,15 @@
 # =============================================================================
 
 import json
-import os
-import re
-import logging
-from typing import List, Dict, Any, Optional
-
-logger = logging.getLogger(__name__)
+from typing import Dict, Optional, List
+from config.settings import setup_logging
+logger = setup_logging("N5.llm")
 
 from .providers import get_fallback_chain, LLMProvider
-from . import cache as llm_cache
+from config.settings import LLM_ACTIVITIES_PER_CALL
 
-LLM_ACTIVITIES_PER_CALL = 10
-
-# Danh sách tags chuẩn để LLM tham khảo
-VALID_TAGS = [
-    "nature", "food", "culture", "adventure", "relax", "photography",
-    "history", "sports", "shopping", "entertainment", "health", "education",
-    "sea", "beach", "fun", "music", "family", "sightseeing", "trekking",
-    "mountain", "waterfall", "cave", "island", "temple", "market",
-    "nightlife", "romantic", "ethnic", "village", "cycling", "kayak",
-    "diving", "snorkeling", "sunrise", "sunset", "cuisine", "local_food",
-    "street_food", "heritage", "architecture", "hidden_gem", "scenic",
-    "wildlife", "eco", "spiritual", "art", "craft", "unique",
-    "motorbiking", "road_trip", "camping", "homestay", "experience",
-    "flower", "lake", "river", "forest", "agriculture", "tradition",
-]
+from backend.shared.maps.tags import ALL_TAGS
+VALID_TAGS = list(ALL_TAGS.keys())
 
 
 def is_llm_available() -> bool:
@@ -69,38 +53,33 @@ def _build_prompt(
     loc_id = f"loc_{location_name.lower().replace(' ', '_')}"
     user_context = f"\n🗣️ Yêu cầu của du khách: \"{user_text}\"" if user_text.strip() else ""
 
-    prompt = f"""Bạn là chuyên gia du lịch Việt Nam với 20 năm kinh nghiệm. Hãy tạo đúng 10 activities CHI TIẾT, ĐA DẠNG, THỰC TẾ cho địa điểm: {location_name}.
+    prompt = f"""Bạn là một thổ địa và chuyên gia du lịch cao cấp tại Việt Nam với am hiểu sâu sắc về văn hóa, địa hình và những 'góc khuất' ít người biết. 
+Hãy tạo đúng 10 hoạt động TRẢI NGHIỆM ĐỘC ĐÁO, ĐẬM CHẤT ĐỊA PHƯƠNG cho: {location_name}.
 
 📍 Địa điểm: {location_name}
-📝 Mô tả: {location_description}
-❤️ Sở thích du khách: {tags_str}{user_context}
+📝 Mô tả hiện có: {location_description}
+❤️ Cá nhân hóa cho du khách: {tags_str}{user_context}
 
-YÊU CẦU NGHIÊM NGẶT:
-1. Tạo đúng 10 hoạt động, mỗi hoạt động PHẢI KHÁC LOẠI (ngắm cảnh, trekking, ẩm thực, văn hóa, chụp ảnh, mạo hiểm, thư giãn, mua sắm, hidden gem, nightlife...).
-2. Mỗi hoạt động PHẢI có TẤT CẢ các trường sau (không thiếu trường nào):
+TIÊU CHUẨN CHẤT LƯỢNG (PHẢI TUÂN THỦ):
+1. TÊN HOẠT ĐỘNG: KHÔNG ĐƯỢC chỉ đơn giản là "Động từ + Tên địa điểm" (Ví dụ: Tránh "Ngắm cảnh Langbiang"). Phải đặt tên gợi cảm xúc, tò mò (Ví dụ: "Săn mây trên đỉnh Langbiang", "Nhâm nhi cà phê chồn giữa rừng thông").
+2. NỘI DUNG MÔ TẢ: Phải cực kỳ chi tiết (3-4 câu). Hãy miêu tả cảm giác, âm thanh, mùi vị hoặc một mẹo nhỏ chỉ người bản địa mới biết. Tránh dùng các từ sáo rỗng như "đáng nhớ", "tuyệt vời", "hấp dẫn". Thay vào đó, hãy miêu tả thực tế.
+3. TÍNH ĐA DẠNG: Đảm bảo đủ các nhóm:
+   - Trải nghiệm cảm giác mạnh/Vận động (Trekking, chèo thuyền, leo núi...)
+   - Văn hóa/Tâm linh (Gặp gỡ dân bản địa, thăm chùa chiền cổ...)
+   - Ẩm thực (Món ngon lề đường, đặc sản hiếm...)
+   - Chụp ảnh/Nghệ thuật (Góc check-in lạ, workshop thủ công...)
+   - Thư giãn/Chữa lành (Sunset view, thiền, trà đạo...)
+4. TÍNH THỰC TẾ: Hoạt động phải có thật và khả thi tại {location_name}.
 
+CẤU TRÚC JSON (BẮT BUỘC):
 {{
-  "activity_id": "act_{loc_id.replace('loc_', '')}_tên_ngắn_01",
+  "activity_id": "act_viết_không_dấu_01",
   "location_id": "{loc_id}",
-  "name": "Tên hoạt động tiếng Việt ngắn gọn",
-  "description": "2-4 câu mô tả chi tiết, hấp dẫn, thực tế. Gợi cảm xúc cho du khách.",
-  "tags": ["5-7 tags tiếng Anh từ danh sách chuẩn"],
+  "name": "Tên trải nghiệm đầy cảm hứng",
+  "description": "Mô tả sâu sắc, chân thực, nêu bật được cái 'hồn' của trải nghiệm tại đây.",
+  "tags": ["4-9 tags tiếng Anh chuẩn"],
   "best_time": ["morning" hoặc "afternoon" hoặc "evening"],
   "suitable_for": ["solo", "couple", "family", "friends"],
-  "difficulty": "easy" hoặc "medium" hoặc "hard",
-  "season": ["jan", "feb", ... tháng phù hợp nhất],
-  "reason_template": "Câu ngắn {'{'}matching_tags{'}'} giải thích tại sao phù hợp"
-}}
-
-3. Tags PHẢI chọn từ danh sách: nature, food, culture, adventure, relax, photography, history, sports, shopping, entertainment, health, education, sea, beach, fun, music, family, sightseeing, trekking, mountain, waterfall, cave, island, temple, market, nightlife, romantic, ethnic, village, cycling, kayak, diving, snorkeling, sunrise, sunset, cuisine, local_food, street_food, heritage, architecture, hidden_gem, scenic, wildlife, eco, spiritual, art, craft, unique, motorbiking, road_trip, camping, homestay, experience, flower, lake, river, forest, agriculture, tradition.
-
-4. Ưu tiên hoạt động phù hợp sở thích: {tags_str}.
-5. Hoạt động PHẢI thực tế, có thể thực hiện tại {location_name}, phản ánh đúng đặc trưng địa phương.
-6. Đa dạng loại hoạt động, tránh lặp.
-7. season là danh sách tháng viết tắt 3 chữ cái (jan, feb, mar, ...).
-8. reason_template dùng placeholder {{matching_tags}} để cá nhân hóa.
-
-TRẢ LỜI BẰNG JSON ARRAY THUẦN TÚY (không markdown, không giải thích thêm):
 [
   {{"activity_id": "...", "location_id": "...", "name": "...", ...}}
 ]"""
@@ -346,39 +325,19 @@ def generate_from_llm_with_meta(
     provider: Optional[str] = None,
 ) -> tuple:
     """
-    Như generate_from_llm nhưng trả thêm dict meta:
-        {
-            "provider_used": str | None,    # provider thực sự trả response
-            "cache_hit":     bool,
-            "latency_ms":    int,           # 0 nếu cache hit
-        }
-
-    Dùng cho /activities endpoint để hiển thị debug info ở UI.
+    Sinh activities fresh - KHÔNG CACHE.
     """
     import time
     t0 = time.time()
+    logger.warning(f"!!! TRIGGERING FRESH LLM CALL for {location_name} (CACHING REMOVED) !!!")
     meta = {"provider_used": None, "cache_hit": False, "latency_ms": 0}
 
     if not is_llm_available():
         return None, meta
 
-    # ── Cache lookup ────────────────────────────────────────────────
-    cache_key = llm_cache.make_key(
-        location_name     = location_name,
-        location_tags     = location_tags,
-        user_tags         = user_tags,
-        user_text         = user_text,
-        num_activities    = num_activities,
-        schema_v2         = schema_v2,
-        provider_override = provider,
-    )
-    cached = llm_cache.get(cache_key)
-    if cached is not None:
-        logger.info("Returning %d cached activities for %s", len(cached), location_name)
-        meta["cache_hit"] = True
-        meta["provider_used"] = "cache"
-        return cached, meta
-
+    # ── Cache lookup (REMOVED) ──────────────────────────────────────
+    # Caching has been completely excised as per user request.
+    
     prompt = _build_prompt(
         location_name=location_name,
         location_description=location_description,
@@ -439,5 +398,4 @@ def generate_from_llm_with_meta(
         return None, meta
 
     logger.info("LLM generated %d valid activities for %s", len(valid_activities), location_name)
-    llm_cache.put(cache_key, valid_activities)
     return valid_activities, meta

@@ -7,12 +7,8 @@ from psycopg2.extras import RealDictCursor
 from pgvector.psycopg2 import register_vector
 import base64
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    datefmt="%H:%M:%S",
-)
-logger = logging.getLogger("N3")
+from config.settings import setup_logging
+logger = setup_logging("N3")
 
 from config.settings import PG_URI
 def _get_connection():

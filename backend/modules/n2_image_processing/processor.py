@@ -3,13 +3,8 @@ import base64
 import urllib.request
 from PIL import Image
 import io
-from config.settings import XAI_API_KEY
-import logging
-
-XAI_VISION_MODEL = "grok-2-vision-1212"
-XAI_API_URL = "https://api.x.ai/v1/chat/completions"
-
-logger = logging.getLogger("N2")
+from config.settings import XAI_API_KEY, XAI_VISION_MODEL, XAI_API_URL, setup_logging
+logger = setup_logging("N2")
 
 def process_image(data: dict) -> dict:
     """

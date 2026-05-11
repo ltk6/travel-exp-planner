@@ -1,7 +1,6 @@
 import streamlit as st
-import logging
-
-logger = logging.getLogger("alt_n7.header")
+from config.settings import setup_logging
+logger = setup_logging("N7.header")
 
 MODES = [
     "📋 Trắc nghiệm",
@@ -79,16 +78,18 @@ def _save_all_input_state() -> None:
             st.session_state["saved_images_bytes"] = []
 
 
-def render_sticky_header(title: str = "🧭 Travel Planner") -> None:
-    """Sticky top nav with mode switcher buttons."""
+def render_header(title: str = "🧭 Travel Planner") -> None:
+    """Top nav with mode switcher buttons (not sticky)."""
     st.session_state.setdefault("mode", MODES[0])
 
     active = st.session_state.mode
 
+    # Title (Non-sticky)
+    st.markdown(f'<h1 class="header-title">{title}</h1>', unsafe_allow_html=True)
+
+    # Nav Bar (Sticky)
     with st.container():
         st.markdown('<div class="sticky-header-anchor"></div>', unsafe_allow_html=True)
-        st.markdown(f'<h1 class="header-title">{title}</h1>', unsafe_allow_html=True)
-
         cols = st.columns(6)
 
         mode_column_mapping = {

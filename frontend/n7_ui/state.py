@@ -6,4 +6,3 @@ def init_session_state():
     st.session_state.setdefault("mode", "📋 Trắc nghiệm")
     st.session_state.setdefault("payload", None)
     st.session_state.setdefault("_scroll_pending", False)
-    st.session_state.setdefault("activity_results", {})

@@ -76,7 +76,8 @@ except ImportError:
     def generate_from_llm(*args, **kwargs): return None
     def generate_from_llm_with_meta(*args, **kwargs): return None, {}
 
-logger = logging.getLogger("N5")
+from config.settings import setup_logging
+logger = setup_logging("N5")
 
 # =============================================================================
 # CONSTANTS

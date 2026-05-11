@@ -138,17 +138,17 @@ def _attribute_score(
 # =============================================================================
 
 _REASON_BY_TYPE = {
-    "nature":     ["Cảnh quan {location_hint}phù hợp sở thích của bạn", "Thiên nhiên {intensity_hint}đúng gu khám phá"],
-    "adventure":  ["Thử thách {intensity_hint}cho người thích khám phá", "Hoạt động mạo hiểm {intensity_hint}đáng nhớ"],
-    "food":       ["Ẩm thực địa phương — không thể bỏ qua", "Khẩu vị của bạn sẽ hài lòng với lựa chọn này"],
-    "culture":    ["Chiều sâu văn hóa {location_hint}khác biệt hoàn toàn", "Trải nghiệm văn hóa độc đáo"],
-    "relaxation": ["Thư giãn {time_hint}— đúng lúc cần nghỉ ngơi", "Nhịp điệu chậm, phù hợp người tìm yên tĩnh"],
-    "nightlife":  ["Về đêm sẽ thú vị hơn với lựa chọn này", "Điểm nhấn cho buổi tối {location_hint}"],
-    "shopping":   ["Mua sắm — quà lưu niệm ý nghĩa", "Tìm đồ địa phương độc đáo {location_hint}"],
+    "nature":     ["Khám phá cảnh quan {location_hint}tuyệt đẹp", "Hòa mình vào thiên nhiên {intensity_hint}đậm chất địa phương"],
+    "adventure":  ["Thử thách bản thân với hoạt động {intensity_hint}đầy phấn khích", "Trải nghiệm cảm giác mạnh {intensity_hint}giữa thiên nhiên"],
+    "food":       ["Thưởng thức tinh túy ẩm thực đặc trưng", "Khám phá hương vị địa phương độc đáo"],
+    "culture":    ["Tìm hiểu chiều sâu văn hóa bản địa {location_hint}", "Trải nghiệm di sản và phong tục truyền thống"],
+    "relaxation": ["Phút giây thư giãn {time_hint}nhẹ nhàng", "Tìm lại sự cân bằng trong không gian yên bình"],
+    "nightlife":  ["Sôi động và lung linh về đêm", "Khám phá nhịp sống {location_hint}về đêm đầy sắc màu"],
+    "shopping":   ["Săn tìm những món quà lưu niệm độc bản", "Ghé thăm không gian mua sắm đậm chất địa phương"],
 }
-_REASON_DEFAULT = ["Phù hợp với hành trình và sở thích của bạn", "Hoạt động đáng thử trong chuyến đi này"]
+_REASON_DEFAULT = ["Lựa chọn tuyệt vời cho hành trình của bạn", "Trải nghiệm thú vị không nên bỏ lỡ"]
 
-_INTENSITY_LABELS = [(0.7, "cường độ cao"), (0.4, "vừa sức"), (0.0, "nhẹ nhàng")]
+_INTENSITY_LABELS = [(0.7, "mạnh mẽ"), (0.4, "vừa sức"), (0.0, "nhẹ nhàng")]
 _TIME_LABELS      = {"morning": "buổi sáng ", "afternoon": "buổi chiều ", "evening": "buổi tối "}
 
 
@@ -161,7 +161,7 @@ def _pick(labels, value):
 
 def _build_reason(metadata: Dict, sem_score: float, attr_score: float) -> str:
     activity_type = metadata.get("activity_type", "nature")
-    name_act      = metadata.get("name", "Hoạt động này")
+    name_act      = metadata.get("name", "Trải nghiệm")
     intensity     = float(metadata.get("intensity") or 0.5)
     tod           = metadata.get("time_of_day_suitable", "anytime")
     indoor_out    = metadata.get("indoor_outdoor", "outdoor")
@@ -179,14 +179,13 @@ def _build_reason(metadata: Dict, sem_score: float, attr_score: float) -> str:
     )
 
     highlights = []
-    if attr_score >= 0.75:
-        highlights.append("hợp sở thích cá nhân")
-    if sem_score >= 0.75:
-        highlights.append("khớp mô tả của bạn")
+    if attr_score >= 0.8:
+        highlights.append("rất hợp sở thích")
+    if sem_score >= 0.8:
+        highlights.append("đúng ý bạn tìm")
 
-    if highlights:
-        return f"{name_act}: {body} ({', '.join(highlights)})."
-    return f"{name_act}: {body}."
+    suffix = f" ({', '.join(highlights)})" if highlights else ""
+    return f"{body}{suffix}."
 
 
 # =============================================================================

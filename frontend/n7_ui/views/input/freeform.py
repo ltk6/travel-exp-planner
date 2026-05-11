@@ -4,9 +4,8 @@ Supports multiple image uploads.
 """
 import streamlit as st
 from PIL import Image
-import logging
-
-logger = logging.getLogger("alt_n7.freeform")
+from config.settings import setup_logging
+logger = setup_logging("N7.freeform")
 
 
 def on_text_change() -> None:

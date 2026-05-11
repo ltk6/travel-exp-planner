@@ -11,18 +11,14 @@ Dùng REST API trực tiếp (urllib) — không cần cài thêm SDK google-gen
 from __future__ import annotations
 
 import json
-import logging
 import urllib.error
 import urllib.request
 from typing import Optional
-
 from .base import LLMProvider, RetryableError
+from config.settings import setup_logging
+logger = setup_logging("N5.provider.gemini")
 
-logger = logging.getLogger(__name__)
-
-DEFAULT_MODEL = "gemini-2.0-flash"
-GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models"
-USER_AGENT = "travel-exp-planner/1.0"
+from config.settings import GEMINI_MODEL_NAME, GEMINI_API_BASE, USER_AGENT
 
 DEFAULT_SYSTEM = (
     "You are a travel expert. Always respond with pure JSON only — "
@@ -32,7 +28,7 @@ DEFAULT_SYSTEM = (
 
 class GeminiProvider(LLMProvider):
     name = "gemini"
-    model = DEFAULT_MODEL
+    model = GEMINI_MODEL_NAME
     rpm_limit = 15  # Gemini free tier: 15 RPM cho 2.0-flash
 
     def __init__(self, model: Optional[str] = None, timeout: int = 30):

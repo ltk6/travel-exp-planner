@@ -5,11 +5,14 @@ Standalone utility to resize and crop images.
 Outputs optimized images to a new 'images_optimized' directory.
 """
 import os
-import logging
-from PIL import Image
+import sys
+_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if _root not in sys.path:
+    sys.path.insert(0, _root)
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
-logger = logging.getLogger("ImageResizer")
+from config.settings import setup_logging
+from PIL import Image
+logger = setup_logging("N3.ImageResizer")
 
 def resize_and_crop(input_path: str, output_path: str, target_size: tuple = (1024, 768)) -> bool:
     """
