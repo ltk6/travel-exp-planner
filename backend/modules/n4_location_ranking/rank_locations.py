@@ -111,49 +111,6 @@ def _score_location(
 # ── Public API ────────────────────────────────────────────────
 
 def rank_locations(data: dict) -> dict:
-    """
-    N4 — Location Ranking
-
-    Input:
-    {
-        "text_k": int,
-        "tags_k": int,
-        "user_vectors": {
-            "text":     list[float] | None,
-            "aug_text": list[float] | None,
-            "aug_tags": list[float] | None,
-            "img_desc": list[float] | None
-        },
-        "locations": [
-            {
-                "location_id": str,
-                "location_vectors": {
-                    "text":     list[float],
-                    "aug_tags": list[float]
-                },
-                "metadata": {                # optional
-                    "name":        str | None,
-                    "description": str | None,
-                    "tags":        list[str] | None
-                },
-                "geo": {}                    # received, not used in scoring
-            }
-        ],
-        "top_k": int
-    }
-
-    Output:
-    {
-        "locations": [
-            {
-                "location_id": str,
-                "score":       float,        # [0.0, 1.0], normalized
-                "reason":      str
-            }
-        ]
-    }
-    """
-
     text_k       = int(data.get("text_k", 0))
     tags_k       = int(data.get("tags_k", 0))
     user_vectors = data.get("user_vectors", {})
