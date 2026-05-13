@@ -7,10 +7,10 @@ from psycopg2.extras import RealDictCursor
 from pgvector.psycopg2 import register_vector
 import base64
 
-from config.settings import setup_logging
+from config import setup_logging
 logger = setup_logging("N3")
 
-from config.settings import PG_URI
+from config import PG_URI
 def _get_connection():
     """Tạo kết nối DB và đăng ký kiểu vector."""
     conn = psycopg2.connect(PG_URI, cursor_factory=RealDictCursor)

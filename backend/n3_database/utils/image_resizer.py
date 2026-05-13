@@ -6,15 +6,15 @@ Outputs optimized images to a new 'images_optimized' directory.
 """
 import os
 import sys
-_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-if _root not in sys.path:
-    sys.path.insert(0, _root)
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
-from config.settings import setup_logging
+from config import setup_logging
 from PIL import Image
 logger = setup_logging("N3.ImageResizer")
 
-def resize_and_crop(input_path: str, output_path: str, target_size: tuple = (1024, 768)) -> bool:
+def resize_and_crop(input_path: str, output_path: str, target_size: tuple = (1280, 720)) -> bool:
     """
     Resizes and center-crops an image to the target resolution.
     Saves the result to output_path as an optimized JPEG.
@@ -40,8 +40,8 @@ def resize_and_crop(input_path: str, output_path: str, target_size: tuple = (102
                 offset = (img.height - new_height) // 2
                 img = img.crop((0, offset, img.width, offset + new_height))
 
-            # Resize to target resolution
-            img = img.resize(target_size, Image.LANCZOS)
+            # Scale down to target resolution (thumbnail avoids scaling up small images)
+            img.thumbnail(target_size, Image.LANCZOS)
             
             # Save to new folder
             img.save(output_path, "JPEG", quality=85, optimize=True)
@@ -50,12 +50,12 @@ def resize_and_crop(input_path: str, output_path: str, target_size: tuple = (102
         logger.error(f"Failed to process {input_path}: {e}")
         return False
 
-def run_optimization(target_size: tuple = (1024, 768)):
-    """Process all images from 'images' and save to 'images_optimized'."""
+def run_optimization(target_size: tuple = (1280, 720)):
+    """Process all images from 'raw_imgs' and save to 'images'."""
     # Base directory is backend/n3_database/
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    input_dir = os.path.join(base_dir, "images")
-    output_dir = os.path.join(base_dir, "images_optimized")
+    input_dir = os.path.join(base_dir, "raw_imgs")
+    output_dir = os.path.join(base_dir, "images")
     
     if not os.path.exists(input_dir):
         logger.error(f"Input directory not found: {input_dir}")
@@ -84,4 +84,4 @@ def run_optimization(target_size: tuple = (1024, 768)):
     logger.info(f"Results saved in: {output_dir}")
 
 if __name__ == "__main__":
-    run_optimization(target_size=(1024, 768))
+    run_optimization(target_size=(1280, 720))

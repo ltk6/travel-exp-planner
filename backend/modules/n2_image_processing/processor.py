@@ -3,7 +3,7 @@ import base64
 import urllib.request
 from PIL import Image
 import io
-from config.settings import GROQ_API_KEY, GROQ_VISION_MODEL, GROQ_API_URL, USER_AGENT, setup_logging
+from config import GROQ_API_KEY, GROQ_VISION_MODEL, GROQ_API_URL, USER_AGENT, setup_logging
 logger = setup_logging("N2")
 
 def process_image(data: dict) -> dict:

@@ -10,7 +10,7 @@
 import json
 from typing import Dict, List, Optional
 
-from config.settings import setup_logging, LLM_ACTIVITIES_PER_CALL, LLM_MAX_RETRIES
+from config import setup_logging, LLM_ACTIVITIES_PER_CALL, LLM_MAX_RETRIES
 
 from .providers import get_fallback_chain
 from backend.shared.maps.tags import ALL_TAGS

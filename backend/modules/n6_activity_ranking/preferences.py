@@ -47,8 +47,8 @@ _TAG_WEIGHTS: Dict[str, Dict[str, float]] = {
     "homestay":  {"intensity": -0.3, "social":    0.3},
 
     # ── Social axis: nhóm / đông người ──────────────────────────
-    "family trip":  {"social":  0.8, "intensity": -0.3},
-    "group tour":   {"social":  1.0},
+    "family":       {"social":  0.8, "intensity": -0.3},
+    "group":        {"social":  1.0},
     "friends trip": {"social":  0.8},
     "vibrant":      {"social":  0.8, "intensity":  0.3},
     "couple":       {"social": -0.2},
@@ -57,7 +57,6 @@ _TAG_WEIGHTS: Dict[str, Dict[str, float]] = {
 
     # ── Sightseeing / photography (trung tính axis chính) ───────
     "photography":   {"physical":  0.2},
-    "sightseeing":   {"intensity": -0.2, "physical": -0.2},
     "cooking class": {"social":    0.3, "physical": -0.2},
 }
 

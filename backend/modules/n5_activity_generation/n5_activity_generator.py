@@ -27,7 +27,7 @@ except ImportError:
     def generate_from_llm(*args, **kwargs): return None
     def generate_from_llm_with_meta(*args, **kwargs): return None, {}
 
-from config.settings import setup_logging, LLM_N5_TARGET_COUNT
+from config import setup_logging, LLM_N5_TARGET_COUNT
 logger = setup_logging("N5")
 
 # =============================================================================

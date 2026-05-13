@@ -16,11 +16,11 @@ from typing import Optional
 
 from .base import LLMProvider, RetryableError
 
-from config.settings import setup_logging
+from config import setup_logging
 logger = setup_logging("N5.provider.groq")
 
 
-from config.settings import GROQ_MODEL_NAME, GROQ_API_URL, USER_AGENT
+from config import GROQ_MODEL_NAME, GROQ_API_URL, USER_AGENT
 
 DEFAULT_SYSTEM = (
     "You are a travel expert. Always respond with pure JSON only — "
@@ -40,7 +40,7 @@ class GroqProvider(LLMProvider):
 
     def _api_key(self) -> Optional[str]:
         # Import lazy để tránh circular và cho phép reload env
-        from config.settings import GROQ_API_KEY
+        from config import GROQ_API_KEY
         return GROQ_API_KEY
 
     def _call(

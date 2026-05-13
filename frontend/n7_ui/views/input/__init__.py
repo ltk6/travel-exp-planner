@@ -6,7 +6,7 @@ Supports multiple images.
 """
 import base64
 import streamlit as st
-from config.settings import setup_logging
+from config import setup_logging
 logger = setup_logging("N7.input")
 
 from .questionnaire import render_questionnaire_ui

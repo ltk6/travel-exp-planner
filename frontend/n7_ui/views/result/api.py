@@ -5,7 +5,7 @@ Fetches activity recommendations from the backend for a given location.
 Errors are allowed to propagate naturally — callers handle them.
 """
 import requests
-from config.settings import setup_logging, INTERNAL_API_KEY, API_PORT
+from config import setup_logging, INTERNAL_API_KEY, API_PORT
 logger = setup_logging("N7.api")
 
 _BACKEND_HEADERS = {"X-Internal-Key": INTERNAL_API_KEY}

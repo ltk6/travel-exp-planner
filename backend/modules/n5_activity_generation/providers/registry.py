@@ -26,20 +26,13 @@ from .base import LLMProvider
 from .gemini_provider import GeminiProvider
 from .groq_provider import GroqProvider
 
-from config.settings import setup_logging
+from config import setup_logging, GROQ_MODELS
 logger = setup_logging("N5.provider.registry")
 
 # Registry tên → class
 _PROVIDERS: Dict[str, Type[LLMProvider]] = {
     "gemini": GeminiProvider,
     "groq":   GroqProvider,
-}
-
-# Bản đồ model ID cho các alias đặc biệt
-_GROQ_MODELS = {
-    "groq_8b":    "llama-3.1-8b-instant",
-    "groq_70b":   "llama-3.3-70b-versatile",
-    "groq_scout": "meta-llama/llama-4-scout-17b-16e-instruct",
 }
 
 DEFAULT_PRIMARY = "gemini"
@@ -50,8 +43,8 @@ def _instance(name: str) -> Optional[LLMProvider]:
     name = name.strip().lower()
     
     # Kiểm tra alias đặc biệt trước
-    if name in _GROQ_MODELS:
-        return GroqProvider(model=_GROQ_MODELS[name])
+    if name in GROQ_MODELS:
+        return GroqProvider(model=GROQ_MODELS[name])
 
     cls = _PROVIDERS.get(name)
     if cls is None:

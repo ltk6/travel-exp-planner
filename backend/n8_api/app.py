@@ -9,7 +9,7 @@ from flask_cors import CORS
 _root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _root not in sys.path:
     sys.path.insert(0, _root)
-from config.settings import (
+from config import (
     ALLOWED_ORIGINS, API_HOST as HOST, API_PORT as PORT, API_DEBUG as DEBUG,
     setup_logging
 )

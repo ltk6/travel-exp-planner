@@ -3,7 +3,7 @@ questionnaire.py — Renders travel preferences with complete progress and state
 """
 import streamlit as st
 from .questionnaire_data import QUESTIONNAIRE_CONFIG, EMOJI_MAP
-from config.settings import setup_logging
+from config import setup_logging
 logger = setup_logging("N7.questionnaire")
 
 # ─── Public Entry Point ───────────────────────────────────────────────────────

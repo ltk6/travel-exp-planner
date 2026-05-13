@@ -16,7 +16,7 @@ import abc
 import time
 import random
 from typing import Optional
-from config.settings import setup_logging, LLM_RETRY_WAIT_BASE
+from config import setup_logging, LLM_RETRY_WAIT_BASE
 logger = setup_logging("N5.provider.base")
 
 

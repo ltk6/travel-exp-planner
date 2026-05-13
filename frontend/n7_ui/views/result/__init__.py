@@ -8,7 +8,7 @@ import html
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from .api import fetch_activities
 from streamlit.runtime.scriptrunner import get_script_run_ctx, add_script_run_ctx
-from config.settings import setup_logging
+from config import setup_logging
 logger = setup_logging("N7.result")
 
 # --- Design Tokens (Original alt_n7_ui Reddish Theme) ---
@@ -294,10 +294,14 @@ def render_result_view(data: dict) -> None:
         with col_act:
             st.markdown(f'<div style="font-size:0.85rem; font-weight:700; color:{COLORS["primary"]}; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.5rem;">🎯 Gợi ý hoạt động</div>', unsafe_allow_html=True)
             ph = st.empty()
-            with ph.container():
-                skel = "".join(['<div class="tx-skel-card"><div class="tx-skeleton tx-skel-line" style="width: 70%;"></div><div class="tx-skeleton tx-skel-line" style="width: 90%; height: 8px;"></div></div>' for _ in range(3)])
-                st.markdown(f'<div class="tx-act-list">{skel}</div>', unsafe_allow_html=True)
-            activity_tasks.append({"loc_id": loc_id, "meta": meta, "placeholder": ph})
+            if loc_id in st.session_state.activity_results:
+                with ph.container():
+                    render_activities_ui(st.session_state.activity_results[loc_id])
+            else:
+                with ph.container():
+                    skel = "".join(['<div class="tx-skel-card"><div class="tx-skeleton tx-skel-line" style="width: 70%;"></div><div class="tx-skeleton tx-skel-line" style="width: 90%; height: 8px;"></div></div>' for _ in range(3)])
+                    st.markdown(f'<div class="tx-act-list">{skel}</div>', unsafe_allow_html=True)
+                activity_tasks.append({"loc_id": loc_id, "meta": meta, "placeholder": ph})
 
         st.divider()
 
@@ -324,4 +328,5 @@ def render_result_view(data: dict) -> None:
                     if "error" in result:
                         st.error(f"Lỗi: {result['error']}")
                     else:
+                        st.session_state.activity_results[task["loc_id"]] = result
                         render_activities_ui(result)

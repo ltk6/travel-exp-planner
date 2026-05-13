@@ -105,6 +105,13 @@ def get_components_css():
         margin: 2px;
     }
 
+    /* ── Popover and Expander Size Limit ── */
+    div[data-testid="stPopoverBody"],
+    div[data-testid="stExpanderDetails"] {
+        max-height: 240px;
+        overflow-y: auto;
+    }
+
     /* ── Spinner ── */
     div[data-testid="stSpinner"] > div {
         color: var(--accent) !important;

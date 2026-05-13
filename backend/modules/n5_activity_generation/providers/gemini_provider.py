@@ -15,10 +15,10 @@ import urllib.error
 import urllib.request
 from typing import Optional
 from .base import LLMProvider, RetryableError
-from config.settings import setup_logging
+from config import setup_logging
 logger = setup_logging("N5.provider.gemini")
 
-from config.settings import GEMINI_MODEL_NAME, GEMINI_API_BASE, USER_AGENT
+from config import GEMINI_MODEL_NAME, GEMINI_API_BASE, USER_AGENT
 
 DEFAULT_SYSTEM = (
     "You are a travel expert. Always respond with pure JSON only — "
@@ -37,7 +37,7 @@ class GeminiProvider(LLMProvider):
         self.timeout = timeout
 
     def _api_key(self) -> Optional[str]:
-        from config.settings import GEMINI_API_KEY
+        from config import GEMINI_API_KEY
         return GEMINI_API_KEY
 
     def _call(
