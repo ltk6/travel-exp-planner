@@ -23,13 +23,6 @@ INPUT
             }
         }
     ],
-
-    "constraints": {
-        "budget": float | None,
-        "duration": float | None,
-        "people": int | None,
-        "time_of_day": str | None
-    }
 }
 
 ─────────────────────────────────────────────
@@ -42,53 +35,25 @@ OUTPUT
             "location_id": str,
 
             "metadata": {
-
-                # ─────────────────────────────
-                # CORE IDENTITY
-                # ─────────────────────────────
                 "name": str,
                 "description": str,
+                "tags": list[str],
+                # strictly follows backend/shared/maps/tags.py
 
-                # ─────────────────────────────
-                # SEMANTIC CLASSIFICATION
-                # ─────────────────────────────
                 "activity_type": str,
-                # adventure / relaxation / food / culture / nightlife / nature / shopping
+                # list of available activity types:
+                # adventure / relaxation / food / culture / nightlife
+                # nature / shopping / wellness / entertainment
+                # sports / sightseeing / social / family
 
-                "activity_subtype": str | None,
-                # e.g. hiking / snorkeling / street food / museum visit
-
-                # ─────────────────────────────
-                # EXPERIENCE DYNAMICS
-                # ─────────────────────────────
                 "intensity": float,
                 # 0.0 (very chill) → 1.0 (very active)
 
                 "physical_level": float | None,
-                # effort / movement intensity indicator
-
+                # 0.0  → 1.0 (very physically demanding)
+                
                 "social_level": float | None,
-                # solo → group-oriented activity scale
-
-                # ─────────────────────────────
-                # CONSTRAINT FIT
-                # ─────────────────────────────
-                "estimated_duration": float,
-                # minutes
-
-                "price_level": float,
-                # normalized cost scale
-
-                "indoor_outdoor": str,
-                # indoor / outdoor / mixed
-
-                "weather_dependent": bool,
-
-                # ─────────────────────────────
-                # CONTEXT FIT SIGNALS
-                # ─────────────────────────────
-                "time_of_day_suitable": str | None
-                # morning / afternoon / night / anytime
+                # 0.0 (solo) → 1.0 (group-oriented)
             }
         }
     ]

@@ -39,11 +39,6 @@ INPUT
                 "description": str | None,
                 "tags":        list[str] | None
             },
-
-            "geo": {
-                "lat": float | None,
-                "lng": float | None
-            }
         }
     ],
     "top_k": int
@@ -56,8 +51,8 @@ OUTPUT
     "locations": [
         {
             "location_id": str,
-            "score":       float,           # [0.0, 1.0], đã áp penalty nếu có
-            "reason":      str              # giải thích tiếng Việt
+            "score":       float,
+            "reason":      str
         }
     ]
 }
