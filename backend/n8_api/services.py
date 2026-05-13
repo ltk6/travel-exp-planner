@@ -1,6 +1,6 @@
 import base64
-from config.settings import (
-    TOP_K_LOCATIONS, TOP_K_ACTIVITIES, LLM_N5_TARGET_COUNT, setup_logging
+from config import (
+    TOP_K_LOCATIONS, TOP_K_ACTIVITIES, LLM_N5_TARGET_COUNT, setup_logging, API_DEBUG
 )
 from .utils import _safe_vec
 
@@ -102,7 +102,7 @@ def recommend_service(body):
 
     ranked = n4_result.get("locations", [])
     
-    return {
+    response = {
         "locations": [
             {
                 "location_id": r["location_id"],
@@ -114,7 +114,10 @@ def recommend_service(body):
             }
             for r in ranked
         ],
-        "trace": {
+    }
+
+    if API_DEBUG:
+        response["trace"] = {
             "user": {
                 "input": {
                     "text": text,
@@ -144,7 +147,8 @@ def recommend_service(body):
                 "pipeline": {"n1": "embedding", "n2": "image_processing", "n3": "database_fetch", "n4": "location_ranking"},
             },
         }
-    }
+
+    return response
 
 def activities_service(body):
     text = body.get("text", "")

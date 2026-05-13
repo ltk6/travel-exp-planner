@@ -16,11 +16,11 @@ from typing import Optional
 
 from .base import LLMProvider, RetryableError
 
-from config.settings import setup_logging
+from config import setup_logging
 logger = setup_logging("N5.provider.groq")
 
 
-from config.settings import GROQ_MODEL_NAME, GROQ_API_URL, USER_AGENT
+from config import GROQ_MODEL_NAME, GROQ_API_URL, USER_AGENT
 
 DEFAULT_SYSTEM = (
     "You are a travel expert. Always respond with pure JSON only — "
@@ -33,14 +33,14 @@ class GroqProvider(LLMProvider):
     model = GROQ_MODEL_NAME
     rpm_limit = 30  # Groq free tier tham khảo
 
-    def __init__(self, model: Optional[str] = None, timeout: int = 30):
+    def __init__(self, model: Optional[str] = None, timeout: int = 60):
         if model:
             self.model = model
         self.timeout = timeout
 
     def _api_key(self) -> Optional[str]:
         # Import lazy để tránh circular và cho phép reload env
-        from config.settings import GROQ_API_KEY
+        from config import GROQ_API_KEY
         return GROQ_API_KEY
 
     def _call(
@@ -48,7 +48,7 @@ class GroqProvider(LLMProvider):
         prompt: str,
         system: Optional[str] = None,
         temperature: float = 0.8,
-        max_tokens: int = 8192,
+        max_tokens: int = 4096,
     ) -> Optional[str]:
         payload = {
             "model": self.model,
@@ -88,6 +88,13 @@ class GroqProvider(LLMProvider):
             raise RetryableError(f"Groq network error: {e}") from e
 
         choices = result.get("choices", [])
+        usage = result.get("usage", {})
+        if usage:
+            p_tokens = usage.get("prompt_tokens", 0)
+            c_tokens = usage.get("completion_tokens", 0)
+            self.last_usage = {"prompt_tokens": p_tokens, "completion_tokens": c_tokens}
+            logger.info("Groq usage: %d prompt, %d completion tokens", p_tokens, c_tokens)
+
         if choices:
             return choices[0].get("message", {}).get("content", "")
 

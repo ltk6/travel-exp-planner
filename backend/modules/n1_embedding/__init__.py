@@ -48,7 +48,7 @@ from __future__ import annotations
 from .embedder import embed_strings
 from .preprocessor import preprocess
 
-from config.settings import setup_logging
+from config import setup_logging
 logger = setup_logging("N1")
 
 def embed(data: dict[str, any]) -> dict[str, any]:
@@ -66,6 +66,9 @@ def embed_batch(data_list: list[dict[str, any]]) -> list[dict[str, any]]:
     """
     if not data_list:
         return []
+
+    import time
+    t0 = time.time()
 
     # 1. Preprocess all inputs
     logger.info(f"Preprocessing {len(data_list)} inputs...")
@@ -113,6 +116,9 @@ def embed_batch(data_list: list[dict[str, any]]) -> list[dict[str, any]]:
                 "img_desc": item_vecs[3],
             },
         })
+
+    elapsed = time.time() - t0
+    logger.info(f"N1 embedding completed in {elapsed:.3f}s for {len(data_list)} items.")
 
     return results
 

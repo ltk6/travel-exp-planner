@@ -26,7 +26,7 @@ from .base import LLMProvider
 from .gemini_provider import GeminiProvider
 from .groq_provider import GroqProvider
 
-from config.settings import setup_logging
+from config import setup_logging, GROQ_MODELS
 logger = setup_logging("N5.provider.registry")
 
 # Registry tên → class
@@ -39,8 +39,13 @@ DEFAULT_PRIMARY = "gemini"
 
 
 def _instance(name: str) -> Optional[LLMProvider]:
-    """Tạo 1 instance provider theo tên. Return None nếu tên lạ."""
+    """Tạo 1 instance provider theo tên. Hỗ trợ alias đặc biệt của Groq."""
     name = name.strip().lower()
+    
+    # Kiểm tra alias đặc biệt trước
+    if name in GROQ_MODELS:
+        return GroqProvider(model=GROQ_MODELS[name])
+
     cls = _PROVIDERS.get(name)
     if cls is None:
         logger.warning("Unknown provider '%s', skipping", name)

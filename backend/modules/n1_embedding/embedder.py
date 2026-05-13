@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import List, Optional
 import torch
 
-from config.settings import EMBEDDING_MODEL_NAME
+from config import EMBEDDING_MODEL_NAME
 
 try:
     from sentence_transformers import SentenceTransformer

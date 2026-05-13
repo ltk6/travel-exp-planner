@@ -17,7 +17,7 @@ from views.input import render_input_view
 from views.result import render_result_view
 from state import init_session_state
 
-from config.settings import setup_logging, INTERNAL_API_KEY, API_PORT
+from config import setup_logging, INTERNAL_API_KEY, API_PORT
 logger = setup_logging("N7")
 
 _BACKEND_HEADERS = {"X-Internal-Key": INTERNAL_API_KEY}
@@ -65,6 +65,7 @@ else:
                 if res.status_code == 200:
                     logger.info("Backend call successful (200 OK)")
                     st.session_state.results = res.json()
+                    st.session_state.activity_results = {}
                     st.session_state.payload = None
                     st.rerun()
                 else:

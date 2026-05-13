@@ -1,5 +1,5 @@
 import streamlit as st
-from config.settings import setup_logging
+from config import setup_logging
 logger = setup_logging("N7.header")
 
 MODES = [

@@ -8,16 +8,12 @@ import sys
 # ─────────────────────────────────────────────
 # SAFE IMPORT PATH
 # ─────────────────────────────────────────────
-CURRENT = Path(__file__).resolve()
+import os
+import sys
 
-for parent in CURRENT.parents:
-    if (parent / "backend").exists():
-        REPO_ROOT = parent
-        break
-else:
-    raise RuntimeError("Could not locate repo root (missing 'backend' folder)")
-
-sys.path.insert(0, str(REPO_ROOT))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
 from backend.modules.n2_image_processing import process_image
 
@@ -50,17 +46,12 @@ def save_json(result: dict, filename: str):
 
 
 # ─────────────────────────────────────────────
-# IMAGE TO BYTES
-# ─────────────────────────────────────────────
-def image_to_bytes(path: str) -> bytes:
-    return Path(path).read_bytes()
-
-
-# ─────────────────────────────────────────────
 # TEST DATA
 # ─────────────────────────────────────────────
 TEST_SET = [
-    {"image": image_to_bytes(Path(__file__).parent / "city.png"), "name": "image_3"},
+    {"path": Path(__file__).parent / "beach.png", "name": "beach"},
+    {"path": Path(__file__).parent / "city.png", "name": "city"},
+    {"path": Path(__file__).parent / "lake.png", "name": "lake"},
 ]
 
 # ─────────────────────────────────────────────
@@ -68,7 +59,12 @@ TEST_SET = [
 # ─────────────────────────────────────────────
 def run_tests():
     for t in TEST_SET:
-        result = process_image({"image": t["image"]})
+        if not t["path"].exists():
+            print(f"[skip] {t['path']} not found")
+            continue
+
+        image_bytes = t["path"].read_bytes()
+        result = process_image({"image": image_bytes})
         save_json(result, f"image_{t['name']}.json")
 
 

@@ -1,6 +1,8 @@
 from flask import jsonify, request
 
 def _err(msg: str, code: int = 400):
+    if code >= 500:
+        msg = "An internal server error occurred."
     return jsonify({"error": msg}), code
 
 def _get_json():

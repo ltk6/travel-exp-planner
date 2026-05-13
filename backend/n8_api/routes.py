@@ -1,5 +1,5 @@
 from flask import request, jsonify, abort, Blueprint
-from config.settings import INTERNAL_API_KEY, PROTECTED_ROUTES, setup_logging
+from config import INTERNAL_API_KEY, PROTECTED_ROUTES, setup_logging
 from .utils import _err, _get_json
 from .services import recommend_service, activities_service
 
@@ -15,11 +15,36 @@ def _check_internal_key():
 
 @bp.get("/health")
 def health():
-    # Lazy imports to prevent issues
     from modules.n5_activity_generation.providers import get_fallback_chain
+    from config import GEMINI_API_KEY, GROQ_API_KEY
+    
+    # 1. Check N1 Embedding
+    try:
+        from modules.n1_embedding.embedder import get_model
+        n1_status = "ok" if get_model() is not None else "not_loaded"
+    except Exception as e:
+        n1_status = f"error: {str(e)}"
+
+    # 2. Check N3 Database (if DB connection fails, we know it's using the JSON fallback)
+    try:
+        from n3_database.db_manager import _get_connection
+        conn = _get_connection()
+        conn.close()
+        n3_status = "db_connected"
+    except Exception:
+        n3_status = "fallback_file"
+
+    # 3. Check LLMs availability (N2/N5)
+    llms_available = bool(GEMINI_API_KEY or GROQ_API_KEY)
+
     chain = get_fallback_chain()
     return jsonify({
         "status": "ok",
+        "services": {
+            "n1_embedding": n1_status,
+            "n3_database": n3_status,
+            "llms_available": llms_available
+        },
         "pipeline": ["n1", "n2", "n3", "n4", "n5", "n6"],
         "llm_chain": [{"name": p.name, "model": p.model, "rpm_limit": p.rpm_limit} for p in chain],
     })
