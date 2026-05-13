@@ -4,7 +4,7 @@ import os
 import sys
 
 # Add project root to path for imports
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".."))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
@@ -54,16 +54,28 @@ def run_test():
     
     # 4. Print Summary
     activities = result.get("activities", [])
+    llm_meta = result.get("llm_meta", [])
+    
     print(f"\nSuccessfully generated {len(activities)} activities.")
-    print(f"Results saved to: {os.path.abspath(output_file)}")
+    
+    print("\nToken Usage per Location:")
+    for meta in llm_meta:
+        loc_id = meta.get("location_id", "unknown")
+        usage = meta.get("usage")
+        if usage:
+            p = usage.get("prompt_tokens", 0)
+            c = usage.get("completion_tokens", 0)
+            print(f"- {loc_id}: {p} prompt, {c} completion tokens (via {meta.get('provider_used')})")
+        else:
+            print(f"- {loc_id}: No LLM usage (fallback to templates)")
+
+    print(f"\nResults saved to: {os.path.abspath(output_file)}")
     
     # Print first 3 activities as a teaser
     print("\nTop 3 Sample Activities:")
     for i, act in enumerate(activities[:3]):
         meta = act.get("metadata", {})
         print(f"{i+1}. {meta.get('name', 'N/A')} ({act.get('location_id', 'N/A')})")
-        print(f"   Cost: {meta.get('cost', 0):,} VND | Duration: {meta.get('estimated_duration', 0)} mins")
-        print(f"   Reason: {act.get('reason', 'N/A')}\n")
 
 if __name__ == "__main__":
     run_test()

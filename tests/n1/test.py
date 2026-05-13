@@ -3,16 +3,12 @@ from __future__ import annotations
 import json
 from typing import Any
 from pathlib import Path
+import os
 import sys
 
-CURRENT = Path(__file__).resolve()
-
-for parent in CURRENT.parents:
-    if (parent / "backend").exists():
-        sys.path.insert(0, str(parent))
-        break
-else:
-    raise RuntimeError("Could not locate project root containing 'backend'")
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
 from backend.modules.n1_embedding import embed, embed_batch
 

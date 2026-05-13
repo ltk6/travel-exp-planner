@@ -35,12 +35,24 @@ _PROVIDERS: Dict[str, Type[LLMProvider]] = {
     "groq":   GroqProvider,
 }
 
+# Bản đồ model ID cho các alias đặc biệt
+_GROQ_MODELS = {
+    "groq_8b":    "llama-3.1-8b-instant",
+    "groq_70b":   "llama-3.3-70b-versatile",
+    "groq_scout": "meta-llama/llama-4-scout-17b-16e-instruct",
+}
+
 DEFAULT_PRIMARY = "gemini"
 
 
 def _instance(name: str) -> Optional[LLMProvider]:
-    """Tạo 1 instance provider theo tên. Return None nếu tên lạ."""
+    """Tạo 1 instance provider theo tên. Hỗ trợ alias đặc biệt của Groq."""
     name = name.strip().lower()
+    
+    # Kiểm tra alias đặc biệt trước
+    if name in _GROQ_MODELS:
+        return GroqProvider(model=_GROQ_MODELS[name])
+
     cls = _PROVIDERS.get(name)
     if cls is None:
         logger.warning("Unknown provider '%s', skipping", name)

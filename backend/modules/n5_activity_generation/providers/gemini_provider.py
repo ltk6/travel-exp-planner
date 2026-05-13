@@ -45,7 +45,7 @@ class GeminiProvider(LLMProvider):
         prompt: str,
         system: Optional[str] = None,
         temperature: float = 0.8,
-        max_tokens: int = 8192,
+        max_tokens: int = 4096,
     ) -> Optional[str]:
         url = f"{GEMINI_API_BASE}/{self.model}:generateContent?key={self._api_key()}"
 
@@ -102,5 +102,12 @@ class GeminiProvider(LLMProvider):
             finish_reason = candidates[0].get("finishReason", "unknown")
             logger.warning("Gemini empty parts, finish_reason=%s", finish_reason)
             return None
+
+        usage = result.get("usageMetadata", {})
+        if usage:
+            p_tokens = usage.get("promptTokenCount", 0)
+            c_tokens = usage.get("candidatesTokenCount", 0)
+            self.last_usage = {"prompt_tokens": p_tokens, "completion_tokens": c_tokens}
+            logger.info("Gemini usage: %d prompt, %d completion tokens", p_tokens, c_tokens)
 
         return parts[0].get("text", "")

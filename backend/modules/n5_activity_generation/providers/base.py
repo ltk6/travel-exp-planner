@@ -16,7 +16,7 @@ import abc
 import time
 import random
 from typing import Optional
-from config.settings import setup_logging
+from config.settings import setup_logging, LLM_RETRY_WAIT_BASE
 logger = setup_logging("N5.provider.base")
 
 
@@ -41,6 +41,7 @@ class LLMProvider(abc.ABC):
     name: str = "base"
     model: str = ""
     rpm_limit: int = 0
+    last_usage: Optional[dict] = None  # { "prompt_tokens": int, "completion_tokens": int }
 
     # ── Subclass phải implement ─────────────────────────────────────────────
 
@@ -55,7 +56,7 @@ class LLMProvider(abc.ABC):
         prompt: str,
         system: Optional[str] = None,
         temperature: float = 0.8,
-        max_tokens: int = 8192,
+        max_tokens: int = 4096,
     ) -> Optional[str]:
         """
         Thực hiện 1 HTTP call (không retry).
@@ -78,7 +79,7 @@ class LLMProvider(abc.ABC):
         prompt: str,
         system: Optional[str] = None,
         temperature: float = 0.8,
-        max_tokens: int = 8192,
+        max_tokens: int = 4096,
         retries: int = 2,
     ) -> Optional[str]:
         """
@@ -119,7 +120,8 @@ class LLMProvider(abc.ABC):
             except RetryableError as e:
                 latency_ms = int((time.time() - t0) * 1000)
                 if attempt < retries:
-                    wait = min(30.0, (2 ** attempt) + random.random())
+                    # Dùng cấu hình từ global settings
+                    wait = min(30.0, (LLM_RETRY_WAIT_BASE * (2 ** attempt)) + random.random())
                     logger.warning(
                         "LLM call provider=%s model=%s status=retry_%s "
                         "attempt=%d/%d wait=%.2fs latency_ms=%d",

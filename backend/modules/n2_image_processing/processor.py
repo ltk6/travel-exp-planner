@@ -3,12 +3,13 @@ import base64
 import urllib.request
 from PIL import Image
 import io
-from config.settings import XAI_API_KEY, XAI_VISION_MODEL, XAI_API_URL, setup_logging
+from config.settings import GROQ_API_KEY, GROQ_VISION_MODEL, GROQ_API_URL, USER_AGENT, setup_logging
 logger = setup_logging("N2")
 
 def process_image(data: dict) -> dict:
     """
     Hàm xử lý ảnh duy nhất (Public API) của Module N2
+    Sử dụng Groq Vision (Llama 3.2 Vision)
     Input: {"image": bytes}
     Output: {"img_desc": "..."}
     """
@@ -21,7 +22,7 @@ def process_image(data: dict) -> dict:
         }
 
 
-    logger.info(f"Processing image ({len(image_bytes)} bytes) via Gemini...")
+    logger.info(f"Processing image ({len(image_bytes)} bytes) via Groq Vision...")
 
     try:
         img = Image.open(io.BytesIO(image_bytes))
@@ -55,35 +56,43 @@ def process_image(data: dict) -> dict:
         """
 
         payload = {
-            "model": XAI_VISION_MODEL,
+            "model": GROQ_VISION_MODEL,
             "messages": [{
                 "role": "user",
                 "content": [
                     {
+                        "type": "text",
+                        "text": prompt
+                    },
+                    {
                         "type": "image_url",
                         "image_url": {
-                            "url": f"data:image/jpeg;base64,{img_base64}",
-                            "detail": "high"
+                            "url": f"data:image/jpeg;base64,{img_base64}"
                         }
-                    },
-                    {"type": "text", "text": prompt}
+                    }
                 ]
             }],
-            "max_tokens": 256,
+            "max_tokens": 1000,
         }
 
         req_data = json.dumps(payload).encode("utf-8")
         req = urllib.request.Request(
-            XAI_API_URL, data=req_data,
+            GROQ_API_URL, data=req_data,
             headers={
                 "Content-Type": "application/json",
-                "Authorization": f"Bearer {XAI_API_KEY}",
+                "Authorization": f"Bearer {GROQ_API_KEY}",
+                "User-Agent": USER_AGENT,
             },
             method="POST",
         )
 
         with urllib.request.urlopen(req, timeout=60) as resp:
             result = json.loads(resp.read().decode("utf-8"))
+
+        usage = result.get("usage", {})
+        prompt_tokens = usage.get("prompt_tokens", 0)
+        completion_tokens = usage.get("completion_tokens", 0)
+        logger.info(f"N2 usage: {prompt_tokens} prompt tokens, {completion_tokens} completion tokens.")
 
         choices = result.get("choices", [])
         if not choices:
@@ -95,6 +104,10 @@ def process_image(data: dict) -> dict:
 
         return {"img_desc": text.strip()}
 
+    except urllib.error.HTTPError as e:
+        error_body = e.read().decode("utf-8")
+        logger.error(f"HTTPError in N2 image processing: {e.code} - {error_body}")
+        return {"img_desc": "", "error": f"HTTPError: {e.code} - {error_body}"}
     except Exception as e:
         logger.exception(f"Exception in N2 image processing: {e}")
         return {

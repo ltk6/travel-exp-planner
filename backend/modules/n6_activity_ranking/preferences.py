@@ -15,9 +15,11 @@ Trả về None cho trục nào hoàn toàn không có tín hiệu → scoring s
 để không phạt oan activity (neutral).
 """
 
-from __future__ import annotations
-
 from typing import Dict, List, Optional
+
+from backend.shared.maps.tags import ALL_TAGS
+
+_ALL_TAGS_KEYS = set(ALL_TAGS.keys())
 
 # Điểm add cho mỗi trục khi tag xuất hiện. Dương = kéo preference lên,
 # âm = kéo xuống (nghĩa là user KHÔNG muốn trục đó).
@@ -32,7 +34,7 @@ _TAG_WEIGHTS: Dict[str, Dict[str, float]] = {
     "motorbiking":         {"intensity":  0.8, "physical":  0.5},
     "cycling":             {"intensity":  0.3, "physical":  0.8},
     "surfing":             {"intensity":  0.8, "physical":  0.8},
-    "snorkeling":          {"intensity":  0.5, "physical":  0.5},
+    "scuba diving":        {"intensity":  0.5, "physical":  0.5},
     "kayaking":            {"intensity":  0.5, "physical":  0.7},
     "camping":             {"intensity":  0.5, "physical":  0.5},
     "off the beaten path": {"intensity":  0.5, "social":   -0.3},
@@ -41,13 +43,12 @@ _TAG_WEIGHTS: Dict[str, Dict[str, float]] = {
     "peaceful":  {"intensity": -0.8, "physical": -0.5, "social": -0.3},
     "cozy":      {"intensity": -0.5, "physical": -0.3, "social": -0.2},
     "spa":       {"intensity": -0.8, "physical": -0.8},
-    "relax":     {"intensity": -0.8, "physical": -0.5},
     "boat cruise": {"intensity": -0.3, "physical": -0.5},
     "homestay":  {"intensity": -0.3, "social":    0.3},
 
     # ── Social axis: nhóm / đông người ──────────────────────────
-    "family":       {"social":  0.8, "intensity": -0.3},
-    "group":        {"social":  1.0},
+    "family trip":  {"social":  0.8, "intensity": -0.3},
+    "group tour":   {"social":  1.0},
     "friends trip": {"social":  0.8},
     "vibrant":      {"social":  0.8, "intensity":  0.3},
     "couple":       {"social": -0.2},
@@ -59,6 +60,8 @@ _TAG_WEIGHTS: Dict[str, Dict[str, float]] = {
     "sightseeing":   {"intensity": -0.2, "physical": -0.2},
     "cooking class": {"social":    0.3, "physical": -0.2},
 }
+
+assert set(_TAG_WEIGHTS.keys()).issubset(_ALL_TAGS_KEYS), f"Fabricated tags in _TAG_WEIGHTS: {set(_TAG_WEIGHTS.keys()) - _ALL_TAGS_KEYS}"
 
 # Keywords trong free-text user mô tả, chỉ dùng bonus (nhẹ hơn tag weight).
 _KEYWORD_WEIGHTS: Dict[str, Dict[str, float]] = {

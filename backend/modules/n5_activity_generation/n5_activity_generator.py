@@ -1,58 +1,9 @@
 # =============================================================================
-# n5_activity_generator.py
-# =============================================================================
-# N5 — Activity Generation Module
+# n5_activity_generator.py — N5 Activity Generation
 #
-# Entry point duy nhất: generate_activities(data: dict) -> dict
-# Schema I/O theo đúng __init__.py
-#
-# KIẾN TRÚC (LLM-first):
-#   ┌─────────────────────────────────────────────────────────┐
-#   │  generate_activities(data)                              │
-#   │       │                                                 │
-#   │       ▼                                                 │
-#   │  _parse_input()  → user (text+tags), locations, constraints │
-#   │       │                                                 │
-#   │       ▼  (per location)                                 │
-#   │  _generate_for_location()                               │
-#   │       ├── PRIMARY: generate_from_llm()  10 acts         │
-#   │       │     └── _map_llm_v2_to_output() → N5 schema     │
-#   │       └── FALLBACK: _expand_templates() nếu LLM fail    │
-#   │       ▼                                                 │
-#   │  _build_activity_output()  → schema theo __init__.py    │
-#   │       │                                                 │
-#   │       ▼                                                 │
-#   │  {"activities": [...]}                                  │
-#   └─────────────────────────────────────────────────────────┘
-#
-# LLM-FIRST STRATEGY:
-#   - LLM_QUOTA = 10: xAI Grok sinh 10 activities cá nhân hóa theo user text + tags
-#   - Nếu LLM trả về ≥ 5 valid → sử dụng, bù template nếu thiếu
-#   - Nếu LLM fail → fall back hoàn toàn về template bank
-#
-# OUTPUT theo __init__.py:
-#   {
-#     "activities": [
-#       {
-#         "activity_id": str,
-#         "location_id": str,
-#         "metadata": {
-#           "name": str,
-#           "description": str,
-#           "activity_type": str,
-#           "activity_subtype": str | None,
-#           "intensity": float,
-#           "physical_level": float | None,
-#           "social_level": float | None,
-#           "estimated_duration": float,
-#           "price_level": float,
-#           "indoor_outdoor": str,
-#           "weather_dependent": bool,
-#           "time_of_day_suitable": str | None
-#         }
-#       }
-#     ]
-#   }
+# Entry: generate_activities(data) → {"activities": [...], "llm_meta": [...]}
+# Strategy: LLM-first, template fallback on failure.
+# Schema: matches N5 __init__.py
 # =============================================================================
 
 import random
@@ -76,23 +27,14 @@ except ImportError:
     def generate_from_llm(*args, **kwargs): return None
     def generate_from_llm_with_meta(*args, **kwargs): return None, {}
 
-from config.settings import setup_logging
+from config.settings import setup_logging, LLM_N5_TARGET_COUNT
 logger = setup_logging("N5")
 
 # =============================================================================
 # CONSTANTS
 # =============================================================================
 
-DEFAULT_TARGET_PER_LOCATION = 10    # LLM sinh đủ 10 activities/location
-LLM_QUOTA           = 10            # LLM là primary source
-TEMPLATE_QUOTA      = 0             # Template chỉ dùng khi LLM fail
-TARGET_PER_LOCATION = DEFAULT_TARGET_PER_LOCATION
-
-LLM_MIN_VALID = 5   # Ngưỡng tối thiểu — nếu LLM trả về < 5 valid thì fall back template
-
-# Sightseeing priority boost — activity types được ưu tiên
-SIGHTSEEING_PRIORITY_TYPES = {"nature", "relaxation"}
-SIGHTSEEING_BOOST = 0.15    # Cộng thêm vào sightseeing_priority khi location có tags phù hợp
+LLM_MIN_VALID = 5
 
 
 # =============================================================================
@@ -103,41 +45,7 @@ def generate_activities(data: dict) -> dict:
     """
     N5 — Entry point chính.
 
-    Input schema (từ N4):
-    {
-        "user": {
-            "text": str | None,
-            "img_desc": str | None,
-            "tags": list[str] | None
-        },
-        "locations": [
-            {
-                "location_id": str,
-                "metadata": {
-                    "name": str | None,
-                    "description": str | None,
-                    "tags": list[str] | None
-                }
-            }
-        ],
-        "constraints": {
-            "budget": float | None,
-            "duration": float | None,       # tổng số ngày
-            "people": int | None,
-            "time_of_day": str | None
-        }
-    }
-
-    Output schema (sang N6):
-    {
-        "activities": [
-            {
-                "activity_id": str,
-                "location_id": str,
-                "metadata": { ... }         # theo __init__.py
-            }
-        ]
-    }
+    Input/output schema: see __init__.py
     """
     user, locations, constraints, target_count = _parse_input(data)
     provider = data.get("llm_provider") or None
@@ -185,7 +93,7 @@ def _parse_input(data: dict) -> Tuple[Dict, List[Dict], Dict, int]:
     locations   = data.get("locations", []) or []
     constraints = data.get("constraints", {}) or {}
     
-    target_count = data.get("target_count", DEFAULT_TARGET_PER_LOCATION)
+    target_count = data.get("target_count", LLM_N5_TARGET_COUNT)
 
     # Normalize user tags
     user_tags = user.get("tags") or []
@@ -256,43 +164,16 @@ def _get_profile(loc_name: str, loc_tags: List[str], loc_desc: str) -> Dict:
 # LLM V2 → N5 OUTPUT SCHEMA MAPPING
 # =============================================================================
 
-def _cost_to_price_level(cost: int) -> float:
-    """Chuyển cost VNĐ → price_level 1–5 theo mặt bằng giá Việt Nam."""
-    if cost == 0:           return 1.0
-    if cost < 50_000:       return 1.5
-    if cost < 150_000:      return 2.0
-    if cost < 500_000:      return 3.0
-    if cost < 1_500_000:    return 4.0
-    return 5.0
-
-
-def _best_time_to_suitable(best_time: List[str]) -> str:
-    """Chuyển danh sách best_time → chuỗi time_of_day_suitable."""
-    if not best_time or len(best_time) >= 3:
-        return "anytime"
-    if best_time == ["morning"]:
-        return "morning"
-    if best_time == ["afternoon"]:
-        return "afternoon"
-    if best_time == ["evening"]:
-        return "evening"
-    return "anytime"
-
 
 _TAG_TO_TYPE: List[Tuple[str, set]] = [
-    ("food",        {"food", "cuisine", "local_food", "street_food"}),
-    ("adventure",   {"adventure", "trekking", "kayak", "diving", "snorkeling", "cycling", "motorbiking", "camping", "climbing", "road_trip"}),
-    ("culture",     {"culture", "history", "heritage", "temple", "architecture", "spiritual", "tradition", "ethnic", "art", "craft"}),
-    ("nightlife",   {"nightlife", "music", "entertainment", "fun"}),
-    ("shopping",    {"shopping", "market"}),
-    ("relaxation",  {"relax", "spa", "sunset", "sunrise", "romantic"}),
-    ("nature",      {"nature", "wildlife", "eco", "forest", "mountain", "waterfall", "scenic", "flower", "lake", "river", "beach", "sea", "island", "cave", "sightseeing"}),
+    ("food",        {"local cuisine", "street food", "fine dining", "cooking class"}),
+    ("adventure",   {"trekking", "kayaking", "scuba diving", "adventure", "motorbiking", "cycling", "camping", "rock climbing", "caving"}),
+    ("culture",     {"history", "temple", "architecture", "traditional music", "heritage", "ethnic minority", "craft village", "spiritual"}),
+    ("nightlife",   {"nightlife", "rooftop bar", "night market"}),
+    ("shopping",    {"shopping", "local market"}),
+    ("relaxation",  {"peaceful", "spa", "hot spring", "yoga retreat", "meditation"}),
+    ("nature",      {"wildlife", "picturesque", "national park", "waterfall", "beach", "cave", "mountain", "island"}),
 ]
-
-_OUTDOOR_TAGS = {"nature", "beach", "sea", "trekking", "mountain", "waterfall", "cycling", "kayak", "camping", "scenic", "eco", "wildlife", "island", "cave", "river", "lake", "motorbiking", "road_trip", "snorkeling", "diving", "sunrise", "sunset"}
-_INDOOR_TAGS  = {"shopping", "spa", "heritage", "architecture", "art", "craft", "education", "spiritual"}
-_WEATHER_TAGS = {"beach", "sea", "diving", "snorkeling", "kayak", "trekking", "cycling", "camping", "sunrise", "sunset", "scenic", "nature", "wildlife", "outdoor"}
-
 
 def _tags_to_activity_type(tags: set) -> str:
     for type_name, type_tags in _TAG_TO_TYPE:
@@ -301,59 +182,26 @@ def _tags_to_activity_type(tags: set) -> str:
     return "nature"
 
 
-def _tags_to_indoor_outdoor(tags: set) -> str:
-    outdoor = len(tags & _OUTDOOR_TAGS)
-    indoor  = len(tags & _INDOOR_TAGS)
-    if outdoor > indoor:  return "outdoor"
-    if indoor  > outdoor: return "indoor"
-    return "both"
-
-
-def _tags_to_weather_dependent(tags: set) -> bool:
-    return bool(tags & _WEATHER_TAGS)
-
-
-def _difficulty_to_intensity(difficulty: str) -> float:
-    return {"easy": 0.25, "medium": 0.55, "hard": 0.85}.get(difficulty, 0.4)
-
-
-def _suitable_for_to_social_level(suitable_for: List[str]) -> float:
-    """Tính social_level từ suitable_for của LLM."""
-    if not suitable_for:
-        return 0.5
-    group_tags      = {"friends", "family"}
-    individual_tags = {"solo"}
-    has_group  = bool(set(suitable_for) & group_tags)
-    has_solo   = bool(set(suitable_for) & individual_tags)
-    if has_group and not has_solo:
-        return 0.75
-    if has_solo and not has_group:
-        return 0.15
-    return 0.5
-
-
 def _map_llm_v2_to_output(act: Dict, location_id: str, idx: int) -> Dict:
     """Chuyển đổi activity schema v2 từ LLM → N5 output schema."""
-    tags        = set(t.lower().strip() for t in act.get("tags", []))
-    difficulty  = act.get("difficulty", "easy")
-    intensity   = _difficulty_to_intensity(difficulty)
-    best_time   = act.get("best_time", [])
-    suitable    = act.get("suitable_for", [])
+    tags = set(t.lower().strip() for t in act.get("tags", []))
+    name = act.get("name", "")
+
+    # Lấy trực tiếp từ LLM, fallback về 0.5 nếu thiếu
+    intensity      = float(act.get("intensity", 0.5))
+    physical_level = float(act.get("physical_level", 0.5))
+    social_level   = float(act.get("social_level", 0.5))
 
     return _build_activity_output(
-        activity_id          = _make_id(location_id, f"llm_{idx:03d}"),
-        location_id          = location_id,
-        name                 = act.get("name", ""),
-        description          = act.get("description", ""),
-        activity_type        = _tags_to_activity_type(tags),
-        activity_subtype     = None,
-        intensity            = intensity,
-        physical_level       = min(1.0, intensity + 0.1),
-        social_level         = _suitable_for_to_social_level(suitable),
-        indoor_outdoor       = _tags_to_indoor_outdoor(tags),
-        weather_dependent    = _tags_to_weather_dependent(tags),
-        time_of_day_suitable = _best_time_to_suitable(best_time),
-        tags                 = list(tags),
+        activity_id    = _make_id(location_id, "act", name),
+        location_id    = location_id,
+        name           = name,
+        description    = act.get("description", ""),
+        activity_type  = _tags_to_activity_type(tags),
+        intensity      = intensity,
+        physical_level = physical_level,
+        social_level   = social_level,
+        tags           = list(tags),
     )
 
 
@@ -378,7 +226,7 @@ def _generate_for_location(
       3. Nếu LLM fail hoặc < LLM_MIN_VALID → fall back hoàn toàn về template
 
     provider: override LLM_PROVIDER runtime (UI chọn). None = dùng env.
-    meta_out: nếu truyền dict, sẽ được điền provider_used/cache_hit/latency_ms.
+    meta_out: nếu truyền dict, sẽ được điền provider_used/latency_ms.
     """
     loc_tags  = profile.get("tags", [])
     user_tags = user.get("tags", [])
@@ -394,8 +242,7 @@ def _generate_for_location(
             location_description = profile.get("description", ""),
             location_tags        = loc_tags,
             user_tags            = user_tags,
-            num_activities       = LLM_QUOTA,
-            schema_v2            = True,
+            num_activities       = target_count,
             user_text            = user_text,
             provider             = provider,
         )
@@ -419,7 +266,7 @@ def _generate_for_location(
                 user_tags     = user_tags,
                 constraints   = constraints,
                 target_count  = target_count - len(combined),
-                start_index   = len(combined),
+                start_index   = target_count,
             )
             combined.extend(extra)
         return combined[:target_count]
@@ -445,7 +292,7 @@ def _generate_for_location(
             user_tags     = user_tags,
             constraints   = constraints,
             target_count  = target_count - len(combined),
-            start_index   = len(combined),
+            start_index   = target_count,
             force_diverse = True,
         )
         combined.extend(extra)
@@ -638,23 +485,15 @@ def _instantiate_template(
     if modifier:
         intensity = max(0.0, min(1.0, intensity + modifier.get("intensity_delta", 0.0)))
 
-    time_of_day = template.get("time_of_day_suitable", "anytime")
-    if modifier and modifier.get("time_of_day_suitable"):
-        time_of_day = modifier["time_of_day_suitable"]
-
     return _build_activity_output(
-        activity_id          = _make_id(location_id, f"tmpl_{activity_idx:04d}"),
-        location_id          = location_id,
-        name                 = name,
-        description          = description,
-        activity_type        = template["activity_type"],
-        activity_subtype     = template.get("activity_subtype"),
-        intensity            = intensity,
-        physical_level       = rand_in(p_lo, p_hi),
-        social_level         = rand_in(s_lo, s_hi),
-        indoor_outdoor       = template["indoor_outdoor"],
-        weather_dependent    = template["weather_dependent"],
-        time_of_day_suitable = time_of_day,
+        activity_id    = _make_id(location_id, f"tmpl_{activity_idx:04d}"),
+        location_id    = location_id,
+        name           = name,
+        description    = description,
+        activity_type  = template["activity_type"],
+        intensity      = intensity,
+        physical_level = rand_in(p_lo, p_hi),
+        social_level   = rand_in(s_lo, s_hi),
     )
 
 
@@ -668,7 +507,7 @@ def _ensure_sightseeing_ratio(
     location_name: str,
     profile:       Dict,
     target_ratio:  float = 0.40,
-    target_total:  int   = TARGET_PER_LOCATION,
+    target_total:  int   = LLM_N5_TARGET_COUNT,
 ) -> List[Dict]:
     """
     Đảm bảo ít nhất target_ratio (40%) activities trong target_total đầu tiên là sightseeing.
@@ -715,21 +554,19 @@ def _ensure_sightseeing_ratio(
 
 def _is_sightseeing(activity: Dict) -> bool:
     """Xác định activity có phải sightseeing hay không."""
-    meta      = activity.get("metadata", {})
-    a_type    = meta.get("activity_type", "")
-    a_subtype = (meta.get("activity_subtype") or "").lower()
-    name      = (meta.get("name") or "").lower()
+    meta   = activity.get("metadata", {})
+    a_type = meta.get("activity_type", "")
+    tags   = set(meta.get("tags") or [])
+    name   = (meta.get("name") or "").lower()
 
     if a_type == "nature":
         return True
 
-    sightseeing_subtypes = {
-        "sunrise_viewing", "sunset_viewing", "panorama_viewpoint",
-        "landscape_photography", "flower_viewing", "stargazing",
-        "nature_walk", "boat_sightseeing", "eco_tour",
-        "nature_photography", "scenic_walk", "viewpoint",
+    sightseeing_tags = {
+        "picturesque", "scenic", "national park", "waterfall", "mountain",
+        "landscape photography", "wildlife", "cave", "island"
     }
-    if a_subtype in sightseeing_subtypes:
+    if tags & sightseeing_tags:
         return True
 
     sightseeing_keywords = ["ngắm", "cảnh", "panorama", "view", "scenic", "hoàng hôn", "bình minh"]
@@ -743,46 +580,39 @@ def _is_sightseeing(activity: Dict) -> bool:
 # =============================================================================
 
 def _build_activity_output(
-    activity_id:          str,
-    location_id:          str,
-    name:                 str,
-    description:          str,
-    activity_type:        str,
-    activity_subtype:     Optional[str],
-    intensity:            float,
-    physical_level:       Optional[float],
-    social_level:         Optional[float],
-    indoor_outdoor:       str,
-    weather_dependent:    bool,
-    time_of_day_suitable: Optional[str],
-    tags:                 Optional[List[str]] = None,
+    activity_id:    str,
+    location_id:    str,
+    name:           str,
+    description:    str,
+    activity_type:  str,
+    intensity:      float,
+    physical_level: Optional[float],
+    social_level:   Optional[float],
+    tags:           Optional[List[str]] = None,
 ) -> Dict:
     """Tạo output activity theo schema chuẩn."""
     return {
         "activity_id": activity_id,
         "location_id": location_id,
         "metadata": {
-            "name":                 name,
-            "description":          description,
-            "activity_type":        activity_type,
-            "activity_subtype":     activity_subtype,
-            "intensity":            round(float(intensity), 2),
-            "physical_level":       round(float(physical_level), 2) if physical_level is not None else None,
-            "social_level":         round(float(social_level), 2)   if social_level   is not None else None,
-            "indoor_outdoor":       indoor_outdoor,
-            "weather_dependent":    bool(weather_dependent),
-            "time_of_day_suitable": time_of_day_suitable,
-
-            # ─── SEMANTIC TAGS ─────────────────────────────
-            "tags":                 sorted(tags) if tags else [],
+            "name":          name,
+            "description":   description,
+            "tags":          sorted(tags) if tags else [],
+            "activity_type": activity_type,
+            "intensity":     round(float(intensity), 2),
+            "physical_level": round(float(physical_level), 2) if physical_level is not None else None,
+            "social_level":  round(float(social_level), 2) if social_level is not None else None,
         }
     }
 
 
-def _make_id(location_id: str, suffix: str) -> str:
-    """Tạo ID duy nhất."""
-    raw = f"{location_id}_{suffix}"
-    return hashlib.md5(raw.encode()).hexdigest()[:12]
+def _make_id(location_id: str, prefix: str, name: str = "") -> str:
+    """Tạo activity_id duy nhất, có hash tên để tránh trùng lặp."""
+    if name:
+        # Lấy 6 ký tự đầu của md5 hash tên
+        h = hashlib.md5(name.encode()).hexdigest()[:6]
+        return f"{prefix}_{h}"
+    return f"{prefix}_{random.getrandbits(16):04x}"
 
 
 def _deduplicate(activities: List[Dict]) -> List[Dict]:

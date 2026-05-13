@@ -1,5 +1,13 @@
 import os
+import sys
 from dotenv import load_dotenv
+
+# ── Project Paths ──────────────────────────────────────────────────
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+# Tự động thêm project root vào sys.path khi settings được import (hỗ trợ test files)
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
 load_dotenv(encoding="utf-8-sig")
 
@@ -25,7 +33,8 @@ GEMINI_API_BASE   = os.getenv("GEMINI_API_BASE", "https://generativelanguage.goo
 GROQ_MODEL_NAME = os.getenv("GROQ_MODEL_NAME", "meta-llama/llama-4-scout-17b-16e-instruct")
 GROQ_API_URL    = os.getenv("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions")
 
-XAI_VISION_MODEL = os.getenv("XAI_VISION_MODEL", "grok-2-vision-1212")
+GROQ_VISION_MODEL = os.getenv("GROQ_VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
+XAI_VISION_MODEL = os.getenv("XAI_VISION_MODEL", "grok-vision-beta")
 XAI_API_URL      = os.getenv("XAI_API_URL", "https://api.x.ai/v1/chat/completions")
 
 USER_AGENT = os.getenv("USER_AGENT", "travel-exp-planner/1.0")
@@ -34,6 +43,9 @@ USER_AGENT = os.getenv("USER_AGENT", "travel-exp-planner/1.0")
 LLM_ACTIVITIES_PER_CALL = int(os.getenv("LLM_ACTIVITIES_PER_CALL", "10"))
 LLM_N5_TARGET_COUNT     = int(os.getenv("LLM_N5_TARGET_COUNT", "10"))
 ENABLE_LLM_CACHE        = os.getenv("ENABLE_LLM_CACHE", "False").lower() == "true"
+
+LLM_MAX_RETRIES         = int(os.getenv("LLM_MAX_RETRIES", "2"))
+LLM_RETRY_WAIT_BASE     = float(os.getenv("LLM_RETRY_WAIT_BASE", "2.0"))
 
 # ── Recommendation Limits (N4/N6) ─────────────────────────────────
 TOP_K_LOCATIONS  = int(os.getenv("TOP_K_LOCATIONS", "5"))

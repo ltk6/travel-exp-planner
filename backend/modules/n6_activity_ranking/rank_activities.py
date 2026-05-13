@@ -138,18 +138,17 @@ def _attribute_score(
 # =============================================================================
 
 _REASON_BY_TYPE = {
-    "nature":     ["Khám phá cảnh quan {location_hint}tuyệt đẹp", "Hòa mình vào thiên nhiên {intensity_hint}đậm chất địa phương"],
+    "nature":     ["Khám phá cảnh quan tuyệt đẹp", "Hòa mình vào thiên nhiên {intensity_hint}đậm chất địa phương"],
     "adventure":  ["Thử thách bản thân với hoạt động {intensity_hint}đầy phấn khích", "Trải nghiệm cảm giác mạnh {intensity_hint}giữa thiên nhiên"],
     "food":       ["Thưởng thức tinh túy ẩm thực đặc trưng", "Khám phá hương vị địa phương độc đáo"],
-    "culture":    ["Tìm hiểu chiều sâu văn hóa bản địa {location_hint}", "Trải nghiệm di sản và phong tục truyền thống"],
-    "relaxation": ["Phút giây thư giãn {time_hint}nhẹ nhàng", "Tìm lại sự cân bằng trong không gian yên bình"],
-    "nightlife":  ["Sôi động và lung linh về đêm", "Khám phá nhịp sống {location_hint}về đêm đầy sắc màu"],
+    "culture":    ["Tìm hiểu chiều sâu văn hóa bản địa", "Trải nghiệm di sản và phong tục truyền thống"],
+    "relaxation": ["Phút giây thư giãn nhẹ nhàng", "Tìm lại sự cân bằng trong không gian yên bình"],
+    "nightlife":  ["Sôi động và lung linh về đêm", "Khám phá nhịp sống về đêm đầy sắc màu"],
     "shopping":   ["Săn tìm những món quà lưu niệm độc bản", "Ghé thăm không gian mua sắm đậm chất địa phương"],
 }
 _REASON_DEFAULT = ["Lựa chọn tuyệt vời cho hành trình của bạn", "Trải nghiệm thú vị không nên bỏ lỡ"]
 
 _INTENSITY_LABELS = [(0.7, "mạnh mẽ"), (0.4, "vừa sức"), (0.0, "nhẹ nhàng")]
-_TIME_LABELS      = {"morning": "buổi sáng ", "afternoon": "buổi chiều ", "evening": "buổi tối "}
 
 
 def _pick(labels, value):
@@ -160,23 +159,14 @@ def _pick(labels, value):
 
 
 def _build_reason(metadata: Dict, sem_score: float, attr_score: float) -> str:
-    activity_type = metadata.get("activity_type", "nature")
-    name_act      = metadata.get("name", "Trải nghiệm")
-    intensity     = float(metadata.get("intensity") or 0.5)
-    tod           = metadata.get("time_of_day_suitable", "anytime")
-    indoor_out    = metadata.get("indoor_outdoor", "outdoor")
-
+    activity_type  = metadata.get("activity_type", "nature")
+    name_act       = metadata.get("name", "Trải nghiệm")
+    intensity      = float(metadata.get("intensity") or 0.5)
     intensity_hint = _pick(_INTENSITY_LABELS, intensity) + " "
-    time_hint      = _TIME_LABELS.get(tod, "")
-    location_hint  = "" if indoor_out == "indoor" else "ngoài trời "
 
     templates = _REASON_BY_TYPE.get(activity_type, _REASON_DEFAULT)
     idx = int(hashlib.md5(name_act.encode()).hexdigest(), 16) % len(templates)
-    body = templates[idx].format(
-        intensity_hint=intensity_hint,
-        time_hint=time_hint,
-        location_hint=location_hint,
-    )
+    body = templates[idx].format(intensity_hint=intensity_hint)
 
     highlights = []
     if attr_score >= 0.8:
@@ -256,7 +246,7 @@ def rank_activities(data: Dict) -> Dict:
         else:
             # Tight cluster — trải đều từ HIGH xuống LOW, clamp trong [0,1]
             n = len(scored)
-            step = (HIGH - LOW) / n if n > 1 else 0.0
+            step = (HIGH - LOW) / (n - 1) if n > 1 else 0.0
             for i, a in enumerate(scored):
                 a["score"] = round(max(0.0, min(1.0, HIGH - i * step)), 4)
 
