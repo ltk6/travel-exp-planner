@@ -177,7 +177,6 @@ h1, h2, h3, h4, h5, h6, p, label, .stMarkdown, .stText {{
     padding: 0.2rem 0.55rem;
     border-radius: 999px;
 }}
-.tx-meta-pill.cache  {{ background: #1f1015; color: {COLORS["primary"]}; border: 1px solid {COLORS["primary"]}; }}
 .tx-meta-pill.gemini {{ background: {COLORS["primary_dim"]}; color: white; }}
 
 .tx-skeleton {{
@@ -198,11 +197,8 @@ def render_activities_ui(activities_data: dict):
     acts = activities_data.get("activities", [])
     llm_meta = activities_data.get("meta", {})
     meta_html = ""
-    if llm_meta.get("cache_hit"):
-        meta_html = '<div class="tx-meta-row"><span class="tx-meta-pill cache">⚡ cached instantly</span></div>'
-    else:
-        p = (llm_meta.get("provider_used") or "ai").lower()
-        meta_html = f'<div class="tx-meta-row"><span class="tx-meta-pill gemini">✦ {p}</span></div>'
+    p = (llm_meta.get("provider_used") or "ai").lower()
+    meta_html = f'<div class="tx-meta-row"><span class="tx-meta-pill gemini">✦ {p}</span></div>'
 
     if not acts:
         st.markdown(meta_html + '<div class="tx-empty">Không tìm thấy hoạt động phù hợp</div>', unsafe_allow_html=True)

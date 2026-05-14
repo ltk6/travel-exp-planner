@@ -9,7 +9,6 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 load_dotenv(encoding="utf-8-sig", override=True)
 
 # ── API Keys ──────────────────────────────────────────────────────
-GEMINI_API_KEY   = os.getenv("GEMINI_API_KEY")
 GROQ_API_KEY     = os.getenv("GROQ_API_KEY")
 XAI_API_KEY      = os.getenv("XAI_API_KEY")
 INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "")
@@ -17,30 +16,30 @@ INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "")
 # ── Model Settings ───────────────────────────────────────────────
 EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", "BAAI/bge-m3")
 
-GEMINI_MODEL_NAME = os.getenv("GEMINI_MODEL_NAME", "gemini-2.0-flash")
-GEMINI_API_BASE   = os.getenv("GEMINI_API_BASE", "https://generativelanguage.googleapis.com/v1beta/models")
 
 GROQ_MODEL_NAME   = os.getenv("GROQ_MODEL_NAME", "llama-3.1-8b-instant")
 GROQ_VISION_MODEL = os.getenv("GROQ_VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
 GROQ_API_URL      = os.getenv("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions")
 
 GROQ_MODELS = {
-    "groq_8b":    os.getenv("GROQ_8B_MODEL", "llama-3.1-8b-instant"),
-    "groq_70b":   os.getenv("GROQ_70B_MODEL", "llama-3.3-70b-versatile"),
-    "groq_scout": os.getenv("GROQ_SCOUT_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct"),
+    "gpt_120b":      os.getenv("GROQ_GPT_120B", "openai/gpt-oss-120b"),
+    "groq_70b":      os.getenv("GROQ_70B_MODEL", "llama-3.3-70b-versatile"),
+    "qwen_32b":      os.getenv("GROQ_QWEN_32B", "qwen/qwen3-32b"),
+    "groq_8b":       os.getenv("GROQ_8B_MODEL", "llama-3.1-8b-instant"),
+    "gpt_20b":       os.getenv("GROQ_GPT_20B", "openai/gpt-oss-20b"),
+    "gpt_safeguard": os.getenv("GROQ_GPT_SAFEGUARD", "openai/gpt-oss-safeguard-20b"),
+    "groq_scout":    os.getenv("GROQ_SCOUT_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct"),
 }
 
 # ── LLM Provider Routing (N5) ─────────────────────────────────────
-# Primary provider: "gemini" or "groq"
-LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini")
-# Fallback chain, comma separated. Empty = infer from registry.
-LLM_FALLBACK = os.getenv("LLM_FALLBACK", "groq_8b,groq_70b,groq_scout")
+# LLM Chain: Strict Quality Ranking (120b > 70b > 32b > 8b > 20b > Safeguard > Scout)
+LLM_CHAIN = os.getenv("LLM_CHAIN", "gpt_120b,groq_70b,qwen_32b,groq_8b,gpt_20b,gpt_safeguard,groq_scout")
 
 # ── Activity Generation Limits (N5) ───────────────────────────────
 LLM_ACTIVITIES_PER_CALL = int(os.getenv("LLM_ACTIVITIES_PER_CALL", "10"))
 LLM_N5_TARGET_COUNT     = int(os.getenv("LLM_N5_TARGET_COUNT", "10"))
 LLM_MAX_RETRIES         = int(os.getenv("LLM_MAX_RETRIES", "2"))
-LLM_RETRY_WAIT_BASE     = float(os.getenv("LLM_RETRY_WAIT_BASE", "2.0"))
+LLM_RETRY_WAIT_BASE     = float(os.getenv("LLM_RETRY_WAIT_BASE", "5.0"))
 
 # ── Recommendation Limits (N4/N6) ─────────────────────────────────
 TOP_K_LOCATIONS  = int(os.getenv("TOP_K_LOCATIONS", "5"))

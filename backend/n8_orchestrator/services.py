@@ -15,16 +15,102 @@ from modules.n6_activity_ranking.rank_activities import rank_activities
 from shared.weights import get_weights
 
 # ── Location Caching ──
-_CACHED_LOCATIONS_DATA = None
+import os
+import json
+import base64
+from n3_database.db_manager import get_db_fingerprint
 
-def get_all_locations_cached():
-    """Fetch locations once and cache them in memory for the life of the process."""
-    global _CACHED_LOCATIONS_DATA
-    if _CACHED_LOCATIONS_DATA is None:
-        logger.info("First request: Fetching and caching locations from N3...")
-        db_result = get_all_locations()
-        _CACHED_LOCATIONS_DATA = db_result.get("data", []) if isinstance(db_result, dict) else []
+_CACHED_LOCATIONS_DATA = None
+_CACHED_FINGERPRINT = None
+CACHE_DIR = os.path.dirname(__file__)
+CACHE_FILE = os.path.join(CACHE_DIR, "location_cache.json")
+IMG_CACHE_DIR = os.path.join(CACHE_DIR, "image_cache")
+
+# Đảm bảo thư mục cache ảnh tồn tại
+os.makedirs(IMG_CACHE_DIR, exist_ok=True)
+
+def _save_images_to_local_cache(location_id, images_b64):
+    """Lưu danh sách ảnh Base64 từ N3 thành file cục bộ của N8."""
+    saved_paths = []
+    for i, b64_data in enumerate(images_b64):
+        try:
+            # Tách header data:image/jpeg;base64, nếu có
+            if "," in b64_data:
+                b64_data = b64_data.split(",")[1]
+            
+            file_name = f"{location_id}_{i+1}.jpg"
+            file_path = os.path.join(IMG_CACHE_DIR, file_name)
+            
+            with open(file_path, "wb") as f:
+                f.write(base64.b64decode(b64_data))
+            saved_paths.append(file_path)
+        except Exception as e:
+            logger.error(f"Lỗi lưu ảnh cache cho {location_id}: {e}")
+    return saved_paths
+
+def get_all_locations_cached(force_refresh=False):
+    """
+    Hybrid Caching với Image Persistence:
+    1. Check Fingerprint.
+    2. Nếu Miss: Fetch từ N3 (kèm ảnh) -> Lưu ảnh ra File -> Lưu Metadata ra JSON.
+    3. Nếu Hit: Load Metadata từ JSON -> Trả về (Ảnh sẽ được load từ File khi cần).
+    """
+    global _CACHED_LOCATIONS_DATA, _CACHED_FINGERPRINT
+    current_fp = get_db_fingerprint()
+    
+    if _CACHED_LOCATIONS_DATA is not None and current_fp == _CACHED_FINGERPRINT and not force_refresh:
+        return _CACHED_LOCATIONS_DATA
+
+    if os.path.exists(CACHE_FILE) and not force_refresh:
+        try:
+            with open(CACHE_FILE, "r", encoding="utf-8") as f:
+                obj = json.load(f)
+                if obj.get("fingerprint") == current_fp:
+                    logger.info("✅ N8 Cache Hit: Loading metadata from local file...")
+                    _CACHED_LOCATIONS_DATA = obj.get("data", [])
+                    _CACHED_FINGERPRINT = current_fp
+                    return _CACHED_LOCATIONS_DATA
+        except: pass
+
+    # SYNC MỚI: Lấy cả ảnh từ N3
+    logger.info(f"🔄 N8 Syncing from N3 (Remote Simulation)... Fingerprint: {current_fp}")
+    db_result = get_all_locations(include_images=True) # Lấy ảnh qua "Service"
+    raw_data = db_result.get("data", [])
+    
+    processed_data = []
+    for loc in raw_data:
+        loc_id = loc.get("location_id")
+        imgs = loc.get("images", [])
+        
+        # Tự N8 lưu ảnh vào "kho" riêng của mình
+        _save_images_to_local_cache(loc_id, imgs)
+        
+        # Metadata trong RAM không giữ Base64 để tiết kiệm bộ nhớ
+        loc_copy = loc.copy()
+        if "images" in loc_copy: del loc_copy["images"] 
+        processed_data.append(loc_copy)
+
+    # Cập nhật Cache
+    _CACHED_LOCATIONS_DATA = processed_data
+    _CACHED_FINGERPRINT = current_fp
+    with open(CACHE_FILE, "w", encoding="utf-8") as f:
+        json.dump({"fingerprint": current_fp, "data": processed_data}, f, ensure_ascii=False)
+        
     return _CACHED_LOCATIONS_DATA
+
+def _get_images_from_local_cache(location_id):
+    """Đọc ảnh từ kho cache riêng của N8 và chuyển thành Base64."""
+    encoded_images = []
+    for i in range(1, 4):
+        file_path = os.path.join(IMG_CACHE_DIR, f"{location_id}_{i}.jpg")
+        if os.path.exists(file_path):
+            try:
+                with open(file_path, "rb") as f:
+                    b64_str = base64.b64encode(f.read()).decode("utf-8")
+                    encoded_images.append(f"data:image/jpeg;base64,{b64_str}")
+            except Exception as e:
+                logger.warning(f"Lỗi đọc ảnh cache {file_path}: {e}")
+    return encoded_images
 
 # ── Core Services ──
 
@@ -84,12 +170,7 @@ def recommend_service(body):
             }
         })
 
-        loc_map[loc_id] = {
-            "vectors": db_vectors,
-            "metadata": loc.get("metadata", {}),
-            "geo": loc.get("geo", {}),
-            "images": loc.get("images", [])[:3],
-        }
+        loc_map[loc_id] = loc # Store ref to metadata/geo
 
     # ── N4 — Rank locations ────────────────────
     n4_result = rank_locations({
@@ -102,18 +183,23 @@ def recommend_service(body):
 
     ranked = n4_result.get("locations", [])
     
+    # ── Final Enrichment (Attach images from N8's LOCAL cache) ──
+    final_locations = []
+    for r in ranked:
+        loc_id = r["location_id"]
+        base_loc = loc_map.get(loc_id, {})
+        
+        final_locations.append({
+            "location_id": loc_id,
+            "score": r.get("score", 0),
+            "reason": r.get("reason", ""),
+            "metadata": base_loc.get("metadata", {}),
+            "geo": base_loc.get("geo", {}),
+            "images": _get_images_from_local_cache(loc_id) # Đọc từ cache riêng của N8
+        })
+
     response = {
-        "locations": [
-            {
-                "location_id": r["location_id"],
-                "score": r.get("score", 0),
-                "reason": r.get("reason", ""),
-                "metadata": loc_map.get(r["location_id"], {}).get("metadata", {}),
-                "geo": loc_map.get(r["location_id"], {}).get("geo", {}),
-                "images": loc_map.get(r["location_id"], {}).get("images", []),
-            }
-            for r in ranked
-        ],
+        "locations": final_locations,
     }
 
     if API_DEBUG:

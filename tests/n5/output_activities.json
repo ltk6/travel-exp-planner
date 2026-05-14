@@ -1,186 +1,185 @@
 {
   "activities": [
     {
-      "activity_id": "act_15b838",
+      "activity_id": "act_22fbe4",
       "location_id": "loc_015",
       "metadata": {
-        "name": "Chinh phục Mây Trôi Bãi Sao",
-        "description": "Sáng sớm, bạn sẽ được mời đến bãi biển Bãi Sao trước khi mặt trời mọc. Sau đó, bạn sẽ bắt đầu hành trình khám phá những đám mây trên cao trong không gian rộng lớn của biển Đông. Với cảm giác bay lượn, bạn sẽ được tận hưởng vẻ đẹp tuyệt mỹ của thiên nhiên.",
+        "name": "Lướt Kayak Đôi Bên Bờ Cát Trắng",
+        "description": "Bạn chèo kayak nhẹ nhàng dọc bờ biển, cảm nhận làn gió biển thổi qua tóc và tiếng sóng vỗ rì rào. Đôi khi dừng lại để ngắm những vỏ sò lấp lánh trên cát, rồi tiếp tục khám phá những vịnh nhỏ chưa được đông du khách. Hướng dẫn viên địa phương sẽ chỉ cho bạn những lối đi an toàn và những góc chụp ảnh tuyệt đẹp. Đó là trải nghiệm vừa vận động vừa thư giãn, phù hợp cho cặp đôi hoặc nhóm bạn.",
         "tags": [
           "adventure",
           "beach",
-          "cloud sea",
-          "peaceful",
+          "kayaking",
           "wildlife"
         ],
         "activity_type": "adventure",
-        "intensity": 0.8,
-        "physical_level": 0.2,
-        "social_level": 0.5
-      }
-    },
-    {
-      "activity_id": "act_fe566e",
-      "location_id": "loc_015",
-      "metadata": {
-        "name": "Cùng Người Chài Cùng Hải Sản",
-        "description": "Một ngày ở Bãi Sao, bạn sẽ được mời cùng người chài lên tàu đánh bắt hải sản. Sau đó, bạn sẽ được thưởng thức những món hải sản tươi sống vừa được bắt được.",
-        "tags": [
-          "adventure",
-          "local cuisine",
-          "peaceful",
-          "seafood",
-          "wildlife"
-        ],
-        "activity_type": "food",
         "intensity": 0.6,
-        "physical_level": 0.4,
-        "social_level": 0.8
+        "physical_level": 0.5,
+        "social_level": 0.4
       }
     },
     {
-      "activity_id": "act_04e55b",
+      "activity_id": "act_d887aa",
       "location_id": "loc_015",
       "metadata": {
-        "name": "Chụp Ảnh Cảnh Trước Mặt Trời Mọc",
-        "description": "Sáng sớm, bạn sẽ được mời đến bãi biển Bãi Sao trước khi mặt trời mọc. Với ánh sáng vàng ấm áp, bạn sẽ được chụp những bức ảnh tuyệt đẹp trước mặt trời mọc.",
-        "tags": [
-          "beach",
-          "peaceful",
-          "photography",
-          "wildlife"
-        ],
-        "activity_type": "relaxation",
-        "intensity": 0.3,
-        "physical_level": 0.1,
-        "social_level": 0.6
-      }
-    },
-    {
-      "activity_id": "act_189e1c",
-      "location_id": "loc_015",
-      "metadata": {
-        "name": "Tắm Nước Bãi Sao Trong Ngày",
-        "description": "Ngày nào cũng là một ngày tuyệt đẹp để tắm nước Bãi Sao. Với nước biển xanh ngọc và cát trắng mịn, bạn sẽ được tận hưởng một ngày tắm biển tuyệt vời.",
-        "tags": [
-          "beach",
-          "peaceful",
-          "swimming",
-          "wildlife"
-        ],
-        "activity_type": "relaxation",
-        "intensity": 0.2,
-        "physical_level": 0.3,
-        "social_level": 0.7
-      }
-    },
-    {
-      "activity_id": "act_801a8f",
-      "location_id": "loc_015",
-      "metadata": {
-        "name": "Thưởng Thức Hải Sản Tại Nhà Hàng Bãi Sao",
-        "description": "Một ngày ở Bãi Sao, bạn sẽ được thưởng thức những món hải sản tươi sống tại nhà hàng Bãi Sao. Với hương vị tuyệt đẹp của hải sản và không khí tuyệt vời của bãi biển.",
-        "tags": [
-          "adventure",
-          "local cuisine",
-          "peaceful",
-          "seafood"
-        ],
-        "activity_type": "food",
-        "intensity": 0.5,
-        "physical_level": 0.2,
-        "social_level": 0.9
-      }
-    },
-    {
-      "activity_id": "act_3aca0e",
-      "location_id": "loc_015",
-      "metadata": {
-        "name": "Lặn Ngắm Rạn Chồi Bãi Sao",
-        "description": "Một ngày ở Bãi Sao, bạn sẽ được lặn ngắm rạn chồi tuyệt đẹp của biển Đông. Với những con cá và sinh vật biển tuyệt đẹp, bạn sẽ được tận hưởng một trải nghiệm tuyệt vời.",
+        "name": "Lặn Ngắm Rạn San Hô Sáng Ngời",
+        "description": "Mang ống thở, bạn lặn vào làn nước trong xanh để khám phá rạn san hô đầy màu sắc, nơi những đàn cá neon bơi lượn quanh bạn. Tiếng nước nhẹ nhàng và ánh sáng phản chiếu tạo nên một không gian yên bình như trong mơ. Hướng dẫn viên sẽ chỉ ra những điểm sinh vật đặc biệt mà chỉ người dân địa phương mới biết. Hoạt động này mang lại cảm giác kỳ diệu và gần gũi với thiên nhiên biển.",
         "tags": [
           "adventure",
           "beach",
+          "coral reef",
           "snorkeling",
           "wildlife"
         ],
         "activity_type": "adventure",
-        "intensity": 0.7,
-        "physical_level": 0.5,
-        "social_level": 0.8
+        "intensity": 0.5,
+        "physical_level": 0.4,
+        "social_level": 0.3
       }
     },
     {
-      "activity_id": "act_dba7d4",
+      "activity_id": "act_dc6611",
       "location_id": "loc_015",
       "metadata": {
-        "name": "Đi Chợ Cùng Người Chài Bãi Sao",
-        "description": "Một ngày ở Bãi Sao, bạn sẽ được đi chợ cùng người chài Bãi Sao. Với những hàng hóa tuyệt đẹp của biển Đông, bạn sẽ được tận hưởng một trải nghiệm tuyệt vời.",
+        "name": "Tiệc Hải Sản Đêm Trên Cát Sao",
+        "description": "Buổi tối, bạn sẽ được mời ngồi trên thảm cát mềm, thưởng thức hải sản tươi sống được nướng ngay tại chỗ: tôm hùm, cá mú, mực nướng, kèm nước mắm chua ngọt đặc trưng. Hương vị biển hòa quyện với tiếng gió và tiếng sóng, tạo nên một bữa tiệc giác quan đầy mê hoặc. Đầu bếp địa phương sẽ chia sẻ bí quyết ướp gia vị truyền thống. Đây là trải nghiệm ẩm thực sang trọng, lãng mạn và đầy hương vị địa phương.",
         "tags": [
-          "adventure",
+          "beach",
+          "fine dining",
           "local cuisine",
-          "market",
-          "peaceful",
-          "wildlife"
+          "romantic",
+          "seafood"
         ],
         "activity_type": "food",
-        "intensity": 0.4,
-        "physical_level": 0.3,
-        "social_level": 0.9
+        "intensity": 0.3,
+        "physical_level": 0.2,
+        "social_level": 0.7
       }
     },
     {
-      "activity_id": "act_395716",
+      "activity_id": "act_910b24",
       "location_id": "loc_015",
       "metadata": {
-        "name": "Chụp Ảnh Cảnh Rạn Chồi Bãi Sao",
-        "description": "Một ngày ở Bãi Sao, bạn sẽ được chụp những bức ảnh tuyệt đẹp của rạn chồi biển Đông. Với ánh sáng vàng ấm áp, bạn sẽ được chụp những bức ảnh tuyệt đẹp.",
+        "name": "Yoga Bình Minh Trên Cát Trắng",
+        "description": "Bạn sẽ trải nghiệm buổi tập yoga khi mặt trời vừa ló rạng, ánh sáng vàng ấm áp chiếu lên bãi cát mịn. Tiếng chim hót và tiếng sóng nhẹ nhàng làm nền cho những động tác thở sâu, giúp tinh thần thư thái. Hướng dẫn viên yoga sẽ điều chỉnh các tư thế phù hợp cho mọi cấp độ. Hoạt động này mang lại cảm giác cân bằng nội tâm và kết nối với thiên nhiên.",
         "tags": [
-          "adventure",
           "beach",
           "peaceful",
-          "photography",
-          "wildlife"
+          "wellness retreat",
+          "yoga retreat"
         ],
-        "activity_type": "adventure",
+        "activity_type": "relaxation",
         "intensity": 0.2,
-        "physical_level": 0.1,
+        "physical_level": 0.3,
+        "social_level": 0.2
+      }
+    },
+    {
+      "activity_id": "act_098a28",
+      "location_id": "loc_015",
+      "metadata": {
+        "name": "Đêm Lửa Trại Dưới Bầu Trời Sao",
+        "description": "Sau khi hoàng hôn, bạn sẽ tham gia một buổi lửa trại trên bãi cát, nơi tiếng đàn guitar nhẹ nhàng và tiếng cười vang lên. Mùi thơm của gỗ cháy và hải sản nướng tạo nên không gian ấm cúng. Bạn có thể kể chuyện, hát hò hoặc chỉ đơn giản là ngắm sao lấp lánh trên bầu trời. Hoạt động này mang lại cảm giác gắn kết và thư giãn sâu sắc.",
+        "tags": [
+          "beach",
+          "chill",
+          "nightlife",
+          "romantic"
+        ],
+        "activity_type": "nightlife",
+        "intensity": 0.4,
+        "physical_level": 0.2,
         "social_level": 0.6
       }
     },
     {
-      "activity_id": "act_a78158",
+      "activity_id": "act_45de5e",
       "location_id": "loc_015",
       "metadata": {
-        "name": "Tắm Nước Bãi Sao Trong Tối",
-        "description": "Tối nào cũng là một thời điểm tuyệt đẹp để tắm nước Bãi Sao. Với ánh sáng vàng ấm áp và nước biển xanh ngọc, bạn sẽ được tận hưởng một trải nghiệm tắm biển tuyệt vời.",
+        "name": "Lớp Học Nấu Hải Sản Cùng Đầu Bếp Địa Phương",
+        "description": "Bạn sẽ được mời vào một gian bếp tạm trên bãi biển, nơi đầu bếp địa phương hướng dẫn cách chế biến cá nướng muối ớt và tôm rang me. Các nguyên liệu tươi ngon được chọn ngay từ biển, và bạn sẽ cảm nhận hương vị đậm đà qua từng bước nấu. Khi món ăn hoàn thành, cả nhóm sẽ cùng thưởng thức thành quả dưới ánh hoàng hôn. Hoạt động này mang lại trải nghiệm văn hoá ẩm thực thực tế và gắn kết nhóm.",
         "tags": [
-          "beach",
-          "peaceful",
-          "swimming",
-          "wildlife"
+          "authentic",
+          "cooking class",
+          "local cuisine",
+          "seafood"
         ],
-        "activity_type": "relaxation",
-        "intensity": 0.1,
-        "physical_level": 0.2,
+        "activity_type": "food",
+        "intensity": 0.3,
+        "physical_level": 0.3,
         "social_level": 0.8
       }
     },
     {
-      "activity_id": "act_296956",
+      "activity_id": "act_de7067",
       "location_id": "loc_015",
       "metadata": {
-        "name": "Thưởng Thức Trà Sữa Bãi Sao",
-        "description": "Một ngày ở Bãi Sao, bạn sẽ được thưởng thức những ly trà sữa tuyệt đẹp tại quán trà sữa Bãi Sao. Với hương vị tuyệt đẹp của trà sữa và không khí tuyệt vời của bãi biển.",
+        "name": "Chuyến Đi Chụp Ảnh Đêm Sao Trên Bãi Cát",
+        "description": "Bạn sẽ được hướng dẫn cách thiết lập máy ảnh để chụp bầu trời đầy sao phản chiếu trên mặt nước. Địa điểm được chọn là một khu vực yên tĩnh, không ánh sáng đô thị, giúp các ngôi sao sáng rõ. Hướng dẫn viên sẽ chia sẻ mẹo chụp ảnh dài và cách sử dụng đèn LED nhẹ để tạo điểm nhấn. Kết quả là những bức ảnh instagrammable đầy mê hoặc.",
+        "tags": [
+          "beach",
+          "instagrammable",
+          "photography",
+          "photography tour"
+        ],
+        "activity_type": "nature",
+        "intensity": 0.4,
+        "physical_level": 0.3,
+        "social_level": 0.5
+      }
+    },
+    {
+      "activity_id": "act_a8c0af",
+      "location_id": "loc_015",
+      "metadata": {
+        "name": "Thám Hiểm Rừng Ngập Mặn Bên Bờ Biển",
+        "description": "Bạn sẽ tham gia một chuyến đi bộ nhẹ qua khu rừng ngập mặn gần Bãi Sao, nơi tiếng chim và tiếng nước chảy tạo nên bản giao hưởng tự nhiên. Hướng dẫn viên sẽ chỉ ra các loài thực vật và động vật hoang dã chỉ có ở khu vực này. Đôi khi bạn có thể ngắm những con cá bơi lội trong kênh nước trong xanh. Hoạt động mang lại cảm giác phiêu lưu nhẹ nhàng và kết nối sâu sắc với môi trường.",
         "tags": [
           "adventure",
-          "local cuisine",
-          "peaceful"
+          "beach",
+          "wild",
+          "wildlife"
         ],
-        "activity_type": "food",
-        "intensity": 0.3,
+        "activity_type": "adventure",
+        "intensity": 0.7,
+        "physical_level": 0.6,
+        "social_level": 0.3
+      }
+    },
+    {
+      "activity_id": "act_a6b412",
+      "location_id": "loc_015",
+      "metadata": {
+        "name": "Glamping Sang Trọng Dưới Bầu Trời Sao",
+        "description": "Bạn sẽ ở trong lều sang trọng được trang bị giường êm, chăn lụa và đèn LED ấm áp, nằm ngay trên bãi cát. Buổi tối, bạn có thể ngắm sao, nghe tiếng sóng và thưởng thức trà thảo mộc từ khu vườn gần đó. Dịch vụ bao gồm bữa sáng hải sản tươi và một buổi massage nhẹ. Đây là trải nghiệm nghỉ dưỡng cao cấp, kết hợp giữa thiên nhiên và tiện nghi.",
+        "tags": [
+          "beach",
+          "eco lodge",
+          "glamping",
+          "luxury"
+        ],
+        "activity_type": "nature",
+        "intensity": 0.2,
         "physical_level": 0.1,
-        "social_level": 0.7
+        "social_level": 0.4
+      }
+    },
+    {
+      "activity_id": "act_aae70f",
+      "location_id": "loc_015",
+      "metadata": {
+        "name": "Spa Trên Cát Với Dầu Dừa Tự Nhiên",
+        "description": "Bạn sẽ được mát-xa toàn thân bằng dầu dừa nguyên chất ngay trên bãi cát, tiếng sóng nhẹ nhàng làm nền cho buổi trị liệu. Hương thơm ngọt ngào của dừa hòa quyện với không khí biển, giúp tinh thần thư thái và cơ thể hồi phục. Nhân viên spa sẽ tư vấn các liệu pháp chăm sóc da phù hợp với môi trường nhiệt đới. Hoạt động này mang lại cảm giác thư giãn sâu sắc và tái tạo năng lượng.",
+        "tags": [
+          "beach",
+          "cozy",
+          "luxury",
+          "wellness retreat"
+        ],
+        "activity_type": "nature",
+        "intensity": 0.2,
+        "physical_level": 0.2,
+        "social_level": 0.3
       }
     },
     {
@@ -188,18 +187,18 @@
       "location_id": "loc_001",
       "metadata": {
         "name": "Săn mây trên đỉnh Fansipan",
-        "description": "Trải nghiệm cảm giác đứng trên nóc nhà Đông Dương, được mây trắng bao quanh. Âm thanh của gió nhẹ và tiếng chim hót vang vọng trong không gian yên tĩnh. Mùi thơm của các loài hoa dại và cây cỏ núi cao sẽ làm bạn cảm thấy sảng khoái. Người địa phương thường đến đây vào sáng sớm để ngắm bình minh và chụp những bức ảnh tuyệt đẹp.",
+        "description": "Trải nghiệm cảm giác đứng trên nóc nhà Đông Dương, được mây trắng bao quanh. Nghe tiếng gió rì rào, cảm nhận không khí trong lành và tươi mát. Đây là cơ hội để bạn chụp những bức ảnh độc đáo với mây trắng và cảnh quan hùng vĩ.",
         "tags": [
           "adventure",
           "cloud sea",
           "hiking",
           "mountain",
-          "wildlife"
+          "nature reserve"
         ],
         "activity_type": "adventure",
         "intensity": 0.7,
         "physical_level": 0.8,
-        "social_level": 0.3
+        "social_level": 0.4
       }
     },
     {
@@ -207,165 +206,160 @@
       "location_id": "loc_001",
       "metadata": {
         "name": "Khám phá bản làng dân tộc thiểu số",
-        "description": "Trải nghiệm cuộc sống bình dị của người dân tộc thiểu số tại bản làng. Bạn sẽ được tìm hiểu về phong tục, tập quán và văn hóa đặc sắc của họ. Âm thanh của tiếng trống và tiếng sáo sẽ làm bạn cảm thấy như đang ở trong một thế giới khác. Mùi thơm của các món ăn truyền thống sẽ làm bạn cảm thấy thèm thuồng.",
+        "description": "Trải nghiệm cuộc sống của người dân tộc thiểu số tại Sapa. Cảm nhận không khí ấm cúng và thân thiện của bản làng, tìm hiểu về phong tục và tập quán độc đáo của người dân địa phương. Đây là cơ hội để bạn học hỏi và giao lưu với người dân bản địa.",
         "tags": [
           "authentic",
           "cultural show",
           "ethnic minority",
           "ethnic village",
-          "traditional music"
+          "immersive"
         ],
         "activity_type": "culture",
-        "intensity": 0.4,
-        "physical_level": 0.2,
+        "intensity": 0.5,
+        "physical_level": 0.4,
         "social_level": 0.8
       }
     },
     {
-      "activity_id": "act_03d107",
+      "activity_id": "act_57368e",
       "location_id": "loc_001",
       "metadata": {
-        "name": "Chinh phục đường mòn xuyên rừng",
-        "description": "Trải nghiệm cảm giác phiêu lưu khi chinh phục đường mòn xuyên rừng. Âm thanh của tiếng chim hót và tiếng lá rơi sẽ làm bạn cảm thấy như đang ở trong một khu rừng huyền bí. Mùi thơm của các loài cây và hoa sẽ làm bạn cảm thấy sảng khoái. Người địa phương thường đến đây để tập thể dục và thư giãn.",
+        "name": "Thưởng thức hải sản tươi sống tại Sapa",
+        "description": "Trải nghiệm ẩm thực hải sản tươi sống tại Sapa. Cảm nhận vị ngọt và tươi của hải sản, thưởng thức các món ăn độc đáo và phong phú của địa phương. Đây là cơ hội để bạn tận hưởng không khí ấm cúng và thư giãn.",
         "tags": [
-          "adventure",
-          "bamboo forest",
-          "hiking",
-          "trekking",
-          "wildlife"
-        ],
-        "activity_type": "adventure",
-        "intensity": 0.9,
-        "physical_level": 0.9,
-        "social_level": 0.2
-      }
-    },
-    {
-      "activity_id": "act_62f034",
-      "location_id": "loc_001",
-      "metadata": {
-        "name": "Thưởng thức hải sản tươi sống",
-        "description": "Trải nghiệm cảm giác thưởng thức hải sản tươi sống tại một nhà hàng địa phương. Mùi thơm của hải sản sẽ làm bạn cảm thấy thèm thuồng. Âm thanh của tiếng sóng vỗ sẽ làm bạn cảm thấy như đang ở bên bờ biển. Người địa phương thường đến đây để thưởng thức hải sản và thư giãn.",
-        "tags": [
-          "beach",
+          "culinary tourism",
           "local cuisine",
           "peaceful",
           "seafood"
         ],
         "activity_type": "food",
-        "intensity": 0.2,
-        "physical_level": 0.1,
+        "intensity": 0.3,
+        "physical_level": 0.2,
         "social_level": 0.6
       }
     },
     {
-      "activity_id": "act_756196",
+      "activity_id": "act_9733e3",
       "location_id": "loc_001",
       "metadata": {
-        "name": "Ngắm bình minh trên đỉnh núi",
-        "description": "Trải nghiệm cảm giác ngắm bình minh trên đỉnh núi. Âm thanh của gió nhẹ và tiếng chim hót sẽ làm bạn cảm thấy sảng khoái. Mùi thơm của các loài hoa dại và cây cỏ núi cao sẽ làm bạn cảm thấy thư giãn. Người địa phương thường đến đây vào sáng sớm để ngắm bình minh và chụp những bức ảnh tuyệt đẹp.",
+        "name": "Chụp ảnh với hoa tại thung lũng hoa Sapa",
+        "description": "Trải nghiệm chụp ảnh với hoa tại thung lũng hoa Sapa. Cảm nhận không khí tươi mát và lãng mạn của thung lũng hoa, chụp những bức ảnh độc đáo và đẹp mắt. Đây là cơ hội để bạn tận hưởng không khí trong lành và thư giãn.",
         "tags": [
-          "adventure",
-          "cloud sea",
-          "hiking",
-          "mountain",
-          "wildlife"
+          "flower field",
+          "peaceful",
+          "photography",
+          "romantic"
+        ],
+        "activity_type": "relaxation",
+        "intensity": 0.4,
+        "physical_level": 0.3,
+        "social_level": 0.5
+      }
+    },
+    {
+      "activity_id": "act_dd5e07",
+      "location_id": "loc_001",
+      "metadata": {
+        "name": "Trải nghiệm tắm suối tại Sapa",
+        "description": "Trải nghiệm tắm suối tại Sapa. Cảm nhận không khí trong lành và tươi mát của suối, thư giãn và tái tạo năng lượng. Đây là cơ hội để bạn tận hưởng không khí ấm cúng và thư giãn.",
+        "tags": [
+          "nature reserve",
+          "peaceful",
+          "stream",
+          "wellness tourism"
+        ],
+        "activity_type": "relaxation",
+        "intensity": 0.2,
+        "physical_level": 0.2,
+        "social_level": 0.4
+      }
+    },
+    {
+      "activity_id": "act_31dcd3",
+      "location_id": "loc_001",
+      "metadata": {
+        "name": "Khám phá rừng thông tại Sapa",
+        "description": "Trải nghiệm khám phá rừng thông tại Sapa. Cảm nhận không khí trong lành và tươi mát của rừng, tìm hiểu về hệ sinh thái độc đáo của rừng thông. Đây là cơ hội để bạn học hỏi và giao lưu với thiên nhiên.",
+        "tags": [
+          "forest",
+          "nature reserve",
+          "pine forest",
+          "trekking"
         ],
         "activity_type": "adventure",
         "intensity": 0.6,
         "physical_level": 0.7,
-        "social_level": 0.3
+        "social_level": 0.4
       }
     },
     {
-      "activity_id": "act_0b4839",
+      "activity_id": "act_0aef16",
       "location_id": "loc_001",
       "metadata": {
-        "name": "Khám phá chợ địa phương",
-        "description": "Trải nghiệm cảm giác khám phá chợ địa phương. Âm thanh của tiếng người mua bán và tiếng loa sẽ làm bạn cảm thấy như đang ở trong một khu chợ tấp nập. Mùi thơm của các món ăn truyền thống sẽ làm bạn cảm thấy thèm thuồng. Người địa phương thường đến đây để mua sắm và thưởng thức ẩm thực.",
+        "name": "Trải nghiệm ẩm thực địa phương tại Sapa",
+        "description": "Trải nghiệm ẩm thực địa phương tại Sapa. Cảm nhận vị ngọt và tươi của các món ăn địa phương, tìm hiểu về phong tục và tập quán ẩm thực độc đáo của người dân Sapa. Đây là cơ hội để bạn tận hưởng không khí ấm cúng và thư giãn.",
         "tags": [
-          "authentic",
-          "local cuisine",
-          "market",
-          "shopping"
-        ],
-        "activity_type": "food",
-        "intensity": 0.5,
-        "physical_level": 0.3,
-        "social_level": 0.8
-      }
-    },
-    {
-      "activity_id": "act_41cb20",
-      "location_id": "loc_001",
-      "metadata": {
-        "name": "Chụp ảnh phong cảnh đẹp",
-        "description": "Trải nghiệm cảm giác chụp ảnh phong cảnh đẹp. Âm thanh của tiếng lá rơi và tiếng nước chảy sẽ làm bạn cảm thấy như đang ở trong một thế giới khác. Mùi thơm của các loài hoa dại và cây cỏ núi cao sẽ làm bạn cảm thấy sảng khoái. Người địa phương thường đến đây để chụp ảnh và thư giãn.",
-        "tags": [
-          "adventure",
-          "cloud sea",
-          "hiking",
-          "mountain",
-          "photography"
-        ],
-        "activity_type": "adventure",
-        "intensity": 0.4,
-        "physical_level": 0.5,
-        "social_level": 0.2
-      }
-    },
-    {
-      "activity_id": "act_5cd1c2",
-      "location_id": "loc_001",
-      "metadata": {
-        "name": "Thưởng thức cà phê phong cách địa phương",
-        "description": "Trải nghiệm cảm giác thưởng thức cà phê phong cách địa phương. Mùi thơm của cà phê sẽ làm bạn cảm thấy sảng khoái. Âm thanh của tiếng người trò chuyện sẽ làm bạn cảm thấy như đang ở trong một quán cà phê ấm cúng. Người địa phương thường đến đây để thưởng thức cà phê và thư giãn.",
-        "tags": [
-          "coffee",
+          "culinary tourism",
           "local cuisine",
           "peaceful",
-          "street coffee"
+          "street food"
         ],
         "activity_type": "food",
-        "intensity": 0.2,
-        "physical_level": 0.1,
+        "intensity": 0.4,
+        "physical_level": 0.2,
         "social_level": 0.6
       }
     },
     {
-      "activity_id": "act_2b1edf",
+      "activity_id": "act_32e0c9",
       "location_id": "loc_001",
       "metadata": {
-        "name": "Khám phá khu rừng nguyên sinh",
-        "description": "Trải nghiệm cảm giác khám phá khu rừng nguyên sinh. Âm thanh của tiếng chim hót và tiếng lá rơi sẽ làm bạn cảm thấy như đang ở trong một thế giới khác. Mùi thơm của các loài cây và hoa sẽ làm bạn cảm thấy sảng khoái. Người địa phương thường đến đây để khám phá và thư giãn.",
+        "name": "Chụp ảnh với cảnh quan hùng vĩ tại Sapa",
+        "description": "Trải nghiệm chụp ảnh với cảnh quan hùng vĩ tại Sapa. Cảm nhận không khí tươi mát và lãng mạn của cảnh quan, chụp những bức ảnh độc đáo và đẹp mắt. Đây là cơ hội để bạn tận hưởng không khí trong lành và thư giãn.",
         "tags": [
-          "adventure",
-          "bamboo forest",
-          "hiking",
-          "trekking",
-          "wildlife"
+          "peaceful",
+          "photography",
+          "picturesque",
+          "romantic"
         ],
-        "activity_type": "adventure",
-        "intensity": 0.8,
-        "physical_level": 0.8,
-        "social_level": 0.2
+        "activity_type": "relaxation",
+        "intensity": 0.4,
+        "physical_level": 0.3,
+        "social_level": 0.5
       }
     },
     {
-      "activity_id": "act_a5c27e",
+      "activity_id": "act_a3f128",
       "location_id": "loc_001",
       "metadata": {
-        "name": "Thưởng thức bữa tối BBQ dưới bầu trời sao",
-        "description": "Trải nghiệm cảm giác thưởng thức bữa tối BBQ dưới bầu trời sao. Mùi thơm của thịt nướng sẽ làm bạn cảm thấy thèm thuồng. Âm thanh của tiếng nhạc và tiếng người trò chuyện sẽ làm bạn cảm thấy như đang ở trong một bữa tiệc ấm cúng. Người địa phương thường đến đây để thưởng thức bữa tối và thư giãn.",
+        "name": "Trải nghiệm yoga tại Sapa",
+        "description": "Trải nghiệm yoga tại Sapa. Cảm nhận không khí trong lành và tươi mát của thiên nhiên, thư giãn và tái tạo năng lượng. Đây là cơ hội để bạn tận hưởng không khí ấm cúng và thư giãn.",
         "tags": [
-          "local cuisine",
           "peaceful",
-          "romantic"
+          "wellness tourism",
+          "yoga retreat"
+        ],
+        "activity_type": "relaxation",
+        "intensity": 0.2,
+        "physical_level": 0.2,
+        "social_level": 0.4
+      }
+    },
+    {
+      "activity_id": "act_6e65c0",
+      "location_id": "loc_001",
+      "metadata": {
+        "name": "Khám phá chợ địa phương tại Sapa",
+        "description": "Trải nghiệm khám phá chợ địa phương tại Sapa. Cảm nhận không khí ấm cúng và thân thiện của chợ, tìm hiểu về phong tục và tập quán mua sắm độc đáo của người dân địa phương. Đây là cơ hội để bạn học hỏi và giao lưu với người dân bản địa.",
+        "tags": [
+          "authentic",
+          "shopping",
+          "street food"
         ],
         "activity_type": "food",
-        "intensity": 0.3,
-        "physical_level": 0.2,
-        "social_level": 0.7
+        "intensity": 0.5,
+        "physical_level": 0.4,
+        "social_level": 0.8
       }
     }
   ],
@@ -373,21 +367,19 @@
     {
       "location_id": "loc_015",
       "provider_used": "groq",
-      "cache_hit": false,
-      "latency_ms": 10990,
+      "latency_ms": 9383,
       "usage": {
-        "prompt_tokens": 1324,
-        "completion_tokens": 1464
+        "prompt_tokens": 1379,
+        "completion_tokens": 4063
       }
     },
     {
       "location_id": "loc_001",
       "provider_used": "groq",
-      "cache_hit": false,
-      "latency_ms": 19285,
+      "latency_ms": 4891,
       "usage": {
-        "prompt_tokens": 1316,
-        "completion_tokens": 1712
+        "prompt_tokens": 1346,
+        "completion_tokens": 1613
       }
     }
   ]

@@ -2,7 +2,7 @@
 # n5_activity_generator.py — N5 Activity Generation
 #
 # Entry: generate_activities(data) → {"activities": [...], "llm_meta": [...]}
-# Strategy: LLM-first, template fallback on failure.
+# Strategy: LLM-first, template backup on failure.
 # Schema: matches N5 __init__.py
 # =============================================================================
 
@@ -48,7 +48,6 @@ def generate_activities(data: dict) -> dict:
     Input/output schema: see __init__.py
     """
     user, locations, constraints, target_count = _parse_input(data)
-    provider = data.get("llm_provider") or None
     all_activities: List[Dict] = []
     llm_metas: List[Dict] = []  # 1 entry per location
 
@@ -69,7 +68,7 @@ def generate_activities(data: dict) -> dict:
             user          = user,
             constraints   = constraints,
             target_count  = target_count,
-            provider      = provider,
+            llm_chain     = None, # Will be determined by provider registry from config
             meta_out      = meta_out,
         )
         llm_metas.append({"location_id": loc_id, **meta_out})
@@ -93,7 +92,8 @@ def _parse_input(data: dict) -> Tuple[Dict, List[Dict], Dict, int]:
     locations   = data.get("locations", []) or []
     constraints = data.get("constraints", {}) or {}
     
-    target_count = data.get("target_count", LLM_N5_TARGET_COUNT)
+    # Configuration is loaded from global config, NOT from input data
+    target_count = LLM_N5_TARGET_COUNT
 
     # Normalize user tags
     user_tags = user.get("tags") or []
@@ -216,16 +216,16 @@ def _generate_for_location(
     user:          Dict,
     constraints:   Dict,
     target_count:  int,
-    provider:      Optional[str] = None,
+    llm_chain:     Optional[str] = None,
     meta_out:      Optional[Dict] = None,
 ) -> List[Dict]:
     """
     Sinh activities cho một location theo chiến lược LLM-first:
       1. Gọi LLM → 10 activities chất lượng cao, cá nhân hóa theo user
       2. Nếu LLM trả về ≥ LLM_MIN_VALID → dùng kết quả LLM (fill thêm từ template nếu thiếu)
-      3. Nếu LLM fail hoặc < LLM_MIN_VALID → fall back hoàn toàn về template
+      3. Nếu LLM fail hoặc < LLM_MIN_VALID → dùng template hoàn toàn
 
-    provider: override LLM_PROVIDER runtime (UI chọn). None = dùng env.
+    llm_chain: override LLM_CHAIN runtime (UI chọn). None = dùng config.
     meta_out: nếu truyền dict, sẽ được điền provider_used/latency_ms.
     """
     loc_tags  = profile.get("tags", [])
@@ -244,7 +244,7 @@ def _generate_for_location(
             user_tags            = user_tags,
             num_activities       = target_count,
             user_text            = user_text,
-            provider             = provider,
+            llm_chain            = llm_chain,
         )
         if meta_out is not None:
             meta_out.update(llm_meta)
@@ -271,7 +271,7 @@ def _generate_for_location(
             combined.extend(extra)
         return combined[:target_count]
 
-    # ─── Step 3: Fall back hoàn toàn về template ─────────────────────────────
+    # ─── Step 3: Dùng template hoàn toàn ─────────────────────────────
     logger.warning("LLM insufficient for '%s' (%d activities) — using templates", location_name, len(llm_activities))
     combined = _expand_templates(
         location_id   = location_id,
@@ -337,7 +337,7 @@ def _expand_templates(
     compatible_templates = _get_compatible_templates(loc_tags)
 
     if not compatible_templates:
-        # Fallback: lấy tất cả templates không lọc
+        # Backup: lấy tất cả templates không lọc
         compatible_templates = _get_all_templates()
 
     # Bước 2: Tính sightseeing_priority sau khi boost theo location
@@ -395,7 +395,7 @@ def _get_compatible_templates(loc_tags: set) -> List[Dict]:
 
 
 def _get_all_templates() -> List[Dict]:
-    """Lấy tất cả templates (fallback khi không có compatible templates)."""
+    """Lấy tất cả templates (backup khi không có compatible templates)."""
     result = []
     for type_name, templates in ACTIVITY_TYPE_BANK.items():
         for i, tmpl in enumerate(templates):

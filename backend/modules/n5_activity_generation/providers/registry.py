@@ -1,16 +1,11 @@
 """
 registry.py — Factory cho LLM providers.
 
-Env vars đọc (ưu tiên):
-  LLM_PROVIDER   — provider chính ("gemini" | "groq"). Default "gemini".
-  LLM_FALLBACK   — chuỗi provider fallback, ngăn cách dấu phẩy.
-                   Default "groq" (nếu primary là gemini) hoặc "gemini".
-
-Fallback chain: primary trước, rồi lần lượt các fallback có API key.
-Provider không có API key sẽ bị loại khỏi chain (ghi log warning).
+Đọc LLM_CHAIN từ config (chuỗi ngăn cách bởi dấu phẩy).
+Sử dụng duy nhất Groq models.
 
 Cách dùng:
-  chain = get_fallback_chain()
+  chain = get_llm_chain()
   for provider in chain:
       text = provider.generate(prompt)
       if text:
@@ -23,20 +18,15 @@ import os
 from typing import Dict, List, Optional, Type
 
 from .base import LLMProvider
-from .gemini_provider import GeminiProvider
 from .groq_provider import GroqProvider
 
-from config import setup_logging, GROQ_MODELS
+from config import setup_logging, GROQ_MODELS, LLM_CHAIN
 logger = setup_logging("N5.provider.registry")
 
 # Registry tên → class
 _PROVIDERS: Dict[str, Type[LLMProvider]] = {
-    "gemini": GeminiProvider,
     "groq":   GroqProvider,
 }
-
-DEFAULT_PRIMARY = "gemini"
-
 
 def _instance(name: str) -> Optional[LLMProvider]:
     """Tạo 1 instance provider theo tên. Hỗ trợ alias đặc biệt của Groq."""
@@ -55,40 +45,36 @@ def _instance(name: str) -> Optional[LLMProvider]:
 
 def get_provider(name: Optional[str] = None) -> Optional[LLMProvider]:
     """
-    Lấy 1 provider theo tên. Nếu không truyền, đọc env LLM_PROVIDER.
-    Không check availability — caller tự gọi .is_available() nếu cần.
+    Lấy 1 provider theo tên. 
     """
-    name = name or os.getenv("LLM_PROVIDER", DEFAULT_PRIMARY)
-    return _instance(name)
+    if name:
+        return _instance(name)
+    
+    # Nếu không truyền tên, lấy provider đầu tiên trong LLM_CHAIN
+    chain_names = [n.strip() for n in LLM_CHAIN.split(",") if n.strip()]
+    if chain_names:
+        return _instance(chain_names[0])
+    
+    return _instance("groq")
 
 
-def get_fallback_chain(
-    primary: Optional[str] = None,
-    fallback: Optional[str] = None,
-) -> List[LLMProvider]:
+def get_llm_chain(chain_str: Optional[str] = None) -> List[LLMProvider]:
     """
-    Xây dựng chain: [primary, *fallbacks], chỉ giữ lại các provider có API key.
+    Xây dựng chain từ LLM_CHAIN, chỉ giữ lại các provider có API key.
 
     Args:
-      primary  — tên provider chính. Default = env LLM_PROVIDER hoặc "gemini".
-      fallback — chuỗi tên fallback ngăn cách dấu phẩy. Default = env LLM_FALLBACK.
+      chain_str — chuỗi tên model ngăn cách dấu phẩy. Default = config.LLM_CHAIN.
 
     Return danh sách đã lọc; có thể rỗng nếu không provider nào có key.
     """
-    primary = primary or os.getenv("LLM_PROVIDER", DEFAULT_PRIMARY)
-    fallback_str = fallback if fallback is not None else os.getenv("LLM_FALLBACK", "")
-
-    # Default fallback: nếu primary là gemini thì fallback groq, ngược lại
-    if not fallback_str:
-        fallback_str = "groq" if primary.lower() != "groq" else "gemini"
-
-    names = [primary] + [n for n in fallback_str.split(",") if n.strip()]
+    raw_str = chain_str if chain_str is not None else LLM_CHAIN
+    names = [n.strip() for n in raw_str.split(",") if n.strip()]
 
     # Dedupe giữ thứ tự
     seen = set()
     ordered = []
     for n in names:
-        key = n.strip().lower()
+        key = n.lower()
         if key and key not in seen:
             seen.add(key)
             ordered.append(key)
@@ -104,11 +90,11 @@ def get_fallback_chain(
         chain.append(provider)
 
     if not chain:
-        logger.error("Không có provider nào khả dụng — kiểm tra GEMINI_API_KEY / GROQ_API_KEY")
+        logger.error("Không có provider nào khả dụng — kiểm tra GROQ_API_KEY")
 
     return chain
 
 
 def available_providers() -> List[str]:
-    """Trả về tên các provider đã đăng ký (không kiểm tra API key)."""
-    return list(_PROVIDERS.keys())
+    """Trả về tên các provider đã đăng ký."""
+    return list(_PROVIDERS.keys()) + list(GROQ_MODELS.keys())
