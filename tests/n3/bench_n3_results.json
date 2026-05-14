@@ -1,0 +1,60 @@
+{
+  "metadata": {
+    "module": "N3 — Database Layer",
+    "date": "2026-05-14",
+    "pg_host": "aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres"
+  },
+  "connectivity": {
+    "status": "PASS",
+    "latency_ms": 352,
+    "error": null
+  },
+  "save_tests": [
+    {
+      "name": "loc_beach",
+      "label": "Bãi Sao Phú Quốc",
+      "location_id": "bench_loc_001",
+      "latency_ms": 403,
+      "status": "PASS",
+      "response": {
+        "status": "success",
+        "location_id": "bench_loc_001"
+      }
+    },
+    {
+      "name": "loc_fansipan",
+      "label": "Fansipan Sapa",
+      "location_id": "bench_loc_002",
+      "latency_ms": 302,
+      "status": "PASS",
+      "response": {
+        "status": "success",
+        "location_id": "bench_loc_002"
+      }
+    },
+    {
+      "name": "loc_hoian",
+      "label": "Phố Cổ Hội An",
+      "location_id": "bench_loc_003",
+      "latency_ms": 287,
+      "status": "PASS",
+      "response": {
+        "status": "success",
+        "location_id": "bench_loc_003"
+      }
+    }
+  ],
+  "get_all": {
+    "latency_ms": 793,
+    "status": "PASS",
+    "total_locations": 28,
+    "is_fallback": false,
+    "bench_locs_found": 3,
+    "vec_coverage": [
+      3,
+      3,
+      3
+    ],
+    "error": null
+  }
+}

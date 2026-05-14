@@ -1,0 +1,531 @@
+{
+  "metadata": {
+    "module": "N1 — Embedding",
+    "model": "BAAI/bge-m3",
+    "vector_dim": 1024,
+    "channels": [
+      "text",
+      "aug_text",
+      "aug_tags",
+      "img_desc"
+    ],
+    "date": "2026-05-13"
+  },
+  "single_tests": {
+    "user": {
+      "records": [
+        {
+          "name": "user_1",
+          "input": {
+            "text": "Tôi muốn một chuyến đi yên tĩnh gần thiên nhiên",
+            "tags": [
+              "thiên nhiên",
+              "yên tĩnh",
+              "couple"
+            ],
+            "img_desc": "A couple walking slowly on a quiet beach during sunset, warm golden light reflecting on the water, relaxed and intimate atmosphere"
+          },
+          "analysis": {
+            "text_k": 3,
+            "tags_k": 1,
+            "preprocessed": {
+              "text": "Tôi muốn một chuyến đi yên tĩnh gần thiên nhiên",
+              "aug_text": "Tôi muốn một chuyến đi yên tĩnh gần thiên nhiên natural outdoor environments away from urban development, characterized by vegetation, open terrain, and non-built scenery environment characterized by low noise, minimal human activity, and a calm undisturbed physical atmosphere a familiar and local place with a comfortable feel",
+              "aug_tags": "couple romantic private intimate honeymoon anniversary",
+              "img_desc": "A couple walking slowly on a quiet beach during sunset, warm golden light reflecting on the water, relaxed and intimate atmosphere"
+            },
+            "vector_dims": {
+              "text": 1024,
+              "aug_text": 1024,
+              "aug_tags": 1024,
+              "img_desc": 1024
+            },
+            "vector_norms": {
+              "text": 1.0,
+              "aug_text": 1.0,
+              "aug_tags": 1.0,
+              "img_desc": 1.0
+            },
+            "channels_present": [
+              "text",
+              "aug_text",
+              "aug_tags",
+              "img_desc"
+            ],
+            "channels_null": []
+          },
+          "latency_ms": 1725.66
+        },
+        {
+          "name": "user_2",
+          "input": {
+            "text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress",
+            "tags": [
+              "healing",
+              "relax",
+              "nature"
+            ],
+            "img_desc": "A person sitting quietly by a misty lake at sunrise, surrounded by mountains and soft fog, conveying calmness, healing, and emotional reset"
+          },
+          "analysis": {
+            "text_k": 1,
+            "tags_k": 0,
+            "preprocessed": {
+              "text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress",
+              "aug_text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress deliberate intention to heal emotionally through restorative peaceful and therapeutic experience",
+              "aug_tags": "",
+              "img_desc": "A person sitting quietly by a misty lake at sunrise, surrounded by mountains and soft fog, conveying calmness, healing, and emotional reset"
+            },
+            "vector_dims": {
+              "text": 1024,
+              "aug_text": 1024,
+              "aug_tags": null,
+              "img_desc": 1024
+            },
+            "vector_norms": {
+              "text": 1.0,
+              "aug_text": 1.0,
+              "aug_tags": null,
+              "img_desc": 1.0
+            },
+            "channels_present": [
+              "text",
+              "aug_text",
+              "img_desc"
+            ],
+            "channels_null": [
+              "aug_tags"
+            ]
+          },
+          "latency_ms": 493.4
+        },
+        {
+          "name": "user_3",
+          "input": {
+            "text": "Đi chơi cuối tuần nhẹ nhàng với người yêu",
+            "tags": [
+              "couple",
+              "weekend",
+              "romantic"
+            ],
+            "img_desc": ""
+          },
+          "analysis": {
+            "text_k": 2,
+            "tags_k": 2,
+            "preprocessed": {
+              "text": "Đi chơi cuối tuần nhẹ nhàng với người yêu",
+              "aug_text": "Đi chơi cuối tuần nhẹ nhàng với người yêu with romantic partner wanting intimate private emotionally connected and romantically beautiful shared experience two-day break period when short-distance destinations and nearby outdoor environments see increased visitor activity",
+              "aug_tags": "couple romantic private intimate honeymoon anniversary romantic intimate couple sunset candle private getaway",
+              "img_desc": ""
+            },
+            "vector_dims": {
+              "text": 1024,
+              "aug_text": 1024,
+              "aug_tags": 1024,
+              "img_desc": null
+            },
+            "vector_norms": {
+              "text": 1.0,
+              "aug_text": 1.0,
+              "aug_tags": 1.0,
+              "img_desc": null
+            },
+            "channels_present": [
+              "text",
+              "aug_text",
+              "aug_tags"
+            ],
+            "channels_null": [
+              "img_desc"
+            ]
+          },
+          "latency_ms": 616.43
+        }
+      ],
+      "avg_latency_ms": 945.16
+    },
+    "location": {
+      "records": [
+        {
+          "name": "loc_1",
+          "input": {
+            "text": "Busy coastal city with nightlife and beaches",
+            "tags": [
+              "beach",
+              "city",
+              "nightlife"
+            ],
+            "img_desc": ""
+          },
+          "analysis": {
+            "text_k": 2,
+            "tags_k": 3,
+            "preprocessed": {
+              "text": "Busy coastal city with nightlife and beaches",
+              "aug_text": "Busy coastal city with nightlife and beaches sandy coastal shoreline environment with direct sea access, wave conditions, and open ocean views land edge meeting the sea, featuring cliffs, beaches, coves, and coastal geological formations",
+              "aug_tags": "sandy beach sun sea swimming tropical coast urban city modern amenities transport nightlife dining nightlife bar club live music late night social entertainment",
+              "img_desc": ""
+            },
+            "vector_dims": {
+              "text": 1024,
+              "aug_text": 1024,
+              "aug_tags": 1024,
+              "img_desc": null
+            },
+            "vector_norms": {
+              "text": 1.0,
+              "aug_text": 1.0,
+              "aug_tags": 1.0,
+              "img_desc": null
+            },
+            "channels_present": [
+              "text",
+              "aug_text",
+              "aug_tags"
+            ],
+            "channels_null": [
+              "img_desc"
+            ]
+          },
+          "latency_ms": 670.64
+        },
+        {
+          "name": "loc_2",
+          "input": {
+            "text": "Quiet mountain town surrounded by forests and mist",
+            "tags": [
+              "mountain",
+              "forest",
+              "quiet"
+            ],
+            "img_desc": ""
+          },
+          "analysis": {
+            "text_k": 3,
+            "tags_k": 2,
+            "preprocessed": {
+              "text": "Quiet mountain town surrounded by forests and mist",
+              "aug_text": "Quiet mountain town surrounded by forests and mist elevated peak terrain with steep slopes, high-altitude views, and distinct geological character dense tree-covered environment with canopy, undergrowth, shade, and wildlife habitat environment with low ambient noise, minimal human activity, and an undisturbed physical character",
+              "aug_tags": "high mountain summit alpine trekking elevation dense jungle rainforest canopy trekking shade",
+              "img_desc": ""
+            },
+            "vector_dims": {
+              "text": 1024,
+              "aug_text": 1024,
+              "aug_tags": 1024,
+              "img_desc": null
+            },
+            "vector_norms": {
+              "text": 1.0,
+              "aug_text": 1.0,
+              "aug_tags": 1.0,
+              "img_desc": null
+            },
+            "channels_present": [
+              "text",
+              "aug_text",
+              "aug_tags"
+            ],
+            "channels_null": [
+              "img_desc"
+            ]
+          },
+          "latency_ms": 985.2
+        },
+        {
+          "name": "loc_3",
+          "input": {
+            "text": "Historic city with temples, culture, and street food",
+            "tags": [
+              "culture",
+              "history",
+              "food"
+            ],
+            "img_desc": ""
+          },
+          "analysis": {
+            "text_k": 2,
+            "tags_k": 1,
+            "preprocessed": {
+              "text": "Historic city with temples, culture, and street food",
+              "aug_text": "Historic city with temples, culture, and street food informal food served from street-level vendors, stalls, and mobile carts in open market environments religious structure dedicated to spiritual worship and ritual practice in a sacred environment",
+              "aug_tags": "historical heritage site war ancient dynasty cultural depth",
+              "img_desc": ""
+            },
+            "vector_dims": {
+              "text": 1024,
+              "aug_text": 1024,
+              "aug_tags": 1024,
+              "img_desc": null
+            },
+            "vector_norms": {
+              "text": 1.0,
+              "aug_text": 1.0,
+              "aug_tags": 1.0,
+              "img_desc": null
+            },
+            "channels_present": [
+              "text",
+              "aug_text",
+              "aug_tags"
+            ],
+            "channels_null": [
+              "img_desc"
+            ]
+          },
+          "latency_ms": 605.13
+        }
+      ],
+      "avg_latency_ms": 753.66
+    }
+  },
+  "batch_tests": {
+    "user": {
+      "label": "user",
+      "n_items": 3,
+      "latency_ms": 2461.12,
+      "latency_per_item_ms": 820.37,
+      "items": [
+        {
+          "name": "user_1",
+          "analysis": {
+            "text_k": 3,
+            "tags_k": 1,
+            "preprocessed": {
+              "text": "Tôi muốn một chuyến đi yên tĩnh gần thiên nhiên",
+              "aug_text": "Tôi muốn một chuyến đi yên tĩnh gần thiên nhiên natural outdoor environments away from urban development, characterized by vegetation, open terrain, and non-built scenery environment characterized by low noise, minimal human activity, and a calm undisturbed physical atmosphere a familiar and local place with a comfortable feel",
+              "aug_tags": "couple romantic private intimate honeymoon anniversary",
+              "img_desc": "A couple walking slowly on a quiet beach during sunset, warm golden light reflecting on the water, relaxed and intimate atmosphere"
+            },
+            "vector_dims": {
+              "text": 1024,
+              "aug_text": 1024,
+              "aug_tags": 1024,
+              "img_desc": 1024
+            },
+            "vector_norms": {
+              "text": 1.0,
+              "aug_text": 1.0,
+              "aug_tags": 1.0,
+              "img_desc": 1.0
+            },
+            "channels_present": [
+              "text",
+              "aug_text",
+              "aug_tags",
+              "img_desc"
+            ],
+            "channels_null": []
+          }
+        },
+        {
+          "name": "user_2",
+          "analysis": {
+            "text_k": 1,
+            "tags_k": 0,
+            "preprocessed": {
+              "text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress",
+              "aug_text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress deliberate intention to heal emotionally through restorative peaceful and therapeutic experience",
+              "aug_tags": "",
+              "img_desc": "A person sitting quietly by a misty lake at sunrise, surrounded by mountains and soft fog, conveying calmness, healing, and emotional reset"
+            },
+            "vector_dims": {
+              "text": 1024,
+              "aug_text": 1024,
+              "aug_tags": null,
+              "img_desc": 1024
+            },
+            "vector_norms": {
+              "text": 1.0,
+              "aug_text": 1.0,
+              "aug_tags": null,
+              "img_desc": 1.0
+            },
+            "channels_present": [
+              "text",
+              "aug_text",
+              "img_desc"
+            ],
+            "channels_null": [
+              "aug_tags"
+            ]
+          }
+        },
+        {
+          "name": "user_3",
+          "analysis": {
+            "text_k": 2,
+            "tags_k": 2,
+            "preprocessed": {
+              "text": "Đi chơi cuối tuần nhẹ nhàng với người yêu",
+              "aug_text": "Đi chơi cuối tuần nhẹ nhàng với người yêu with romantic partner wanting intimate private emotionally connected and romantically beautiful shared experience two-day break period when short-distance destinations and nearby outdoor environments see increased visitor activity",
+              "aug_tags": "couple romantic private intimate honeymoon anniversary romantic intimate couple sunset candle private getaway",
+              "img_desc": ""
+            },
+            "vector_dims": {
+              "text": 1024,
+              "aug_text": 1024,
+              "aug_tags": 1024,
+              "img_desc": null
+            },
+            "vector_norms": {
+              "text": 1.0,
+              "aug_text": 1.0,
+              "aug_tags": 1.0,
+              "img_desc": null
+            },
+            "channels_present": [
+              "text",
+              "aug_text",
+              "aug_tags"
+            ],
+            "channels_null": [
+              "img_desc"
+            ]
+          }
+        }
+      ]
+    },
+    "location": {
+      "label": "location",
+      "n_items": 3,
+      "latency_ms": 2522.02,
+      "latency_per_item_ms": 840.67,
+      "items": [
+        {
+          "name": "loc_1",
+          "analysis": {
+            "text_k": 2,
+            "tags_k": 3,
+            "preprocessed": {
+              "text": "Busy coastal city with nightlife and beaches",
+              "aug_text": "Busy coastal city with nightlife and beaches sandy coastal shoreline environment with direct sea access, wave conditions, and open ocean views land edge meeting the sea, featuring cliffs, beaches, coves, and coastal geological formations",
+              "aug_tags": "sandy beach sun sea swimming tropical coast urban city modern amenities transport nightlife dining nightlife bar club live music late night social entertainment",
+              "img_desc": ""
+            },
+            "vector_dims": {
+              "text": 1024,
+              "aug_text": 1024,
+              "aug_tags": 1024,
+              "img_desc": null
+            },
+            "vector_norms": {
+              "text": 1.0,
+              "aug_text": 1.0,
+              "aug_tags": 1.0,
+              "img_desc": null
+            },
+            "channels_present": [
+              "text",
+              "aug_text",
+              "aug_tags"
+            ],
+            "channels_null": [
+              "img_desc"
+            ]
+          }
+        },
+        {
+          "name": "loc_2",
+          "analysis": {
+            "text_k": 3,
+            "tags_k": 2,
+            "preprocessed": {
+              "text": "Quiet mountain town surrounded by forests and mist",
+              "aug_text": "Quiet mountain town surrounded by forests and mist elevated peak terrain with steep slopes, high-altitude views, and distinct geological character dense tree-covered environment with canopy, undergrowth, shade, and wildlife habitat environment with low ambient noise, minimal human activity, and an undisturbed physical character",
+              "aug_tags": "high mountain summit alpine trekking elevation dense jungle rainforest canopy trekking shade",
+              "img_desc": ""
+            },
+            "vector_dims": {
+              "text": 1024,
+              "aug_text": 1024,
+              "aug_tags": 1024,
+              "img_desc": null
+            },
+            "vector_norms": {
+              "text": 1.0,
+              "aug_text": 1.0,
+              "aug_tags": 1.0,
+              "img_desc": null
+            },
+            "channels_present": [
+              "text",
+              "aug_text",
+              "aug_tags"
+            ],
+            "channels_null": [
+              "img_desc"
+            ]
+          }
+        },
+        {
+          "name": "loc_3",
+          "analysis": {
+            "text_k": 2,
+            "tags_k": 1,
+            "preprocessed": {
+              "text": "Historic city with temples, culture, and street food",
+              "aug_text": "Historic city with temples, culture, and street food informal food served from street-level vendors, stalls, and mobile carts in open market environments religious structure dedicated to spiritual worship and ritual practice in a sacred environment",
+              "aug_tags": "historical heritage site war ancient dynasty cultural depth",
+              "img_desc": ""
+            },
+            "vector_dims": {
+              "text": 1024,
+              "aug_text": 1024,
+              "aug_tags": 1024,
+              "img_desc": null
+            },
+            "vector_norms": {
+              "text": 1.0,
+              "aug_text": 1.0,
+              "aug_tags": 1.0,
+              "img_desc": null
+            },
+            "channels_present": [
+              "text",
+              "aug_text",
+              "aug_tags"
+            ],
+            "channels_null": [
+              "img_desc"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "checks": {
+    "batch_vs_single_user": {
+      "consistent": true,
+      "mismatches": []
+    },
+    "batch_vs_single_location": {
+      "consistent": true,
+      "mismatches": []
+    },
+    "norm_validation": {
+      "all_normalized": true,
+      "failures": []
+    }
+  },
+  "summary": {
+    "total_single_tests": 6,
+    "user_avg_latency_ms": 945.16,
+    "location_avg_latency_ms": 753.66,
+    "overall_avg_latency_ms": 849.41,
+    "batch_user_latency_ms": 2461.12,
+    "batch_location_latency_ms": 2522.02,
+    "text_k_range": [
+      1,
+      3
+    ],
+    "tags_k_range": [
+      0,
+      3
+    ],
+    "tests_with_null_img_desc": 4,
+    "all_norms_correct": true,
+    "batch_consistent": true
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "module": "N2 — Image Understanding",
+    "date": "2026-05-14",
+    "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+    "image_tests": [
+      "beach",
+      "city",
+      "lake"
+    ]
+  },
+  "results": [
+    {
+      "name": "beach",
+      "label": "Bãi Biển Nhiệt Đới",
+      "scene_type": "coastal / nature",
+      "file_size_kb": 1332,
+      "status": "PASS",
+      "latency_ms": 1050,
+      "word_count": 48,
+      "paragraphs": 1,
+      "kw_hits": 2,
+      "kw_total": 5,
+      "quality": "PASS",
+      "prompt_tokens": 2055,
+      "completion_tokens": 59,
+      "total_tokens": 2114,
+      "error": "",
+      "desc_preview": "Bãi biển tuyệt đẹp với những cây dừa nghiêng mình bên bờ cát trắng, nước biển trong xanh hòa quyện với bầu trời xanh ngắt và mây trắng bồng bềnh, tạo nên một bức tranh thiên nhiên hoàn hảo, gợi lên cảm giác yên bình và thư thái.",
+      "full_desc": "Bãi biển tuyệt đẹp với những cây dừa nghiêng mình bên bờ cát trắng, nước biển trong xanh hòa quyện với bầu trời xanh ngắt và mây trắng bồng bềnh, tạo nên một bức tranh thiên nhiên hoàn hảo, gợi lên cảm giác yên bình và thư thái."
+    },
+    {
+      "name": "city",
+      "label": "Thành Phố Đô Thị",
+      "scene_type": "urban / architecture",
+      "file_size_kb": 1169,
+      "status": "PASS",
+      "latency_ms": 912,
+      "word_count": 48,
+      "paragraphs": 1,
+      "kw_hits": 2,
+      "kw_total": 5,
+      "quality": "PASS",
+      "prompt_tokens": 2055,
+      "completion_tokens": 61,
+      "total_tokens": 2116,
+      "error": "",
+      "desc_preview": "Thành phố sôi động thắp sáng buổi chiều tà với những tòa nhà chọc trời và dòng xe như dải đèn vàng. Không khí huyền ảo, hiện đại và đầy sức sống, khiến trái tim du khách đắm say, muốn khám phá mọi ngóc ngách của nơi đây.",
+      "full_desc": "Thành phố sôi động thắp sáng buổi chiều tà với những tòa nhà chọc trời và dòng xe như dải đèn vàng. Không khí huyền ảo, hiện đại và đầy sức sống, khiến trái tim du khách đắm say, muốn khám phá mọi ngóc ngách của nơi đây."
+    },
+    {
+      "name": "lake",
+      "label": "Hồ Núi Thiên Nhiên",
+      "scene_type": "mountain / lake",
+      "file_size_kb": 2411,
+      "status": "PASS",
+      "latency_ms": 1053,
+      "word_count": 48,
+      "paragraphs": 1,
+      "kw_hits": 3,
+      "kw_total": 5,
+      "quality": "PASS",
+      "prompt_tokens": 2490,
+      "completion_tokens": 59,
+      "total_tokens": 2549,
+      "error": "",
+      "desc_preview": "Hồ nước nằm giữa những dãy núi cao, xung quanh là thảm thực vật xanh tươi và các mỏm núi nhọn. Các đỉnh núi cao vút lên, tạo nên khung cảnh hùng vĩ và hòa quyện với bầu trời mây trắng. Không khí trong lành và yên bình.",
+      "full_desc": "Hồ nước nằm giữa những dãy núi cao, xung quanh là thảm thực vật xanh tươi và các mỏm núi nhọn. Các đỉnh núi cao vút lên, tạo nên khung cảnh hùng vĩ và hòa quyện với bầu trời mây trắng. Không khí trong lành và yên bình."
+    }
+  ]
+}
