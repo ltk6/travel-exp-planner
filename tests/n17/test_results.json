@@ -1,0 +1,49 @@
+[
+  {
+    "case": "Change intensity (Beach -> Quiet)",
+    "input": {
+      "name": "Change intensity (Beach -> Quiet)",
+      "user_input": "Tôi muốn đi du lịch biển sôi động",
+      "user_tags": [
+        "beach",
+        "party",
+        "nightlife"
+      ],
+      "img_desc": "Hình ảnh một bãi biển đông đúc với âm nhạc",
+      "feedback": "Thực ra tôi thấy hơi mệt, tôi muốn tìm một nơi nào đó cực kỳ yên tĩnh, không dùng cái ảnh này nữa"
+    },
+    "output": {
+      "refined_text": "Tôi muốn một nơi cực kỳ yên tĩnh, không ồn ào",
+      "refined_tags": [
+        "peaceful",
+        "nature reserve",
+        "lake"
+      ],
+      "refined_img_desc": "",
+      "explanation": "Cập nhật ý định sang địa điểm yên bình, bỏ ảnh cũ và thay đổi tags phù hợp"
+    }
+  },
+  {
+    "case": "Add specific preference",
+    "input": {
+      "name": "Add specific preference",
+      "user_input": "Du lịch Đà Lạt",
+      "user_tags": [
+        "nature",
+        "cool climate"
+      ],
+      "img_desc": "",
+      "feedback": "Tôi muốn thêm các hoạt động trải nghiệm cà phê và săn mây"
+    },
+    "output": {
+      "refined_text": "Du lịch Đà Lạt với trải nghiệm cà phê và săn mây",
+      "refined_tags": [
+        "coffee",
+        "cloud sea",
+        "cool climate"
+      ],
+      "refined_img_desc": "",
+      "explanation": "Cập nhật nội dung và thẻ để bao gồm hoạt động cà phê và săn mây, giữ thẻ khí hậu mát"
+    }
+  }
+]

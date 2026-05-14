@@ -1,6 +1,5 @@
 """
 views/result/api.py
-
 Fetches activity recommendations from the backend for a given location.
 Errors are allowed to propagate naturally — callers handle them.
 """
@@ -9,8 +8,18 @@ from config import setup_logging, INTERNAL_API_KEY, API_PORT
 logger = setup_logging("N7.api")
 
 _BACKEND_HEADERS = {"X-Internal-Key": INTERNAL_API_KEY}
-_BACKEND_URL = f"http://localhost:{API_PORT}/activities"
 
+def fetch_recommendations(payload: dict) -> dict:
+    url = f"http://localhost:{API_PORT}/recommend"
+    logger.info(f"Fetching recommendations from {url}")
+    response = requests.post(
+        url,
+        json=payload,
+        headers=_BACKEND_HEADERS,
+        timeout=120,
+    )
+    response.raise_for_status()
+    return response.json()
 
 def fetch_activities(
     loc_id: str,
@@ -24,6 +33,7 @@ def fetch_activities(
     provider: str = None,
     top_k_activities: int = 5,
 ) -> dict:
+    url = f"http://localhost:{API_PORT}/activities"
     payload = {
         "text": user_text,
         "img_desc": img_desc,
@@ -37,14 +47,22 @@ def fetch_activities(
     }
     logger.info(f"Requesting activities for {loc_id}")
     response = requests.post(
-        _BACKEND_URL,
+        url,
         json=payload,
         headers=_BACKEND_HEADERS,
         timeout=120,
     )
-    if response.status_code == 200:
-        logger.info(f"Successfully fetched activities for {loc_id}")
-    else:
-        logger.error(f"Failed to fetch activities for {loc_id}: {response.status_code}")
+    response.raise_for_status()
+    return response.json()
+
+def send_feedback(endpoint: str, body: dict) -> dict:
+    url = f"http://localhost:{API_PORT}/feedback/{endpoint}"
+    logger.info(f"Sending feedback to {url}")
+    response = requests.post(
+        url,
+        json=body,
+        headers=_BACKEND_HEADERS,
+        timeout=120,
+    )
     response.raise_for_status()
     return response.json()

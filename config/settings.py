@@ -32,12 +32,12 @@ GROQ_MODELS = {
 }
 
 # ── LLM Provider Routing (N5) ─────────────────────────────────────
-# LLM Chain: Strict Quality Ranking (120b > 70b > 32b > 8b > 20b > Safeguard > Scout)
-LLM_CHAIN = os.getenv("LLM_CHAIN", "gpt_120b,groq_70b,qwen_32b,groq_8b,gpt_20b,gpt_safeguard,groq_scout")
+# LLM Chain: Quality Ranking (70b > 32b > 8b > Scout)
+LLM_CHAIN = os.getenv("LLM_CHAIN", "groq_70b,qwen_32b,groq_8b,groq_scout")
 
 # ── Activity Generation Limits (N5) ───────────────────────────────
-LLM_ACTIVITIES_PER_CALL = int(os.getenv("LLM_ACTIVITIES_PER_CALL", "10"))
-LLM_N5_TARGET_COUNT     = int(os.getenv("LLM_N5_TARGET_COUNT", "10"))
+LLM_ACTIVITIES_PER_CALL = int(os.getenv("LLM_ACTIVITIES_PER_CALL", "0"))
+LLM_N5_TARGET_COUNT     = int(os.getenv("LLM_N5_TARGET_COUNT", "0"))
 LLM_MAX_RETRIES         = int(os.getenv("LLM_MAX_RETRIES", "2"))
 LLM_RETRY_WAIT_BASE     = float(os.getenv("LLM_RETRY_WAIT_BASE", "5.0"))
 

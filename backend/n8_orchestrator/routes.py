@@ -1,7 +1,7 @@
 from flask import request, jsonify, abort, Blueprint
 from config import INTERNAL_API_KEY, PROTECTED_ROUTES, setup_logging
 from .utils import _err, _get_json
-from .services import recommend_service, activities_service
+from .services import recommend_service, activities_service, feedback_recommend_service, feedback_activities_service
 
 logger = setup_logging("N8.routes")
 
@@ -25,7 +25,7 @@ def health():
     except Exception as e:
         n1_status = f"error: {str(e)}"
 
-    # 2. Check N3 Database (if DB connection fails, we know it's using the JSON fallback)
+    # 2. Check N3 Database
     try:
         from n3_database.db_manager import _get_connection
         conn = _get_connection()
@@ -34,7 +34,7 @@ def health():
     except Exception:
         n3_status = "file_storage"
 
-    # 3. Check LLMs availability (N2/N5)
+    # 3. Check LLMs availability
     llms_available = bool(GROQ_API_KEY)
 
     chain = get_llm_chain()
@@ -76,6 +76,7 @@ def get_activities():
     except Exception as e:
         logger.error(f"Activities service failed: {e}")
         return _err(f"Internal error: {str(e)}", 500)
+
 @bp.post("/cache/reset")
 def reset_cache():
     """Manual trigger to force cache refresh."""
@@ -88,3 +89,27 @@ def get_fingerprint():
     """Check current DB version fingerprint."""
     from n3_database.db_manager import get_db_fingerprint
     return jsonify({"fingerprint": get_db_fingerprint()})
+
+@bp.post("/feedback/recommend")
+def feedback_recommend():
+    body, err = _get_json()
+    if err: return err
+    if not body.get("feedback"): return _err("Missing feedback text")
+    try:
+        result = feedback_recommend_service(body)
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Feedback recommend failed: {e}")
+        return _err(f"Internal error: {str(e)}", 500)
+
+@bp.post("/feedback/activities")
+def feedback_activities():
+    body, err = _get_json()
+    if err: return err
+    if not body.get("feedback"): return _err("Missing feedback text")
+    try:
+        result = feedback_activities_service(body)
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Feedback activities failed: {e}")
+        return _err(f"Internal error: {str(e)}", 500)

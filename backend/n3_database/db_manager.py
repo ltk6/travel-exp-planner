@@ -70,11 +70,15 @@ def get_db_fingerprint() -> str:
         return "fallback_v1"
 
 def _format_vectors(row: Dict[str, Any]) -> Dict[str, Any]:
+    def to_list(v):
+        if v is None: return None
+        return v.tolist() if hasattr(v, "tolist") else list(v)
+
     return {
-        "text": row.get("text"),
-        "aug_text": row.get("aug_text"),
-        "aug_tags": row.get("aug_tags"),
-        "img_desc": row.get("img_desc")
+        "text": to_list(row.get("text")),
+        "aug_text": to_list(row.get("aug_text")),
+        "aug_tags": to_list(row.get("aug_tags")),
+        "img_desc": to_list(row.get("img_desc"))
     }
 
 def save_location(location_data: Dict[str, Any]) -> Dict[str, Any]:

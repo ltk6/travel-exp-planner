@@ -26,7 +26,7 @@ set PYTHONPATH=%cd%
 echo =======================================
 echo 2. Starting Backend API (Port 5000)
 echo =======================================
-start "Travel Planner - Backend" cmd /k "call venv\Scripts\activate.bat && set PYTHONPATH=%cd% && python -m backend.n8_api.app"
+start "Travel Planner - Backend" cmd /k "call venv\Scripts\activate.bat && set PYTHONPATH=%cd% && python -m backend.n8_orchestrator.app"
 
 @echo off
 echo =======================================

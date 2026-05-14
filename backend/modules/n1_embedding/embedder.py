@@ -5,25 +5,38 @@ Model: BAAI/bge-m3 (568M params, 1024-dim, 100+ languages).
 
 from __future__ import annotations
 from typing import List, Optional
-import torch
+from config import EMBEDDING_MODEL_NAME, setup_logging
 
-from config import EMBEDDING_MODEL_NAME
-
-try:
-    from sentence_transformers import SentenceTransformer
-    print(f"[Embedding] Loading '{EMBEDDING_MODEL_NAME}' onto GPU...")
-    _device = "cuda" if torch.cuda.is_available() else "cpu"
-    _MODEL = SentenceTransformer(EMBEDDING_MODEL_NAME, device=_device)
-    print(f"[Embedding] Ready. Device: {_MODEL.device}")
-except ImportError:
-    raise RuntimeError("sentence-transformers or torch not installed")
-except Exception as e:
-    raise RuntimeError(f"Failed to load embedding model: {e}")
-
+logger = setup_logging("N1.embedder")
+_MODEL = None
 
 def get_model():
-    """Return the globally loaded model."""
+    """Return the globally loaded model, initializing it if necessary."""
+    global _MODEL
+    if _MODEL is None:
+        try:
+            # Log first so the user knows what's taking time
+            logger.info(f"N1 — Initializing Embedding Engine (Model: {EMBEDDING_MODEL_NAME})...")
+            
+            # Heavy imports happen here
+            import torch
+            from sentence_transformers import SentenceTransformer
+            
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+            logger.info(f"N1 — Loading weights onto {device} (this may take a few seconds)...")
+            
+            _MODEL = SentenceTransformer(EMBEDDING_MODEL_NAME, device=device)
+            logger.info(f"N1 — Embedding Model ready on {_MODEL.device}")
+        except ImportError:
+            logger.error("N1 — sentence-transformers or torch not installed")
+            raise RuntimeError("sentence-transformers or torch not installed")
+        except Exception as e:
+            logger.error(f"N1 — Failed to load embedding model: {e}")
+            raise RuntimeError(f"Failed to load embedding model: {e}")
     return _MODEL
+
+# Pre-load at module level to avoid lazy-loading delays during user requests
+get_model()
 
 
 def embed_strings(strings: List[str]) -> List[Optional[List[float]]]:

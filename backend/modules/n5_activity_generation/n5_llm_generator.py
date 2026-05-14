@@ -273,18 +273,28 @@ def generate_from_llm(
     location_description: str,
     location_tags: List[str],
     user_tags: List[str],
-    num_activities: int = LLM_ACTIVITIES_PER_CALL,
     user_text: str = "",
     llm_chain: Optional[str] = None,
     retries: int = LLM_MAX_RETRIES,
+    num_activities: Optional[int] = None,
 ) -> Optional[List[Dict]]:
     """Sinh hoạt động du lịch bằng LLM. Trả về None nếu fail."""
+    from config.settings import LLM_ACTIVITIES_PER_CALL, LLM_N5_TARGET_COUNT
+    
+    # Ưu tiên lấy giá trị target_count từ config nếu num_activities không được truyền vào
+    actual_num = num_activities if num_activities is not None else LLM_N5_TARGET_COUNT
+    
+    if actual_num <= 0 or LLM_ACTIVITIES_PER_CALL <= 0:
+        logger.info("N5: Skipping generation (LLM_ACTIVITIES_PER_CALL=%d, target=%d)", 
+                    LLM_ACTIVITIES_PER_CALL, actual_num)
+        return []
+
     activities, _meta = generate_from_llm_with_meta(
         location_name=location_name,
         location_description=location_description,
         location_tags=location_tags,
         user_tags=user_tags,
-        num_activities=num_activities,
+        num_activities=actual_num,
         user_text=user_text,
         llm_chain=llm_chain,
         retries=retries,
@@ -312,11 +322,17 @@ def generate_from_llm_with_meta(
         }
     """
     import time
+    from config.settings import LLM_ACTIVITIES_PER_CALL, LLM_N5_TARGET_COUNT
+    
     t0 = time.time()
     meta = {"provider_used": None, "latency_ms": 0}
 
-    if not is_llm_available():
-        return None, meta
+    # Kiểm tra cả hai cấu hình
+    if not is_llm_available() or num_activities <= 0 or LLM_ACTIVITIES_PER_CALL <= 0:
+        logger.info("N5: Skipping LLM (available=%s, per_call=%d, target=%d)", 
+                    is_llm_available(), LLM_ACTIVITIES_PER_CALL, num_activities)
+        meta["latency_ms"] = int((time.time() - t0) * 1000)
+        return [], meta
 
     prompt = _build_prompt(
         location_name=location_name,

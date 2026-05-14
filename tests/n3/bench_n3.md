@@ -10,19 +10,19 @@
 
 | Chỉ số | Phương thức | Độ trễ (ms) | Speedup |
 |--------|-------------|:-----------:|:-------:|
-| Fingerprint | `get_db_fingerprint()` | 318 ms | 10.2x |
-| Light Load | `get_all(images=False)` | 546 ms | 6.0x |
-| Full Load | `get_all(images=True)` | 3252 ms | 1.0x |
+| Fingerprint | `get_db_fingerprint()` | 275 ms | 12.1x |
+| Light Load | `get_all(images=False)` | 490 ms | 6.8x |
+| Full Load | `get_all(images=True)` | 3317 ms | 1.0x |
 
 ---
 
 ## 2. Kiểm Tra Kết Nối & Write
 
-- **Kết nối:** PASS (249 ms)
+- **Kết nối:** PASS (295 ms)
 
 | Địa điểm | Location ID | Độ trễ (ms) | Kết quả |
 |----------|-------------|:-----------:|:-------:|
-| Bãi Sao Phú Quốc | `bench_loc_001` | 340 | PASS |
+| Bãi Sao Phú Quốc | `bench_loc_001` | 335 | PASS |
 
 ---
 
