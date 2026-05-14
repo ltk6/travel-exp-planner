@@ -1,7 +1,7 @@
 # =============================================================================
 # n5_llm_generator.py — LLM-based activity generation
 #
-# Provider: fallback chain (Gemini / Groq / ...) via providers/
+# Provider: LLM chain (Groq models) via providers/
 # Schema: v2 only — name, description, tags, cost, estimated_duration,
 #         best_time, suitable_for, difficulty, season, reason_template
 # Tags vocabulary: ALL_TAGS from backend.shared.maps.tags
@@ -12,7 +12,7 @@ from typing import Dict, List, Optional
 
 from config import setup_logging, LLM_ACTIVITIES_PER_CALL, LLM_MAX_RETRIES
 
-from .providers import get_fallback_chain
+from .providers import get_llm_chain
 from backend.shared.maps.tags import ALL_TAGS
 
 logger = setup_logging("N5.llm")
@@ -50,7 +50,7 @@ _TAG_ALIASES: dict[str, str] = {
 
 def is_llm_available() -> bool:
     """LLM khả dụng nếu có ít nhất 1 provider có API key."""
-    return bool(get_fallback_chain())
+    return bool(get_llm_chain())
 
 
 # =============================================================================
@@ -81,21 +81,38 @@ TIÊU CHUẨN CHẤT LƯỢNG (PHẢI TUÂN THỦ):
 2. NỘI DUNG MÔ TẢ: 3-4 câu chi tiết — mô tả cảm giác, âm thanh, mùi vị, hoặc mẹo chỉ người bản địa mới biết. Tránh từ sáo rỗng.
 3. TÍNH ĐA DẠNG: Bao gồm ít nhất: cảm giác mạnh/vận động, văn hóa/tâm linh, ẩm thực, chụp ảnh/nghệ thuật, thư giãn/chữa lành.
 4. TÍNH THỰC TẾ: Hoạt động phải có thật và khả thi tại {location_name}.
-5. TAGS: BẮT BUỘC chọn từ 4 đến 8 tags từ danh sách chuẩn dưới đây. TUYỆT ĐỐI KHÔNG tự bịa tag mới, phải copy NGUYÊN VĂN tên tag từ danh sách: {valid_tags_str}.
+5. TAGS: BẮT BUỘC chọn từ 4 đến 8 tags từ danh sách chuẩn dưới đây. TUYỆT ĐỐI KHÔNG tự bịa tag mới: {valid_tags_str}.
 
-CẤU TRÚC JSON BẮT BUỘC (đúng {num_activities} phần tử):
+CẤU TRÚC JSON BẮT BUỘC (Trả về đúng 1 Array gồm {num_activities} Objects):
 {{
-  "name": "Tên trải nghiệm đầy cảm hứng",
+  "name": "Tên trải nghiệm (string)",
   "description": "Mô tả sâu sắc, chân thực, nêu bật được cái 'hồn' của trải nghiệm.",
   "tags": ["tag1", "tag2", ...],  // BẮT BUỘC 4-8 tags, CHỈ lấy từ danh sách chuẩn đã cung cấp
-  "intensity": 0.0 đến 1.0 (mức độ bận rộn/sôi nổi),
-  "physical_level": 0.0 đến 1.0 (mức độ tiêu tốn thể lực),
-  "social_level": 0.0 đến 1.0 (mức độ tương tác xã hội/đông người)
+  "intensity": 0.0,      // (float 0.0-1.0) mức độ bận rộn/sôi nổi
+  "physical_level": 0.0, // (float 0.0-1.0) mức độ tiêu tốn thể lực
+  "social_level": 0.0,   // (float 0.0-1.0) mức độ tương tác xã hội/đông người
+  "reasoning": "Tại sao hoạt động này lại phù hợp nhất với sở thích và địa điểm này? (Giải thích ngắn gọn)"
 }}
 
-TRẢ LỜI BẰNG JSON ARRAY THUẦN TÚY (không markdown, không giải thích thêm):
+QUY TẮC NGHIÊM NGẶT:
+- KHÔNG giải thích đầu/cuối.
+- KHÔNG bao bọc trong markdown code blocks (```json ... ```).
+- CHỈ trả về duy nhất 1 JSON Array hợp lệ bắt đầu bằng '[' và kết thúc bằng ']'.
+- Sử dụng tiếng Việt tự nhiên, sang trọng, đúng phong cách chuyên gia du lịch.
+- Cực kỳ súc tích: Mỗi mô tả tối đa 3 câu. KHÔNG viết quá dài để tránh bị cắt ngang (limit 4000 tokens).
+
+TRẢ LỜI:
 [
-  {{"activity_id": "...", "location_id": "...", "name": "...", ...}}
+  {{
+    "name": "...",
+    "description": "...",
+    "tags": ["...", "..."],
+    "intensity": 0.5,
+    "physical_level": 0.3,
+    "social_level": 0.8,
+    "reasoning": "..."
+  }},
+  ...
 ]"""
     return prompt
 
@@ -119,17 +136,37 @@ def _parse_llm_response(response_text: str) -> Optional[List[Dict]]:
     except json.JSONDecodeError:
         pass
 
-    # Case 2: tìm mảng JSON đầu tiên trong text (kể cả trong markdown code block)
+    # Case 2: tìm mảng JSON đầu tiên trong text
     bracket_start = text.find('[')
     bracket_end   = text.rfind(']')
-    if bracket_start != -1 and bracket_end > bracket_start:
+    
+    if bracket_start != -1:
+        # Nếu không có bracket_end (truncated), cố gắng repair
+        json_str = text[bracket_start : (bracket_end + 1 if bracket_end > bracket_start else len(text))]
+        
+        # Tiền xử lý: Xóa trailing commas [..., ] -> [...]
+        import re
+        json_str = re.sub(r',\s*\]', ']', json_str)
+        
         try:
-            data = json.loads(text[bracket_start:bracket_end + 1])
-            if isinstance(data, list):
-                return data
+            return json.loads(json_str)
         except json.JSONDecodeError:
-            pass
-
+            # Try to repair truncated array: [ {...}, {...}, {"name":...
+            # Chúng ta tìm dấu } cuối cùng mà có số lượng { và } khớp nhau trong object đó
+            if json_str.strip().startswith('['):
+                # Thử cắt ngược từ cuối lên để tìm object hợp lệ gần nhất
+                temp_str = json_str.strip()
+                while len(temp_str) > 1:
+                    last_brace = temp_str.rfind('}')
+                    if last_brace == -1: break
+                    
+                    try:
+                        potential = temp_str[:last_brace+1] + ']'
+                        return json.loads(potential)
+                    except:
+                        # Nếu không được, cắt bỏ phần đuôi và tìm tiếp brace trước đó
+                        temp_str = temp_str[:last_brace]
+    
     logger.warning("Cannot parse LLM response: %s...", text[:300])
     return None
 
@@ -178,42 +215,53 @@ def _validate_activity(act: Dict) -> bool:
 
 
 # =============================================================================
-# LLM CALL (fallback chain + retry)
+# LLM CALL (chain execution + retry)
 # =============================================================================
 
 def call_llm(
     prompt: str,
     retries: int = LLM_MAX_RETRIES,
-    provider_override: Optional[str] = None,
+    chain_override: Optional[str] = None,
+    temperature: float = 0.1,
 ) -> tuple:
     """
-    Gọi LLM qua fallback chain (config từ env LLM_PROVIDER / LLM_FALLBACK).
+    Gọi LLM qua chain (config từ env LLM_CHAIN).
 
     Mỗi provider tự retry với exponential backoff + jitter (xử lý trong base.py).
-    Nếu provider đầu fail sau mọi retry, chuyển sang provider tiếp theo.
+    Nếu provider đầu fail sau mọi retry, chuyển sang provider tiếp theo trong chain.
 
     Returns:
-        (response_text, provider_used) — provider_used là tên provider trả về
-        response thành công, (None, None) nếu tất cả fail.
+        (response_text, provider_name, model_name, usage)
     """
-    if provider_override:
-        chain = get_fallback_chain(primary=provider_override)
+    if chain_override:
+        chain = get_llm_chain(chain_str=chain_override)
     else:
-        chain = get_fallback_chain()
+        chain = get_llm_chain()
 
     if not chain:
         logger.warning("No LLM provider available (check API keys)")
-        return None, None
+        return None, None, None
 
-    for provider in chain:
-        logger.info("Trying LLM provider=%s model=%s", provider.name, provider.model)
-        result = provider.generate(prompt, retries=retries)
-        if result:
-            return result, provider.name, getattr(provider, "last_usage", None)
-        logger.warning("Provider %s failed, trying next in chain", provider.name)
+    import time, random
+    from config import LLM_RETRY_WAIT_BASE
 
-    logger.error("All LLM providers in chain failed")
-    return None, None, None
+    for pass_idx in range(retries + 1):
+        for provider in chain:
+            logger.info("Trying LLM provider=%s model=%s (pass %d)", provider.name, provider.model, pass_idx + 1)
+            # Trong mỗi pass, mỗi provider chỉ thử 1 lần (retries=0) 
+            # để nhanh chóng chuyển sang model khác nếu bị rate limit.
+            result = provider.generate(prompt, retries=0, temperature=temperature, max_tokens=4000)
+            if result:
+                return result, provider.name, provider.model, getattr(provider, "last_usage", None)
+            logger.warning("Provider %s failed in pass %d", provider.name, pass_idx + 1)
+
+        if pass_idx < retries:
+            wait = min(60.0, (LLM_RETRY_WAIT_BASE * (3 ** pass_idx)) + random.random())
+            logger.warning("All models in chain failed. Waiting %.2fs before pass %d...", wait, pass_idx + 2)
+            time.sleep(wait)
+
+    logger.error("All LLM providers in all passes failed")
+    return None, None, None, None
 
 
 # =============================================================================
@@ -227,7 +275,7 @@ def generate_from_llm(
     user_tags: List[str],
     num_activities: int = LLM_ACTIVITIES_PER_CALL,
     user_text: str = "",
-    provider: Optional[str] = None,
+    llm_chain: Optional[str] = None,
     retries: int = LLM_MAX_RETRIES,
 ) -> Optional[List[Dict]]:
     """Sinh hoạt động du lịch bằng LLM. Trả về None nếu fail."""
@@ -238,7 +286,7 @@ def generate_from_llm(
         user_tags=user_tags,
         num_activities=num_activities,
         user_text=user_text,
-        provider=provider,
+        llm_chain=llm_chain,
         retries=retries,
     )
     return activities
@@ -251,14 +299,16 @@ def generate_from_llm_with_meta(
     user_tags: List[str],
     num_activities: int = LLM_ACTIVITIES_PER_CALL,
     user_text: str = "",
-    provider: Optional[str] = None,
+    llm_chain: Optional[str] = None,
     retries: int = LLM_MAX_RETRIES,
 ) -> tuple:
     """
     Sinh activities bằng LLM, trả kèm meta dict:
         {
             "provider_used": str | None,
+            "model_used":    str | None,
             "latency_ms":    int,
+            "usage":         dict | None,
         }
     """
     import time
@@ -281,8 +331,9 @@ def generate_from_llm_with_meta(
         "Calling LLM for location='%s' (requesting %d activities)",
         location_name, num_activities,
     )
-    response_text, provider_used, usage = call_llm(prompt, retries=retries, provider_override=provider)
+    response_text, provider_used, model_used, usage = call_llm(prompt, retries=retries, chain_override=llm_chain)
     meta["provider_used"] = provider_used
+    meta["model_used"] = model_used
     meta["usage"] = usage
     meta["latency_ms"] = int((time.time() - t0) * 1000)
 

@@ -58,6 +58,7 @@ class GroqProvider(LLMProvider):
             ],
             "temperature": temperature,
             "max_tokens": max_tokens,
+            "response_format": {"type": "json_object"},
         }
         data = json.dumps(payload).encode("utf-8")
 
