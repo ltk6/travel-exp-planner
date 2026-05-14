@@ -22,7 +22,22 @@ Nếu model ưu tiên cao gặp lỗi hoặc bị quá tải, hệ thống tự 
 
 ---
 
-## 3. Quy trình Đảm bảo Chất lượng (Quality Assurance)
+## 3. Kiến trúc Failover (Resilience Pattern)
+
+```mermaid
+graph TD
+    A[Request Activities] --> B{Primary Model: GPT-120B}
+    B -- Error/Limit --> C{Groq 70B}
+    C -- Error/Limit --> D{Qwen 32B}
+    D -- Error/Limit --> E{Groq 8B}
+    E -- Error/Limit --> F[Template Fallback]
+    
+    B & C & D & E --> G[JSON Validator & Repair]
+    F --> H[Final Activities]
+    G --> H
+```
+
+## 4. Quy trình Đảm bảo Chất lượng (Quality Assurance)
 
 Việc sinh dữ liệu từ LLM luôn tiềm ẩn rủi ro về cấu trúc. N5 áp dụng quy trình 3 bước để đảm bảo dữ liệu đầu ra luôn chuẩn xác:
 

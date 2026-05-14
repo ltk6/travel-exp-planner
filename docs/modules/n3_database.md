@@ -32,7 +32,29 @@ Mỗi bản ghi địa điểm bao gồm:
 
 ---
 
-## 4. Persistence & Sync Strategy
+## 4. Kiến trúc Lưu trữ (Storage Architecture)
+
+```mermaid
+graph TD
+    subgraph "N3: Data Source"
+        A{Connection Check}
+        B[(PostgreSQL + pgvector)]
+        C[seeds/locations_with_vectors.json]
+    end
+
+    A -- Success --> B
+    A -- Fail --> C
+
+    subgraph "Data Structures"
+        B1[Vectors: 1024D]
+        B2[Metadata: JSONB]
+        B3[Images: BYTEA array]
+    end
+
+    B --- B1 & B2 & B3
+```
+
+## 5. Persistence & Sync Strategy
 
 Module N3 đóng vai trò là **Single Source of Truth** cho toàn bộ hệ thống:
 

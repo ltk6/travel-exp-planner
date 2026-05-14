@@ -27,7 +27,24 @@ Hệ thống so khớp 3 chỉ số vận động và xã hội:
 
 ---
 
-## 3. Suy luận Sở thích (Preference Inference)
+## 3. Mô hình Xếp hạng Hỗn hợp (Hybrid Scoring Model)
+
+```mermaid
+graph TD
+    A[User Profile: Vectors & Tags] --> B[Preference Inference]
+    B --> B1[Target Intensity/Physical/Social]
+    
+    A --> C[Semantic Matching]
+    C --> C1[Cosine Sim & Dead-zone Scaling]
+    
+    B1 --> D[Attribute Scoring]
+    D --> E[Distance Calculation]
+    
+    C1 & E --> F[Hybrid 50/50 Combine]
+    F --> G[Final Score & Reason]
+```
+
+## 4. Suy luận Sở thích (Preference Inference)
 
 Điểm độc đáo của N6 là khả năng tự suy luận các chỉ số mục tiêu từ tags của người dùng thông qua các quy luật (rules):
 -   Nếu người dùng chọn `peaceful`, hệ thống tự hiểu `Intensity` mục tiêu thấp.

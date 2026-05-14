@@ -39,7 +39,18 @@ Module N7 được xây dựng trên nền tảng **Streamlit**, nhưng được
 
 ## 4. State Caching & Hiệu năng
 
-N7 sử dụng cơ chế **State Caching** mạnh mẽ của Streamlit để bảo toàn trải nghiệm:
+N7 sử dụng cơ chế **State Caching** mạnh mẽ của Streamlit để bảo toàn trải nghiệm và tối ưu tốc độ phản hồi:
+
+```mermaid
+graph TD
+    A[User Input/Action] --> B{Check Session State}
+    B -- Hit --> C[Render from Cache]
+    B -- Miss --> D[Call N8 API]
+    D --> E[Process Results]
+    E --> F[Save to Session State/Snapshot]
+    F --> C
+```
+
 -   **Session State (State Caching):** Lưu trữ toàn bộ dữ liệu đầu vào (Snapshots) và kết quả tìm kiếm trong phiên làm việc. Điều này giúp người dùng có thể quay lại xem kết quả cũ mà không cần gọi lại Backend.
 -   **`st.cache_resource`:** Sử dụng để cache các tài nguyên tĩnh như CSS, cấu hình kết nối, giúp giảm thời gian khởi tạo UI.
 -   **Parallel Fetching:** Sử dụng `ThreadPoolExecutor` để gọi API sinh hoạt động song song cho nhiều địa điểm, kết hợp với Skeleton Loaders để duy trì tính tương tác của giao diện.

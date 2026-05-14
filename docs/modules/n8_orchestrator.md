@@ -25,7 +25,42 @@ N8 đảm bảo rằng các module không cần biết về sự tồn tại c�
 
 ---
 
-## 3. Giao diện API (Endpoints)
+## 3. Sơ đồ Trình tự Xử lý (Sequence Diagram)
+
+Hệ thống hoạt động theo mô hình Hub-and-Spoke với N8 là trung tâm. Dữ liệu luôn quay về N8 trước khi chuyển sang module tiếp theo:
+
+```mermaid
+sequenceDiagram
+    participant N7 as N7 UI
+    participant N8 as N8 Orchestrator
+    participant Nodes as N1-N6 Modules
+
+    Note over N7,Nodes: Phase 1: Recommend (n7-n8-node-n8-n7)
+    N7->>N8: POST /api/recommend
+    N8->>Nodes: N2 Vision
+    Nodes-->>N8: result
+    N8->>Nodes: N1 Embedding
+    Nodes-->>N8: result
+    N8->>Nodes: N3 Database
+    Nodes-->>N8: result
+    N8->>Nodes: N4 Ranking
+    Nodes-->>N8: result
+    N8-->>N7: JSON Response (Top Locations)
+
+    Note over N7,Nodes: Phase 2: Activities (n7-n8-node-n8-n7 x5)
+    loop 5 Parallel Requests from UI
+        N7->>N8: POST /api/activities
+        N8->>Nodes: N5 Generation
+        Nodes-->>N8: result
+        N8->>Nodes: N6 Ranking
+        Nodes-->>N8: result
+        N8-->>N7: JSON Response (Personal Plan)
+    end
+```
+
+---
+
+## 4. Giao diện API (Endpoints)
 
 | Endpoint | Method | Chức năng |
 |----------|--------|-----------|
@@ -49,15 +84,31 @@ Trong dự án này, việc **Flask chậm hơn FastAPI lại là một lợi th
 
 ---
 
--   **Hybrid Caching (RAM + Local File):** 
-    -   **Cơ chế Metadata:** N8 nạp dữ liệu địa điểm vào **RAM**, đồng thời lưu trữ thành file `location_cache.json`.
-    -   **Distributed Image Persistence:** N8 mô phỏng hệ thống phân tán bằng cách tự quản lý thư mục `image_cache/`. Ảnh được lấy từ N3 qua API (Base64) và N8 tự lưu thành file cục bộ để sử dụng độc lập.
-    -   **Smart Fingerprint Check:** Trước mỗi yêu cầu xử lý, N8 gọi nhanh tới N3 để lấy "dấu vân tay" (Fingerprint). 
-        -   Nếu vân tay trùng khớp: Sử dụng cache nội bộ (RAM/File) -> Tốc độ tối đa.
-        -   Nếu vân tay sai lệch: Tự động kích hoạt quy trình đồng bộ hóa (Re-sync) toàn bộ chữ và ảnh.
-    -   **Cơ chế Invalidation (Làm mới):**
-        -   *Manual Trigger:* Endpoint `/api/cache/reset` ép buộc nạp lại dữ liệu.
-        -   *Startup Flag:* Tùy chọn `--refresh` khi khởi động.
+## 5. Chiến lược Caching: Distributed Hybrid Caching
+
+N8 triển khai một hệ thống cache đa tầng nhằm giảm thiểu độ trễ và giảm tải cho Database (N3) cũng như các API bên ngoài:
+
+```mermaid
+graph TD
+    A[Incoming Request] --> B{Check N3 Fingerprint}
+    B -- Changed --> C[Full Re-sync from N3]
+    B -- Unchanged --> D{Check RAM Cache}
+    D -- Hit --> E[Return Result]
+    D -- Miss --> F{Check Local File Cache}
+    F -- Hit --> G[Load to RAM & Return]
+    F -- Miss --> H[Call Pipeline N1-N6]
+    H --> I[Save to File & RAM]
+    I --> E
+    C --> I
+```
+
+-   **RAM Cache:** Lưu trữ metadata địa điểm để truy xuất tức thì trong miliseconds.
+-   **Local File Cache (`location_cache.json`):** Lưu trữ dữ liệu bền vững, giúp hệ thống khởi động nhanh mà không cần fetch lại toàn bộ từ Database.
+-   **Distributed Image Persistence:** Tự quản lý thư mục `image_cache/`. Ảnh được lấy từ N3 (Base64) và lưu thành file cục bộ, mô phỏng một CDN thu nhỏ.
+-   **Smart Fingerprint Check:** Trước mỗi yêu cầu, N8 thực hiện một truy vấn siêu nhẹ tới N3 để lấy mã băm dữ liệu. Nếu mã băm không đổi, N8 hoàn toàn tin tưởng vào cache nội bộ.
+-   **Cơ chế Invalidation (Làm mới):**
+    -   *Manual Trigger:* Endpoint `/api/cache/reset` ép buộc nạp lại dữ liệu.
+    -   *Startup Flag:* Tùy chọn `--refresh` khi khởi động.
 -   **Error Handling:** Nếu một module gặp lỗi, N8 sẽ bỏ qua và tiếp tục pipeline để đảm bảo luôn có kết quả trả về.
 -   **Debug Trace:** Cung cấp "dấu vết" xử lý chi tiết của từng module khi bật `API_DEBUG`.
 ---

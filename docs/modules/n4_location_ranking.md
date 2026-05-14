@@ -31,7 +31,21 @@ N4 sử dụng thuật toán **Độ tương đồng Cosine có trọng số** t
 
 ---
 
-## 4. Quy trình xử lý (Process)
+## 4. Luồng Xếp hạng (Ranking Pipeline)
+
+```mermaid
+graph TD
+    A[User Vectors & Tags] --> B{Dynamic Weighting}
+    B --> C[Channel 1: Text Similarity]
+    B --> D[Channel 2: Tag Similarity]
+    B --> E[Channel 3: Visual Similarity]
+    
+    C & D & E --> F[Weighted Summation]
+    F --> G[Top-K Sorting]
+    G --> H[Final Ranked List]
+```
+
+## 5. Quy trình xử lý (Process)
 
 1.  **Tiếp nhận:** Nhận bộ vector người dùng và danh sách địa điểm tiềm năng.
 2.  **Tính toán:** Tính điểm Cosine Similarity cho từng cặp User-Location trên tất cả các kênh.

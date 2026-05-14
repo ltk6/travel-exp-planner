@@ -23,8 +23,19 @@ Các model LLM cỡ nhỏ đôi khi không hoàn thành được cấu trúc JSO
     *   Sử dụng `response_format: {"type": "json_object"}` ở tầng API.
     *   Tích hợp bộ parser **Auto-Repair** để khôi phục các object hợp lệ cuối cùng trước điểm bị cắt.
 
+## 3. Độ trễ Embedding Cục bộ (N1 Latency for Activities)
+
+Khác với các địa điểm đã được nhúng sẵn trong DB, các hoạt động từ N5 được sinh ra theo thời gian thực và cần được nhúng (embed) ngay lập tức để N6 có thể xếp hạng.
+
+*   **Vấn đề:** Model **BGE-M3** là một mô hình lớn (1024D). Việc nhúng cùng lúc 10-20 hoạt động mới (Batch Mode) tiêu tốn đáng kể tài nguyên CPU/RAM.
+*   **Hệ quả:** Trong môi trường có cấu hình thấp (như Hugging Face Free CPU), bước nhúng này có thể mất từ 2-5 giây, tạo ra "nút thắt cổ chai" (bottleneck) ngay sau khi LLM đã trả về kết quả.
+*   **Giải pháp hiện tại:** 
+    *   Sử dụng `embed_batch` để tối ưu hóa việc tính toán song song trên vector engine.
+    *   Giới hạn số lượng hoạt động sinh ra (`target_count`) để cân bằng giữa độ phong phú và tốc độ phản hồi.
+
 ## Tổng Kết Hạn Chế
 
 | Module | Hạn chế chính | Mức độ ảnh hưởng |
 |--------|--------------|-----------------|
 | **N5** | Rate limit (429) & Truncation | **Rất Cao** |
+| **N1** | Độ trễ khi nhúng hoạt động động | **Trung Bình** |

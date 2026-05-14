@@ -5,6 +5,29 @@
 
 ---
 
+## 0. Mô hình Ra quyết định (Decision Model)
+
+Hệ thống sử dụng một "bộ điều tiết" (Regulator) để chuyển đổi các tín hiệu định lượng từ input thành các trọng số định tính:
+
+```mermaid
+graph TD
+    Input[User Request] --> N1[Module N1: Preprocessing]
+    N1 --> Signals[Signals: text_k, tag_k]
+    
+    Signals --> Logic{Tier Mapping Logic}
+    
+    Logic --> T1[Text Tiers: 0-3]
+    Logic --> T2[Tag Tiers: 0-3]
+    
+    T1 & T2 --> Matrix((2D Weighting Matrix))
+    
+    Matrix --> Output[Channel Weights: text, aug_text, aug_tags, img_desc]
+    
+    Output --> N4[Module N4: Ranking]
+```
+
+---
+
 ## 1. Tổng Quan
 
 Để xếp hạng địa điểm (N4) và hoạt động (N6) một cách chính xác, hệ thống không sử dụng một trọng số cố định. Thay vào đó, chúng ta sử dụng cơ chế **Trọng số Động (Dynamic Weighting)** dựa trên độ phong phú của dữ liệu đầu vào từ người dùng.

@@ -17,40 +17,86 @@ Hệ thống được xây dựng theo kiến trúc **Modular Micro-services**, 
 
 ---
 
-## 2. Sơ đồ Luồng Dữ liệu End-to-End
+## 2. Mô hình Liên kết và Luồng Dữ liệu (Network & Data Flow)
 
-Dưới đây là hành trình của một yêu cầu từ khi người dùng nhập thông tin đến khi nhận được gợi ý cuối cùng:
+### 2.1. Kiến trúc Hub-and-Spoke (Topology)
+Mọi module đều độc lập và giao tiếp duy nhất thông qua **N8 Orchestrator**. Hệ thống tích hợp các tầng cache đa lớp để tối ưu hiệu năng:
 
 ```mermaid
-graph TD
-    User((Người dùng)) --> N7[N7: Frontend UI]
-    N7 -- Request --> N8{N8: Orchestrator}
-    
-    subgraph "Giai đoạn 1: Hiểu Ý Định"
-    N8 --> N2[N2: Vision Analysis]
-    N2 -- img_desc --> N8
-    N8 --> N1[N1: Semantic Embedding]
-    N1 -- User Vectors --> N8
+graph LR
+    subgraph "Clients"
+        N7[N7: Frontend UI]
+        N7C[(State Cache)] -.-> N7
     end
-    
-    subgraph "Giai đoạn 2: Tìm kiếm & Xếp hạng"
-    N8 --> N3[(N3: Database - pgvector)]
-    N3 -- Candidates --> N8
-    N8 --> N4[N4: Location Ranking]
-    N4 -- Top Locations --> N8
+
+    subgraph "Core Orchestrator"
+        N8((N8: Orchestrator))
+        N8C[(Hybrid Cache)] -.-> N8
     end
-    
-    subgraph "Giai đoạn 3: Cá nhân hóa Hoạt động"
-    N8 --> N5[N5: Activity Generation]
-    N5 -- Raw Activities --> N8
-    N8 --> N1
-    N1 -- Activity Vectors --> N8
-    N8 --> N6[N6: Activity Ranking]
-    N6 -- Final Plan --> N8
+
+    subgraph "Specialized Modules"
+        N1[N1: Embedding]
+        N2[N2: Vision]
+        N3[(N3: Database)]
+        N4[N4: Ranking L]
+        N5[N5: Generation]
+        N6[N6: Ranking A]
     end
-    
-    N8 -- JSON Response --> N7
-    N7 --> User
+
+    N7 <--> N8
+    N8 <--> N1
+    N8 <--> N2
+    N8 <--> N3
+    N8 <--> N4
+    N8 <--> N5
+    N8 <--> N6
+```
+
+---
+
+### 2.2. Luồng Dữ liệu & Caching (Execution Sequence)
+Dưới đây là trình tự xử lý thực tế, minh họa cách các tầng cache (State & Hybrid) giúp giảm tải cho Backend:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant N7 as N7 (UI)
+    participant N7C as N7 State Cache
+    participant N8 as N8 (Orchestrator)
+    participant N8C as N8 Hybrid Cache
+    participant Nodes as N1-N6 (Modules)
+
+    Note over N7,N8: Giai đoạn 1: Recommend
+    N7->>N7C: Check Session/Snapshots?
+    alt Cache Hit
+        N7C-->>N7: Return Cached Results
+    else Cache Miss
+        N7->>N8: POST /api/recommend
+        N8->>N8C: Check Fingerprint/Local?
+        alt Cache Hit
+            N8C-->>N8: Return JSON + Files
+        else Cache Miss
+            N8->>Nodes: N2 -> N1 -> N3 -> N4
+            Nodes-->>N8: Final Data
+            N8->>N8C: Persist to RAM/File
+        end
+        N8-->>N7: JSON Result
+        N7->>N7C: Save Snapshot
+    end
+
+    Note over N7,N8: Giai đoạn 2: Activities (x5)
+    loop 5 Parallel Requests
+        N7->>N8: POST /api/activities
+        N8->>N8C: Check Local Cache?
+        alt Cache Hit
+            N8C-->>N8: Return Result
+        else Cache Miss
+            N8->>Nodes: N5 -> N6
+            Nodes-->>N8: Result
+            N8->>N8C: Save to File
+        end
+        N8-->>N7: JSON Response
+    end
 ```
 
 ---

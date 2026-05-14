@@ -5,6 +5,42 @@
 
 ---
 
+## 0. Tổng quan Hệ sinh thái (Ecosystem Overview)
+
+Hệ thống được xây dựng trên một ngăn xếp công nghệ hiện đại, tập trung vào tốc độ xử lý (Inference Speed) và tính linh hoạt của dữ liệu (Data Portability).
+
+```mermaid
+graph TD
+    subgraph "UI Layer (Frontend)"
+        N7[Streamlit: UI/UX Engine]
+        CSS[Vanilla CSS: Custom Theming]
+    end
+
+    subgraph "Logic Layer (Backend)"
+        N8[Flask: Micro-service Orchestrator]
+        N1_N6[Python: Domain Logic N1-N6]
+    end
+
+    subgraph "Persistence Layer (Database)"
+        N3[(PostgreSQL + pgvector)]
+        JSON[JSON: Seed Fallback]
+    end
+
+    subgraph "Intelligence Layer (AI APIs)"
+        GROQ{Groq LPU: LLM/Vision}
+        BGE[BGE-M3: Embedding Local]
+    end
+
+    N7 <--> N8
+    N8 <--> N1_N6
+    N1_N6 <--> N3
+    N1_N6 <--> JSON
+    N1_N6 <--> GROQ
+    N1_N6 <--> BGE
+```
+
+---
+
 ## 1. Groq thay vì OpenAI / Google Gemini
 
 ### Vấn đề với các lựa chọn thay thế

@@ -33,7 +33,20 @@ Chúng ta ép buộc model chỉ trả về một đoạn văn duy nhất không
 
 ---
 
-## 4. Quy trình xử lý Kỹ thuật
+## 4. Luồng xử lý Hình ảnh (Visual Flow)
+
+```mermaid
+graph TD
+    A[Raw Image] --> B[Pillow: RGB/JPEG/Resize]
+    B --> C[Concise System Prompt]
+    C --> D{Groq: Llama 3.2 Vision}
+    D --> E[img_desc: < 50 words]
+    E --> F[Usage Metadata]
+```
+
+---
+
+## 5. Quy trình xử lý Kỹ thuật
  
 -   **Tiền xử lý (Pillow):** Tự động chuyển đổi các định dạng ảnh lạ sang **RGB** và nén thành **JPEG** để đảm bảo tương thích và tối ưu băng thông.
 -   **Inference (urllib):** Sử dụng thư viện `urllib` thuần (không dependency) để thực hiện request POST tới Groq API.
@@ -41,14 +54,14 @@ Chúng ta ép buộc model chỉ trả về một đoạn văn duy nhất không
  
  ---
  
- ## 5. Interface (API nội bộ)
+ ## 6. Interface (API nội bộ)
  
  -   **Input:** `{"image": bytes}` — Nhận dữ liệu ảnh dưới dạng nhị phân.
  -   **Output:** `{"img_desc": "...", "usage": {...}}` — Trả về mô tả văn bản và thông tin tiêu tốn token.
  
  ---
  
- ## 6. Các quy tắc "Vàng" trong Prompting
+ ## 7. Các quy tắc "Vàng" trong Prompting
  
  N2 tuân thủ các quy tắc nghiêm ngặt trong System Prompt:
  -   **Không lời dẫn:** Cấm các câu như "Đây là..." hay "Tôi thấy...".
