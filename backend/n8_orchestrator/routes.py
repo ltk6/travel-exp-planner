@@ -15,8 +15,8 @@ def _check_internal_key():
 
 @bp.get("/health")
 def health():
-    from modules.n5_activity_generation.providers import get_fallback_chain
-    from config import GEMINI_API_KEY, GROQ_API_KEY
+    from modules.n5_activity_generation.providers import get_llm_chain
+    from config import GROQ_API_KEY
     
     # 1. Check N1 Embedding
     try:
@@ -32,12 +32,12 @@ def health():
         conn.close()
         n3_status = "db_connected"
     except Exception:
-        n3_status = "fallback_file"
+        n3_status = "file_storage"
 
     # 3. Check LLMs availability (N2/N5)
-    llms_available = bool(GEMINI_API_KEY or GROQ_API_KEY)
+    llms_available = bool(GROQ_API_KEY)
 
-    chain = get_fallback_chain()
+    chain = get_llm_chain()
     return jsonify({
         "status": "ok",
         "services": {
@@ -76,3 +76,15 @@ def get_activities():
     except Exception as e:
         logger.error(f"Activities service failed: {e}")
         return _err(f"Internal error: {str(e)}", 500)
+@bp.post("/cache/reset")
+def reset_cache():
+    """Manual trigger to force cache refresh."""
+    from .services import get_all_locations_cached
+    get_all_locations_cached(force_refresh=True)
+    return jsonify({"status": "success", "message": "Cache successfully refreshed from N3"})
+
+@bp.get("/cache/fingerprint")
+def get_fingerprint():
+    """Check current DB version fingerprint."""
+    from n3_database.db_manager import get_db_fingerprint
+    return jsonify({"fingerprint": get_db_fingerprint()})
