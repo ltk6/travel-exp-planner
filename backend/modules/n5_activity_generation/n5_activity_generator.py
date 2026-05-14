@@ -47,6 +47,13 @@ def generate_activities(data: dict) -> dict:
 
     Input/output schema: see __init__.py
     """
+    from config.settings import LLM_ACTIVITIES_PER_CALL, LLM_N5_TARGET_COUNT
+    
+    # ─── Step 0: Early Exit Check ────────────────────────────────────────────
+    if LLM_N5_TARGET_COUNT <= 0 or LLM_ACTIVITIES_PER_CALL <= 0:
+        logger.info("N5: Skipping generation (config set to 0)")
+        return {"activities": [], "llm_meta": []}
+
     user, locations, constraints, target_count = _parse_input(data)
     all_activities: List[Dict] = []
     llm_metas: List[Dict] = []  # 1 entry per location
@@ -88,18 +95,20 @@ def generate_activities(data: dict) -> dict:
 
 def _parse_input(data: dict) -> Tuple[Dict, List[Dict], Dict, int]:
     """Validate và extract user, locations, constraints từ input dict."""
+    from config.settings import LLM_N5_TARGET_COUNT
+    
     user        = data.get("user", {}) or {}
     locations   = data.get("locations", []) or []
     constraints = data.get("constraints", {}) or {}
     
-    # Configuration is loaded from global config, NOT from input data
+    # Target count strictly from config source of truth
     target_count = LLM_N5_TARGET_COUNT
 
     # Normalize user tags
     user_tags = user.get("tags") or []
     if isinstance(user_tags, str):
         user_tags = [t.strip() for t in user_tags.split(",") if t.strip()]
-    user["tags"] = [t.lower() for t in user_tags]
+    user["tags"] = [str(t).lower() for t in user_tags]
 
     # Normalize constraints với defaults
     constraints = {
@@ -235,14 +244,16 @@ def _generate_for_location(
     llm_activities: List[Dict] = []
 
     # ─── Step 1: LLM generation (primary) ────────────────────────────────────
+    from config.settings import LLM_ACTIVITIES_PER_CALL
+    
     if LLM_AVAILABLE and is_llm_available():
-        logger.info(f"Invoking LLM for location '{location_name}'...")
+        logger.info(f"Invoking LLM for location '{location_name}' (requesting {LLM_ACTIVITIES_PER_CALL} activities)...")
         raw, llm_meta = generate_from_llm_with_meta(
             location_name        = location_name,
             location_description = profile.get("description", ""),
             location_tags        = loc_tags,
             user_tags            = user_tags,
-            num_activities       = target_count,
+            num_activities       = LLM_ACTIVITIES_PER_CALL,
             user_text            = user_text,
             llm_chain            = llm_chain,
         )

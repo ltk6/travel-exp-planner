@@ -124,6 +124,24 @@ def _build_markdown(output: dict, date_str: str) -> str:
 
     return "\n".join(L)
 
+def cleanup_bench_data():
+    """Xóa bỏ các dữ liệu rác được tạo ra trong quá trình benchmark."""
+    import psycopg2
+    print("\n=== CLEANUP: Removing benchmark data ===")
+    try:
+        conn = psycopg2.connect(PG_URI)
+        conn.autocommit = True
+        cur = conn.cursor()
+        
+        # Xóa theo ID bắt đầu bằng 'bench_'
+        cur.execute("DELETE FROM locations WHERE location_id LIKE 'bench_%';")
+        print(f"  [cleanup] Deleted {cur.rowcount} records from 'locations' table.")
+        
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print(f"  [cleanup] Error: {e}")
+
 def main():
     date_str = datetime.now().strftime("%Y-%m-%d")
     print("\n=== N3 BENCH: Smart Sync & Binary Tests ===")
@@ -148,6 +166,9 @@ def main():
         f.write(_build_markdown(output, date_str))
     
     print(f"\n[DONE] Results saved to {md_path}")
+    
+    # Tự động dọn dẹp sau khi benchmark xong
+    cleanup_bench_data()
 
 if __name__ == "__main__":
     main()
