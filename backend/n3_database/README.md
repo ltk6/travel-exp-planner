@@ -135,3 +135,12 @@ This gives callers a cheap way to detect whether a full reload is necessary.
 - `pgvector.psycopg2.register_vector()` is called on every new connection
 - Logging is configured through the project logging helper
 - The module reads its PostgreSQL connection string from project configuration
+
+## Seed Tooling
+
+N3 also includes a seed-ingestion helper in [`seeds/add_more_locs/`](seeds/add_more_locs/README.md).
+
+- It embeds new locations through N1 before saving them
+- It updates `seed_data.py`, `locations_with_vectors.json`, `seeds/raw_imgs/`, and `seeds/images/`
+- It saves the final record into PostgreSQL using resized image bytes from `seeds/images/`
+- It asks for confirmation before deleting source JSON/image files after a successful import

@@ -1,0 +1,12 @@
+{
+  "location_id": "loc_vinh_hy",
+  "metadata": {
+    "name": "Vịnh Vĩnh Hy",
+    "description": "Một trong những vịnh biển đẹp nhất Việt Nam với làn nước trong xanh và hệ sinh thái san hô phong phú. Nơi đây vẫn giữ được nét hoang sơ, yên bình, bao quanh bởi những dãy núi đá vôi hùng vĩ của Vườn quốc gia Núi Chúa.",
+    "tags": ["beach", "island", "nature", "picturesque"]
+  },
+  "geo": {
+    "lat": 11.72,
+    "lng": 109.22
+  }
+}

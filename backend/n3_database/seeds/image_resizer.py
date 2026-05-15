@@ -1,8 +1,6 @@
 """
-backend/n3_database/utils/image_resizer.py
-
-Standalone utility to resize and crop images.
-Outputs optimized images to a new 'images_optimized' directory.
+Standalone utility to resize and crop seed images.
+Reads from seeds/raw_imgs and writes optimized JPEG files into seeds/images.
 """
 import os
 import sys
@@ -51,9 +49,8 @@ def resize_and_crop(input_path: str, output_path: str, target_size: tuple = (128
         return False
 
 def run_optimization(target_size: tuple = (1280, 720)):
-    """Process all images from 'raw_imgs' and save to 'images'."""
-    # Base directory is backend/n3_database/
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    """Process all images from seeds/raw_imgs and save to seeds/images."""
+    base_dir = os.path.dirname(os.path.abspath(__file__))
     input_dir = os.path.join(base_dir, "raw_imgs")
     output_dir = os.path.join(base_dir, "images")
     
