@@ -29,9 +29,14 @@ def process_image(data: dict) -> dict:
         if img.mode != 'RGB':
             img = img.convert('RGB')
 
+        # Optimize for Vision API: Downscale if too large and compress
+        img.thumbnail((1560, 1560)) 
+        
         buffer = io.BytesIO()
-        img.save(buffer, format='JPEG')
+        img.save(buffer, format='JPEG', quality=85, optimize=True)
         img_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        
+        logger.info(f"Image optimized: {len(buffer.getvalue())} bytes (original: {len(image_bytes)})")
 
         prompt = """
         Bạn là chuyên gia mô tả địa điểm du lịch.
@@ -93,8 +98,8 @@ def process_image(data: dict) -> dict:
         if not text:
             return {"img_desc": "", "error": "No text returned (possible safety block or invalid image)"}
 
-        return {
-            "img_desc": text.strip(),
+        metadata = {
+            "model": GROQ_VISION_MODEL,
             "usage": {
                 "prompt_tokens":     prompt_tokens,
                 "completion_tokens": completion_tokens,
@@ -102,13 +107,23 @@ def process_image(data: dict) -> dict:
             },
         }
 
+        return {
+            "img_desc": text.strip(),
+            "metadata": metadata,
+        }
+
     except urllib.error.HTTPError as e:
         error_body = e.read().decode("utf-8")
         logger.error(f"HTTPError in N2 image processing: {e.code} - {error_body}")
-        return {"img_desc": "", "error": f"HTTPError: {e.code} - {error_body}"}
+        return {
+            "img_desc": "", 
+            "error": f"HTTPError: {e.code} - {error_body}",
+            "metadata": {"model": GROQ_VISION_MODEL, "usage": {}}
+        }
     except Exception as e:
         logger.exception(f"Exception in N2 image processing: {e}")
         return {
             "img_desc": "",
-            "error": str(e)
+            "error": str(e),
+            "metadata": {"model": GROQ_VISION_MODEL, "usage": {}}
         }

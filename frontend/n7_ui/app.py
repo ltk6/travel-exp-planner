@@ -10,6 +10,7 @@ import streamlit as st
 import requests
 import logging
 import os
+import time
 
 from styles import inject_custom_css
 from views.header import render_header
@@ -56,12 +57,15 @@ else:
                 payload = dict(st.session_state.payload)
                 # (Removed N7-controlled Top K overrides)
 
+                start_t = time.time()
                 res = requests.post(
                     _BACKEND_URL,
                     json=payload,
                     headers=_BACKEND_HEADERS,
                     timeout=60,
                 )
+                duration = time.time() - start_t
+                logger.info(f"POST {_BACKEND_URL} took {duration:.4f}s")
                 if res.status_code == 200:
                     logger.info("Backend call successful (200 OK)")
                     st.session_state.results = res.json()

@@ -21,32 +21,6 @@ logger = setup_logging("N5.llm")
 VALID_TAGS     = sorted(ALL_TAGS.keys())   # dùng trong prompt
 VALID_TAGS_SET = set(ALL_TAGS.keys())      # dùng để lọc output
 
-# Chuẩn hóa các tag LLM hay sinh ra nhưng không khớp từng chữ với ALL_TAGS
-_TAG_ALIASES: dict[str, str] = {
-    "nature":           "wildlife",
-    "culture":          "history",
-    "scenic":           "picturesque",
-    "relax":            "peaceful",
-    "relaxation":       "peaceful",
-    "heritage":         "history",
-    "architecture":     "colonial heritage",
-    "entertainment":    "nightlife",
-    "diving":           "scuba diving",
-    "kayak":            "kayaking",
-    "cool_weather":     "cool climate",
-    "rice_terrace":     "rice terrace",
-    "ethnic":           "ethnic minority",
-    "food":             "local cuisine",
-    "historical":       "history",
-    "hot_spring":       "hot spring",
-    "sand_dune":        "sand dune",
-    "music":            "traditional music",
-    "craft":            "craft village",
-    "cooking":          "cooking class",
-    "spa_massage":      "spa",
-    "adventure_sports": "adventure",
-}
-
 
 def is_llm_available() -> bool:
     """LLM khả dụng nếu có ít nhất 1 provider có API key."""
@@ -88,6 +62,7 @@ CẤU TRÚC JSON BẮT BUỘC (Trả về đúng 1 Array gồm {num_activities} 
   "name": "Tên trải nghiệm (string)",
   "description": "Mô tả sâu sắc, chân thực, nêu bật được cái 'hồn' của trải nghiệm.",
   "tags": ["tag1", "tag2", ...],  // BẮT BUỘC 4-8 tags, CHỈ lấy từ danh sách chuẩn đã cung cấp
+  "activity_type": "Loại hình (chọn 1: food, adventure, culture, nightlife, shopping, relaxation, nature, photography, experience)",
   "intensity": 0.0,      // (float 0.0-1.0) mức độ bận rộn/sôi nổi
   "physical_level": 0.0, // (float 0.0-1.0) mức độ tiêu tốn thể lực
   "social_level": 0.0,   // (float 0.0-1.0) mức độ tương tác xã hội/đông người
@@ -107,6 +82,7 @@ TRẢ LỜI:
     "name": "...",
     "description": "...",
     "tags": ["...", "..."],
+    "activity_type": "...",
     "intensity": 0.5,
     "physical_level": 0.3,
     "social_level": 0.8,
@@ -367,11 +343,7 @@ def generate_from_llm_with_meta(
         if _validate_activity(act):
             # Chuẩn hóa + alias → lọc chỉ giữ keys có trong ALL_TAGS
             cleaned  = [t.lower().strip() for t in act["tags"]]
-            resolved = [_TAG_ALIASES.get(t, t) for t in cleaned]
-            filtered = list(dict.fromkeys(t for t in resolved if t in VALID_TAGS_SET))
-            dropped  = set(cleaned) - set(filtered)
-            if dropped:
-                logger.debug("Dropped unrecognised tags for '%s': %s", act.get("name"), dropped)
+            filtered = list(dict.fromkeys(t for t in cleaned if t in VALID_TAGS_SET))
             act["tags"] = filtered
             valid_activities.append(act)
         else:

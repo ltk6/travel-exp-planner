@@ -111,6 +111,9 @@ def _score_location(
 # ── Public API ────────────────────────────────────────────────
 
 def rank_locations(data: dict) -> dict:
+    import time
+    t0 = time.time()
+    
     text_k       = int(data.get("text_k", 0))
     tags_k       = int(data.get("tags_k", 0))
     user_vectors = data.get("user_vectors", {})
@@ -119,7 +122,7 @@ def rank_locations(data: dict) -> dict:
 
     if not locations:
         logger.warning("[N4] Không có địa điểm nào để xếp hạng")
-        return {"locations": []}
+        return {"locations": [], "metadata": {"text_k": text_k, "tags_k": tags_k, "latency_ms": 0}}
 
     # ── resolve weights from text_k & tags_k ──────────────────
     weights = get_weights(text_k, tags_k)
@@ -130,7 +133,6 @@ def rank_locations(data: dict) -> dict:
     for loc in locations:
         loc_id      = loc.get("location_id", "unknown")
         loc_vectors = loc.get("location_vectors", {})
-        metadata    = loc.get("metadata", {})
 
         try:
             score, reason = _score_location(user_vectors, loc_vectors, weights)
@@ -153,5 +155,15 @@ def rank_locations(data: dict) -> dict:
         for r in result:
             r["score"] = round(r["score"] / max_s, 4)
 
-    logger.info("[N4] Đã xếp hạng %d địa điểm → top %d (normalized)", len(locations), len(result))
-    return {"locations": result}
+    elapsed_ms = int((time.time() - t0) * 1000)
+    logger.info("[N4] Đã xếp hạng %d địa điểm → top %d (normalized) in %dms", len(locations), len(result), elapsed_ms)
+    
+    return {
+        "locations": result,
+        "metadata": {
+            "text_k": text_k,
+            "tags_k": tags_k,
+            "weights": weights,
+            "latency_ms": elapsed_ms
+        }
+    }

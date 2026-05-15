@@ -138,13 +138,15 @@ def _attribute_score(
 # =============================================================================
 
 _REASON_BY_TYPE = {
-    "nature":     ["Khám phá cảnh quan tuyệt đẹp", "Hòa mình vào thiên nhiên {intensity_hint}đậm chất địa phương"],
-    "adventure":  ["Thử thách bản thân với hoạt động {intensity_hint}đầy phấn khích", "Trải nghiệm cảm giác mạnh {intensity_hint}giữa thiên nhiên"],
-    "food":       ["Thưởng thức tinh túy ẩm thực đặc trưng", "Khám phá hương vị địa phương độc đáo"],
-    "culture":    ["Tìm hiểu chiều sâu văn hóa bản địa", "Trải nghiệm di sản và phong tục truyền thống"],
-    "relaxation": ["Phút giây thư giãn nhẹ nhàng", "Tìm lại sự cân bằng trong không gian yên bình"],
-    "nightlife":  ["Sôi động và lung linh về đêm", "Khám phá nhịp sống về đêm đầy sắc màu"],
-    "shopping":   ["Săn tìm những món quà lưu niệm độc bản", "Ghé thăm không gian mua sắm đậm chất địa phương"],
+    "nature":      ["Khám phá cảnh quan tuyệt đẹp", "Hòa mình vào thiên nhiên {intensity_hint}đậm chất địa phương"],
+    "adventure":   ["Thử thách bản thân với hoạt động {intensity_hint}đầy phấn khích", "Trải nghiệm cảm giác mạnh {intensity_hint}giữa thiên nhiên"],
+    "food":        ["Thưởng thức tinh túy ẩm thực đặc trưng", "Khám phá hương vị địa phương độc đáo"],
+    "culture":     ["Tìm hiểu chiều sâu văn hóa bản địa", "Trải nghiệm di sản và phong tục truyền thống"],
+    "relaxation":  ["Phút giây thư giãn nhẹ nhàng", "Tìm lại sự cân bằng trong không gian yên bình"],
+    "nightlife":   ["Sôi động và lung linh về đêm", "Khám phá nhịp sống về đêm đầy sắc màu"],
+    "shopping":    ["Săn tìm những món quà lưu niệm độc bản", "Ghé thăm không gian mua sắm đậm chất địa phương"],
+    "photography": ["Ghi lại những khoảnh khắc {intensity_hint}tuyệt đẹp", "Lưu giữ kỷ niệm qua những khung hình nghệ thuật"],
+    "experience":  ["Kết nối sâu sắc với nhịp sống địa phương", "Trải nghiệm thực tế {intensity_hint}đầy chân thực và gần gũi"],
 }
 _REASON_DEFAULT = ["Lựa chọn tuyệt vời cho hành trình của bạn", "Trải nghiệm thú vị không nên bỏ lỡ"]
 
@@ -183,20 +185,8 @@ def _build_reason(metadata: Dict, sem_score: float, attr_score: float) -> str:
 # =============================================================================
 
 def rank_activities(data: Dict) -> Dict:
-    """
-    Xếp hạng activities theo công thức:
-        score = 0.5 * semantic_score + 0.5 * attribute_score
-
-    Input (đã rút gọn so với bản cũ):
-        text_k, tags_k           — tín hiệu từ N1 cho weight dynamic
-        user_input               — {text, img_desc, tags} dùng để suy preference
-        user_vectors             — 4 kênh vector từ N1
-        context.time_of_day      — dùng riêng cho attribute matching
-        activities               — list từ N5 + N1 (đã embed)
-        top_k
-
-    Các field cũ (budget / duration / people / weather) đã bị loại bỏ hoàn toàn.
-    """
+    import time
+    t0 = time.time()
     user_input   = data.get("user_input", {}) or {}
     user_vectors = data.get("user_vectors", {}) or {}
     context      = data.get("context", {}) or {}
@@ -206,9 +196,10 @@ def rank_activities(data: Dict) -> Dict:
     tags_k       = int(data.get("tags_k", 0))
 
     if not activities or top_k <= 0:
-        return {"activities": []}
+        return {"activities": [], "metadata": {"latency_ms": 0}}
 
     user_prefs = infer_user_preferences(user_input)
+    weights = get_weights(text_k, tags_k)
 
     scored: List[Dict] = []
     for activity in activities:
@@ -250,4 +241,14 @@ def rank_activities(data: Dict) -> Dict:
             for i, a in enumerate(scored):
                 a["score"] = round(max(0.0, min(1.0, HIGH - i * step)), 4)
 
-    return {"activities": scored[:top_k], "user_prefs": user_prefs}
+    elapsed_ms = int((time.time() - t0) * 1000)
+    return {
+        "activities": scored[:top_k], 
+        "metadata": {
+            "user_prefs": user_prefs,
+            "weights": weights,
+            "text_k": text_k,
+            "tags_k": tags_k,
+            "latency_ms": elapsed_ms
+        }
+    }

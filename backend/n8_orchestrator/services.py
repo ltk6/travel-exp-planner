@@ -267,7 +267,8 @@ def activities_service(body):
 
     n5_result = generate_activities(n5_input)
     activities = n5_result.get("activities", [])
-    llm_metas = n5_result.get("llm_meta", [])
+    n5_metadata = n5_result.get("metadata", {})
+    per_loc_meta = n5_metadata.get("per_location", [])
 
     # ── N1 — Embed Generated Activities ────────
     # Map N5 activities to N1 contract (text, tags, img_desc)
@@ -321,7 +322,8 @@ def activities_service(body):
         "status": "success",
         "location_id": location.get("location_id"),
         "activities": enriched_ranked_activities,
-        "meta": llm_metas[0] if llm_metas else {},
+        "meta": per_loc_meta[0] if per_loc_meta else {},
+        "ranking_meta": n6_result.get("metadata", {})
     }
 
 def feedback_recommend_service(body):

@@ -1,7 +1,4 @@
-"""
-Loads the sentence embedding model and converts text channels into normalized vectors.
-Model: BAAI/bge-m3 (568M params, 1024-dim, 100+ languages).
-"""
+"""N1: SentenceTransformer model loading and vector encoding."""
 
 from __future__ import annotations
 from typing import List, Optional
