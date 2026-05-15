@@ -65,6 +65,14 @@ def run_tests():
 
         image_bytes = t["path"].read_bytes()
         result = process_image({"image": image_bytes})
+        
+        desc = result.get("img_desc", "")
+        error = result.get("error", "")
+        
+        meta = result.get("metadata", {})
+        usage = meta.get("usage", {})
+        print(f"  [{t['name']}] — model: {meta.get('model')}  tokens: {usage.get('total_tokens', 'N/A')}")
+        
         save_json(result, f"image_{t['name']}.json")
 
 

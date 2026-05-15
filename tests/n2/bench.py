@@ -99,7 +99,9 @@ def bench_image(test: dict) -> dict:
 
     desc  = result.get("img_desc", "")
     error = result.get("error", "")
-    usage = result.get("usage", {})
+    
+    meta = result.get("metadata", {})
+    usage = meta.get("usage", {})
     words = _count_words(desc)
     paras = _count_paragraphs(desc)
     hits  = _keyword_hits(desc, test["expected_kw"])

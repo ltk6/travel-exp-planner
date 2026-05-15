@@ -1,7 +1,7 @@
 # N5 — Module Activity Generation: Báo Cáo Bench Test
 
-**Ngày:** 2026-05-14  
-**Chain:** gpt_120b, groq_70b, qwen_32b, groq_8b, gpt_20b, gpt_safeguard, groq_scout  
+**Ngày:** 2026-05-15  
+**Chain:** groq_70b, qwen_32b, groq_8b, groq_scout  
 **Số địa điểm test:** 3  
 **Ngưỡng PASS:** ≥ 5 activities hợp lệ / lần gọi  
 
@@ -20,7 +20,7 @@
 N5 là module sinh hoạt động du lịch cá nhân hoá trong pipeline. Module nhận thông tin địa điểm và sở thích người dùng, gọi LLM để tạo danh sách hoạt động phù hợp, sau đó bổ sung từ template nếu kết quả LLM không đủ ngưỡng.
 
 **LLM Chain (theo thứ tự chất lượng giảm dần):**  
-`gpt_120b` → `groq_70b` → `qwen_32b` → `groq_8b` → `gpt_20b` → `gpt_safeguard` → `groq_scout`  
+`groq_70b` → `qwen_32b` → `groq_8b` → `groq_scout`  
 
 **Chiến lược sinh hoạt động:**
 - Gọi LLM (10 activities/lần), validate từng item theo schema: `name, description, tags, intensity, physical_level, social_level`
@@ -53,71 +53,71 @@ N5 là module sinh hoạt động du lịch cá nhân hoá trong pipeline. Modul
 
 | Địa điểm | Độ trễ (ms) | Prompt tok | Completion tok | Tổng tok | Valid | Pass |
 |----------|:-----------:|:----------:|:--------------:|:--------:|:-----:|:----:|
-| Bãi Sao Phú Quốc | 7153 | 1572 | 3228 | 4800 | 10 | ✓ |
-| Fansipan Sapa | 346 | — | — | — | 0 | ✗ *(fail)* |
-| Phố Cổ Hội An | 332 | — | — | — | 0 | ✗ *(fail)* |
+| Bãi Sao Phú Quốc | 6617 | 1572 | 2889 | 4461 | 10 | ✓ |
+| Fansipan Sapa | 356 | — | — | — | 0 | ✗ *(fail)* |
+| Phố Cổ Hội An | 328 | — | — | — | 0 | ✗ *(fail)* |
 
-**TB latency:** 2610.3ms &nbsp;**TB total tokens:** 4800 &nbsp;**Pass:** 1/3
+**TB latency:** 2433.7ms &nbsp;**TB total tokens:** 4461 &nbsp;**Pass:** 1/3
 
 ### groq_70b  (`llama-3.3-70b-versatile`)
 
 | Địa điểm | Độ trễ (ms) | Prompt tok | Completion tok | Tổng tok | Valid | Pass |
 |----------|:-----------:|:----------:|:--------------:|:--------:|:-----:|:----:|
-| Bãi Sao Phú Quốc | 4121 | 1532 | 1702 | 3234 | 10 | ✓ |
-| Fansipan Sapa | 4217 | 1529 | 1575 | 3104 | 10 | ✓ |
-| Phố Cổ Hội An | 303 | — | — | — | 0 | ✗ *(fail)* |
+| Bãi Sao Phú Quốc | 3862 | 1532 | 1549 | 3081 | 10 | ✓ |
+| Fansipan Sapa | 4609 | 1529 | 1594 | 3123 | 10 | ✓ |
+| Phố Cổ Hội An | 4666 | 1530 | 1871 | 3401 | 10 | ✓ |
 
-**TB latency:** 2880.3ms &nbsp;**TB total tokens:** 3169 &nbsp;**Pass:** 2/3
+**TB latency:** 4379.0ms &nbsp;**TB total tokens:** 3202 &nbsp;**Pass:** 3/3
 
 ### qwen_32b  (`qwen/qwen3-32b`)
 
 | Địa điểm | Độ trễ (ms) | Prompt tok | Completion tok | Tổng tok | Valid | Pass |
 |----------|:-----------:|:----------:|:--------------:|:--------:|:-----:|:----:|
-| Bãi Sao Phú Quốc | 6312 | 1495 | 2492 | 3987 | 10 | ✓ |
-| Fansipan Sapa | 346 | — | — | — | 0 | ✗ *(fail)* |
-| Phố Cổ Hội An | 307 | — | — | — | 0 | ✗ *(fail)* |
+| Bãi Sao Phú Quốc | 5103 | 1495 | 2115 | 3610 | 10 | ✓ |
+| Fansipan Sapa | 321 | — | — | — | 0 | ✗ *(fail)* |
+| Phố Cổ Hội An | 328 | — | — | — | 0 | ✗ *(fail)* |
 
-**TB latency:** 2321.7ms &nbsp;**TB total tokens:** 3987 &nbsp;**Pass:** 1/3
+**TB latency:** 1917.3ms &nbsp;**TB total tokens:** 3610 &nbsp;**Pass:** 1/3
 
 ### groq_8b  (`llama-3.1-8b-instant`)
 
 | Địa điểm | Độ trễ (ms) | Prompt tok | Completion tok | Tổng tok | Valid | Pass |
 |----------|:-----------:|:----------:|:--------------:|:--------:|:-----:|:----:|
-| Bãi Sao Phú Quốc | 1985 | 1532 | 1589 | 3121 | 10 | ✓ |
-| Fansipan Sapa | 301 | — | — | — | 0 | ✗ *(fail)* |
-| Phố Cổ Hội An | 355 | — | — | — | 0 | ✗ *(fail)* |
+| Bãi Sao Phú Quốc | 3186 | 1532 | 1799 | 3331 | 10 | ✓ |
+| Fansipan Sapa | 360 | — | — | — | 0 | ✗ *(fail)* |
+| Phố Cổ Hội An | 331 | — | — | — | 0 | ✗ *(fail)* |
 
-**TB latency:** 880.3ms &nbsp;**TB total tokens:** 3121 &nbsp;**Pass:** 1/3
+**TB latency:** 1292.3ms &nbsp;**TB total tokens:** 3331 &nbsp;**Pass:** 1/3
 
 ### gpt_20b  (`openai/gpt-oss-20b`)
 
 | Địa điểm | Độ trễ (ms) | Prompt tok | Completion tok | Tổng tok | Valid | Pass |
 |----------|:-----------:|:----------:|:--------------:|:--------:|:-----:|:----:|
-| Bãi Sao Phú Quốc | 4575 | — | — | — | 0 | ✗ |
-| Fansipan Sapa | 312 | — | — | — | 0 | ✗ *(fail)* |
-| Phố Cổ Hội An | 299 | — | — | — | 0 | ✗ *(fail)* |
+| Bãi Sao Phú Quốc | 4684 | — | — | — | 0 | ✗ |
+| Fansipan Sapa | 331 | — | — | — | 0 | ✗ *(fail)* |
+| Phố Cổ Hội An | 371 | — | — | — | 0 | ✗ *(fail)* |
 
-**TB latency:** 1728.7ms &nbsp;**TB total tokens:** — &nbsp;**Pass:** 0/3
+**TB latency:** 1795.3ms &nbsp;**TB total tokens:** — &nbsp;**Pass:** 0/3
 
 ### gpt_safeguard  (`openai/gpt-oss-safeguard-20b`)
 
 | Địa điểm | Độ trễ (ms) | Prompt tok | Completion tok | Tổng tok | Valid | Pass |
 |----------|:-----------:|:----------:|:--------------:|:--------:|:-----:|:----:|
-| Bãi Sao Phú Quốc | 4515 | 1572 | 4000 | 5572 | 6 | ✓ |
-| Fansipan Sapa | 319 | — | — | — | 0 | ✗ *(fail)* |
-| Phố Cổ Hội An | 307 | — | — | — | 0 | ✗ *(fail)* |
+| Bãi Sao Phú Quốc | 4670 | — | — | — | 0 | ✗ |
+| Fansipan Sapa | 339 | — | — | — | 0 | ✗ *(fail)* |
+| Phố Cổ Hội An | 294 | — | — | — | 0 | ✗ *(fail)* |
 
-**TB latency:** 1713.7ms &nbsp;**TB total tokens:** 5572 &nbsp;**Pass:** 1/3
+**TB latency:** 1767.7ms &nbsp;**TB total tokens:** — &nbsp;**Pass:** 0/3
 
 ### groq_scout  (`meta-llama/llama-4-scout-17b-16e-instruct`)
 
 | Địa điểm | Độ trễ (ms) | Prompt tok | Completion tok | Tổng tok | Valid | Pass |
 |----------|:-----------:|:----------:|:--------------:|:--------:|:-----:|:----:|
-| Bãi Sao Phú Quốc | 3780 | 1463 | 1464 | 2927 | 10 | ✓ |
-| Fansipan Sapa | 4234 | 1460 | 1698 | 3158 | 10 | ✓ |
-| Phố Cổ Hội An | 3565 | 1462 | 1373 | 2835 | 10 | ✓ |
+| Bãi Sao Phú Quốc | 3693 | 1463 | 1421 | 2884 | 10 | ✓ |
+| Fansipan Sapa | 4461 | 1460 | 1752 | 3212 | 10 | ✓ |
+| Phố Cổ Hội An | 3550 | 1462 | 1322 | 2784 | 10 | ✓ |
 
-**TB latency:** 3859.7ms &nbsp;**TB total tokens:** 2973 &nbsp;**Pass:** 3/3
+**TB latency:** 3901.3ms &nbsp;**TB total tokens:** 2960 &nbsp;**Pass:** 3/3
 
 ---
 
@@ -125,13 +125,13 @@ N5 là module sinh hoạt động du lịch cá nhân hoá trong pipeline. Modul
 
 | Model alias | Model name | TB latency (ms) | TB total tok | Pass rate | Lý do fail tiềm năng |
 |-------------|------------|:---------------:|:------------:|:---------:|----------------------|
-| gpt_120b | `openai/gpt-oss-120b` | 2610.3 | 4800 | 33% (1/3) | fail_429 / fail_413 |
-| groq_70b | `llama-3.3-70b-versatile` | 2880.3 | 3169 | 67% (2/3) | fail_429 / fail_413 |
-| qwen_32b | `qwen/qwen3-32b` | 2321.7 | 3987 | 33% (1/3) | fail_429 / fail_413 |
-| groq_8b | `llama-3.1-8b-instant` | 880.3 | 3121 | 33% (1/3) | fail_429 / fail_413 |
-| gpt_20b | `openai/gpt-oss-20b` | 1728.7 | — | 0% (0/3) | Truncate / fail_429 |
-| gpt_safeguard | `openai/gpt-oss-safeguard-20b` | 1713.7 | 5572 | 33% (1/3) | Truncate / fail_429 |
-| groq_scout | `meta-llama/llama-4-scout-17b-16e-instruct` | 3859.7 | 2973 | 100% (3/3) | — |
+| gpt_120b | `openai/gpt-oss-120b` | 2433.7 | 4461 | 33% (1/3) | fail_429 / fail_413 |
+| groq_70b | `llama-3.3-70b-versatile` | 4379.0 | 3202 | 100% (3/3) | — |
+| qwen_32b | `qwen/qwen3-32b` | 1917.3 | 3610 | 33% (1/3) | fail_429 / fail_413 |
+| groq_8b | `llama-3.1-8b-instant` | 1292.3 | 3331 | 33% (1/3) | fail_429 / fail_413 |
+| gpt_20b | `openai/gpt-oss-20b` | 1795.3 | — | 0% (0/3) | Truncate / fail_429 |
+| gpt_safeguard | `openai/gpt-oss-safeguard-20b` | 1767.7 | — | 0% (0/3) | Truncate / fail_429 |
+| groq_scout | `meta-llama/llama-4-scout-17b-16e-instruct` | 3901.3 | 2960 | 100% (3/3) | — |
 
 ---
 
@@ -139,14 +139,14 @@ N5 là module sinh hoạt động du lịch cá nhân hoá trong pipeline. Modul
 
 Chạy `generate_activities()` với **full chain failover bật**, 3 địa điểm tuần tự.
 
-**Tổng thời gian:** 16958ms  
+**Tổng thời gian:** 14977ms  
 **Tổng activities sinh ra:** 30  
 
 | Địa điểm | Provider | Model thực tế dùng | Độ trễ (ms) | Prompt tok | Completion tok | LLM? |
 |----------|----------|--------------------|:-----------:|:----------:|:--------------:|:----:|
-| loc_015 | groq | `openai/gpt-oss-120b` | 7153 | 1575 | 3160 | ✓ |
-| loc_001 | groq | `llama-3.3-70b-versatile` | 4472 | 1526 | 1419 | ✓ |
-| loc_007 | groq | `llama-3.3-70b-versatile` | 5321 | 1531 | 1748 | ✓ |
+| loc_015 | groq | `llama-3.3-70b-versatile` | 4277 | 1535 | 1530 | ✓ |
+| loc_001 | groq | `llama-3.3-70b-versatile` | 4038 | 1526 | 1467 | ✓ |
+| loc_007 | groq | `llama-3.3-70b-versatile` | 6658 | 1531 | 1847 | ✓ |
 
 ---
 

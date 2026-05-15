@@ -1,4 +1,5 @@
-from flask import request, jsonify, abort, Blueprint
+from flask import request, jsonify, abort, Blueprint, g
+import time
 from config import INTERNAL_API_KEY, PROTECTED_ROUTES, setup_logging
 from .utils import _err, _get_json
 from .services import recommend_service, activities_service, feedback_recommend_service, feedback_activities_service
@@ -6,6 +7,17 @@ from .services import recommend_service, activities_service, feedback_recommend_
 logger = setup_logging("N8.routes")
 
 bp = Blueprint("n8_routes", __name__)
+
+@bp.before_request
+def _before():
+    g.start_time = time.time()
+
+@bp.after_request
+def _after(response):
+    if hasattr(g, 'start_time'):
+        duration = time.time() - g.start_time
+        logger.info(f"[{request.method}] {request.path} took {duration:.4f}s")
+    return response
 
 @bp.before_app_request
 def _check_internal_key():

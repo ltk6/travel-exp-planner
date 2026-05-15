@@ -8,8 +8,7 @@
 
 import random
 import hashlib
-import logging
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from .n5_activity_templates import (
     LOCATION_PROFILES,
@@ -47,12 +46,21 @@ def generate_activities(data: dict) -> dict:
 
     Input/output schema: see __init__.py
     """
+    import time
+    t0 = time.time()
     from config.settings import LLM_ACTIVITIES_PER_CALL, LLM_N5_TARGET_COUNT
     
     # ─── Step 0: Early Exit Check ────────────────────────────────────────────
     if LLM_N5_TARGET_COUNT <= 0 or LLM_ACTIVITIES_PER_CALL <= 0:
         logger.info("N5: Skipping generation (config set to 0)")
-        return {"activities": [], "llm_meta": []}
+        elapsed_ms = int((time.time() - t0) * 1000)
+        return {
+            "activities": [], 
+            "metadata": {
+                "per_location": [],
+                "latency_ms": elapsed_ms
+            }
+        }
 
     user, locations, constraints, target_count = _parse_input(data)
     all_activities: List[Dict] = []
@@ -86,7 +94,14 @@ def generate_activities(data: dict) -> dict:
             loc_name, loc_id, len(activities)
         )
 
-    return {"activities": all_activities, "llm_meta": llm_metas}
+    elapsed_ms = int((time.time() - t0) * 1000)
+    return {
+        "activities": all_activities, 
+        "metadata": {
+            "per_location": llm_metas,
+            "latency_ms": elapsed_ms
+        }
+    }
 
 
 # =============================================================================
@@ -175,20 +190,22 @@ def _get_profile(loc_name: str, loc_tags: List[str], loc_desc: str) -> Dict:
 
 
 _TAG_TO_TYPE: List[Tuple[str, set]] = [
-    ("food",        {"local cuisine", "street food", "fine dining", "cooking class"}),
-    ("adventure",   {"trekking", "kayaking", "scuba diving", "adventure", "motorbiking", "cycling", "camping", "rock climbing", "caving"}),
-    ("culture",     {"history", "temple", "architecture", "traditional music", "heritage", "ethnic minority", "craft village", "spiritual"}),
-    ("nightlife",   {"nightlife", "rooftop bar", "night market"}),
-    ("shopping",    {"shopping", "local market"}),
-    ("relaxation",  {"peaceful", "spa", "hot spring", "yoga retreat", "meditation"}),
-    ("nature",      {"wildlife", "picturesque", "national park", "waterfall", "beach", "cave", "mountain", "island"}),
+    ("food",        {"local cuisine", "street food", "fine dining", "cooking class", "seafood", "coffee", "food tour", "pho", "banh mi", "tropical fruit"}),
+    ("adventure",   {"trekking", "kayaking", "scuba diving", "adventure", "motorbiking", "cycling", "camping", "rock climbing", "caving", "motorbike loop", "surfing", "kitesurfing", "canyoning", "zip lining"}),
+    ("culture",     {"history", "temple", "architecture", "traditional music", "heritage", "ethnic minority", "craft village", "spiritual", "museum", "pagoda", "ethnic village", "unesco heritage", "imperial", "royal tomb", "cham culture", "water puppet"}),
+    ("nightlife",   {"nightlife", "rooftop bar", "night market", "bar", "club", "bia hoi"}),
+    ("shopping",    {"shopping", "local market", "silk village", "lantern making"}),
+    ("relaxation",  {"peaceful", "spa", "hot spring", "yoga retreat", "meditation", "wellness retreat", "hot spring bath", "herbal bath"}),
+    ("nature",      {"wildlife", "picturesque", "national park", "waterfall", "beach", "cave", "mountain", "island", "forest", "nature reserve", "scenic", "national park", "biosphere reserve", "birdwatching", "coral reef", "mangrove"}),
+    ("photography", {"photography", "landscape photography", "instagrammable", "picturesque", "cloud sea", "flower season"}),
+    ("experience",  {"authentic", "immersive", "local life", "fishing village", "homestay", "village", "floating market", "ethnic market", "craft village", "slow travel", "boat cruise", "junk boat", "basket boat", "river cruise", "fishing", "squid fishing", "limestone boat ride", "bamboo rafting"}),
 ]
 
-def _tags_to_activity_type(tags: set) -> str:
+def _tags_to_activity_type(tags: set) -> Optional[str]:
     for type_name, type_tags in _TAG_TO_TYPE:
         if tags & type_tags:
             return type_name
-    return "nature"
+    return None
 
 
 def _map_llm_v2_to_output(act: Dict, location_id: str, idx: int) -> Dict:
@@ -201,12 +218,24 @@ def _map_llm_v2_to_output(act: Dict, location_id: str, idx: int) -> Dict:
     physical_level = float(act.get("physical_level", 0.5))
     social_level   = float(act.get("social_level", 0.5))
 
+    # Prioritize heuristic (tag-to-type) > LLM provided type > fallback
+    heuristic_type = _tags_to_activity_type(tags)
+    llm_type = act.get("activity_type")
+    
+    final_type = heuristic_type or llm_type or "experience"
+    final_type = str(final_type).lower().strip()
+
+    # Validate against known types to ensure reasoning templates in N6 work
+    known_types = {t[0] for t in _TAG_TO_TYPE}
+    if final_type not in known_types:
+        final_type = "experience"
+
     return _build_activity_output(
         activity_id    = _make_id(location_id, "act", name),
         location_id    = location_id,
         name           = name,
         description    = act.get("description", ""),
-        activity_type  = _tags_to_activity_type(tags),
+        activity_type  = final_type,
         intensity      = intensity,
         physical_level = physical_level,
         social_level   = social_level,

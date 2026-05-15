@@ -83,6 +83,8 @@ def _format_vectors(row: Dict[str, Any]) -> Dict[str, Any]:
 
 def save_location(location_data: Dict[str, Any]) -> Dict[str, Any]:
     """Lưu dữ liệu địa điểm kèm mảng ảnh Binary vào Database."""
+    import time
+    t0 = time.time()
     try:
         conn = _get_connection()
         cur = conn.cursor()
@@ -119,10 +121,20 @@ def save_location(location_data: Dict[str, Any]) -> Dict[str, Any]:
 
         conn.commit()
         conn.close()
-        return {"status": "success", "location_id": location_data.get("location_id")}
+        
+        elapsed_ms = int((time.time() - t0) * 1000)
+        return {
+            "status": "success", 
+            "location_id": location_data.get("location_id"),
+            "metadata": {"source": "postgresql", "latency_ms": elapsed_ms}
+        }
     except Exception as e:
         logger.error(f"Lỗi lưu Location: {e}")
-        return {"status": "error", "message": str(e)}
+        return {
+            "status": "error", 
+            "message": str(e),
+            "metadata": {"source": "postgresql", "latency_ms": 0}
+        }
 
 def attach_image_to_location(location_dict: Dict[str, Any]) -> Dict[str, Any]:
     """Giữ nguyên interface cho N8. Ảnh đã được load từ DB vào field 'images'."""
@@ -130,6 +142,8 @@ def attach_image_to_location(location_dict: Dict[str, Any]) -> Dict[str, Any]:
 
 def get_all_locations(include_images: bool = True) -> Dict[str, Any]:
     """Lấy toàn bộ danh sách địa điểm, giải mã Binary sang Base64 cho Frontend."""
+    import time
+    t0 = time.time()
     try:
         conn = _get_connection()
         cur = conn.cursor()
@@ -165,8 +179,19 @@ def get_all_locations(include_images: bool = True) -> Dict[str, Any]:
                 
             results.append(formatted)
 
-        return {"status": "success", "total": len(results), "data": results}
+        elapsed_ms = int((time.time() - t0) * 1000)
+        return {
+            "status": "success", 
+            "total": len(results), 
+            "data": results,
+            "metadata": {"source": "postgresql", "latency_ms": elapsed_ms}
+        }
 
     except Exception as e:
         logger.error(f"Lỗi truy vấn DB: {e}")
-        return {"status": "error", "message": str(e), "data": []}
+        return {
+            "status": "error", 
+            "message": str(e), 
+            "data": [],
+            "metadata": {"source": "postgresql", "latency_ms": 0}
+        }

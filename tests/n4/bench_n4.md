@@ -1,6 +1,6 @@
 # N4 — Module Location Ranking: Báo Cáo Bench Test
 
-**Ngày:** 2026-05-14  
+**Ngày:** 2026-05-15  
 **Phương pháp:** Weighted Cosine Similarity (4 kênh vector)  
 **Số ca test:** 7  
 **Pass rate:** 7/7  
@@ -52,6 +52,7 @@ _User mê biển → Beach phải đứng #1_
 | Độ trễ | 3 ms |
 | Kết quả | **PASS** |
 | Top 1 | `loc_beach` (score=1.0) |
+| Weights used | `{'text': 0.5, 'aug_text': 0.2, 'aug_tags': 0.3, 'img_desc': 0.2}` |
 | Thứ tự trả về | `loc_beach → loc_mountain → loc_city` |
 | Điểm số | `[1.0, 0.0, 0.0]` |
 | top1_correct | ✓ |
@@ -63,9 +64,10 @@ _User thích đô thị → City phải đứng #1_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 4 ms |
+| Độ trễ | 2 ms |
 | Kết quả | **PASS** |
 | Top 1 | `loc_city` (score=1.0) |
+| Weights used | `{'text': 0.1, 'aug_text': 0.6, 'aug_tags': 0.3, 'img_desc': 0.2}` |
 | Thứ tự trả về | `loc_city → loc_beach → loc_mountain` |
 | Điểm số | `[1.0, 0.0, 0.0]` |
 | top1_correct | ✓ |
@@ -77,9 +79,10 @@ _User mix beach+mountain (70/30) → Beach phải đứng #1_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 4 ms |
+| Độ trễ | 7 ms |
 | Kết quả | **PASS** |
 | Top 1 | `loc_beach` (score=1.0) |
+| Weights used | `{'text': 0.5, 'aug_text': 0.2, 'aug_tags': 0.3, 'img_desc': 0.2}` |
 | Thứ tự trả về | `loc_beach → loc_mountain → loc_city` |
 | Điểm số | `[1.0, 0.4286, 0.0]` |
 | top1_correct | ✓ |
@@ -91,9 +94,10 @@ _Partial null vectors không crash, vẫn trả về kết quả_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 1 ms |
+| Độ trễ | 0 ms |
 | Kết quả | **PASS** |
 | Top 1 | `loc_b` (score=1.0) |
+| Weights used | `{'text': 0.1, 'aug_text': 0.6, 'aug_tags': 0.3, 'img_desc': 0.2}` |
 | Thứ tự trả về | `loc_b → loc_a` |
 | Điểm số | `[1.0, 0.0]` |
 | top1_correct | ✓ |
@@ -104,9 +108,10 @@ _top_k=2 với 5 địa điểm → chỉ trả về 2_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 5 ms |
+| Độ trễ | 8 ms |
 | Kết quả | **PASS** |
 | Top 1 | `loc_0` (score=1.0) |
+| Weights used | `{'text': 0.5, 'aug_text': 0.2, 'aug_tags': 0.3, 'img_desc': 0.2}` |
 | Thứ tự trả về | `loc_0 → loc_1` |
 | Điểm số | `[1.0, 1.0]` |
 | count_correct | ✓ |
@@ -120,6 +125,7 @@ _Sau normalize, score của #1 phải là 1.0_
 | Độ trễ | 2 ms |
 | Kết quả | **PASS** |
 | Top 1 | `loc_beach` (score=1.0) |
+| Weights used | `{'text': 0.5, 'aug_text': 0.2, 'aug_tags': 0.3, 'img_desc': 0.2}` |
 | Thứ tự trả về | `loc_beach → loc_mountain` |
 | Điểm số | `[1.0, 0.0]` |
 | top1_score_is_1 | ✓ |
@@ -130,9 +136,10 @@ _28 địa điểm (realistic DB size) — kiểm tra tốc độ_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 34 ms |
+| Độ trễ | 32 ms |
 | Kết quả | **PASS** |
 | Top 1 | `loc_000` (score=1.0) |
+| Weights used | `{'text': 0.5, 'aug_text': 0.2, 'aug_tags': 0.3, 'img_desc': 0.2}` |
 | Thứ tự trả về | `loc_000 → loc_001 → loc_002 → loc_003 → loc_004` |
 | Điểm số | `[1.0, 0.0, 0.0, 0.0, 0.0]` |
 | count_correct | ✓ |
@@ -145,14 +152,14 @@ _28 địa điểm (realistic DB size) — kiểm tra tốc độ_
 | Ca test | Độ trễ (ms) | Top 1 | Kết quả |
 |---------|:-----------:|-------|:-------:|
 | `beach_user_ranks_beach_first` | 3 | `loc_beach` | ✓ PASS |
-| `city_user_ranks_city_first` | 4 | `loc_city` | ✓ PASS |
-| `mixed_user_prefers_beach` | 4 | `loc_beach` | ✓ PASS |
-| `null_vectors_graceful` | 1 | `loc_b` | ✓ PASS |
-| `top_k_truncation` | 5 | `loc_0` | ✓ PASS |
+| `city_user_ranks_city_first` | 2 | `loc_city` | ✓ PASS |
+| `mixed_user_prefers_beach` | 7 | `loc_beach` | ✓ PASS |
+| `null_vectors_graceful` | 0 | `loc_b` | ✓ PASS |
+| `top_k_truncation` | 8 | `loc_0` | ✓ PASS |
 | `normalization_top1_is_1` | 2 | `loc_beach` | ✓ PASS |
-| `performance_28_locations` | 34 | `loc_000` | ✓ PASS |
+| `performance_28_locations` | 32 | `loc_000` | ✓ PASS |
 
-**TB latency:** 7.6ms &nbsp;**Pass:** 7/7
+**TB latency:** 7.7ms &nbsp;**Pass:** 7/7
 
 ---
 

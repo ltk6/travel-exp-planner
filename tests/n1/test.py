@@ -81,6 +81,8 @@ def run_tests(test_set: list[dict], prefix: str):
             "img_desc": t.get("img_desc"),
         })
 
+        meta = result.get("metadata", {})
+        print(f"  [{prefix}] {t['name']} — {meta.get('latency_ms'):.1f}ms (model: {meta.get('model')})")
         save_json(result, f"{prefix}_{t['name']}.json")
 
 

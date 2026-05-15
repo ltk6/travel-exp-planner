@@ -4115,6 +4115,11 @@
           -0.04608430340886116,
           -0.010596895590424538
         ]
+      },
+      "metadata": {
+        "model": "BAAI/bge-m3",
+        "device": "cpu",
+        "latency_ms": 875.0
       }
     }
   },
@@ -7209,6 +7214,11 @@
           0.0008493742789141834,
           -0.011721638031303883
         ]
+      },
+      "metadata": {
+        "model": "BAAI/bge-m3",
+        "device": "cpu",
+        "latency_ms": 875.0
       }
     }
   },
@@ -10303,6 +10313,11 @@
           0.005200404208153486
         ],
         "img_desc": null
+      },
+      "metadata": {
+        "model": "BAAI/bge-m3",
+        "device": "cpu",
+        "latency_ms": 875.0
       }
     }
   }

@@ -1,6 +1,6 @@
 # N2 — Module Image Understanding: Báo Cáo Bench Test
 
-**Ngày:** 2026-05-14  
+**Ngày:** 2026-05-15  
 **Model:** `meta-llama/llama-4-scout-17b-16e-instruct`  
 **Số ảnh test:** 3  
 **Ngưỡng PASS:** 20–60 từ, ≥ 2 keyword hits (tối đa 50 từ yêu cầu trong prompt)  
@@ -39,49 +39,49 @@ N2 là module Vision Layer của pipeline. Nhận ảnh thô (bytes), gọi Groq
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 1050 ms |
+| Độ trễ | 1943 ms |
 | Prompt tokens | 2055 |
-| Completion tokens | 59 |
-| Total tokens | 2114 |
-| Số từ | 48 |
+| Completion tokens | 63 |
+| Total tokens | 2118 |
+| Số từ | 51 |
 | Số đoạn văn | 1 |
 | Keyword hits | 2/5 |
 | Đánh giá | ✓ **PASS** |
 
 **Preview (300 ký tự đầu):**
-> Bãi biển tuyệt đẹp với những cây dừa nghiêng mình bên bờ cát trắng, nước biển trong xanh hòa quyện với bầu trời xanh ngắt và mây trắng bồng bềnh, tạo nên một bức tranh thiên nhiên hoàn hảo, gợi lên cảm giác yên bình và thư thái....
+> Bãi biển tuyệt đẹp với những cây dừa xanh tươi nghiêng mình bên bờ cát trắng mịn, nước biển trong xanh dưới bầu trời rạng rỡ. Không khí trong lành, yên bình tạo nên một bức tranh thiên nhiên hoàn hảo, khiến lòng ai cũng cảm thấy thư thái, dễ chịu....
 
 ### Thành Phố Đô Thị (`city.png`)
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 912 ms |
+| Độ trễ | 1288 ms |
 | Prompt tokens | 2055 |
-| Completion tokens | 61 |
-| Total tokens | 2116 |
-| Số từ | 48 |
+| Completion tokens | 69 |
+| Total tokens | 2124 |
+| Số từ | 51 |
 | Số đoạn văn | 1 |
 | Keyword hits | 2/5 |
 | Đánh giá | ✓ **PASS** |
 
 **Preview (300 ký tự đầu):**
-> Thành phố sôi động thắp sáng buổi chiều tà với những tòa nhà chọc trời và dòng xe như dải đèn vàng. Không khí huyền ảo, hiện đại và đầy sức sống, khiến trái tim du khách đắm say, muốn khám phá mọi ngóc ngách của nơi đây....
+> Cảm giác sảng khoái của hoàng hôn buổi chiều đông, thành phố nhộn nhịp bừng sáng. Những tòa nhà chọc trời sừng sững giữa khung cảnh đường xá rộng lớn, sặc sỡ ánh đèn nền hòa quyện tạo nên bức tranh thành thị lung linh, hiện đại và đầy sức sống....
 
 ### Hồ Núi Thiên Nhiên (`lake.png`)
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 1053 ms |
+| Độ trễ | 1850 ms |
 | Prompt tokens | 2490 |
-| Completion tokens | 59 |
-| Total tokens | 2549 |
-| Số từ | 48 |
+| Completion tokens | 66 |
+| Total tokens | 2556 |
+| Số từ | 50 |
 | Số đoạn văn | 1 |
-| Keyword hits | 3/5 |
+| Keyword hits | 4/5 |
 | Đánh giá | ✓ **PASS** |
 
 **Preview (300 ký tự đầu):**
-> Hồ nước nằm giữa những dãy núi cao, xung quanh là thảm thực vật xanh tươi và các mỏm núi nhọn. Các đỉnh núi cao vút lên, tạo nên khung cảnh hùng vĩ và hòa quyện với bầu trời mây trắng. Không khí trong lành và yên bình....
+> Hồ núi cao giữa khung cảnh thiên nhiên hùng vĩ, nước trong vắt, xanh ngắt. Những dãy núi nhấp nhô, phủ đầy cây xanh và một ít tuyết trắng xen kẽ tạo nên bức tranh tuyệt mỹ. Không khí trong lành, yên bình, khiến du khách không thể rời mắt....
 
 ---
 
@@ -89,11 +89,11 @@ N2 là module Vision Layer của pipeline. Nhận ảnh thô (bytes), gọi Groq
 
 | Ảnh | Độ trễ (ms) | Prompt tok | Completion tok | Total tok | Số từ | KW hits | Đánh giá |
 |-----|:-----------:|:----------:|:--------------:|:---------:|:-----:|:-------:|:---------:|
-| Bãi Biển Nhiệt Đới | 1050 | 2055 | 59 | 2114 | 48 | 2/5 | ✓ PASS |
-| Thành Phố Đô Thị | 912 | 2055 | 61 | 2116 | 48 | 2/5 | ✓ PASS |
-| Hồ Núi Thiên Nhiên | 1053 | 2490 | 59 | 2549 | 48 | 3/5 | ✓ PASS |
+| Bãi Biển Nhiệt Đới | 1943 | 2055 | 63 | 2118 | 51 | 2/5 | ✓ PASS |
+| Thành Phố Đô Thị | 1288 | 2055 | 69 | 2124 | 51 | 2/5 | ✓ PASS |
+| Hồ Núi Thiên Nhiên | 1850 | 2490 | 66 | 2556 | 50 | 4/5 | ✓ PASS |
 
-**TB latency:** 1005.0ms &nbsp;**TB total tokens:** 2260 &nbsp;**TB word count:** 48 từ &nbsp;**Pass:** 3/3
+**TB latency:** 1693.7ms &nbsp;**TB total tokens:** 2266 &nbsp;**TB word count:** 51 từ &nbsp;**Pass:** 3/3
 
 ---
 

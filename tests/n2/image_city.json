@@ -1,3 +1,11 @@
 {
-  "img_desc": "Thành phố sôi động này là một bức tranh sống động về cuộc sống đô thị, nơi ánh sáng của các tòa nhà cao tầng và đường phố tạo nên một khung cảnh tuyệt đẹp. Những tòa nhà chọc trời với kiến trúc hiện đại và sang trọng đứng sừng sững giữa lòng thành phố, trong khi các con đường rộng lớn và hệ thống giao thông tấp nập thể hiện nhịp sống hối hả và năng động.\n\nCác tòa nhà cao tầng với thiết kế đa dạng và độc đáo tạo nên một diện mạo đặc trưng cho thành phố, với sự kết hợp giữa kiến trúc hiện đại và truyền thống. Màu sắc chủ đạo của thành phố là sự kết hợp giữa ánh sáng trắng và vàng của các tòa nhà và đường phố, tạo nên một không gian sống động và thu hút.\n\nCảm giác của thành phố này là sự năng động và hiện đại, với một không gian sống động và đầy sức sống. Thành phố này là một điểm đến lý tưởng cho những ai yêu thích cuộc sống đô thị, muốn trải nghiệm nhịp sống nhanh-paced và khám phá các cơ hội mới. Tuy nhiên, thành phố cũng có thể mang lại cảm giác cô đơn và tách biệt cho những ai không quen với cuộc sống ồn ào và tấp nập.\n\nThành phố tại Ontario, Canada, là một điểm đến tuyệt vời cho những ai muốn khám phá cuộc sống đô thị và trải nghiệm các hoạt động giải trí, văn hóa và ẩm thực đa dạng. Với một không gian sống động và đầy sức sống, thành phố này chắc chắn sẽ mang lại cho du khách những trải nghiệm đáng nhớ và sâu sắc."
+  "img_desc": "Cảm giác ngợp trước cảnh quan sôi động của thành phố vào hoàng hôn. Những tòa nhà chọc trời sừng sững, ánh đèn chiếu sáng rực rỡ như một bức tranh sống động. Dòng xe cộ di chuyển nhộn nhịp, tạo nên một không gian đầy sức sống và hiện đại.",
+  "metadata": {
+    "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+    "usage": {
+      "prompt_tokens": 2055,
+      "completion_tokens": 68,
+      "total_tokens": 2123
+    }
+  }
 }

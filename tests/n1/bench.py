@@ -49,6 +49,7 @@ def _analyse_result(result: dict) -> dict:
         "vector_norms": {ch: _norm(vecs.get(ch)) for ch in CHANNELS},
         "channels_present": [ch for ch in CHANNELS if vecs.get(ch) is not None],
         "channels_null": [ch for ch in CHANNELS if vecs.get(ch) is None],
+        "metadata": result.get("metadata", {}),
     }
 
 
@@ -75,9 +76,10 @@ def run_single_tests(test_set: list[dict], label: str) -> tuple[list[dict], floa
             "name": t["name"],
             "input": inp,
             "analysis": _analyse_result(result),
-            "latency_ms": round(elapsed_ms, 2),
+            "latency_ms": result.get("metadata", {}).get("latency_ms", 0),
         })
-        print(f"  [{label}] {t['name']} — {elapsed_ms:.1f}ms  text_k={result['text_k']} tags_k={result['tags_k']}")
+        m = result.get("metadata", {})
+        print(f"  [{label}] {t['name']} — {m.get('latency_ms'):.1f}ms  text_k={result['text_k']} tags_k={result['tags_k']} model={m.get('model')}")
 
     avg = sum(r["latency_ms"] for r in records) / len(records) if records else 0
     return records, round(avg, 2)

@@ -54,12 +54,14 @@ def run_test():
     
     # 4. Print Summary
     activities = result.get("activities", [])
-    llm_meta = result.get("llm_meta", [])
+    n5_meta = result.get("metadata", {})
+    per_location_meta = n5_meta.get("per_location", [])
     
     print(f"\nSuccessfully generated {len(activities)} activities.")
+    print(f"Total Latency: {n5_meta.get('latency_ms')}ms")
     
     print("\nToken Usage per Location:")
-    for meta in llm_meta:
+    for meta in per_location_meta:
         loc_id = meta.get("location_id", "unknown")
         usage = meta.get("usage")
         if usage:

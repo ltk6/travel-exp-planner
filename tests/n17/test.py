@@ -50,6 +50,11 @@ def run_test():
         print(f"Refined Img Desc: {result.get('refined_img_desc')}")
         print(f"Explanation: {result.get('explanation')}")
         
+        meta = result.get("metadata", {})
+        usage = meta.get("usage") or {}
+        total_tokens = (usage.get("prompt_tokens") or 0) + (usage.get("completion_tokens") or 0)
+        print(f"Model: {meta.get('model')} | Tokens: {total_tokens}")
+        
         results.append({
             "case": case["name"],
             "input": case,

@@ -1,28 +1,98 @@
-# Image Processing Module
+# N2 Image Processing Module
 
-Provides a vision-to-semantic layer that converts image data into descriptive text for travel recommendation.
+N2 is the vision-to-text bridge in the pipeline. It accepts raw image bytes, optimizes the image for the configured vision model, and returns a short Vietnamese scene description that downstream modules can embed and rank semantically.
 
-## API
+## Responsibilities
+
+- Accept uploaded image bytes from the UI or orchestrator
+- Normalize and compress images before sending them to the vision API
+- Generate a concise Vietnamese `img_desc` focused on travel-relevant semantics
+- Return model and token metadata when the call succeeds
+- Return a structured error payload when processing fails
+
+## Public API
 
 ```python
 process_image(data: dict) -> dict
 ```
 
-### Input
+## Input Shape
 
-* `image`: raw image data in bytes
+```python
+{
+    "image": bytes,
+}
+```
 
-### Output
+- `image`: raw image bytes
 
-* `img_desc`: a concise Vietnamese description (2-3 sentences) focusing on:
-  * Location type (beach, temple, cafe, etc.)
-  * Architecture or landscape (modern, ancient, primeval forest, etc.)
-  * Atmosphere (peaceful, bustling, majestic, cozy, etc.)
-* `error`: error message (present only if processing fails)
+## Output Shape
 
-## Responsibilities
+Successful response:
 
-* Preprocess raw image bytes for visual analysis
-* Extract semantic travel features using Gemini Vision
-* Filter out non-travel noise (e.g., people's clothing, license plates)
-* Ensure descriptions are optimized for downstream embedding and ranking
+```python
+{
+    "img_desc": str,
+    "metadata": {
+        "model": str,
+        "usage": {
+            "prompt_tokens": int,
+            "completion_tokens": int,
+            "total_tokens": int,
+        },
+    },
+}
+```
+
+Error response:
+
+```python
+{
+    "img_desc": "",
+    "error": str,
+    "metadata": {
+        "model": str,
+        "usage": dict,
+    },
+}
+```
+
+Notes:
+
+- If `image` is missing, N2 returns `{"img_desc": "", "error": "No image provided"}`.
+- `metadata` is present on successful responses and on most failure paths raised after request setup.
+- The description is intended for downstream semantic retrieval, not for pixel-perfect captioning.
+
+## Processing Flow
+
+1. Read `image` bytes from the input payload.
+2. Decode the image with Pillow.
+3. Convert non-RGB images to RGB.
+4. Downscale large images to fit within `1560 x 1560`.
+5. Re-encode as JPEG with compression for the vision API request.
+6. Send the image plus a travel-focused prompt to the configured Groq vision model.
+7. Return the final text description and token usage metadata.
+
+## Description Contract
+
+The prompt in `processor.py` asks the model to produce:
+
+- one short Vietnamese paragraph
+- at most 50 words
+- the location type
+- the most distinctive visual feature
+- the atmosphere or emotional tone
+
+The prompt also explicitly avoids:
+
+- generic framing like "Trong anh co..." or "Toi thay..."
+- irrelevant details such as license plates, logos, or timestamps
+- verbose list-style descriptions
+
+## Model and Runtime Notes
+
+- Vision provider: Groq API
+- Model source: `config.GROQ_VISION_MODEL`
+- Endpoint source: `config.GROQ_API_URL`
+- Request timeout: 60 seconds
+- Image optimization (compression and downscaling) is performed locally before the API call to ensure reliability and avoid payload size errors.

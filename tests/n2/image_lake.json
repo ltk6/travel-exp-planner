@@ -1,3 +1,11 @@
 {
-  "img_desc": "**Thiên Đường Ẩn Mình Giữa Đại Sơn**\n\nTrong một góc nhỏ xa xôi của thế giới, nơi mà thiên nhiên vẫn còn giữ nguyên vẹn vẻ đẹp nguyên sơ và hùng vĩ của mình, có một hồ nước tuyệt đẹp tựa như một viên ngọc quý ẩn mình giữa lòng đại sơn. Hồ nước nằm uốn lượn trong một thung lũng nhỏ, được bao quanh bởi những dãy núi cao vút vào tận mây trời và những khu rừng thông xanh mướt mà mắt có thể nhìn tới.\n\n**Vẻ Đẹp Nguyên Sơ và Hùng Vĩ**\n\nNhững ngọn núi cao vút vào tận mây trời, với những sườn núi đá granit nhấp nhô và những đỉnh núi phủ tuyết trắng xóa, tạo nên một bức tranh tuyệt đẹp về sức mạnh và vẻ đẹp của thiên nhiên. Rừng thông xanh mướt bao quanh hồ nước, với những cây thông cao thẳng tắp và lá thông xanh rì rào trong gió. Trên bầu trời, những đám mây trắng bồng bềnh trôi, tạo nên một khung cảnh tuyệt đẹp và đầy cảm hứng.\n\n**Cảm Xúc và Linh Hồn**\n\nKhông gian này mang lại một cảm giác yên bình và tĩnh lặng, như thể thời gian đã đứng yên ở đây. Sự hùng vĩ của tạo hóa được thể hiện qua từng đường nét của cảnh quan, từ những ngọn núi cao vút tới hồ nước trong veo. Màu xanh của nước hồ, màu xanh của rừng thông và màu trắng của tuyết tạo nên một sự hòa quyện tuyệt đẹp, mang lại cảm giác thanh bình và yên tĩnh cho bất kỳ ai đặt chân đến đây.\n\n**Khám Phá và Trải Nghiệm**\n\nNếu bạn đang tìm kiếm một nơi để thoát khỏi sự ồn ào và hối hả của cuộc sống hàng ngày, hãy đến và khám phá thiên đường ẩn mình này. Hãy đắm chìm trong vẻ đẹp nguyên sơ và hùng vĩ của thiên nhiên, và để tâm hồn bạn được thư thái và nhẹ nhàng. Đây là một điểm đến lý tưởng cho những ai yêu thích du lịch và khám phá, và muốn trải nghiệm những điều tuyệt vời mà thiên nhiên đã ban tặng cho chúng ta."
+  "img_desc": "Hồ núi cao giữa khung cảnh thiên nhiên hùng vĩ, nước trong vắt, sâu thẳm. Các ngọn núi cao vút bao quanh tạo nên bức tranh tuyệt mỹ về sức sống của thiên nhiên. Màu xanh của nước và cây cối tạo cảm giác yên bình, thư thái.",
+  "metadata": {
+    "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+    "usage": {
+      "prompt_tokens": 2490,
+      "completion_tokens": 62,
+      "total_tokens": 2552
+    }
+  }
 }

@@ -1,6 +1,6 @@
 # N6 — Module Activity Ranking: Báo Cáo Bench Test
 
-**Ngày:** 2026-05-14  
+**Ngày:** 2026-05-15  
 **Phương pháp:** Semantic (50%) + Attribute (50%) Scoring  
 **Số ca test:** 8  
 **Pass rate:** 8/8  
@@ -106,7 +106,7 @@ _Sau normalize: top score trong [0.8, 1.0], bottom score trong [0.4, 0.6]_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 2 ms |
+| Độ trễ | 3 ms |
 | Kết quả | **PASS** |
 | Top 1 | `act_1` |
 | User prefs | `{'intensity': None, 'physical': None, 'social': None}` |
@@ -134,7 +134,7 @@ _top_k=3 với 10 activities → chỉ trả về 3_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 5 ms |
+| Độ trễ | 4 ms |
 | Kết quả | **PASS** |
 | Top 1 | `act_0` |
 | User prefs | `{'intensity': None, 'physical': None, 'social': None}` |
@@ -147,7 +147,7 @@ _50 activities (realistic) — kiểm tra tốc độ_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 20 ms |
+| Độ trễ | 21 ms |
 | Kết quả | **PASS** |
 | Top 1 | `act_000` |
 | User prefs | `{'intensity': 0.731, 'physical': 0.69, 'social': None}` |
@@ -165,12 +165,12 @@ _50 activities (realistic) — kiểm tra tốc độ_
 | `attribute_relaxed_user_avoids_high_intensity` | 0 | `act_relax` | ✓ PASS |
 | `preference_inference_adventure_tags` | 0 | — | ✓ PASS |
 | `preference_inference_peaceful_tags` | 0 | — | ✓ PASS |
-| `normalization_spread` | 2 | `act_1` | ✓ PASS |
+| `normalization_spread` | 3 | `act_1` | ✓ PASS |
 | `null_vectors_graceful` | 0 | `act_b` | ✓ PASS |
-| `top_k_truncation` | 5 | `act_0` | ✓ PASS |
-| `performance_50_activities` | 20 | `act_000` | ✓ PASS |
+| `top_k_truncation` | 4 | `act_0` | ✓ PASS |
+| `performance_50_activities` | 21 | `act_000` | ✓ PASS |
 
-**TB latency:** 3.5ms &nbsp;**Pass:** 8/8
+**TB latency:** 3.6ms &nbsp;**Pass:** 8/8
 
 ---
 

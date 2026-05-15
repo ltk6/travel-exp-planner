@@ -1,16 +1,66 @@
 import json
 import time
 import random
-from typing import Dict, List, Optional
+import urllib.request
+import urllib.error
+from typing import Dict, List, Optional, Any
 
-from config import setup_logging, LLM_MAX_RETRIES, LLM_RETRY_WAIT_BASE
-from backend.modules.n5_activity_generation.providers import get_llm_chain
+from config import (
+    setup_logging, 
+    LLM_MAX_RETRIES, 
+    LLM_RETRY_WAIT_BASE,
+    GROQ_API_KEY, 
+    GROQ_API_URL, 
+    GROQ_MODEL_NAME, 
+    GROQ_MODELS,
+    USER_AGENT
+)
 from backend.shared.maps.tags import ALL_TAGS
 
-logger = setup_logging("N17.feedback")
+logger = setup_logging("N17.processor")
 
 VALID_TAGS = sorted(ALL_TAGS.keys())
 VALID_TAGS_SET = set(ALL_TAGS.keys())
+
+def call_groq_direct(prompt: str, system: str = "You are a travel expert. Respond with pure JSON only.", model: str = None) -> tuple:
+    """Bare logic to call Groq without complex provider registry."""
+    target_model = GROQ_MODELS.get(model, model) if model else GROQ_MODEL_NAME
+    payload = {
+        "model": target_model,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": prompt},
+        ],
+        "temperature": 0.1,
+    }
+    data = json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(
+        GROQ_API_URL,
+        data=data,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {GROQ_API_KEY}",
+            "User-Agent": USER_AGENT,
+        },
+        method="POST"
+    )
+    
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            res = json.loads(resp.read().decode("utf-8"))
+            content = res.get("choices", [{}])[0].get("message", {}).get("content", "")
+            usage = res.get("usage", {})
+            return content, target_model, usage
+    except urllib.error.HTTPError as e:
+        try:
+            body = e.read().decode("utf-8", errors="replace")[:500]
+        except:
+            body = str(e)
+        logger.error(f"Groq HTTP Error {e.code}: {body}")
+        return None, None, {}
+    except Exception as e:
+        logger.error(f"Groq call failed: {e}")
+        return None, None, {}
 
 def _build_feedback_prompt(user_input: str, user_tags: List[str], img_desc: str, feedback_text: str) -> str:
     tags_str = ", ".join(user_tags) if user_tags else "không có"
@@ -29,15 +79,15 @@ PHẢN HỒI MỚI:
 
 Nhiệm vụ:
 1. Cập nhật "refined_text" để phản ánh ý định mới nhất.
-2. Cập nhật "refined_tags" (chọn từ danh sách chuẩn).
-3. Cập nhật "refined_img_desc": Nếu người dùng muốn bỏ qua ảnh hoặc thay đổi mô tả ảnh, hãy chỉnh sửa hoặc để trống "".
+2. Cập nhật "refined_tags" (chọn DUY NHẤT các key tiếng Anh từ danh sách chuẩn bên dưới).
+3. Cập nhật "refined_img_desc": Nếu người dùng muốn bỏ qua ảnh, hãy để trống chuỗi rỗng "" (tuyệt đối không ghi 'Bỏ qua ảnh'). Nếu muốn thay đổi mô tả ảnh, hãy cập nhật mô tả mới.
 
 HÃY TRẢ VỀ JSON:
 {{
   "refined_text": "Chuỗi văn bản mới",
   "refined_tags": ["tag1", "..."],
   "refined_img_desc": "Mô tả ảnh mới hoặc để trống nếu muốn bỏ qua ảnh",
-  "explanation": "Câu trả lời trực tiếp cho khách hàng bằng tiếng Việt (Ví dụ: 'Vâng, tôi đã cập nhật lại tìm kiếm để ưu tiên các không gian yên tĩnh và gỡ bỏ ảnh cũ cho bạn.')"
+  "explanation": "Câu trả lời trực tiếp cho khách hàng bằng tiếng Việt (Ví dụ: 'Tôi đã cập nhật lại tìm kiếm để ưu tiên các không gian yên tĩnh và gỡ bỏ ảnh cũ cho bạn.')"
 }}
 
 DANH SÁCH TAGS CHUẨN:
@@ -46,7 +96,8 @@ DANH SÁCH TAGS CHUẨN:
 QUY TẮC:
 - Trả về DUY NHẤT JSON.
 - Trường 'explanation' phải là câu thoại tự nhiên, thân thiện, có thể dùng trực tiếp trên UI Chatbot.
-- Nếu khách nói "bỏ qua ảnh", hãy xác nhận việc đó trong câu trả lời.
+- Nếu khách nói "bỏ qua ảnh", trường 'refined_img_desc' PHẢI là "" và xác nhận việc đó trong câu trả lời.
+- Số lượng 'refined_tags' nên từ 3 đến 6 tags quan trọng nhất phản ánh đúng ý định mới.
 
 
 TRẢ LỜI:
@@ -58,19 +109,15 @@ def _parse_feedback_response(response_text: str) -> Optional[Dict]:
         return None
     
     text = response_text.strip()
-    
-    # Extract JSON
     import re
     match = re.search(r'\{.*\}', text, re.DOTALL)
     if match:
         try:
             data = json.loads(match.group())
-            # Ensure required keys exist
             for key in ["refined_text", "refined_tags"]:
                 if key not in data: return None
             return data
         except: pass
-    
     return None
 
 def call_llm(
@@ -79,23 +126,31 @@ def call_llm(
     chain_override: Optional[str] = None,
     temperature: float = 0.1,
 ) -> tuple:
-    """Pattern tương tự N5: Iterative chain call with retries."""
-    chain = get_llm_chain(chain_str=chain_override) if chain_override else get_llm_chain()
-    if not chain:
-        logger.warning("No LLM provider available for N17")
-        return None, None, None, None
+    """Barebones LLM call directly to Groq with chain support."""
+    from config import LLM_CHAIN
+    
+    # Resolve models to try
+    if chain_override:
+        models_to_try = [chain_override]
+    else:
+        models_to_try = [m.strip() for m in LLM_CHAIN.split(",") if m.strip()]
+        if not models_to_try:
+            models_to_try = [GROQ_MODEL_NAME]
 
-    for pass_idx in range(retries + 1):
-        for provider in chain:
-            logger.info("N17 trying provider=%s model=%s (pass %d)", provider.name, provider.model, pass_idx + 1)
-            result = provider.generate(prompt, retries=0, temperature=temperature, max_tokens=2000)
-            if result:
-                return result, provider.name, provider.model, getattr(provider, "last_usage", None)
+    for attempt in range(retries + 1):
+        if attempt > 0:
+            # Entire chain failed, wait before retrying the entire chain
+            wait_time = min(60.0, (LLM_RETRY_WAIT_BASE * (3 ** (attempt - 1))) + random.random())
+            logger.info(f"Pass {attempt} failed for all models. Retrying entire chain in {wait_time:.2f}s...")
+            time.sleep(wait_time)
+
+        for model_alias in models_to_try:
+            res_text, model, usage = call_groq_direct(prompt, model=model_alias)
+            if res_text:
+                return res_text, "groq", model, usage
             
-        if pass_idx < retries:
-            wait = min(60.0, (LLM_RETRY_WAIT_BASE * (3 ** pass_idx)) + random.random())
-            time.sleep(wait)
-
+            logger.warning(f"Model {model_alias} failed in pass {attempt + 1}")
+        
     return None, None, None, None
 
 def process_feedback(
@@ -105,28 +160,33 @@ def process_feedback(
     feedback_text: str,
     llm_chain: Optional[str] = None
 ) -> Dict:
-    """Xử lý feedback và trả về input đã tinh chỉnh."""
+    """Xử lý feedback và trả về input đã tinh chỉnh kèm metadata."""
     prompt = _build_feedback_prompt(user_input, user_tags, img_desc, feedback_text)
-    
     res_text, provider, model, usage = call_llm(prompt, chain_override=llm_chain)
     
+    metadata = {
+        "model": model,
+        "provider": provider,
+        "usage": usage
+    }
+
     if res_text:
         parsed = _parse_feedback_response(res_text)
         if parsed:
-            # Validate tags
             tags = parsed.get("refined_tags", [])
             if isinstance(tags, list):
-                parsed["refined_tags"] = [t for t in tags if t in VALID_TAGS_SET]
-            # Ensure refined_img_desc exists
+                parsed["refined_tags"] = [t.lower().strip() for t in tags if isinstance(t, str) and t.lower().strip() in VALID_TAGS_SET][:8]
             if "refined_img_desc" not in parsed:
                 parsed["refined_img_desc"] = img_desc
+            
+            parsed["metadata"] = metadata
             return parsed
 
-    # Fallback
     return {
         "refined_text": f"{user_input}. {feedback_text}",
         "refined_tags": user_tags,
         "refined_img_desc": img_desc,
-        "explanation": "Sử dụng fallback do lỗi LLM hoặc parse."
+        "explanation": "Sử dụng fallback do lỗi LLM hoặc parse.",
+        "metadata": metadata
     }
 

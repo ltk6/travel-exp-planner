@@ -1,92 +1,304 @@
-# Module N3: Lưu trữ và Quản lý Dữ liệu (Database)
+# Module N3: Tầng Dữ liệu và Lưu trữ
 
 **Dự án:** Travel Experience Planner  
-**Ngày:** 2026-05-14  
+**Ngày:** 2026-05-15
 
 ---
 
 ## 1. Vai trò của Module N3
 
-Module N3 là lớp lưu trữ dữ liệu (Data Layer) của hệ thống. Nhiệm vụ chính của nó là quản lý thông tin chi tiết về các địa điểm du lịch, bao gồm thông tin mô tả, tọa độ địa lý, hình ảnh và đặc biệt là các **Vector nhúng (Embeddings)** phục vụ cho tìm kiếm ngữ nghĩa.
+N3 là tầng persistence của hệ thống. Nếu N1 và N2 chịu trách nhiệm tạo ra biểu diễn ngữ nghĩa, thì N3 là nơi giữ cho toàn bộ các biểu diễn đó tồn tại bền vững và có thể truy xuất lại một cách nhất quán.
+
+Trong dự án này, một bản ghi địa điểm không chỉ là một dòng text mô tả. Nó là một gói dữ liệu tổng hợp gồm:
+
+- vector nhiều kênh
+- metadata mô tả
+- tọa độ hoặc thông tin địa lý
+- ảnh nhị phân
+
+Vì vậy, N3 không thể là một nơi chỉ “lưu vector”, mà phải là một lớp dữ liệu có khả năng mang đồng thời cả dữ liệu quan hệ, dữ liệu JSON và dữ liệu nhị phân.
 
 ---
 
-## 2. Công nghệ cốt lõi: PostgreSQL + pgvector
+## 2. Tư tưởng thiết kế: Unified Persistence
 
-Hệ thống sử dụng **PostgreSQL** kết hợp với extension **pgvector** để xử lý dữ liệu vector một cách hiệu quả ngay trong lòng một database quan hệ.
+Một quyết định rất đáng chú ý của N3 là chọn **PostgreSQL + pgvector** thay vì tách dữ liệu thành nhiều hệ thống độc lập.
 
-### Tại sao chọn pgvector?
-1.  **Dữ liệu hợp nhất:** Cho phép lưu trữ cả metadata (JSONB) và vector trong cùng một bản ghi.
-2.  **Truy vấn vector mạnh mẽ:** Hỗ trợ tính toán khoảng cách Cosine (`<=>`) trực tiếp bằng SQL, giúp tối ưu hóa hiệu suất khi quy mô dữ liệu lớn.
-3.  **Tính ổn định:** Tận dụng độ tin cậy của PostgreSQL trong việc quản lý giao dịch và toàn vẹn dữ liệu.
+### 2.1. Vì sao không dùng một vector database riêng?
+
+Về mặt lý thuyết, có thể tách:
+
+- vector sang một vector DB
+- metadata sang SQL
+- ảnh sang file storage
+
+Nhưng cách đó làm tăng mạnh chi phí đồng bộ và độ phức tạp hệ thống:
+
+- nhiều nơi lưu trữ hơn
+- nhiều điểm lỗi hơn
+- khó đảm bảo tính nhất quán giữa vector, metadata và ảnh
+
+Trong quy mô bài toán hiện tại, việc tập trung mọi thứ vào PostgreSQL đem lại lợi ích lớn hơn:
+
+- dễ quản trị
+- dễ reset
+- dễ backup
+- dễ đảm bảo một địa điểm luôn đi kèm đúng metadata và đúng ảnh của nó
+
+### 2.2. Ý nghĩa của pgvector trong kiến trúc này
+
+`pgvector` giúp N3 không chỉ lưu được vector mà còn giữ vector như một phần tự nhiên của dữ liệu địa điểm. Nhờ đó, một record có thể đồng thời mang:
+
+- `text`
+- `aug_text`
+- `aug_tags`
+- `img_desc`
+- `metadata`
+- `geo`
+- `images`
+
+Đây là một thiết kế “single source of truth” đúng nghĩa cho dữ liệu địa điểm.
 
 ---
 
-## 3. Cấu trúc dữ liệu Địa điểm (Schema)
+## 3. Giao diện công khai
 
-Mỗi bản ghi địa điểm bao gồm:
--   **Metadata:** Tên, mô tả, danh sách tags đặc trưng.
--   **Địa lý:** Tọa độ GPS (Lat/Lng).
--   **Hình ảnh:** Danh sách URL hình ảnh đại diện.
--   **Vectors:** Các kênh vector đã được tính toán sẵn (Text vector, Tag vector).
-
----
-
-## 4. Kiến trúc Lưu trữ (Storage Architecture)
-
-```mermaid
-graph TD
-    subgraph "N3: Data Source"
-        A{Connection Check}
-        B[(PostgreSQL + pgvector)]
-        C[seeds/locations_with_vectors.json]
-    end
-
-    A -- Success --> B
-    A -- Fail --> C
-
-    subgraph "Data Structures"
-        B1[Vectors: 1024D]
-        B2[Metadata: JSONB]
-        B3[Images: BYTEA array]
-    end
-
-    B --- B1 & B2 & B3
+```python
+init_db() -> None
+save_location(location_data: dict[str, Any]) -> dict[str, Any]
+get_all_locations(include_images: bool = True) -> dict[str, Any]
+get_db_fingerprint() -> str
+attach_image_to_location(location_dict: dict[str, Any]) -> dict[str, Any]
 ```
 
-## 5. Persistence & Sync Strategy
+Ý nghĩa từng hàm:
 
-Module N3 đóng vai trò là **Single Source of Truth** cho toàn bộ hệ thống:
-
-- **Atomic Storage:** Toàn bộ dữ liệu (Vectors, Metadata, Geo, Images) được lưu trữ nguyên tử trong PostgreSQL. 
-- **Binary Image Persistence:** Hình ảnh được lưu dưới dạng `BYTEA[]`, loại bỏ sự phụ thuộc vào hệ thống file cục bộ của server, cho phép di chuyển DB linh hoạt (Cloud-Native).
-- **Smart Fingerprinting:** N3 cung cấp API trả về "Dấu vân tay" (dựa trên Row Count và Max Update Timestamp). Cơ chế này giúp tầng N8 Orchestrator đưa ra quyết định đồng bộ hóa (Sync) chỉ khi dữ liệu thực sự thay đổi.
-- **Base64 Decoupling:** Mặc dù lưu trữ nhị phân, N3 vẫn trả về ảnh dạng Base64 qua API để giữ cho các module tiêu thụ (N8, N7) không cần thay đổi logic xử lý hình ảnh.
-
----
-
-## 5. Cơ chế Dự phòng (Fail-soft Mechanism)
-
-Để đảm bảo hệ thống luôn hoạt động ngay cả trong môi trường không có Database thực (như khi phát triển local hoặc demo nhanh), N3 tích hợp cơ chế **JSON Seed Fallback**:
--   Nếu kết nối PostgreSQL thất bại, hệ thống tự động chuyển sang đọc dữ liệu từ tệp `seeds/locations_with_vectors.json`.
--   Dữ liệu trong tệp seed được cấu trúc giống hệt database, đảm bảo logic của các bước sau không bị ảnh hưởng.
+- `init_db()`: khởi tạo lại schema lưu trữ
+- `save_location()`: ghi hoặc cập nhật một địa điểm
+- `get_all_locations()`: đọc toàn bộ dữ liệu theo cấu trúc API-ready
+- `get_db_fingerprint()`: tạo dấu vân tay trạng thái dữ liệu
+- `attach_image_to_location()`: helper tương thích cho payload địa điểm đã có ảnh
 
 ---
 
-## 6. Giao diện (Interface)
+## 4. Cấu trúc lưu trữ
 
-Module N3 hoạt động như một nhà cung cấp dữ liệu độc lập:
--   **Input:** Yêu cầu truy vấn hoặc filter (nếu có).
--   **Process:** Kết nối DB (hoặc JSON), trích xuất và định dạng dữ liệu.
--   **Output:** Danh sách các `Location Objects` đầy đủ thông tin metadata và vectors.
+N3 tạo bảng `locations` với các cột chính:
+
+- `location_id`
+- `text`
+- `aug_text`
+- `aug_tags`
+- `img_desc`
+- `metadata`
+- `geo`
+- `images`
+- `updated_at`
+
+### 4.1. Ý nghĩa của thiết kế nhiều cột vector
+
+Việc giữ riêng từng cột vector là một tiếp nối trực tiếp của tư tưởng multi-channel embedding ở N1. Điều này cho phép:
+
+- truy xuất lại đúng kênh semantic đã được sinh
+- giữ được khả năng giải thích nguồn tín hiệu
+- hỗ trợ các bước xếp hạng dùng dynamic weighting
+
+Nếu N3 chỉ lưu một vector hợp nhất duy nhất, rất nhiều lợi ích ở phía N1 sẽ bị mất.
+
+### 4.2. Vì sao ảnh được lưu bằng `BYTEA[]`?
+
+Quyết định này phản ánh một lựa chọn rất thực dụng:
+
+- giữ ảnh đi cùng record dữ liệu
+- giảm phụ thuộc vào file server ngoài
+- giúp backup và reset dữ liệu dễ hơn
+
+Tất nhiên, ở quy mô rất lớn, tách object storage có thể hợp lý hơn. Nhưng với hệ thống hiện tại, lưu trong DB giúp đơn giản hóa kiến trúc mà vẫn đủ mạnh.
 
 ---
 
-## 6. Tài liệu tham khảo
+## 5. Hợp đồng dữ liệu
+
+### 5.1. Đầu vào của `save_location()`
+
+```python
+{
+    "location_id": str,
+    "vectors": {
+        "text": list[float] | None,
+        "aug_text": list[float] | None,
+        "aug_tags": list[float] | None,
+        "img_desc": list[float] | None,
+    },
+    "metadata": dict[str, Any],
+    "geo": dict[str, Any],
+    "images_binary": list[bytes],
+}
+```
+
+### 5.2. Đầu ra của `save_location()`
+
+```python
+{
+    "status": "success" | "error",
+    "location_id": str,
+    "message": str,
+    "metadata": {
+        "source": "postgresql",
+        "latency_ms": int,
+    },
+}
+```
+
+### 5.3. Đầu ra của `get_all_locations()`
+
+```python
+{
+    "status": "success" | "error",
+    "total": int,
+    "data": [
+        {
+            "location_id": str,
+            "vectors": {
+                "text": list[float] | None,
+                "aug_text": list[float] | None,
+                "aug_tags": list[float] | None,
+                "img_desc": list[float] | None,
+            },
+            "metadata": dict[str, Any] | None,
+            "geo": dict[str, Any] | None,
+            "images": list[str],
+        }
+    ],
+    "metadata": {
+        "source": "postgresql",
+        "latency_ms": int,
+    },
+}
+```
+
+Trong đó, `images` được trả về dưới dạng Base64 data URI. Đây là một quyết định chuyển đổi rất thực dụng: DB vẫn lưu nhị phân, nhưng API trả về định dạng dễ render ở UI.
+
+---
+
+## 6. Các quyết định hành vi quan trọng
+
+### 6.1. `init_db()` có tính destructive
+
+`init_db()` hiện không phải migration tool, mà là reset-schema tool:
+
+1. đảm bảo extension `vector` tồn tại
+2. xóa bảng `locations`
+3. tạo lại từ đầu
+
+Điều này phù hợp với các giai đoạn:
+
+- seed dữ liệu
+- benchmark
+- reset môi trường thí nghiệm
+
+Nó đơn giản nhưng rất rõ ràng về mặt hành vi.
+
+### 6.2. Upsert thay vì insert cứng
+
+`save_location()` dùng `ON CONFLICT` theo `location_id`. Quyết định này giúp:
+
+- cập nhật dữ liệu địa điểm mà không cần xóa rồi chèn lại
+- làm mới vector, metadata và geo an toàn
+- giữ lại ảnh cũ nếu payload mới không cung cấp ảnh
+
+Đây là một quyết định tốt vì ảnh thường là phần nặng nhất và không nhất thiết phải truyền lại mỗi lần update metadata.
+
+### 6.3. Fingerprinting để hỗ trợ đồng bộ
+
+`get_db_fingerprint()` hiện dựa trên:
+
+- tổng số record
+- `MAX(updated_at)`
+
+Đây là một cơ chế fingerprint rẻ nhưng hiệu quả. Nó không cần hash toàn bộ dữ liệu, nhưng vẫn đủ mạnh để phát hiện:
+
+- có thêm record mới
+- có record vừa bị cập nhật
+
+Về mặt kiến trúc, đây là một lựa chọn cân bằng rất tốt giữa chi phí và khả năng phát hiện thay đổi.
+
+---
+
+## 7. Luồng truy xuất dữ liệu
+
+```mermaid
+---
+config:
+  flowchart:
+    useMaxWidth: false
+---
+graph TD
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
+    
+    A["Yêu cầu đọc dữ liệu"] --> B["Kết nối PostgreSQL"]
+    B --> C["Truy vấn bảng địa điểm (locations)"]
+    C --> D["Chuyển đổi pgvector sang danh sách"]
+    D --> E{"Có dữ liệu ảnh?"}
+    E -- "Có" --> F["Giải mã BYTEA sang Base64"]
+    E -- "Không" --> G["Trả về danh sách rỗng"]
+    F --> H["Đóng gói phản hồi JSON"]
+    G --> H
+```
+
+```mermaid
+---
+config:
+  flowchart:
+    useMaxWidth: false
+---
+graph TD
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
+    
+    A["Yêu cầu lưu địa điểm"] --> B{"Đã tồn tại ID?"}
+    B -- "Chưa" --> C["Thêm bản ghi mới"]
+    B -- "Rồi" --> D["Cập nhật bản ghi hiện có"]
+    D --> E{"Có ảnh mới?"}
+    E -- "Không" --> F["Giữ lại ảnh cũ (Fallback)"]
+    E -- "Có" --> G["Ghi đè bằng ảnh mới"]
+    
+    C --> H[("(PostgreSQL + pgvector)")]
+    F --> H
+    G --> H
+```
+
+Luồng này cho thấy rõ vai trò “adapter” của N3:
+
+- bên trong là dữ liệu DB-native
+- bên ngoài là dữ liệu API-native
+
+---
+
+## 8. Ghi chú vận hành
+
+- kết nối dùng `psycopg2` với `RealDictCursor`
+- `register_vector()` được gọi trên từng kết nối mới
+- vector được trả về dưới dạng list Python để thuận tiện cho các module phía trên
+- logging và chuỗi kết nối lấy từ cấu hình dự án
+
+---
+
+## 9. Kết luận
+
+N3 không chỉ là nơi lưu dữ liệu. Nó là tầng đảm bảo rằng mọi tài sản semantic của hệ thống:
+
+- được lưu bền vững
+- được truy xuất có cấu trúc
+- và có thể đồng bộ hiệu quả với lớp điều phối
+
+Giá trị lớn nhất của N3 nằm ở sự thống nhất: cùng một record địa điểm có thể chứa đầy đủ vector, metadata, geo và ảnh. Đây là một quyết định kiến trúc gọn, thực dụng và rất phù hợp với hệ thống recommendation quy mô học thuật nhưng đủ nghiêm túc để benchmark và demo end-to-end.
+
+---
+
+## 10. Tài liệu tham khảo
 
 | # | Chủ đề | Nguồn tham khảo |
 |---|---|---|
-| 1 | pgvector GitHub — Open-source vector similarity search for Postgres | [github.com/pgvector/pgvector](https://github.com/pgvector/pgvector) |
-| 2 | pgvector — Distance functions (cosine, L2, inner product) | [github.com/pgvector/pgvector#distance](https://github.com/pgvector/pgvector#distance) |
-| 3 | PostgreSQL Documentation — JSONB và GIN Index | [www.postgresql.org/docs](https://www.postgresql.org/docs/) |
-| 4 | Supabase — OpenAI Embeddings & Postgres Vector | [supabase.com/blog/openai-embeddings-postgres-vector](https://supabase.com/blog/openai-embeddings-postgres-vector) |
+| 1 | pgvector GitHub | [github.com/pgvector/pgvector](https://github.com/pgvector/pgvector) |
+| 2 | PostgreSQL Documentation | [www.postgresql.org/docs](https://www.postgresql.org/docs/) |
+| 3 | Psycopg2 Documentation | [www.psycopg.org/docs/](https://www.psycopg.org/docs/) |

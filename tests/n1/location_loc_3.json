@@ -3087,5 +3087,10 @@
       -0.03213830664753914
     ],
     "img_desc": null
+  },
+  "metadata": {
+    "model": "BAAI/bge-m3",
+    "device": "cpu",
+    "latency_ms": 643.0
   }
 }

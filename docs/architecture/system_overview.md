@@ -1,46 +1,90 @@
-# Tổng Quan Kiến Trúc Hệ Thống (System Overview)
+# Tổng quan Kiến trúc Hệ thống
 
 **Dự án:** Travel Experience Planner  
 **Phiên bản:** 1.0 (Modular Architecture)  
-**Ngày:** 2026-05-14  
+**Ngày:** 2026-05-15
 
 ---
 
-## 1. Triết lý Thiết kế
+## 1. Bài toán mà hệ thống giải quyết
 
-Hệ thống được xây dựng theo kiến trúc **Modular Micro-services**, nơi mỗi module (từ N1 đến N7) đảm nhận một nhiệm vụ chuyên biệt và cô lập hoàn toàn. Trung tâm của toàn bộ hệ thống là **N8 Orchestrator**, đóng vai trò là "nhà điều phối" mọi luồng dữ liệu.
+Travel Experience Planner được thiết kế để giải quyết một bài toán recommendation có tính đa chiều: người dùng không chỉ muốn biết “đi đâu”, mà còn muốn hệ thống hiểu được:
 
-### Mục tiêu chính:
--   **Tính Linh hoạt & Module hóa (Modularity):** Thiết kế cho phép độc lập nâng cấp hoặc thay thế bất kỳ thành phần nào (từ model AI, cơ sở dữ liệu đến logic xếp hạng) mà không làm gián đoạn luồng vận hành của toàn hệ thống.
--   **Khả năng Chống chịu & Độ tin cậy (Resilience):** Tích hợp các cơ chế failover đa lớp, tự động sửa lỗi dữ liệu (Auto-repair) và điều tiết lưu lượng (Throttling) để đảm bảo hệ thống luôn phản hồi ổn định trong mọi tình huống.
--   **Tối ưu hóa Trải nghiệm Ngữ nghĩa (Semantic Excellence):** Tận dụng tối đa sức mạnh của vector embedding 1024 chiều và hệ thống trọng số động để xóa bỏ rào cản giữa ngôn ngữ tự nhiên của người dùng và dữ liệu máy móc.
+- phong cách du lịch
+- cảm xúc mong muốn
+- dạng trải nghiệm phù hợp
+- hoạt động nên làm tại điểm đến
+
+Khó khăn của bài toán này là đầu vào rất không đồng đều:
+
+- có người viết text chi tiết
+- có người chỉ chọn tags
+- có người gửi hình ảnh làm cảm hứng
+
+Do đó, kiến trúc hệ thống buộc phải vừa linh hoạt ở đầu vào, vừa đủ chặt chẽ ở các tầng semantic và ranking phía sau.
 
 ---
 
-## 2. Mô hình Liên kết và Luồng Dữ liệu (Network & Data Flow)
+## 2. Triết lý thiết kế kiến trúc
 
-### 2.1. Kiến trúc Hub-and-Spoke (Topology)
-Mọi module đều độc lập và giao tiếp duy nhất thông qua **N8 Orchestrator**. Hệ thống tích hợp các tầng cache đa lớp để tối ưu hiệu năng:
+Hệ thống được xây theo hướng **module hóa theo chức năng chuyên biệt**, trong đó mỗi module đảm nhận một vai trò hẹp nhưng rõ ràng:
+
+- hiểu input
+- chuyển đổi thành vector
+- lưu trữ dữ liệu
+- xếp hạng địa điểm
+- sinh hoạt động
+- xếp hạng hoạt động
+- hiển thị và điều phối vòng phản hồi
+
+### 2.1. Vì sao module hóa?
+
+Module hóa đem lại ba lợi ích lớn:
+
+1. **Dễ thay thế thành phần:** có thể đổi model hoặc logic từng phần mà không phá vỡ toàn hệ thống.
+2. **Dễ kiểm thử và benchmark:** từng module có thể được đánh giá độc lập.
+3. **Dễ viết báo cáo kỹ thuật:** mỗi tầng có thể được giải thích theo trách nhiệm riêng.
+
+### 2.2. Vai trò trung tâm của lớp điều phối
+
+Tuy hệ thống module hóa, dữ liệu không được phép đi tự do giữa mọi thành phần. Thay vào đó, N8 giữ vai trò trung tâm điều phối để:
+
+- ghép đúng thứ tự pipeline
+- kiểm soát request/response
+- gom các concern vận hành như cache, bảo mật, feedback
+
+Đây là một kiến trúc dạng **hub-and-spoke** ở mức ứng dụng.
+
+---
+
+## 3. Sơ đồ tổng thể kiến trúc
 
 ```mermaid
+---
+config:
+  flowchart:
+    useMaxWidth: false
+---
 graph LR
-    subgraph "Clients"
-        N7[N7: Frontend UI]
-        N7C[(State Cache)] -.-> N7
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
+    subgraph "Phía người dùng"
+        N7["N7: Giao diện người dùng"]
+        N7C[("(Trạng thái phiên)")]
     end
 
-    subgraph "Core Orchestrator"
-        N8((N8: Orchestrator))
-        N8C[(Hybrid Cache)] -.-> N8
+    subgraph "Bộ điều phối trung tâm"
+        N8(("(N8: Bộ điều phối)"))
+        N8C[("(Bộ nhớ đệm hỗn hợp)")]
     end
 
-    subgraph "Specialized Modules"
-        N1[N1: Embedding]
-        N2[N2: Vision]
-        N3[(N3: Database)]
-        N4[N4: Ranking L]
-        N5[N5: Generation]
-        N6[N6: Ranking A]
+    subgraph "Các module chuyên biệt"
+        N1["N1: Embedding"]
+        N2["N2: Vision"]
+        N3[("(N3: Cơ sở dữ liệu)")]
+        N4["N4: Xếp hạng Địa điểm"]
+        N5["N5: Sinh Hoạt động"]
+        N6["N6: Xếp hạng Hoạt động"]
+        N17["N17: Xử lý Phản hồi"]
     end
 
     N7 <--> N8
@@ -50,98 +94,182 @@ graph LR
     N8 <--> N4
     N8 <--> N5
     N8 <--> N6
+    N8 <--> N17
+    N7C -.-> N7
+    N8C -.-> N8
 ```
+
+### 3.1. Ý nghĩa của sơ đồ này
+
+Sơ đồ cho thấy ba lớp lớn:
+
+- **Frontend/UI**
+- **Application orchestration**
+- **Domain modules**
+
+Điều này giúp hệ thống giữ được hai tầng tách biệt:
+
+- tầng tương tác với người dùng
+- tầng xử lý semantic nội bộ
 
 ---
 
-### 2.2. Luồng Dữ liệu & Caching (Execution Sequence)
-Dưới đây là trình tự xử lý thực tế, minh họa cách các tầng cache (State & Hybrid) giúp giảm tải cho Backend:
+## 4. Luồng dữ liệu Macro (High-level)
+
+Hệ thống vận hành theo cơ chế hai giai đoạn (two-pass) để đảm bảo tốc độ phản hồi tối ưu cho người dùng.
 
 ```mermaid
+---
+config:
+  flowchart:
+    useMaxWidth: false
+---
 sequenceDiagram
     autonumber
-    participant N7 as N7 (UI)
-    participant N7C as N7 State Cache
-    participant N8 as N8 (Orchestrator)
-    participant N8C as N8 Hybrid Cache
-    participant Nodes as N1-N6 (Modules)
+    participant "User" as "Người dùng"
+    participant "UI" as "Giao diện (N7)"
+    participant "Backend" as "Hệ thống Backend (N8 + Modules)"
 
-    Note over N7,N8: Giai đoạn 1: Recommend
-    N7->>N7C: Check Session/Snapshots?
-    alt Cache Hit
-        N7C-->>N7: Return Cached Results
-    else Cache Miss
-        N7->>N8: POST /api/recommend
-        N8->>N8C: Check Fingerprint/Local?
-        alt Cache Hit
-            N8C-->>N8: Return JSON + Files
-        else Cache Miss
-            N8->>Nodes: N2 -> N1 -> N3 -> N4
-            Nodes-->>N8: Final Data
-            N8->>N8C: Persist to RAM/File
-        end
-        N8-->>N7: JSON Result
-        N7->>N7C: Save Snapshot
-    end
-
-    Note over N7,N8: Giai đoạn 2: Activities (x5)
-    loop 5 Parallel Requests
-        N7->>N8: POST /api/activities
-        N8->>N8C: Check Local Cache?
-        alt Cache Hit
-            N8C-->>N8: Return Result
-        else Cache Miss
-            N8->>Nodes: N5 -> N6
-            Nodes-->>N8: Result
-            N8->>N8C: Save to File
-        end
-        N8-->>N7: JSON Response
-    end
+    "User"->>"UI": "Nhập sở thích / Tải ảnh"
+    "UI"->>"Backend": "Yêu cầu gợi ý địa điểm (Giai đoạn 1)"
+    "Backend"-->>"UI": "Danh sách địa điểm & metadata sơ bộ"
+    "UI"->>"Backend": "Yêu cầu sinh hoạt động chi tiết (Giai đoạn 2)"
+    "Backend"-->>"UI": "Chi tiết hoạt động, vector & lý do gợi ý"
+    "UI"-->>"User": "Hiển thị trải nghiệm du lịch hoàn thiện"
 ```
 
----
+Chi tiết luồng thực thi kỹ thuật bên trong Backend được mô tả cụ thể tại tài liệu của [Module N8: Orchestrator](../modules/n8_orchestrator.md).
 
-## 3. Các Thành phần Hệ thống (Module Breakdown)
+### 4.3. Ý nghĩa của cách tổ chức này
 
-### N1: Embedding (Trái tim ngữ nghĩa)
-Sử dụng model **BGE-M3** để chuyển đổi mọi thứ thành vector. Đây là lớp nền tảng giúp hệ thống "hiểu" được văn bản và hình ảnh ở cấp độ toán học.
+Hệ thống không sinh hoạt động trước rồi mới xếp hạng địa điểm, mà tách thành hai tầng:
 
-### N2: Vision (Đôi mắt AI)
-Phân tích hình ảnh người dùng tải lên thông qua **Groq Vision**, chuyển đổi cảm xúc thị giác thành mô tả văn bản súc tích (50 từ).
+- lọc “đi đâu” trước
+- sau đó mới tính “làm gì”
 
-### N3: Database Layer (Tầng lưu trữ)
-Sử dụng **PostgreSQL** với extension `pgvector`. Đây là **Single Source of Truth** lưu trữ toàn bộ: Vectors, Metadata và **Binary Images** (`BYTEA[]`). Hệ thống hỗ trợ "Smart Fingerprinting" để tối ưu hóa việc đồng bộ hóa dữ liệu với Orchestrator.
+Đây là một thiết kế hợp lý vì:
 
-### N4: Location Ranking (Bộ lọc thông minh)
-Áp dụng **Trọng số Động (Dynamic Weighting)** để ưu tiên các kênh thông tin khác nhau (text vs tags) tùy thuộc vào độ chi tiết của yêu cầu.
-
-### N5: Activity Generation (Sáng tạo nội dung)
-Sử dụng **LLM Chain** với 7 tầng dự phòng để sinh ra các hoạt động du lịch độc đáo, không trùng lặp cho từng địa điểm.
-
-### N6: Activity Ranking (Tinh chỉnh cá nhân)
-Xếp hạng hoạt động theo mô hình **Hybrid 50/50** (Ngữ nghĩa + Thuộc tính thể lực/xã hội) để đảm bảo hoạt động thực sự khớp với phong cách người dùng.
-
-### N7: UI/Frontend (Trải nghiệm người dùng)
-Xây dựng bằng **Streamlit**, tích hợp cơ chế **State Caching (Session & Snapshots)** để bảo toàn dữ liệu người dùng khi chuyển đổi giữa các phương thức nhập liệu mà không cần tải lại trang.
-
-### N8: Orchestrator (Nhà điều phối)
-Lớp API điều phối toàn bộ quy trình. Tích hợp **Distributed Hybrid Caching**:
--   **Smart Fingerprint Check:** Kiểm tra phiên bản dữ liệu từ N3 trong miliseconds trước mỗi yêu cầu.
--   **Local Image Persistence:** Tự quản lý và cache hình ảnh thành file cục bộ, mô phỏng một dịch vụ độc lập không phụ thuộc vào hệ thống file của Database.
+- giảm không gian tìm kiếm hoạt động
+- tránh lãng phí generation ở những địa điểm không đủ phù hợp
+- giúp pipeline dễ giải thích hơn
 
 ---
 
-## 4. Các Công nghệ then chốt
+## 5. Phân rã vai trò các module
 
-| Công nghệ | Vai trò | Ưu điểm cốt lõi |
-|-----------|---------|-----------------|
-| **Groq LPU** | Inference Engine | Tốc độ xử lý LLM cực nhanh (~500 tok/s). |
-| **BGE-M3** | Embedding Model | Đa ngôn ngữ, độ chính xác cao nhất cho Tiếng Việt. |
-| **pgvector** | Vector DB | Tích hợp sâu vào SQL, hiệu suất ổn định. |
-| **Modular Logic** | Architecture | Dễ bảo trì, dễ debug từng phần riêng biệt. |
+### N1: Embedding
+
+Biến text, tags, image description thành biểu diễn vector nhiều kênh. Đây là trái tim semantic của hệ thống và là nơi tạo nền cho augmentation và dynamic weighting.
+
+### N2: Vision
+
+Biến tín hiệu hình ảnh thành mô tả văn bản ngắn nhưng giàu ngữ nghĩa, nhằm đưa hình ảnh vào cùng pipeline semantic với text.
+
+### N3: Database
+
+Lưu trữ record địa điểm như một gói dữ liệu đầy đủ gồm vector, metadata, geo và ảnh nhị phân. Đây là single source of truth của dữ liệu địa điểm.
+
+### N4: Location Ranking
+
+So khớp semantic giữa user vectors và location vectors, sau đó áp dụng trọng số động để chọn ra danh sách địa điểm phù hợp nhất.
+
+### N5: Activity Generation
+
+Sinh hoạt động ứng viên cho từng địa điểm bằng chiến lược LLM-first, template-backup.
+
+### N6: Activity Ranking
+
+Xếp hạng hoạt động dựa trên hybrid scoring: semantic fit + attribute fit.
+
+### N7: Frontend UI
+
+Thu thập input đa phương thức, hiển thị kết quả, lưu session state và hỗ trợ feedback loop.
+
+### N8: Orchestrator
+
+Điều phối toàn bộ workflow, quản lý cache, route protection và response enrichment.
+
+### N17: Feedback Processing
+
+Tinh chỉnh lại trạng thái truy vấn hiện tại từ feedback mới của người dùng, giúp hệ thống chạy lại recommendation theo hướng tự nhiên hơn.
 
 ---
 
-## 5. Kết luận
+## 6. Hai ý tưởng kiến trúc cốt lõi của hệ thống
 
-Hệ thống Travel Experience Planner không chỉ là một ứng dụng wrapper cho AI, mà là một **Pipeline xử lý dữ liệu thông minh**. Bằng cách tách biệt phần "Hiểu" (N1, N2), phần "Tìm" (N3, N4) và phần "Sáng tạo" (N5, N6), chúng ta tạo ra một giải pháp du lịch cá nhân hóa mạnh mẽ, bền bỉ và sẵn sàng cho quy mô production.
+### 6.1. Multi-channel semantics
+
+Thay vì ép mọi tín hiệu vào một vector duy nhất, hệ thống giữ nhiều kênh semantic:
+
+- `text`
+- `aug_text`
+- `aug_tags`
+- `img_desc`
+
+Điều này giúp:
+
+- bảo toàn nguồn gốc tín hiệu
+- tăng khả năng giải thích
+- mở đường cho dynamic weighting
+
+### 6.2. Progressive refinement
+
+Hệ thống không xem recommendation là tác vụ “một lần là xong”. Việc có N17 và feedback endpoints cho thấy kiến trúc này hướng đến:
+
+- lặp lại truy vấn có kiểm soát
+- sửa dần đầu vào theo phản hồi người dùng
+- tiến gần mô hình assistant hơn là search engine truyền thống
+
+---
+
+## 7. Các cơ chế tối ưu hiệu năng
+
+Kiến trúc hiện tại dùng ba lớp tối ưu hiệu năng đáng chú ý:
+
+### 7.1. Batch embedding
+
+N1 dùng batch processing để giảm số lần gọi model nhúng.
+
+### 7.2. Hybrid cache ở N8
+
+N8 kết hợp:
+
+- RAM cache
+- disk cache
+- image cache
+
+để giảm số lần đọc dữ liệu đầy đủ từ tầng lưu trữ.
+
+### 7.3. Fingerprint-based refresh
+
+Thay vì reload thô toàn bộ dữ liệu địa điểm, hệ thống dùng fingerprint để quyết định khi nào cần làm mới cache.
+
+Đây là một quyết định có giá trị cao vì vừa nhẹ chi phí, vừa giảm rủi ro stale data.
+
+---
+
+## 8. Ý nghĩa học thuật của kiến trúc
+
+Điểm mạnh của kiến trúc này trong bối cảnh báo cáo kỹ thuật không chỉ là “nó chạy được”, mà còn là nó thể hiện rõ nhiều nguyên tắc hiện đại:
+
+- tách concern theo module
+- semantic retrieval nhiều kênh
+- dynamic weighting thay vì scoring cứng
+- generation có fallback
+- feedback-driven refinement
+- orchestration + cache ở tầng ứng dụng
+
+Nhờ đó, báo cáo có thể không chỉ trình bày một ứng dụng AI, mà trình bày một **pipeline recommendation có cấu trúc rõ, có giải thích, và có khả năng mở rộng**.
+
+---
+
+## 9. Kết luận
+
+Travel Experience Planner là một hệ thống recommendation theo hướng semantic, đa tín hiệu và có vòng phản hồi. Kiến trúc của nó được xây để cân bằng giữa:
+
+- độ linh hoạt của input
+- chất lượng của semantic matching
+- tính ổn định của generation
+- trải nghiệm sử dụng thực tế
+
+Đây là một kiến trúc đủ gọn để triển khai trong phạm vi đồ án, nhưng cũng đủ rõ ràng và có chiều sâu để phân tích như một hệ thống AI hoàn chỉnh.

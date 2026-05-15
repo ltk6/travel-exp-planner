@@ -1,19 +1,22 @@
 # Travel Experience Planner
 
-Hệ thống lập kế hoạch du lịch sử dụng multimodal embeddings và LLM.
+Hệ thống lập kế hoạch du lịch sử dụng semantic retrieval, multimodal input và LLM.
 
-## Hướng dẫn sử dụng
+## Khởi động nhanh
 
-1. Sao chép `.env.example` sang `.env` và thiết lập biến môi trường.
+1. Sao chép `.env.example` thành `.env` và cấu hình các biến môi trường cần thiết.
 2. Chạy `./run.bat`.
 3. Truy cập `http://localhost:8501`.
 
-## Tài liệu và Kỹ thuật
+## Tài liệu
 
-Thông tin chi tiết về kiến trúc và công nghệ được lưu trữ tại:
+Tài liệu kỹ thuật và tài liệu báo cáo được tổ chức trong thư mục [docs/](docs/README.md).
 
-- [Tài liệu chi tiết](docs/README.md)
-- README riêng của từng module trong thư mục `backend/modules/`.
+Nên bắt đầu từ:
+
+- [docs/README.md](docs/README.md)
+- [docs/architecture/system_overview.md](docs/architecture/system_overview.md)
+- [docs/project/report_structure_guide.md](docs/project/report_structure_guide.md)
 
 ## Thành viên
 
@@ -27,5 +30,3 @@ Thông tin chi tiết về kiến trúc và công nghệ được lưu trữ t�
 | Chu Văn Thái | 24120440 |
 | Nguyễn Việt Thắng | 24120444 |
 | Trương Huệ Trí | 24120472 |
-
-
