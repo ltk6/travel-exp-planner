@@ -52,9 +52,14 @@
               "aug_tags",
               "img_desc"
             ],
-            "channels_null": []
+            "channels_null": [],
+            "metadata": {
+              "model": "BAAI/bge-m3",
+              "device": "cpu",
+              "latency_ms": 1750.0
+            }
           },
-          "latency_ms": 1725.66
+          "latency_ms": 1750.0
         },
         {
           "name": "user_2",
@@ -95,9 +100,14 @@
             ],
             "channels_null": [
               "aug_tags"
-            ]
+            ],
+            "metadata": {
+              "model": "BAAI/bge-m3",
+              "device": "cpu",
+              "latency_ms": 511.0
+            }
           },
-          "latency_ms": 493.4
+          "latency_ms": 511.0
         },
         {
           "name": "user_3",
@@ -138,12 +148,17 @@
             ],
             "channels_null": [
               "img_desc"
-            ]
+            ],
+            "metadata": {
+              "model": "BAAI/bge-m3",
+              "device": "cpu",
+              "latency_ms": 605.0
+            }
           },
-          "latency_ms": 616.43
+          "latency_ms": 605.0
         }
       ],
-      "avg_latency_ms": 945.16
+      "avg_latency_ms": 955.33
     },
     "location": {
       "records": [
@@ -186,9 +201,14 @@
             ],
             "channels_null": [
               "img_desc"
-            ]
+            ],
+            "metadata": {
+              "model": "BAAI/bge-m3",
+              "device": "cpu",
+              "latency_ms": 656.0
+            }
           },
-          "latency_ms": 670.64
+          "latency_ms": 656.0
         },
         {
           "name": "loc_2",
@@ -229,9 +249,14 @@
             ],
             "channels_null": [
               "img_desc"
-            ]
+            ],
+            "metadata": {
+              "model": "BAAI/bge-m3",
+              "device": "cpu",
+              "latency_ms": 1027.0
+            }
           },
-          "latency_ms": 985.2
+          "latency_ms": 1027.0
         },
         {
           "name": "loc_3",
@@ -272,20 +297,25 @@
             ],
             "channels_null": [
               "img_desc"
-            ]
+            ],
+            "metadata": {
+              "model": "BAAI/bge-m3",
+              "device": "cpu",
+              "latency_ms": 688.0
+            }
           },
-          "latency_ms": 605.13
+          "latency_ms": 688.0
         }
       ],
-      "avg_latency_ms": 753.66
+      "avg_latency_ms": 790.33
     }
   },
   "batch_tests": {
     "user": {
       "label": "user",
       "n_items": 3,
-      "latency_ms": 2461.12,
-      "latency_per_item_ms": 820.37,
+      "latency_ms": 2491.22,
+      "latency_per_item_ms": 830.41,
       "items": [
         {
           "name": "user_1",
@@ -316,7 +346,12 @@
               "aug_tags",
               "img_desc"
             ],
-            "channels_null": []
+            "channels_null": [],
+            "metadata": {
+              "model": "BAAI/bge-m3",
+              "device": "cpu",
+              "latency_ms": 830.0
+            }
           }
         },
         {
@@ -349,7 +384,12 @@
             ],
             "channels_null": [
               "aug_tags"
-            ]
+            ],
+            "metadata": {
+              "model": "BAAI/bge-m3",
+              "device": "cpu",
+              "latency_ms": 830.0
+            }
           }
         },
         {
@@ -382,7 +422,12 @@
             ],
             "channels_null": [
               "img_desc"
-            ]
+            ],
+            "metadata": {
+              "model": "BAAI/bge-m3",
+              "device": "cpu",
+              "latency_ms": 830.0
+            }
           }
         }
       ]
@@ -390,8 +435,8 @@
     "location": {
       "label": "location",
       "n_items": 3,
-      "latency_ms": 2522.02,
-      "latency_per_item_ms": 840.67,
+      "latency_ms": 2526.48,
+      "latency_per_item_ms": 842.16,
       "items": [
         {
           "name": "loc_1",
@@ -423,7 +468,12 @@
             ],
             "channels_null": [
               "img_desc"
-            ]
+            ],
+            "metadata": {
+              "model": "BAAI/bge-m3",
+              "device": "cpu",
+              "latency_ms": 841.6666666666666
+            }
           }
         },
         {
@@ -456,7 +506,12 @@
             ],
             "channels_null": [
               "img_desc"
-            ]
+            ],
+            "metadata": {
+              "model": "BAAI/bge-m3",
+              "device": "cpu",
+              "latency_ms": 841.6666666666666
+            }
           }
         },
         {
@@ -489,7 +544,12 @@
             ],
             "channels_null": [
               "img_desc"
-            ]
+            ],
+            "metadata": {
+              "model": "BAAI/bge-m3",
+              "device": "cpu",
+              "latency_ms": 841.6666666666666
+            }
           }
         }
       ]
@@ -511,11 +571,11 @@
   },
   "summary": {
     "total_single_tests": 6,
-    "user_avg_latency_ms": 945.16,
-    "location_avg_latency_ms": 753.66,
-    "overall_avg_latency_ms": 849.41,
-    "batch_user_latency_ms": 2461.12,
-    "batch_location_latency_ms": 2522.02,
+    "user_avg_latency_ms": 955.33,
+    "location_avg_latency_ms": 790.33,
+    "overall_avg_latency_ms": 872.83,
+    "batch_user_latency_ms": 2491.22,
+    "batch_location_latency_ms": 2526.48,
     "text_k_range": [
       1,
       3

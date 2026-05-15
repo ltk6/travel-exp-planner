@@ -115,6 +115,9 @@ def bench_model(model_alias: str, model_name: str) -> dict:
         tok_str = f"tokens={total}" if total is not None else "tokens=N/A"
         status  = "PASS" if passed else "FAIL"
         print(f"  [{model_alias:<14}] {loc['name']:<12} — {meta['latency_ms']:6d}ms  valid={valid_count}  {tok_str}  {status}")
+        
+        # Cooldown between tests of the SAME model to avoid 429
+        time.sleep(3)
 
     return {
         "model_alias": model_alias,
@@ -162,13 +165,15 @@ def bench_end_to_end() -> dict:
 
     t0 = time.perf_counter()
     result = generate_activities(sample_data)
-    elapsed_ms = int((time.perf_counter() - t0) * 1000)
+    # result['metadata']['latency_ms'] is the internal module latency
+    n5_metadata = result.get("metadata", {})
+    elapsed_ms  = n5_metadata.get("latency_ms", 0)
 
     activities = result.get("activities", [])
-    llm_meta   = result.get("llm_meta", [])
+    per_location_metas = n5_metadata.get("per_location", [])
 
     per_location = []
-    for meta in llm_meta:
+    for meta in per_location_metas:
         usage = meta.get("usage")
         per_location.append({
             "location_id":       meta.get("location_id"),
@@ -312,8 +317,8 @@ def _build_markdown(output: dict, date_str: str) -> str:
     line("## 6. Nhận Xét Chính\n")
     line("1. **Pipeline production hoạt động đúng:** Kết quả End-to-End cho thấy hệ thống sinh đủ activities thông qua cơ chế failover tự động.")
     line("2. **Rate-limit là mong đợi:** Các lỗi fail_429 trong bench test cá nhân là do tần suất gọi request quá cao, không phản ánh lỗi logic của code.")
-    line("3. **gpt_120b (120B) là model chất lượng cao nhất:** Khi không bị limit, model cho reasoning chi tiết nhất. Đây là lý do nó đứng đầu chain.")
-    line("4. **groq_70b là backbone thực tế:** Với TPM 12K, đây là model thường xuyên 'gánh' pipeline khi 120b bị rate-limit.")
+    line("3. **groq_70b là backbone thực tế:** Với TPM 12K, đây là model mạnh mẽ nhất trong chain hiện tại, gánh vác phần lớn khối lượng công việc.")
+    line("4. **qwen_32b là model dự phòng hiệu quả:** Cung cấp sự cân bằng tốt giữa tốc độ và chất lượng khi 70b bị giới hạn.")
     line("5. **groq_scout có độ tin cậy cao nhất (100% pass):** Nhờ TPM quota 30K lớn, Scout là lưới an toàn cuối cùng cực kỳ vững chắc.")
     line("6. **gpt_20b và gpt_safeguard bị truncate:** Các model này dễ bị cắt ngang ở 4000 tokens. Cơ chế **Auto-Repair** có thể cứu vãn một phần nhưng không phải lúc nào cũng thành công.")
 

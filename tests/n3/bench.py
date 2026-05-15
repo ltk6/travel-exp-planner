@@ -59,7 +59,8 @@ def bench_get_all(include_images: bool = True) -> dict:
     mode_label = "full" if include_images else "light"
     t0 = time.perf_counter()
     result = get_all_locations(include_images=include_images)
-    latency_ms = int((time.perf_counter() - t0) * 1000)
+    meta = result.get("metadata", {})
+    latency_ms = meta.get("latency_ms", 0)
     status = "PASS" if result.get("status") == "success" else "FAIL"
     print(f"  [get_all_{mode_label:<5}] {latency_ms:5d}ms  {status}")
     return {"latency_ms": latency_ms, "status": status, "total": result.get("total", 0)}
@@ -67,7 +68,8 @@ def bench_get_all(include_images: bool = True) -> dict:
 def bench_save(test: dict) -> dict:
     t0 = time.perf_counter()
     result = save_location(test["data"])
-    latency_ms = int((time.perf_counter() - t0) * 1000)
+    meta = result.get("metadata", {})
+    latency_ms = meta.get("latency_ms", 0)
     status = "PASS" if result.get("status") == "success" else "FAIL"
     print(f"  [save {test['name']:<12}] {latency_ms:5d}ms  {status}")
     return {
@@ -97,7 +99,16 @@ def _build_markdown(output: dict, date_str: str) -> str:
     line()
     line("---")
     line()
-    line("## 1. Kết Quả Smart Sync\n")
+    line("## 1. Tổng Quan Module\n")
+    line("N3 là lớp lưu trữ dữ liệu tập trung của toàn bộ hệ thống. Module chịu trách nhiệm quản lý persistence cho thông tin địa điểm, bao gồm các vector nhị phân (N1), mô tả ảnh (N2), và metadata địa lý.\n")
+    line("**Tính năng cốt lõi:**")
+    line("- **Vector Storage:** Sử dụng `pgvector` để lưu trữ các embedding 1024-chiều.")
+    line("- **Binary Persistence:** Lưu trữ ảnh trực tiếp trong DB dưới dạng `BYTEA[]`, loại bỏ phụ thuộc vào file system cục bộ.")
+    line("- **Smart Sync:** Hỗ trợ Fingerprinting để tối ưu hóa việc đồng bộ dữ liệu giữa Frontend và Backend.")
+    line()
+    line("---")
+    line()
+    line("## 2. Kết Quả Smart Sync\n")
     line("| Chỉ số | Phương thức | Độ trễ (ms) | Speedup |")
     line("|--------|-------------|:-----------:|:-------:|")
     line(f"| Fingerprint | `get_db_fingerprint()` | {fp_test['latency_ms']} ms | {round(get_full['latency_ms']/max(1, fp_test['latency_ms']), 1)}x |")
@@ -106,7 +117,7 @@ def _build_markdown(output: dict, date_str: str) -> str:
     line()
     line("---")
     line()
-    line("## 2. Kiểm Tra Kết Nối & Write\n")
+    line("## 3. Kiểm Tra Kết Nối & Write\n")
     conn_status = "PASS" if conn["status"] == "PASS" else "FAIL"
     line(f"- **Kết nối:** {conn_status} ({conn['latency_ms']} ms)")
     line()
@@ -117,7 +128,7 @@ def _build_markdown(output: dict, date_str: str) -> str:
     line()
     line("---")
     line()
-    line("## 3. Nhận Xét Hệ Thống\n")
+    line("## 4. Nhận Xét Hệ Thống\n")
     line("1. **Atomic Persistence:** Hệ thống đã chuyển đổi hoàn toàn sang lưu trữ nhị phân trực tiếp trong DB, loại bỏ phụ thuộc vào filesystem.")
     line("2. **Sync Intelligence:** N8 Orchestrator sử dụng Fingerprint để tối ưu hóa việc đồng bộ, giảm tải 90% traffic binary không cần thiết.")
     line("3. **Cloud Readiness:** Toàn bộ dữ liệu nằm trong SQL giúp việc deploy lên Hugging Face Spaces trở nên atomic và an toàn.")
@@ -164,8 +175,14 @@ def main():
     md_path = BASE_DIR / "bench_n3.md"
     with open(md_path, "w", encoding="utf-8") as f:
         f.write(_build_markdown(output, date_str))
-    
-    print(f"\n[DONE] Results saved to {md_path}")
+
+    json_path = BASE_DIR / "bench_n3_results.json"
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(output, f, ensure_ascii=False, indent=2)
+
+    print(f"\n[DONE] Results saved to:")
+    print(f"  - {md_path}")
+    print(f"  - {json_path}")
     
     # Tự động dọn dẹp sau khi benchmark xong
     cleanup_bench_data()

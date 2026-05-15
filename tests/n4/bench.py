@@ -185,9 +185,10 @@ BENCH_TESTS = [
 # ── Runner ────────────────────────────────────────────────────────────────────
 
 def run_test(test: dict) -> dict:
-    t0 = time.perf_counter()
     result = rank_locations(test["data"])
-    elapsed_ms = int((time.perf_counter() - t0) * 1000)
+    meta = result.get("metadata", {})
+    elapsed_ms = meta.get("latency_ms", 0)
+    weights = meta.get("weights", {})
 
     locations = result.get("locations", [])
     top1_id   = locations[0]["location_id"] if locations else None
@@ -241,6 +242,7 @@ def run_test(test: dict) -> dict:
         "checks":     checks,
         "top1_id":    top1_id,
         "top1_score": top1_score,
+        "weights":    weights,
         "result_ids": [l["location_id"] for l in locations],
         "scores":     [l["score"] for l in locations],
     }
@@ -305,6 +307,7 @@ def _build_markdown(results: list[dict], date_str: str) -> str:
         line(f"| Độ trễ | {r['latency_ms']} ms |")
         line(f"| Kết quả | **{r['status']}** |")
         line(f"| Top 1 | `{r['top1_id']}` (score={r['top1_score']}) |")
+        line(f"| Weights used | `{r['weights']}` |")
         line(f"| Thứ tự trả về | `{' → '.join(r['result_ids'])}` |")
         line(f"| Điểm số | `{r['scores']}` |")
         for check, ok in r["checks"].items():

@@ -1,7 +1,7 @@
 {
   "metadata": {
     "module": "N6 — Activity Ranking",
-    "date": "2026-05-14",
+    "date": "2026-05-15",
     "top_k": 5
   },
   "results": [
@@ -81,7 +81,7 @@
     {
       "name": "normalization_spread",
       "desc": "Sau normalize: top score trong [0.8, 1.0], bottom score trong [0.4, 0.6]",
-      "latency_ms": 2,
+      "latency_ms": 3,
       "status": "PASS",
       "checks": {
         "top_score_ok": true,
@@ -124,7 +124,7 @@
     {
       "name": "top_k_truncation",
       "desc": "top_k=3 với 10 activities → chỉ trả về 3",
-      "latency_ms": 5,
+      "latency_ms": 4,
       "status": "PASS",
       "checks": {
         "count_correct": true
@@ -144,7 +144,7 @@
     {
       "name": "performance_50_activities",
       "desc": "50 activities (realistic) — kiểm tra tốc độ",
-      "latency_ms": 20,
+      "latency_ms": 21,
       "status": "PASS",
       "checks": {
         "count_correct": true,

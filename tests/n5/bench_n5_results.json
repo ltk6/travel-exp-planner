@@ -1,15 +1,12 @@
 {
   "metadata": {
     "module": "N5 — Activity Generation",
-    "date": "2026-05-14",
+    "date": "2026-05-15",
     "llm_min_valid": 5,
     "chain": [
-      "gpt_120b",
       "groq_70b",
       "qwen_32b",
       "groq_8b",
-      "gpt_20b",
-      "gpt_safeguard",
       "groq_scout"
     ],
     "location_tests": [
@@ -25,16 +22,16 @@
       "locations": [
         {
           "location": "loc_bai_sao",
-          "latency_ms": 7153,
+          "latency_ms": 6617,
           "prompt_tokens": 1572,
-          "completion_tokens": 3228,
-          "total_tokens": 4800,
+          "completion_tokens": 2889,
+          "total_tokens": 4461,
           "valid_count": 10,
           "passed_threshold": true
         },
         {
           "location": "loc_fansipan",
-          "latency_ms": 346,
+          "latency_ms": 356,
           "prompt_tokens": null,
           "completion_tokens": null,
           "total_tokens": null,
@@ -43,7 +40,7 @@
         },
         {
           "location": "loc_hoi_an",
-          "latency_ms": 332,
+          "latency_ms": 328,
           "prompt_tokens": null,
           "completion_tokens": null,
           "total_tokens": null,
@@ -52,10 +49,10 @@
         }
       ],
       "summary": {
-        "avg_latency_ms": 2610.3,
+        "avg_latency_ms": 2433.7,
         "avg_prompt_tokens": 1572.0,
-        "avg_completion_tokens": 3228.0,
-        "avg_total_tokens": 4800.0,
+        "avg_completion_tokens": 2889.0,
+        "avg_total_tokens": 4461.0,
         "pass_count": 1,
         "total_locations": 3,
         "pass_rate": 0.33
@@ -67,40 +64,40 @@
       "locations": [
         {
           "location": "loc_bai_sao",
-          "latency_ms": 4121,
+          "latency_ms": 3862,
           "prompt_tokens": 1532,
-          "completion_tokens": 1702,
-          "total_tokens": 3234,
+          "completion_tokens": 1549,
+          "total_tokens": 3081,
           "valid_count": 10,
           "passed_threshold": true
         },
         {
           "location": "loc_fansipan",
-          "latency_ms": 4217,
+          "latency_ms": 4609,
           "prompt_tokens": 1529,
-          "completion_tokens": 1575,
-          "total_tokens": 3104,
+          "completion_tokens": 1594,
+          "total_tokens": 3123,
           "valid_count": 10,
           "passed_threshold": true
         },
         {
           "location": "loc_hoi_an",
-          "latency_ms": 303,
-          "prompt_tokens": null,
-          "completion_tokens": null,
-          "total_tokens": null,
-          "valid_count": 0,
-          "passed_threshold": false
+          "latency_ms": 4666,
+          "prompt_tokens": 1530,
+          "completion_tokens": 1871,
+          "total_tokens": 3401,
+          "valid_count": 10,
+          "passed_threshold": true
         }
       ],
       "summary": {
-        "avg_latency_ms": 2880.3,
-        "avg_prompt_tokens": 1530.5,
-        "avg_completion_tokens": 1638.5,
-        "avg_total_tokens": 3169.0,
-        "pass_count": 2,
+        "avg_latency_ms": 4379.0,
+        "avg_prompt_tokens": 1530.3,
+        "avg_completion_tokens": 1671.3,
+        "avg_total_tokens": 3201.7,
+        "pass_count": 3,
         "total_locations": 3,
-        "pass_rate": 0.67
+        "pass_rate": 1.0
       }
     },
     {
@@ -109,16 +106,16 @@
       "locations": [
         {
           "location": "loc_bai_sao",
-          "latency_ms": 6312,
+          "latency_ms": 5103,
           "prompt_tokens": 1495,
-          "completion_tokens": 2492,
-          "total_tokens": 3987,
+          "completion_tokens": 2115,
+          "total_tokens": 3610,
           "valid_count": 10,
           "passed_threshold": true
         },
         {
           "location": "loc_fansipan",
-          "latency_ms": 346,
+          "latency_ms": 321,
           "prompt_tokens": null,
           "completion_tokens": null,
           "total_tokens": null,
@@ -127,7 +124,7 @@
         },
         {
           "location": "loc_hoi_an",
-          "latency_ms": 307,
+          "latency_ms": 328,
           "prompt_tokens": null,
           "completion_tokens": null,
           "total_tokens": null,
@@ -136,10 +133,10 @@
         }
       ],
       "summary": {
-        "avg_latency_ms": 2321.7,
+        "avg_latency_ms": 1917.3,
         "avg_prompt_tokens": 1495.0,
-        "avg_completion_tokens": 2492.0,
-        "avg_total_tokens": 3987.0,
+        "avg_completion_tokens": 2115.0,
+        "avg_total_tokens": 3610.0,
         "pass_count": 1,
         "total_locations": 3,
         "pass_rate": 0.33
@@ -151,16 +148,16 @@
       "locations": [
         {
           "location": "loc_bai_sao",
-          "latency_ms": 1985,
+          "latency_ms": 3186,
           "prompt_tokens": 1532,
-          "completion_tokens": 1589,
-          "total_tokens": 3121,
+          "completion_tokens": 1799,
+          "total_tokens": 3331,
           "valid_count": 10,
           "passed_threshold": true
         },
         {
           "location": "loc_fansipan",
-          "latency_ms": 301,
+          "latency_ms": 360,
           "prompt_tokens": null,
           "completion_tokens": null,
           "total_tokens": null,
@@ -169,7 +166,7 @@
         },
         {
           "location": "loc_hoi_an",
-          "latency_ms": 355,
+          "latency_ms": 331,
           "prompt_tokens": null,
           "completion_tokens": null,
           "total_tokens": null,
@@ -178,10 +175,10 @@
         }
       ],
       "summary": {
-        "avg_latency_ms": 880.3,
+        "avg_latency_ms": 1292.3,
         "avg_prompt_tokens": 1532.0,
-        "avg_completion_tokens": 1589.0,
-        "avg_total_tokens": 3121.0,
+        "avg_completion_tokens": 1799.0,
+        "avg_total_tokens": 3331.0,
         "pass_count": 1,
         "total_locations": 3,
         "pass_rate": 0.33
@@ -193,7 +190,7 @@
       "locations": [
         {
           "location": "loc_bai_sao",
-          "latency_ms": 4575,
+          "latency_ms": 4684,
           "prompt_tokens": null,
           "completion_tokens": null,
           "total_tokens": null,
@@ -202,7 +199,7 @@
         },
         {
           "location": "loc_fansipan",
-          "latency_ms": 312,
+          "latency_ms": 331,
           "prompt_tokens": null,
           "completion_tokens": null,
           "total_tokens": null,
@@ -211,7 +208,7 @@
         },
         {
           "location": "loc_hoi_an",
-          "latency_ms": 299,
+          "latency_ms": 371,
           "prompt_tokens": null,
           "completion_tokens": null,
           "total_tokens": null,
@@ -220,7 +217,7 @@
         }
       ],
       "summary": {
-        "avg_latency_ms": 1728.7,
+        "avg_latency_ms": 1795.3,
         "avg_prompt_tokens": null,
         "avg_completion_tokens": null,
         "avg_total_tokens": null,
@@ -235,16 +232,16 @@
       "locations": [
         {
           "location": "loc_bai_sao",
-          "latency_ms": 4515,
-          "prompt_tokens": 1572,
-          "completion_tokens": 4000,
-          "total_tokens": 5572,
-          "valid_count": 6,
-          "passed_threshold": true
+          "latency_ms": 4670,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
         },
         {
           "location": "loc_fansipan",
-          "latency_ms": 319,
+          "latency_ms": 339,
           "prompt_tokens": null,
           "completion_tokens": null,
           "total_tokens": null,
@@ -253,7 +250,7 @@
         },
         {
           "location": "loc_hoi_an",
-          "latency_ms": 307,
+          "latency_ms": 294,
           "prompt_tokens": null,
           "completion_tokens": null,
           "total_tokens": null,
@@ -262,13 +259,13 @@
         }
       ],
       "summary": {
-        "avg_latency_ms": 1713.7,
-        "avg_prompt_tokens": 1572.0,
-        "avg_completion_tokens": 4000.0,
-        "avg_total_tokens": 5572.0,
-        "pass_count": 1,
+        "avg_latency_ms": 1767.7,
+        "avg_prompt_tokens": null,
+        "avg_completion_tokens": null,
+        "avg_total_tokens": null,
+        "pass_count": 0,
         "total_locations": 3,
-        "pass_rate": 0.33
+        "pass_rate": 0.0
       }
     },
     {
@@ -277,37 +274,37 @@
       "locations": [
         {
           "location": "loc_bai_sao",
-          "latency_ms": 3780,
+          "latency_ms": 3693,
           "prompt_tokens": 1463,
-          "completion_tokens": 1464,
-          "total_tokens": 2927,
+          "completion_tokens": 1421,
+          "total_tokens": 2884,
           "valid_count": 10,
           "passed_threshold": true
         },
         {
           "location": "loc_fansipan",
-          "latency_ms": 4234,
+          "latency_ms": 4461,
           "prompt_tokens": 1460,
-          "completion_tokens": 1698,
-          "total_tokens": 3158,
+          "completion_tokens": 1752,
+          "total_tokens": 3212,
           "valid_count": 10,
           "passed_threshold": true
         },
         {
           "location": "loc_hoi_an",
-          "latency_ms": 3565,
+          "latency_ms": 3550,
           "prompt_tokens": 1462,
-          "completion_tokens": 1373,
-          "total_tokens": 2835,
+          "completion_tokens": 1322,
+          "total_tokens": 2784,
           "valid_count": 10,
           "passed_threshold": true
         }
       ],
       "summary": {
-        "avg_latency_ms": 3859.7,
+        "avg_latency_ms": 3901.3,
         "avg_prompt_tokens": 1461.7,
-        "avg_completion_tokens": 1511.7,
-        "avg_total_tokens": 2973.3,
+        "avg_completion_tokens": 1498.3,
+        "avg_total_tokens": 2960.0,
         "pass_count": 3,
         "total_locations": 3,
         "pass_rate": 1.0
@@ -315,7 +312,7 @@
     }
   ],
   "end_to_end": {
-    "total_latency_ms": 16958,
+    "total_latency_ms": 14977,
     "total_activities": 30,
     "activities_per_location": {
       "loc_015": 10,
@@ -326,31 +323,31 @@
       {
         "location_id": "loc_015",
         "provider_used": "groq",
-        "model_used": "openai/gpt-oss-120b",
-        "latency_ms": 7153,
-        "prompt_tokens": 1575,
-        "completion_tokens": 3160,
-        "total_tokens": 4735,
+        "model_used": "llama-3.3-70b-versatile",
+        "latency_ms": 4277,
+        "prompt_tokens": 1535,
+        "completion_tokens": 1530,
+        "total_tokens": 3065,
         "used_llm": true
       },
       {
         "location_id": "loc_001",
         "provider_used": "groq",
         "model_used": "llama-3.3-70b-versatile",
-        "latency_ms": 4472,
+        "latency_ms": 4038,
         "prompt_tokens": 1526,
-        "completion_tokens": 1419,
-        "total_tokens": 2945,
+        "completion_tokens": 1467,
+        "total_tokens": 2993,
         "used_llm": true
       },
       {
         "location_id": "loc_007",
         "provider_used": "groq",
         "model_used": "llama-3.3-70b-versatile",
-        "latency_ms": 5321,
+        "latency_ms": 6658,
         "prompt_tokens": 1531,
-        "completion_tokens": 1748,
-        "total_tokens": 3279,
+        "completion_tokens": 1847,
+        "total_tokens": 3378,
         "used_llm": true
       }
     ]

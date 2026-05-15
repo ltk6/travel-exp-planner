@@ -1,170 +1,315 @@
-# Lý Do Lựa Chọn Công Nghệ
+# Lý do Lựa chọn Công nghệ
 
 **Dự án:** Travel Experience Planner  
-**Ngày:** 2026-05-14  
+**Ngày:** 2026-05-15
 
 ---
 
-## 0. Tổng quan Hệ sinh thái (Ecosystem Overview)
+## 1. Mục tiêu của việc lựa chọn công nghệ
 
-Hệ thống được xây dựng trên một ngăn xếp công nghệ hiện đại, tập trung vào tốc độ xử lý (Inference Speed) và tính linh hoạt của dữ liệu (Data Portability).
+Việc chọn công nghệ cho dự án này không chỉ nhằm “dùng cái mới” hay “dùng cái phổ biến”, mà nhằm giải quyết một số ràng buộc rất cụ thể:
+
+- cần semantic retrieval đủ mạnh
+- cần generation đủ nhanh để demo và tương tác
+- cần hạ tầng lưu trữ đủ đơn giản để quản lý trong phạm vi đồ án
+- cần chi phí triển khai thấp hoặc có thể tự host
+
+Vì vậy, mỗi lựa chọn công nghệ trong hệ thống đều là kết quả của một bài toán cân bằng giữa:
+
+- hiệu năng
+- chi phí
+- độ phức tạp vận hành
+- khả năng giải thích trong báo cáo
+
+---
+
+## 2. Tổng quan hệ sinh thái công nghệ
 
 ```mermaid
+---
+config:
+  flowchart:
+    useMaxWidth: false
+---
 graph TD
-    subgraph "UI Layer (Frontend)"
-        N7[Streamlit: UI/UX Engine]
-        CSS[Vanilla CSS: Custom Theming]
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
+    subgraph "Tầng Giao diện"
+        N7["Giao diện Streamlit"]
+        CSS["CSS Tùy biến"]
     end
 
-    subgraph "Logic Layer (Backend)"
-        N8[Flask: Micro-service Orchestrator]
-        N1_N6[Python: Domain Logic N1-N6]
+    subgraph "Tầng Ứng dụng"
+        N8["Bộ điều phối Flask"]
+        CORE["Các Module Python N1-N17"]
     end
 
-    subgraph "Persistence Layer (Database)"
-        N3[(PostgreSQL + pgvector)]
-        JSON[JSON: Seed Fallback]
+    subgraph "Tầng Lưu trữ"
+        N3[("(PostgreSQL + pgvector)")]
     end
 
-    subgraph "Intelligence Layer (AI APIs)"
-        GROQ{Groq LPU: LLM/Vision}
-        BGE[BGE-M3: Embedding Local]
+    subgraph "Tầng Trí tuệ Nhân tạo"
+        GROQ{"Groq: LLM + Thị giác"}
+        BGE["BGE-M3 Embedding Cục bộ"]
     end
 
     N7 <--> N8
-    N8 <--> N1_N6
-    N1_N6 <--> N3
-    N1_N6 <--> JSON
-    N1_N6 <--> GROQ
-    N1_N6 <--> BGE
+    N8 <--> CORE
+    CORE <--> N3
+    CORE <--> GROQ
+    CORE <--> BGE
 ```
+
+Sơ đồ cho thấy hệ thống chọn chiến lược khá rõ:
+
+- frontend nhẹ
+- orchestration tập trung
+- embedding cục bộ
+- generation/vision qua API
+- persistence tập trung vào PostgreSQL
 
 ---
 
-## 1. Groq thay vì OpenAI / Google Gemini
+## 3. Vì sao chọn Groq cho LLM và Vision
 
-### Vấn đề với các lựa chọn thay thế
+### 3.1. Bài toán thực tế cần giải quyết
 
-| Tiêu chí | OpenAI API | Google Gemini | **Groq** |
-|----------|-----------|--------------|----------|
-| Tốc độ inference | ~1–3 tok/s (streaming) | ~1–2 tok/s | **~300–500 tok/s** |
-| Free tier | Rất hạn chế | Có, nhưng quota thấp | **Rộng rãi (30K TPM/model)** |
-| Số model có sẵn | Ít (GPT-4o, GPT-4...) | Ít (Gemini Pro, Flash) | **7+ model đang dùng** |
-| Khả năng failover | Không (1 model/call) | Không | **Có — multi-model chain** |
-| JSON mode | Có | Có | **Có (`response_format`)** |
-| Chi phí production | Cao | Trung bình | **Thấp hơn đáng kể** |
+Ở hệ thống này, generation và vision không phải tính năng trang trí, mà là bước chạy trực tiếp trong user flow. Nếu LLM quá chậm:
 
-### Lý do chọn Groq
+- UI bị kéo dài thời gian chờ
+- feedback loop kém tự nhiên
+- demo end-to-end mất sức thuyết phục
 
-**1. Tốc độ vượt trội (LPU architecture):**  
-Groq sử dụng chip LPU (Language Processing Unit) chuyên biệt cho inference, đạt tốc độ cao hơn GPU thông thường 10–20 lần. Với pipeline N5 cần sinh 10 activities/địa điểm, độ trễ thấp là yêu cầu thiết yếu cho trải nghiệm real-time.
+Do đó, tốc độ inference là tiêu chí rất quan trọng.
 
-**2. Multi-model failover chain:**  
-Thay vì phụ thuộc vào một model duy nhất, hệ thống triển khai một chuỗi 7 model theo thứ tự chất lượng giảm dần:
+### 3.2. Các lý do chính để chọn Groq
 
-```
-gpt_120b → groq_70b → qwen_32b → groq_8b → gpt_20b → gpt_safeguard → groq_scout
-```
+**1. Tốc độ inference cao**  
+Groq nổi bật ở tốc độ xử lý, phù hợp với các bước:
 
-Khi model ưu tiên cao bị rate-limit hoặc lỗi, hệ thống **tự động chuyển sang model tiếp theo** mà không cần can thiệp thủ công. OpenAI và Gemini không cung cấp cơ chế tương đương trên cùng một API key.
+- sinh hoạt động
+- phân tích feedback
+- mô tả ảnh
 
-**3. Free tier đủ rộng cho production nhỏ:**  
-Groq cung cấp quota miễn phí lên đến 30K TPM (tokens per minute) cho model Scout — đủ để xử lý toàn bộ pipeline cho một lượng người dùng đồng thời vừa phải mà không phát sinh chi phí.
+**2. Dễ xây dựng failover chain**  
+Hệ thống generation hiện không phụ thuộc vào một model duy nhất. Điều này quan trọng vì free-tier hoặc shared-tier APIs rất dễ gặp:
 
-**4. JSON mode đảm bảo tính toàn vẹn output:**  
-Groq hỗ trợ `response_format: {"type": "json_object"}` — ép buộc model chỉ sinh ra JSON hợp lệ ở cấp độ token sampling. Điều này kết hợp với cơ chế Auto-Repair parser tạo thành hệ thống phòng thủ 3 lớp cho N5.
+- rate limit
+- model overload
+- response quality không ổn định
 
----
+**3. Structured output phù hợp với pipeline**  
+Nhiều bước của dự án yêu cầu JSON có cấu trúc rõ ràng. Khả năng structured output giúp giảm:
 
-## 2. PostgreSQL + pgvector thay vì Pinecone / Weaviate
+- lỗi parse
+- lỗi schema
+- chi phí hậu xử lý
 
-### Vấn đề với Vector Database chuyên dụng
+**4. Chi phí hợp lý cho môi trường học thuật**  
+Trong bối cảnh đồ án, chi phí là một ràng buộc thật. Groq phù hợp vì cho phép xây dựng pipeline đủ mạnh mà không yêu cầu ngân sách lớn ngay từ đầu.
 
-| Tiêu chí | Pinecone | Weaviate | **PostgreSQL + pgvector** |
-|----------|---------|---------|--------------------------|
-| Self-hosted | ✗ (cloud-only) | ✓ (phức tạp) | **✓ (đơn giản)** |
-| SQL queries song song | ✗ | ✗ | **✓ (native JOIN, WHERE)** |
-| Vendor lock-in | Cao | Trung bình | **Không** |
-| Free tier | Rất hạn chế | Có | **Không giới hạn (self-host)** |
-| Tích hợp với dữ liệu quan hệ | Khó | Khó | **Tự nhiên** |
-| Độ phức tạp vận hành | Thấp (managed) | Cao | **Thấp (familiar tooling)** |
+### 3.3. Vì sao không dùng hoàn toàn OpenAI hay Gemini?
 
-### Lý do chọn pgvector
+Không phải các lựa chọn kia không tốt, mà vì trong bối cảnh dự án này:
 
-**1. Không vendor lock-in:**  
-Pinecone là dịch vụ cloud độc quyền — nếu pricing thay đổi hoặc dịch vụ ngừng hoạt động, toàn bộ dữ liệu vector bị ảnh hưởng. PostgreSQL là open-source, có thể self-host trên bất kỳ nền tảng nào (Supabase, Railway, VPS, local).
+- Groq cho cảm giác phản hồi nhanh hơn
+- chiến lược failover dễ tổ chức hơn trong cách cài đặt hiện tại
+- chi phí thử nghiệm thấp hơn
 
-**2. Dữ liệu quan hệ và vector trong cùng một database:**  
-Pipeline cần lưu trữ cả metadata (tên địa điểm, tags, tọa độ GPS) lẫn vector embeddings. Với pgvector, một bản ghi location chứa tất cả trong một bảng SQL duy nhất — không cần đồng bộ giữa hai hệ thống riêng biệt:
-
-```sql
-CREATE TABLE locations (
-    location_id VARCHAR(255) PRIMARY KEY,
-    text        vector(1024),   -- semantic embedding
-    aug_text    vector(1024),   -- augmented text embedding
-    aug_tags    vector(1024),   -- tag embedding
-    img_desc    vector(1024),   -- vision embedding
-    metadata    JSONB,          -- name, description, tags
-    geo         JSONB           -- lat, lng
-);
-```
-
-**3. Fallback JSON đơn giản:**  
-Khi DB không khả dụng (môi trường dev/staging), `get_all_locations()` tự động đọc từ `seeds/locations_with_vectors.json`. Cơ chế này không thể thực hiện dễ dàng với Pinecone hay Weaviate.
-
-**4. Cosine similarity native với pgvector:**  
-Extension pgvector cung cấp toán tử `<=>` cho cosine distance trực tiếp trong SQL — không cần tải toàn bộ vectors về Python để tính.
+Nói cách khác, đây là một lựa chọn tối ưu theo ràng buộc dự án, không phải tuyên bố rằng Groq tốt hơn trong mọi bối cảnh.
 
 ---
 
-## 3. Cosine Similarity thay vì Dot Product
+## 4. Vì sao chọn BGE-M3 cho embedding
 
-### So sánh toán học
+Embedding là hạ tầng semantic quan trọng nhất của toàn hệ thống. Nếu phần này yếu, các bước ranking phía sau dù tinh chỉnh tốt đến đâu cũng khó bù lại.
 
-| | Dot Product | **Cosine Similarity** |
-|--|------------|----------------------|
-| Công thức | `a · b = Σ(aᵢ × bᵢ)` | `(a · b) / (‖a‖ × ‖b‖)` |
-| Phụ thuộc độ dài vector | **Có** — vector dài hơn cho điểm cao hơn | **Không** — chuẩn hóa về [-1, 1] |
-| Diễn giải | Khó | **Dễ — chỉ đo góc giữa hai vector** |
-| Phù hợp với embedding chuẩn hóa | Tương đương | **Ưu tiên** |
-| Nhạy cảm với norm | Cao | **Thấp** |
+### 4.1. Lý do lựa chọn
 
-### Lý do chọn Cosine Similarity cho N4 và N6
+**1. Hỗ trợ đa ngôn ngữ tốt**  
+Dữ liệu của hệ thống có thể pha trộn:
 
-**1. Embedding models đã chuẩn hóa sẵn:**  
-Model `BAAI/bge-m3` (N1) tạo ra các unit vectors có norm ≈ 1. Với vector đã chuẩn hóa, cosine similarity = dot product — nhưng cosine vẫn được ưu tiên vì:
-- **Bảo toàn khi vector chưa chuẩn hóa hoàn toàn** (rounding errors, partial nulls)
-- **Kết quả trong [-1, 1]** — dễ đọc, dễ scale về [0, 1] cho UI
+- tiếng Việt
+- tiếng Anh
+- tags ngắn
+- cụm từ mở rộng
 
-**2. Kết quả có thể diễn giải:**  
-Điểm cosine = 1.0 nghĩa là hai vector hoàn toàn cùng hướng (hoàn toàn phù hợp), = 0.0 là vuông góc (không liên quan), = -1.0 là ngược chiều hoàn toàn. Đây là ngữ nghĩa rõ ràng để debug và giải thích kết quả ranking cho người dùng.
+**2. Phù hợp cho retrieval**  
+Mục tiêu của hệ thống không phải sinh văn bản từ embedding, mà là:
 
-**3. Dead-zone scaling trong N6:**  
-Vì các embedding cùng domain (du lịch Việt Nam) thường có cosine rất cao (0.7–0.99), N6 áp dụng scaling `(sim - 0.5) × 2` để kéo giãn phổ điểm ra khỏi vùng bão hòa, giúp phân biệt rõ hơn giữa các activity tương tự nhau.
+- so khớp ý định
+- truy xuất semantic
+- xếp hạng độ phù hợp
 
-```python
-# Kéo khỏi dead-zone [0.5, 1.0] → [0.0, 1.0]
-sem_scaled = max(0.0, min(1.0, (cosine_sim - 0.5) * 2.0))
-```
+**3. Vector 1024 chiều đủ giàu biểu diễn**  
+Đủ không gian để mang các sắc thái như:
+
+- vibe
+- bối cảnh
+- cường độ trải nghiệm
+- đặc trưng địa điểm
+
+### 4.2. Vì sao embedding chạy cục bộ?
+
+Embedding là thao tác lặp lại nhiều và rất gần lõi hệ thống. Giữ nó cục bộ mang lại lợi ích:
+
+- giảm phụ thuộc mạng
+- ổn định latency hơn
+- dễ benchmark hơn
+- không phát sinh chi phí API theo từng embedding
+
+Đây là một lựa chọn rất đáng giá về mặt kiến trúc.
 
 ---
 
-## Tổng Kết
+## 5. Vì sao chọn PostgreSQL + pgvector
 
-| Quyết định | Lựa chọn | Lý do cốt lõi |
-|-----------|---------|--------------|
-| LLM inference | **Groq** | Tốc độ LPU + multi-model failover chain + free tier |
-| Vector storage | **PostgreSQL + pgvector** | Self-hosted, SQL-native, không vendor lock-in |
-| Similarity metric | **Cosine Similarity** | Chuẩn hóa, diễn giải được, phù hợp với embedding models |
+### 5.1. Bài toán lưu trữ thực tế
+
+Hệ thống không chỉ cần lưu:
+
+- vector
+
+mà còn phải lưu đồng thời:
+
+- metadata địa điểm
+- geo data
+- ảnh nhị phân
+
+Do đó, một vector database thuần có thể chưa phải lựa chọn thuận tiện nhất trong giai đoạn này.
+
+### 5.2. Lợi ích của PostgreSQL + pgvector
+
+**1. Giữ toàn bộ dữ liệu địa điểm trong một nguồn lưu trữ duy nhất**  
+Điều này làm giảm độ phức tạp đồng bộ giữa:
+
+- vector
+- metadata
+- ảnh
+
+**2. SQL-native và quen thuộc**  
+PostgreSQL có hệ sinh thái mature, rất tiện cho:
+
+- reset dữ liệu
+- debug
+- query
+- backup
+
+**3. Có thể self-host và tránh vendor lock-in**  
+Đây là một ưu điểm rất mạnh trong bối cảnh triển khai đồ án hoặc mở rộng nhỏ.
+
+**4. Hỗ trợ vector trực tiếp qua pgvector**  
+Nghĩa là hệ thống không phải hi sinh semantic retrieval để đổi lấy sự đơn giản lưu trữ.
+
+### 5.3. Vì sao không dùng Pinecone hay Weaviate?
+
+Các vector DB chuyên dụng có lợi thế riêng, nhưng trong bối cảnh hiện tại:
+
+- làm tăng phân mảnh lưu trữ
+- tăng chi phí vận hành
+- tăng độ khó khi muốn giữ ảnh và metadata đồng bộ cùng vector
+
+Do đó, PostgreSQL + pgvector là điểm cân bằng rất hợp lý giữa:
+
+- đủ mạnh
+- đủ đơn giản
+- đủ dễ triển khai
 
 ---
 
-## Tài Liệu Tham Khảo
+## 6. Vì sao dùng cosine similarity
+
+Similarity metric là một quyết định quan trọng vì nó ảnh hưởng trực tiếp đến score của cả N4 và N6.
+
+### 6.1. Lý do chính
+
+Cosine similarity phù hợp vì:
+
+- ít nhạy với độ lớn vector
+- dễ diễn giải
+- rất phù hợp với embedding đã chuẩn hóa
+
+### 6.2. Giá trị thực tiễn
+
+Trong hệ thống recommendation, điều quan trọng hơn cả là:
+
+- đúng hướng ngữ nghĩa
+- score có thể so sánh giữa các candidate
+
+Cosine similarity đáp ứng tốt hai tiêu chí này hơn nhiều metric trực giác nhưng kém ổn định hơn.
+
+### 6.3. Liên hệ với N6
+
+Ở N6, semantic score còn được kéo giãn khỏi vùng bão hòa cao. Điều đó càng củng cố rằng cosine similarity là nền tốt cho các bước hậu xử lý ranking.
+
+---
+
+## 7. Vì sao chọn Flask cho lớp điều phối
+
+N8 hiện dùng Flask thay vì một framework nặng hơn.
+
+### 7.1. Ưu điểm trong bối cảnh dự án
+
+- đơn giản
+- dễ kiểm soát flow request
+- đủ tốt cho các endpoint hiện tại
+- phù hợp với kiểu orchestration đồng bộ đang dùng
+
+### 7.2. Vì sao lựa chọn này hợp lý
+
+Trong kiến trúc hiện tại, trọng tâm không phải là xử lý hàng nghìn request async cực lớn, mà là:
+
+- ghép workflow rõ ràng
+- kiểm soát route
+- gắn cache
+- enrich response
+
+Flask đủ gọn để làm lớp orchestration mà không kéo thêm độ phức tạp framework không cần thiết.
+
+---
+
+## 8. Vì sao chọn Streamlit cho frontend
+
+### 8.1. Mục tiêu của frontend trong dự án
+
+Frontend cần:
+
+- nhanh để dựng
+- dễ kết nối với Python backend
+- thuận tiện cho demo AI workflow
+
+Streamlit phù hợp với tất cả các tiêu chí đó.
+
+### 8.2. Điểm yếu và cách hệ thống khắc phục
+
+Streamlit mặc định dễ tạo cảm giác “demo notebook hóa”. Hệ thống đã giảm nhược điểm đó bằng:
+
+- CSS tùy biến
+- state management rõ ràng
+- tách views và styles
+- result flow nhiều bước
+
+Như vậy, lựa chọn Streamlit vừa thực dụng vừa phù hợp với thời gian và nguồn lực của đồ án.
+
+---
+
+## 9. Kết luận
+
+Bộ công nghệ của Travel Experience Planner không được chọn theo tiêu chí “mạnh nhất ở từng hạng mục”, mà theo tiêu chí:
+
+- phù hợp nhất với ràng buộc bài toán
+- cân bằng tốt giữa hiệu năng và chi phí
+- dễ triển khai, dễ benchmark, dễ giải thích
+
+Đây là điều rất quan trọng trong một báo cáo kỹ thuật: giá trị không nằm ở việc dùng thật nhiều công nghệ lớn, mà ở việc chứng minh rằng mỗi lựa chọn đều có lý do rõ ràng và phục vụ đúng mục tiêu hệ thống.
+
+---
+
+## 10. Tài liệu tham khảo
 
 | # | Chủ đề | Nguồn |
-|---|--------|-------|
-| 1 | Groq — Danh sách model và TPM limits | [console.groq.com/docs/models](https://console.groq.com/docs/models) |
-| 2 | Groq — JSON mode và Structured Outputs | [console.groq.com/docs/structured-outputs](https://console.groq.com/docs/structured-outputs) |
-| 3 | pgvector — Distance functions (cosine, L2, inner product) | [github.com/pgvector/pgvector](https://github.com/pgvector/pgvector#distance) |
-| 4 | Pinecone — Vector similarity: cosine vs dot product trong retrieval | [pinecone.io/learn/vector-similarity](https://www.pinecone.io/learn/vector-similarity/) |
-| 5 | BAAI/bge-m3 — Model card và hướng dẫn sử dụng cosine similarity | [huggingface.co/BAAI/bge-m3](https://huggingface.co/BAAI/bge-m3) |
+|---|---|---|
+| 1 | Groq Models | [console.groq.com/docs/models](https://console.groq.com/docs/models) |
+| 2 | Groq Structured Outputs | [console.groq.com/docs/structured-outputs](https://console.groq.com/docs/structured-outputs) |
+| 3 | pgvector | [github.com/pgvector/pgvector](https://github.com/pgvector/pgvector) |
+| 4 | Pinecone Vector Similarity | [pinecone.io/learn/vector-similarity](https://www.pinecone.io/learn/vector-similarity/) |
+| 5 | BGE-M3 Model Card | [huggingface.co/BAAI/bge-m3](https://huggingface.co/BAAI/bge-m3) |

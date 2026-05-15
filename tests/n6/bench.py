@@ -212,20 +212,27 @@ def run_test(test: dict) -> dict:
         }
 
     # Full ranking tests
-    t0 = time.perf_counter()
     try:
-        result = rank_activities(test["data"])
-        crashed = False
+        n6_result = rank_activities(test["data"])
+        n6_metadata = n6_result.get("metadata", {})
+        
+        acts     = n6_result.get("activities", [])
+        top1_id  = acts[0]["activity_id"] if acts else None
+        top1_s   = acts[0]["score"] if acts else None
+        last_s   = acts[-1]["score"] if acts else None
+        
+        # Use internal metadata for reporting
+        prefs      = n6_metadata.get("user_prefs", {})
+        elapsed_ms = n6_metadata.get("latency_ms", 0)
+        crashed    = False
     except Exception as e:
-        result = {"activities": [], "user_prefs": {}}
-        crashed = True
-    elapsed_ms = int((time.perf_counter() - t0) * 1000)
-
-    acts     = result.get("activities", [])
-    top1_id  = acts[0]["activity_id"] if acts else None
-    top1_s   = acts[0]["score"] if acts else None
-    last_s   = acts[-1]["score"] if acts else None
-    prefs    = result.get("user_prefs", {})
+        acts       = []
+        top1_id    = None
+        top1_s     = None
+        last_s     = None
+        prefs      = {}
+        elapsed_ms = 0
+        crashed    = True
 
     checks = {}
     passed = True

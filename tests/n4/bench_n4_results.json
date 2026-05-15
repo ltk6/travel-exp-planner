@@ -1,7 +1,7 @@
 {
   "metadata": {
     "module": "N4 — Location Ranking",
-    "date": "2026-05-14",
+    "date": "2026-05-15",
     "top_k": 5
   },
   "results": [
@@ -16,6 +16,12 @@
       },
       "top1_id": "loc_beach",
       "top1_score": 1.0,
+      "weights": {
+        "text": 0.5,
+        "aug_text": 0.2,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
       "result_ids": [
         "loc_beach",
         "loc_mountain",
@@ -30,7 +36,7 @@
     {
       "name": "city_user_ranks_city_first",
       "desc": "User thích đô thị → City phải đứng #1",
-      "latency_ms": 4,
+      "latency_ms": 2,
       "status": "PASS",
       "checks": {
         "top1_correct": true,
@@ -38,6 +44,12 @@
       },
       "top1_id": "loc_city",
       "top1_score": 1.0,
+      "weights": {
+        "text": 0.1,
+        "aug_text": 0.6,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
       "result_ids": [
         "loc_city",
         "loc_beach",
@@ -52,7 +64,7 @@
     {
       "name": "mixed_user_prefers_beach",
       "desc": "User mix beach+mountain (70/30) → Beach phải đứng #1",
-      "latency_ms": 4,
+      "latency_ms": 7,
       "status": "PASS",
       "checks": {
         "top1_correct": true,
@@ -60,6 +72,12 @@
       },
       "top1_id": "loc_beach",
       "top1_score": 1.0,
+      "weights": {
+        "text": 0.5,
+        "aug_text": 0.2,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
       "result_ids": [
         "loc_beach",
         "loc_mountain",
@@ -74,13 +92,19 @@
     {
       "name": "null_vectors_graceful",
       "desc": "Partial null vectors không crash, vẫn trả về kết quả",
-      "latency_ms": 1,
+      "latency_ms": 0,
       "status": "PASS",
       "checks": {
         "top1_correct": true
       },
       "top1_id": "loc_b",
       "top1_score": 1.0,
+      "weights": {
+        "text": 0.1,
+        "aug_text": 0.6,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
       "result_ids": [
         "loc_b",
         "loc_a"
@@ -93,13 +117,19 @@
     {
       "name": "top_k_truncation",
       "desc": "top_k=2 với 5 địa điểm → chỉ trả về 2",
-      "latency_ms": 5,
+      "latency_ms": 8,
       "status": "PASS",
       "checks": {
         "count_correct": true
       },
       "top1_id": "loc_0",
       "top1_score": 1.0,
+      "weights": {
+        "text": 0.5,
+        "aug_text": 0.2,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
       "result_ids": [
         "loc_0",
         "loc_1"
@@ -119,6 +149,12 @@
       },
       "top1_id": "loc_beach",
       "top1_score": 1.0,
+      "weights": {
+        "text": 0.5,
+        "aug_text": 0.2,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
       "result_ids": [
         "loc_beach",
         "loc_mountain"
@@ -131,7 +167,7 @@
     {
       "name": "performance_28_locations",
       "desc": "28 địa điểm (realistic DB size) — kiểm tra tốc độ",
-      "latency_ms": 34,
+      "latency_ms": 32,
       "status": "PASS",
       "checks": {
         "count_correct": true,
@@ -139,6 +175,12 @@
       },
       "top1_id": "loc_000",
       "top1_score": 1.0,
+      "weights": {
+        "text": 0.5,
+        "aug_text": 0.2,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
       "result_ids": [
         "loc_000",
         "loc_001",
