@@ -137,6 +137,30 @@ def get_all_locations_cached(force_refresh=False):
 
     return _CACHED_LOCATIONS_DATA
 
+def explore_locations_service():
+    """
+    Trả về danh sách địa điểm cho chế độ Khám phá (Explore).
+
+    Slim shape: chỉ giữ `location_id`, `metadata`, `geo` và 1 ảnh đại diện.
+    Vectors (text, aug_text, aug_tags, img_desc) bị strip để giảm payload —
+    UI không cần tới chúng. Ảnh được nạp lại từ disk cache (N3 cleared sau khi
+    save vào IMG_CACHE_DIR).
+    """
+    locations = get_all_locations_cached()
+    out = []
+    for loc in locations:
+        loc_id = loc.get("location_id")
+        imgs = _get_images_from_local_cache(loc_id) if loc_id else []
+        first_img = imgs[0] if imgs else None
+        out.append({
+            "location_id": loc_id,
+            "metadata": loc.get("metadata"),
+            "geo": loc.get("geo"),
+            "image": first_img,
+            "images_count": len(imgs),
+        })
+    return {"status": "success", "total": len(out), "data": out}
+
 def recommend_service(body):
     text = body.get("text", "").strip()
     image_b64 = body.get("image", "")

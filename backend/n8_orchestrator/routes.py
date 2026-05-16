@@ -2,7 +2,7 @@ from flask import request, jsonify, abort, Blueprint, g
 import time
 from config import INTERNAL_API_KEY, PROTECTED_ROUTES, setup_logging
 from .utils import _err, _get_json
-from .services import recommend_service, activities_service, feedback_recommend_service, feedback_activities_service
+from .services import recommend_service, activities_service, feedback_recommend_service, feedback_activities_service, explore_locations_service
 
 logger = setup_logging("N8.routes")
 
@@ -87,6 +87,16 @@ def get_activities():
         return jsonify(result)
     except Exception as e:
         logger.error(f"Activities service failed: {e}")
+        return _err(f"Internal error: {str(e)}", 500)
+
+@bp.post("/locations")
+def list_locations():
+    """Slim list of all locations for Explore mode — không có vectors, mỗi loc kèm 1 ảnh đại diện."""
+    try:
+        result = explore_locations_service()
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Explore locations failed: {e}")
         return _err(f"Internal error: {str(e)}", 500)
 
 @bp.post("/cache/reset")

@@ -52,7 +52,7 @@ PG_URI = os.getenv("PG_URI")
 API_HOST         = os.getenv("API_HOST", "0.0.0.0")
 API_PORT         = int(os.getenv("API_PORT", "5000"))
 API_DEBUG        = os.getenv("API_DEBUG", "False").lower() == "true"
-PROTECTED_ROUTES = {"/recommend", "/activities"}
+PROTECTED_ROUTES = {"/recommend", "/activities", "/locations"}
 ALLOWED_ORIGINS  = os.getenv("ALLOWED_ORIGINS", "http://localhost:8501,http://localhost:8502,http://127.0.0.1:8501,http://127.0.0.1:8502").split(",")
 USER_AGENT       = os.getenv("USER_AGENT", "travel-exp-planner/1.0")
 

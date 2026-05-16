@@ -14,7 +14,7 @@ def get_result_css():
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         transition: transform 0.3s ease;
     }
-    .wide-image-container img:hover {
+.wide-image-container img:hover {
         transform: scale(1.02);
     }
 
