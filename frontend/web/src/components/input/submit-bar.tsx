@@ -17,17 +17,15 @@ export function SubmitBar() {
   const mutation = useRecommendMutation();
 
   const tags = deriveTags(selectedKeys);
-  // Backend rejects (400) if BOTH text AND tags are empty (image alone is not enough).
-  const hasTextOrTags = tags.length > 0 || text.trim().length > 0;
+  const hasAnyInput = tags.length > 0 || text.trim().length > 0 || images.length > 0;
 
   const onSubmit = () => {
-    if (!hasTextOrTags) {
-      toast.warning("Cần ít nhất 1 trắc nghiệm hoặc đoạn văn bản.", {
-        description: "Backend không nhận request chỉ có ảnh — hãy gắn thêm tag hoặc viết mô tả.",
+    if (!hasAnyInput) {
+      toast.warning("Cần ít nhất 1 input.", {
+        description: "Hãy chọn tag, viết mô tả, hoặc tải lên 1 ảnh.",
       });
       return;
     }
-    // Backend accepts ONE image (singular `image` field, base64 without data URI prefix).
     const payload: RecommendPayload = {
       text: text.trim(),
       image: images[0] ?? "",

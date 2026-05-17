@@ -2,6 +2,16 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { ActivitiesResponse, RecommendPayload, RecommendResponse } from "@/lib/types";
 
+// One-time cleanup: previous versions persisted to localStorage, which leaked
+// stale tags/text/images across browser sessions. Strip the old key on load.
+if (typeof window !== "undefined") {
+  try {
+    window.localStorage.removeItem("travel-planner-state");
+  } catch {
+    // localStorage might be disabled (private mode etc.) — safe to ignore.
+  }
+}
+
 /**
  * Sub-mode within the input page (`/`). Not a route — routing lives in Next App Router.
  *   - `questionnaire` · `freeform` · `image` correspond to the 3 input tabs.
@@ -114,14 +124,12 @@ export const usePlannerStore = create<PlannerState>()(
     }),
     {
       name: "travel-planner-state",
-      version: 4,
-      storage: createJSONStorage(() => localStorage),
-      /**
-       * Persist only the LIGHTWEIGHT user-draft fields. Backend responses
-       * (results, activityResults) contain base64 images that easily blow past
-       * the ~5MB localStorage quota. They are kept in memory only and re-fetched
-       * if the page is reloaded.
-       */
+      version: 5,
+      // sessionStorage: state survives HMR & navigation, but a fresh browser tab
+      // (e.g. opened by run.bat) starts empty. Avoids "data từ phiên trước" leaking.
+      storage: createJSONStorage(() =>
+        typeof window !== "undefined" ? window.sessionStorage : (undefined as unknown as Storage),
+      ),
       partialize: (s) => ({
         inputTab: s.inputTab,
         selectedKeys: s.selectedKeys,
@@ -129,10 +137,7 @@ export const usePlannerStore = create<PlannerState>()(
         imagesB64: s.imagesB64,
       }),
       migrate: (_persisted, version) => {
-        // v1 → v2 shape change (questionnaireKeys → selectedKeys);
-        // v2 → v3 renamed `mode` → `inputTab`;
-        // v3 → v4 dropped results/activityResults from persisted shape (quota fix).
-        if (version < 4) {
+        if (version < 5) {
           return {
             inputTab: "questionnaire" as const,
             selectedKeys: [],
