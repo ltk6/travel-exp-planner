@@ -44,32 +44,49 @@ INPUT
         "time_of_day": str | None
     },
 
-    # ───────── ACTIVITIES ─────────
+    # ───────── ACTIVITIES (unified schema — xem activity_retrievals/SCHEMA.md) ─────────
     "activities": [
         {
             "activity_id": str,
             "location_id": str,
+            "source": str,                                 # llm|osm|goong|foursquare|overture|wikidata|geoapify
+            "retrieved_at": str,                           # ISO-8601 UTC
 
             "metadata": {
                 "name": str,
-                "description": str,
-
-                "activity_type": str,
+                "description": str | None,
+                "activity_type": str | None,               # adventure|relaxation|food|culture|nightlife|nature|shopping
                 "activity_subtype": str | None,
-
-                "intensity": float,
-                "physical_level": float | None,
-                "social_level": float | None,
-
-                "estimated_duration": float,
-                "price_level": float,
-
-                "indoor_outdoor": str,
-                "weather_dependent": bool,
-
-                "time_of_day_suitable": str | None
+                "categories_raw": list[str],
+                "estimated_duration": float | None,        # minutes
+                "price_level": float | None,               # 0.0 → 1.0
+                "indoor_outdoor": str | None,              # indoor|outdoor|mixed
+                "weather_dependent": bool | None,
+                "time_of_day_suitable": str | None         # morning|afternoon|night|anytime
             },
 
+            "place": {
+                "coordinates": {"lat": float, "lng": float} | None,
+                "distance_from_anchor_m": float | None,
+                "address": {
+                    "country": str | None, "region": str | None, "city": str | None,
+                    "street": str | None, "formatted": str | None
+                }
+            },
+
+            "signals": {
+                "rating": float | None, "popularity": float | None,
+                "image_url": str | None, "website": str | None,
+                "opening_hours": str | None, "phone": str | None
+            },
+
+            "provenance": {
+                "raw_source_id": str | None, "source_url": str | None, "raw": Any
+            },
+
+            # Bổ sung bởi N1 (embedding) TRƯỚC KHI vào N6 — không có trong unified
+            # schema gốc của activity_retrievals. Nếu vectors=None/empty cho mọi
+            # activity, semantic_score fallback 0.5 (sẽ log warning).
             "vectors": {
                 "text": list[float] | None,
                 "tag": list[float] | None,
@@ -134,7 +151,6 @@ DESIGN PRINCIPLES
 ─────────────────────────────────────────────
 """
 
-def rank_activities(data: dict) -> dict:
-    pass
+from .rank_activities import rank_activities
 
 __all__ = ["rank_activities"]

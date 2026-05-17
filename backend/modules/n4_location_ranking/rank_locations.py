@@ -56,25 +56,14 @@ def _get_weights(sig_k: int) -> dict[str, float]:
 
 # ── Helpers ───────────────────────────────────────────────────
 
-def _dot(a: list[float], b: list[float]) -> float:
-    return sum(x * y for x, y in zip(a, b))
-
-
-def _norm(v: list[float]) -> float:
-    return math.sqrt(sum(x * x for x in v))
+from backend.shared.math import cosine as _cosine_shared
 
 
 def _cosine(a: list[float] | None, b: list[float] | None) -> float:
-    """Return cosine similarity in [-1, 1], or 0.0 if either vector is None/empty."""
-    if not a or not b:
-        return 0.0
-    if len(a) != len(b):
-        logger.warning(f"[N4] Vector length mismatch: {len(a)} vs {len(b)}")
-        return 0.0
-    na, nb = _norm(a), _norm(b)
-    if na == 0.0 or nb == 0.0:
-        return 0.0
-    return _dot(a, b) / (na * nb)
+    """Cosine similarity in [-1, 1], 0.0 nếu vector None/rỗng/khác length."""
+    if a and b and len(a) != len(b):
+        logger.warning("[N4] Vector length mismatch: %d vs %d", len(a), len(b))
+    return _cosine_shared(a, b)
 
 
 def _compute_weights(
@@ -295,8 +284,12 @@ def rank_locations(data: dict) -> dict:
 
         try:
             score, reason = _score_location(user_vectors, loc_vectors, weights)
-        except Exception as exc:
-            logger.warning("[N4] Lỗi tính điểm cho %s: %s", loc_id, exc)
+        except (KeyError, AssertionError):
+            # Programmer bug (sai schema input) — re-raise để fail loud.
+            raise
+        except (TypeError, ValueError, ZeroDivisionError) as exc:
+            # Runtime data issue (vector length mismatch, NaN, …) — log + score 0.
+            logger.warning("[N4] Lỗi tính điểm cho %s: %s: %s", loc_id, type(exc).__name__, exc)
             score, reason = 0.0, "Lỗi tính điểm"
 
         scored.append({

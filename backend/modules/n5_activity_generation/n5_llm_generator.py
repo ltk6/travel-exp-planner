@@ -3,56 +3,46 @@
 # =============================================================================
 # LLM-based activity generation sử dụng Gemini API.
 #
-# HYBRID APPROACH:
-#   - LLM được gọi khi có GEMINI_API_KEY → sinh ~25 activities/location
-#   - Mỗi location gọi LLM 1 lần với prompt yêu cầu 25 activities đa dạng
-#   - Kết quả LLM + template bank = đủ 100 activities/location
-#   - Fallback hoàn toàn về template nếu LLM không khả dụng
+# Mỗi location gọi Gemini 1 lần, yêu cầu N activities theo unified schema
+# (xem activity_retrievals/SCHEMA.md). Output được generator hợp nhất với
+# template expansion để đạt TARGET_PER_LOCATION.
 #
-# Hybrid approach kết hợp LLM giúp:
-#   - Giảm công sức xây dựng data thủ công: LLM có thể sinh ra hoạt động
-#     cho bất kỳ địa điểm nào, ngay cả khi chưa có template.
-#   - Tăng tính cá nhân hóa: LLM hiểu context sở thích, ngân sách, thời gian
-#     của người dùng để đề xuất hoạt động phù hợp hơn.
-#   - Fallback an toàn: Khi LLM không khả dụng (mất mạng, hết API key, lỗi),
-#     hệ thống tự động chuyển về rule-based để đảm bảo luôn có kết quả.
-#
-# === SCHEMA V2 ===
-# LLM prompt được cập nhật để sinh activity theo schema v2 đầy đủ:
-#   activity_id, location_id, name, description, tags (5-7),
-#   cost, estimated_duration, best_time, suitable_for, difficulty,
-#   season, reason_template
+# Khi GEMINI_API_KEY không có hoặc gọi lỗi → trả None, generator fallback
+# về template-only path.
 # =============================================================================
 
 import json
-import os
-import re
 import logging
-from typing import List, Dict, Any, Optional
+import re
+import unicodedata
+from typing import Any, Dict, List, Optional
+
+from config.settings import GEMINI_API_KEY
 
 logger = logging.getLogger(__name__)
 
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-GEMINI_MODEL   = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+GEMINI_MODEL   = "gemini-2.0-flash"
 GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models"
+LLM_ACTIVITIES_PER_CALL = 25
 
-# Danh sách tags chuẩn để LLM tham khảo
-VALID_TAGS = [
-    "nature", "food", "culture", "adventure", "relax", "photography",
-    "history", "sports", "shopping", "entertainment", "health", "education",
-    "sea", "beach", "fun", "music", "family", "sightseeing", "trekking",
-    "mountain", "waterfall", "cave", "island", "temple", "market",
-    "nightlife", "romantic", "ethnic", "village", "cycling", "kayak",
-    "diving", "snorkeling", "sunrise", "sunset", "cuisine", "local_food",
-    "street_food", "heritage", "architecture", "hidden_gem", "scenic",
-    "wildlife", "eco", "spiritual", "art", "craft", "unique",
-    "motorbiking", "road_trip", "camping", "homestay", "experience",
-    "flower", "lake", "river", "forest", "agriculture", "tradition",
-]
+# Enum hợp lệ — phải khớp với activity_retrievals/schema.py
+_ALLOWED_ACTIVITY_TYPES = {
+    "adventure", "relaxation", "food", "culture",
+    "nightlife", "nature", "shopping",
+}
+_ALLOWED_INDOOR_OUTDOOR = {"indoor", "outdoor", "mixed"}
+_ALLOWED_TIME_OF_DAY    = {"morning", "afternoon", "night", "anytime"}
 
 
 def is_llm_available() -> bool:
     return bool(GEMINI_API_KEY and GEMINI_API_KEY.strip())
+
+
+def _strip_accents(s: str) -> str:
+    """Xóa dấu tiếng Việt: 'Sa Pa' → 'sa pa', 'Đà Lạt' → 'da lat'."""
+    s = s.replace("đ", "d").replace("Đ", "D")
+    nfd = unicodedata.normalize("NFD", s)
+    return "".join(c for c in nfd if unicodedata.category(c) != "Mn").lower()
 
 
 def _build_prompt(
@@ -62,110 +52,59 @@ def _build_prompt(
     user_tags: List[str],
     budget_per_activity: int,
     max_time_per_activity: int,
-    num_activities: int = LLM_ACTIVITIES_PER_CALL,
+    num_activities: int,
 ) -> str:
     """
-    Xây dựng prompt chất lượng cao cho LLM (PHIÊN BẢN CẢI TIẾN MẠNH).
+    Prompt yêu cầu LLM trả JSON array các activity tuân unified schema.
 
-    Prompt được thiết kế theo nguyên tắc:
-      - Rõ ràng về vai trò (role): chuyên gia du lịch Việt Nam
-      - Cung cấp đầy đủ context: địa điểm, sở thích, ràng buộc
-      - Yêu cầu output format JSON chuẩn theo schema v2
-      - Chỉ dẫn cụ thể về nội dung: thực tế, phù hợp Việt Nam
-      - Ràng buộc số lượng: 8-10 hoạt động đa dạng
-      - Tags phong phú 5-7 tags mỗi activity
+    Field LLM phải sinh khớp đúng những gì `n5_activity_generator._build_activity_output`
+    đọc → tránh tình trạng generator fallback về default toàn bộ.
     """
     tags_str = ", ".join(user_tags) if user_tags else "không có sở thích cụ thể"
-    budget_str = f"{budget:,}".replace(",", ".")
+    budget_str = f"{budget_per_activity:,}".replace(",", ".")
 
-    # Tạo location_id từ tên
-    loc_id = f"loc_{location_name.lower().replace(' ', '_').replace('đ', 'd').replace('ă', 'a').replace('â', 'a').replace('ê', 'e').replace('ô', 'o').replace('ơ', 'o').replace('ư', 'u').replace('à', 'a').replace('á', 'a').replace('ả', 'a').replace('ã', 'a').replace('ạ', 'a').replace('è', 'e').replace('é', 'e').replace('ẻ', 'e').replace('ẽ', 'e').replace('ẹ', 'e').replace('ì', 'i').replace('í', 'i').replace('ỉ', 'i').replace('ĩ', 'i').replace('ị', 'i').replace('ò', 'o').replace('ó', 'o').replace('ỏ', 'o').replace('õ', 'o').replace('ọ', 'o').replace('ù', 'u').replace('ú', 'u').replace('ủ', 'u').replace('ũ', 'u').replace('ụ', 'u').replace('ỳ', 'y').replace('ý', 'y').replace('ỷ', 'y').replace('ỹ', 'y').replace('ỵ', 'y')}"
-
-    prompt = f"""Bạn là chuyên gia du lịch Việt Nam với 20 năm kinh nghiệm. Hãy tạo đúng 10 activities CHI TIẾT, ĐA DẠNG, THỰC TẾ cho địa điểm: {location_name}.
+    return f"""Bạn là chuyên gia du lịch Việt Nam với 20 năm kinh nghiệm. Hãy tạo đúng {num_activities} activities CHI TIẾT, ĐA DẠNG, THỰC TẾ cho địa điểm: {location_name}.
 
 📍 Địa điểm: {location_name}
 📝 Mô tả: {location_description}
 ❤️ Sở thích du khách: {tags_str}
 💰 Ngân sách tối đa mỗi hoạt động: {budget_str} VNĐ
-⏰ Thời gian tối đa mỗi hoạt động: {duration} phút
+⏰ Thời gian tối đa mỗi hoạt động: {max_time_per_activity} phút
 
-YÊU CẦU NGHIÊM NGẶT:
-1. Tạo đúng 10 hoạt động, mỗi hoạt động PHẢI KHÁC LOẠI (ngắm cảnh, trekking, ẩm thực, văn hóa, chụp ảnh, mạo hiểm, thư giãn, mua sắm, hidden gem, nightlife...).
-2. Mỗi hoạt động PHẢI có TẤT CẢ các trường sau (không thiếu trường nào):
+YÊU CẦU:
+1. Tạo đúng {num_activities} hoạt động, mỗi hoạt động KHÁC LOẠI (ngắm cảnh, trekking, ẩm thực, văn hóa, chụp ảnh, mạo hiểm, thư giãn, mua sắm, hidden gem, nightlife...).
+2. Mỗi hoạt động PHẢI có đúng các trường sau, đúng kiểu dữ liệu:
 
 {{
-  "activity_id": "act_{loc_id.replace('loc_', '')}_tên_ngắn_01",
-  "location_id": "{loc_id}",
-  "name": "Tên hoạt động tiếng Việt ngắn gọn",
-  "description": "2-4 câu mô tả chi tiết, hấp dẫn, thực tế. Gợi cảm xúc cho du khách.",
-  "tags": ["5-7 tags tiếng Anh từ danh sách chuẩn"],
-  "cost": số_nguyên_VND,
-  "estimated_duration": số_phút,
-  "best_time": ["morning" hoặc "afternoon" hoặc "evening"],
-  "suitable_for": ["solo", "couple", "family", "friends"],
-  "difficulty": "easy" hoặc "medium" hoặc "hard",
-  "season": ["jan", "feb", ... tháng phù hợp nhất],
-  "reason_template": "Câu ngắn {'{'}matching_tags{'}'} giải thích tại sao phù hợp"
+  "name":                  "Tên hoạt động tiếng Việt ngắn gọn",
+  "description":           "2-4 câu mô tả hấp dẫn, gợi cảm xúc.",
+  "activity_type":         "adventure" | "relaxation" | "food" | "culture" | "nightlife" | "nature" | "shopping",
+  "activity_subtype":      "string tự do, ví dụ: hiking, sunrise_viewing, street_food, museum_visit",
+  "estimated_duration":    số phút (int, 30-360),
+  "price_level":           số thực 0.0 → 1.0 (0.0=miễn phí, 0.5=trung bình, 1.0=rất đắt),
+  "indoor_outdoor":        "indoor" | "outdoor" | "mixed",
+  "weather_dependent":     true | false,
+  "time_of_day_suitable":  "morning" | "afternoon" | "night" | "anytime"
 }}
 
-3. Tags PHẢI chọn từ danh sách: nature, food, culture, adventure, relax, photography, history, sports, shopping, entertainment, health, education, sea, beach, fun, music, family, sightseeing, trekking, mountain, waterfall, cave, island, temple, market, nightlife, romantic, ethnic, village, cycling, kayak, diving, snorkeling, sunrise, sunset, cuisine, local_food, street_food, heritage, architecture, hidden_gem, scenic, wildlife, eco, spiritual, art, craft, unique, motorbiking, road_trip, camping, homestay, experience, flower, lake, river, forest, agriculture, tradition.
-
-4. Chi phí PHẢI ≤ {budget_str} VNĐ. Thời gian PHẢI ≤ {duration} phút. Chi phí 0 cho hoạt động miễn phí.
+3. Chi phí ≤ {budget_str} VNĐ — quy đổi về thang 0.0-1.0 cho `price_level`.
+4. `estimated_duration` ≤ {max_time_per_activity} phút.
 5. Ưu tiên hoạt động phù hợp sở thích: {tags_str}.
-6. Hoạt động PHẢI thực tế, có thể thực hiện tại {location_name}, phản ánh đúng đặc trưng địa phương.
-7. Đa dạng: có cả hoạt động miễn phí, budget thấp, và cao cấp.
-8. season là danh sách tháng viết tắt 3 chữ cái (jan, feb, mar, ...).
-9. reason_template dùng placeholder {{matching_tags}} để cá nhân hóa.
+6. Hoạt động phải thực tế, có thể thực hiện tại {location_name}, phản ánh đặc trưng địa phương.
+7. Đa dạng: có cả hoạt động miễn phí (price_level=0.0) và cao cấp (price_level≥0.7).
 
-TRẢ LỜI BẰNG JSON ARRAY THUẦN TÚY (không markdown, không giải thích thêm):
+TRẢ LỜI BẰNG JSON ARRAY THUẦN TÚY (không markdown, không giải thích):
 [
-  {{"activity_id": "...", "location_id": "...", "name": "...", ...}}
+  {{"name": "...", "description": "...", "activity_type": "...", ...}}
 ]"""
-    return prompt
 
 
-def _build_batch_prompt(location_name: str, location_description: str) -> str:
-    """
-    Prompt đặc biệt cho việc generate batch activities (không phụ thuộc user preference).
-    
-    Dùng khi generate dữ liệu tĩnh cho activities.json, không cần context user cụ thể.
-    """
-    loc_id = f"loc_{location_name.lower().replace(' ', '_')}"
-    
-    prompt = f"""Bạn là chuyên gia du lịch Việt Nam. Tạo đúng 10 activities CHI TIẾT, ĐA DẠNG, THỰC TẾ cho địa điểm: {location_name}.
-
-Mô tả: {location_description}
-
-Trả về CHỈ một JSON array, mỗi object có đúng các trường sau:
-{{
-  "activity_id": "act_{loc_id.replace('loc_', '')}_unique_01",
-  "location_id": "{loc_id}",
-  "name": "Tên tiếng Việt",
-  "description": "2-4 câu chi tiết hấp dẫn",
-  "tags": ["5-7 tags tiếng Anh phong phú"],
-  "cost": số VND/người,
-  "estimated_duration": số phút,
-  "best_time": ["morning", "afternoon", "evening"],
-  "suitable_for": ["solo", "couple", "family", "friends"],
-  "difficulty": "easy|medium|hard",
-  "season": ["jan", "feb", ...],
-  "reason_template": "Câu ngắn giải thích phù hợp với sở thích {{matching_tags}}"
-}}
-
-Yêu cầu: thực tế, đa dạng loại hoạt động (ngắm cảnh, ẩm thực, trekking, văn hóa, mạo hiểm, chụp ảnh, thư giãn, hidden gem...), tránh lặp, cost/duration hợp lý cho Việt Nam.
-
-TRẢ LỜI BẰNG JSON ARRAY THUẦN TÚY:"""
-    return prompt
-
-
-def _parse_llm_response(response_text: str) -> Optional[List[Dict]]:
-    """Parse JSON từ LLM response. Xử lý các trường hợp: pure JSON, markdown code block, JSON trong text."""
+def _parse_llm_response(response_text: str) -> Optional[List[Dict[str, Any]]]:
+    """Parse JSON từ LLM response. Hỗ trợ: pure JSON, markdown fence, JSON embedded trong text."""
     if not response_text or not response_text.strip():
         return None
-
     text = response_text.strip()
 
-    # Case 1: parse trực tiếp
     try:
         data = json.loads(text)
         if isinstance(data, list):
@@ -173,10 +112,8 @@ def _parse_llm_response(response_text: str) -> Optional[List[Dict]]:
     except json.JSONDecodeError:
         pass
 
-    # Case 2: markdown code block
-    for pattern in [r'```json\s*\n?(.*?)\n?\s*```', r'```\s*\n?(.*?)\n?\s*```']:
-        matches = re.findall(pattern, text, re.DOTALL)
-        for match in matches:
+    for pattern in [r"```json\s*\n?(.*?)\n?\s*```", r"```\s*\n?(.*?)\n?\s*```"]:
+        for match in re.findall(pattern, text, re.DOTALL):
             try:
                 data = json.loads(match.strip())
                 if isinstance(data, list):
@@ -184,12 +121,10 @@ def _parse_llm_response(response_text: str) -> Optional[List[Dict]]:
             except json.JSONDecodeError:
                 continue
 
-    # Case 3: tìm mảng JSON đầu tiên
-    bracket_start = text.find('[')
-    bracket_end   = text.rfind(']')
-    if bracket_start != -1 and bracket_end > bracket_start:
+    bs, be = text.find("["), text.rfind("]")
+    if bs != -1 and be > bs:
         try:
-            data = json.loads(text[bracket_start:bracket_end + 1])
+            data = json.loads(text[bs:be + 1])
             if isinstance(data, list):
                 return data
         except json.JSONDecodeError:
@@ -199,119 +134,51 @@ def _parse_llm_response(response_text: str) -> Optional[List[Dict]]:
     return None
 
 
-def _validate_activity(act: Dict, schema_v2: bool = True) -> bool:
+def _validate_and_normalize(act: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """
-    Kiểm tra một activity từ LLM có đủ các trường bắt buộc và hợp lệ không.
-    
-    Hỗ trợ cả schema v1 (cũ) và schema v2 (mới):
-      - v1: name, desc, cost, time, tags
-      - v2: name, description, cost, estimated_duration, tags, activity_id,
-            location_id, best_time, suitable_for, difficulty, season, reason_template
-    
-    Đảm bảo dữ liệu từ LLM tuân thủ schema trước khi đưa vào pipeline.
+    Validate 1 activity theo unified schema. Trả về dict đã normalize hoặc None nếu fail.
+
+    Coerce nhẹ: lowercase enum, clamp price_level vào [0, 1], cast int/float/bool.
+    Reject nếu thiếu `name`/`description` hoặc enum sai sau khi lowercase.
     """
-    if schema_v2:
-        # Schema v2: kiểm tra đầy đủ các trường mới
-        required_fields = [
-            "name", "description", "cost", "estimated_duration", "tags",
-            "activity_id", "location_id"
-        ]
-        optional_fields = [
-            "best_time", "suitable_for", "difficulty", "season", "reason_template"
-        ]
-    else:
-        # Schema v1: backward-compatible
-        required_fields = ["name", "desc", "cost", "time", "tags"]
-        optional_fields = []
-    
-    # Kiểm tra đủ trường bắt buộc
-    for field in required_fields:
-        if field not in act:
-            logger.warning(f"Activity thiếu trường '{field}': {act.get('name', 'unknown')}")
-            return False
-    
-    # Kiểm tra kiểu dữ liệu cơ bản
-    name = act.get("name", "")
+    name = act.get("name")
     if not isinstance(name, str) or not name.strip():
-        return False
-    
-    desc_field = "description" if schema_v2 else "desc"
-    if not isinstance(act.get(desc_field, ""), str):
-        return False
-    
-    if not isinstance(act.get("tags", []), list):
-        return False
-    
-    # Chuẩn hóa cost và time/estimated_duration về số nguyên
+        return None
+    description = act.get("description")
+    if not isinstance(description, str) or not description.strip():
+        return None
+
+    activity_type = (act.get("activity_type") or "").lower().strip()
+    if activity_type not in _ALLOWED_ACTIVITY_TYPES:
+        return None
+
+    indoor_outdoor = (act.get("indoor_outdoor") or "").lower().strip()
+    if indoor_outdoor not in _ALLOWED_INDOOR_OUTDOOR:
+        return None
+
+    tod = (act.get("time_of_day_suitable") or "anytime").lower().strip()
+    if tod not in _ALLOWED_TIME_OF_DAY:
+        tod = "anytime"
+
     try:
-        act["cost"] = int(act["cost"])
-        if schema_v2:
-            act["estimated_duration"] = int(act["estimated_duration"])
-        else:
-            act["time"] = int(act["time"])
-    except (ValueError, TypeError):
-        return False
-    
-    # Cost không âm, time/duration phải dương
-    if act["cost"] < 0:
-        return False
-    
-    time_field = "estimated_duration" if schema_v2 else "time"
-    if act[time_field] <= 0:
-        return False
-    
-    # Validate difficulty nếu có
-    if schema_v2 and "difficulty" in act:
-        if act["difficulty"] not in ["easy", "medium", "hard"]:
-            act["difficulty"] = "easy"  # default
-    
-    # Validate best_time nếu có
-    if schema_v2 and "best_time" in act:
-        valid_times = {"morning", "afternoon", "evening"}
-        act["best_time"] = [t for t in act["best_time"] if t in valid_times]
-        if not act["best_time"]:
-            act["best_time"] = ["morning", "afternoon"]
-    
-    # Validate suitable_for nếu có
-    if schema_v2 and "suitable_for" in act:
-        valid_suitable = {"solo", "couple", "family", "friends"}
-        act["suitable_for"] = [s for s in act["suitable_for"] if s in valid_suitable]
-        if not act["suitable_for"]:
-            act["suitable_for"] = ["solo", "couple", "friends"]
-    
-    # Validate season nếu có
-    if schema_v2 and "season" in act:
-        valid_months = {
-            "jan", "feb", "mar", "apr", "may", "jun",
-            "jul", "aug", "sep", "oct", "nov", "dec"
-        }
-        act["season"] = [m for m in act["season"] if m in valid_months]
-    
-    return True
+        duration = int(act.get("estimated_duration", 120))
+        price    = float(act.get("price_level", 0.5))
+    except (TypeError, ValueError):
+        return None
+    if duration <= 0:
+        return None
+    price = max(0.0, min(1.0, price))
 
-
-def _convert_v2_to_v1(act: Dict) -> Dict:
-    """
-    Chuyển đổi activity schema v2 → v1 để tương thích với pipeline cũ.
-    
-    Mapping:
-      - "description" → "desc"
-      - "estimated_duration" → "time"
-      - Giữ nguyên: name, cost, tags
-    """
     return {
-        "name": act.get("name", ""),
-        "desc": act.get("description", ""),
-        "cost": act.get("cost", 0),
-        "time": act.get("estimated_duration", 60),
-        "tags": act.get("tags", []),
-        # Giữ thêm trường v2 cho enrichment
-        "activity_id": act.get("activity_id", ""),
-        "best_time": act.get("best_time", []),
-        "suitable_for": act.get("suitable_for", []),
-        "difficulty": act.get("difficulty", "easy"),
-        "season": act.get("season", []),
-        "reason_template": act.get("reason_template", ""),
+        "name":                 name.strip(),
+        "description":          description.strip(),
+        "activity_type":        activity_type,
+        "activity_subtype":     (act.get("activity_subtype") or None) or None,
+        "estimated_duration":   float(duration),
+        "price_level":          round(price, 2),
+        "indoor_outdoor":       indoor_outdoor,
+        "weather_dependent":    bool(act.get("weather_dependent", True)),
+        "time_of_day_suitable": tod,
     }
 
 
@@ -320,43 +187,42 @@ def call_gemini_api(prompt: str) -> Optional[str]:
     if not is_llm_available():
         return None
 
-    import urllib.request
     import urllib.error
+    import urllib.request
 
     url = f"{GEMINI_API_URL}/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
-
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
             "temperature": 0.8,
-            "topP": 0.9,
-            "maxOutputTokens": 4096,   # Tăng lên cho schema v2 (nhiều trường hơn)
-        }
+            "topP":        0.9,
+            "maxOutputTokens": 4096,
+        },
     }
 
     try:
-        data = json.dumps(payload).encode("utf-8")
-        req  = urllib.request.Request(
-            url, data=data,
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
             headers={"Content-Type": "application/json"},
             method="POST",
         )
-        
         with urllib.request.urlopen(req, timeout=60) as resp:
             result = json.loads(resp.read().decode("utf-8"))
-
-        candidates = result.get("candidates", [])
-        if candidates:
-            parts = candidates[0].get("content", {}).get("parts", [])
-            if parts:
-                return parts[0].get("text", "")
-
-        logger.warning("Gemini unexpected response format: %s", str(result)[:200])
+    except (urllib.error.URLError, TimeoutError) as e:
+        logger.error("Gemini network error: %s", e)
+        return None
+    except json.JSONDecodeError as e:
+        logger.error("Gemini response not JSON: %s", e)
         return None
 
-    except Exception as e:
-        logger.error("Gemini API error: %s", e)
-        return None
+    candidates = result.get("candidates", [])
+    if candidates:
+        parts = candidates[0].get("content", {}).get("parts", [])
+        if parts:
+            return parts[0].get("text", "")
+    logger.warning("Gemini unexpected response format: %s", str(result)[:200])
+    return None
 
 
 def generate_from_llm(
@@ -366,30 +232,14 @@ def generate_from_llm(
     user_tags: List[str],
     budget_per_activity: int,
     max_time_per_activity: int,
-    schema_v2: bool = False,
-) -> Optional[List[Dict]]:
+    num_activities: int = LLM_ACTIVITIES_PER_CALL,
+) -> Optional[List[Dict[str, Any]]]:
     """
-    Sinh hoạt động du lịch bằng LLM (Gemini API).
-    
-    Quy trình:
-      1. Xây dựng prompt từ context người dùng
-      2. Gọi Gemini API
-      3. Parse JSON response
-      4. Validate từng activity
-      5. Chuyển đổi sang schema v1 nếu cần (backward-compatible)
-      6. Trả về danh sách đã validate
-    
-    Args:
-        location_name: Tên địa điểm (VD: "Sa Pa")
-        location_description: Mô tả ngắn về địa điểm
-        user_tags: Sở thích của user (VD: ["nature", "food"])
-        budget: Ngân sách tối đa mỗi hoạt động (VNĐ)
-        max_time_per_activity: Thời gian tối đa mỗi hoạt động (phút)
-        schema_v2: True để trả về schema v2, False cho v1 (backward-compatible)
-    
+    Sinh activities bằng LLM (Gemini). Output mỗi item là dict các field khớp
+    với những gì `n5_activity_generator._build_activity_output` đọc.
+
     Returns:
-        List[Dict] đã validate nếu thành công.
-        None nếu LLM không khả dụng hoặc thất bại.
+        List[Dict] đã validate, hoặc None nếu LLM không khả dụng / fail toàn bộ.
     """
     if not is_llm_available():
         return None
@@ -404,53 +254,26 @@ def generate_from_llm(
         num_activities=num_activities,
     )
 
-    logger.info("Calling Gemini for location: %s (requesting %d activities)", location_name, num_activities)
+    logger.info("Calling Gemini for '%s' (requesting %d activities)", location_name, num_activities)
     response_text = call_gemini_api(prompt)
-
     if response_text is None:
-        logger.warning("Gemini returned no response for %s", location_name)
         return None
 
     raw_list = _parse_llm_response(response_text)
     if raw_list is None:
-        logger.warning("Failed to parse Gemini response for %s", location_name)
-        return None
-    
-    # Bước 4: Detect schema version từ response
-    # Nếu response có trường "description" → schema v2
-    # Nếu response có trường "desc" → schema v1
-    is_v2_response = any("description" in act for act in activities)
-    
-    # Bước 5: Validate và lọc
-    valid_activities = []
-    for act in activities:
-        if _validate_activity(act, schema_v2=is_v2_response):
-            # Chuẩn hóa tags thành lowercase
-            act["tags"] = [tag.lower().strip() for tag in act["tags"]]
-            
-            # Chuyển đổi schema nếu cần
-            if is_v2_response and not schema_v2:
-                # Response là v2, nhưng caller muốn v1 → convert
-                act = _convert_v2_to_v1(act)
-            elif not is_v2_response and schema_v2:
-                # Response là v1, caller muốn v2 → thêm trường mặc định
-                act.setdefault("description", act.get("desc", ""))
-                act.setdefault("estimated_duration", act.get("time", 60))
-                act.setdefault("activity_id", "")
-                act.setdefault("location_id", "")
-                act.setdefault("best_time", ["morning", "afternoon"])
-                act.setdefault("suitable_for", ["solo", "couple", "friends"])
-                act.setdefault("difficulty", "easy")
-                act.setdefault("season", [])
-                act.setdefault("reason_template", "")
-            
-            valid_activities.append(act)
-        else:
-            logger.warning(f"Activity không hợp lệ bị bỏ qua: {act.get('name', 'unknown')}")
-    
-    if not valid_activities:
-        logger.warning(f"Không có activity hợp lệ từ LLM cho {location_name}")
         return None
 
-    logger.info("LLM generated %d valid activities for %s", len(valid), location_name)
-    return valid
+    validated = []
+    for act in raw_list:
+        norm = _validate_and_normalize(act)
+        if norm is not None:
+            validated.append(norm)
+        else:
+            logger.warning("LLM activity rejected: %s", str(act)[:120])
+
+    if not validated:
+        logger.warning("No valid LLM activities for %s", location_name)
+        return None
+
+    logger.info("LLM produced %d valid activities for %s", len(validated), location_name)
+    return validated

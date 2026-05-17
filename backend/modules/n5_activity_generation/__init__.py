@@ -27,7 +27,9 @@ INPUT (ASSUMED)
             "metadata": {
                 "name": str | None,
                 "description": str | None,
-                "tags": list[str] | None
+                "tags": list[str] | None,
+                "coordinates": {"lat": float, "lng": float} | None,  # optional
+                "address": dict | None                                # optional
             }
         }
     ],
@@ -41,73 +43,41 @@ INPUT (ASSUMED)
 }
 
 ─────────────────────────────────────────────
-OUTPUT
+OUTPUT — Unified Activity Schema
 ─────────────────────────────────────────────
+Output tuân thủ schema chung tại:
+    backend/modules/activity_retrievals/SCHEMA.md
+
+Mỗi activity có cấu trúc:
 {
-    "activities": [
-        {
-            "activity_id": str,
-            "location_id": str,
+    "activity_id":  "llm_{location_id}_{hash6}",
+    "location_id":  str,
+    "source":       "llm",
+    "retrieved_at": "YYYY-MM-DDTHH:MM:SSZ",
 
-            "metadata": {
+    "metadata": {
+        "name": str, "description": str,
+        "activity_type":    "adventure|relaxation|food|culture|nightlife|nature|shopping",
+        "activity_subtype": str | None,
+        "categories_raw":   [],
+        "estimated_duration":  float | None,    # minutes
+        "price_level":         float | None,    # 0.0 → 1.0
+        "indoor_outdoor":      "indoor|outdoor|mixed" | None,
+        "weather_dependent":   bool | None,
+        "time_of_day_suitable":"morning|afternoon|night|anytime" | None
+    },
 
-                # ─────────────────────────────
-                # CORE IDENTITY
-                # ─────────────────────────────
-                "name": str,
-                "description": str,
-
-                # ─────────────────────────────
-                # SEMANTIC CLASSIFICATION
-                # ─────────────────────────────
-                "activity_type": str,
-                # adventure / relaxation / food / culture / nightlife / nature / shopping
-
-                "activity_subtype": str | None,
-                # e.g. hiking / snorkeling / street food / museum visit
-
-                # ─────────────────────────────
-                # EXPERIENCE DYNAMICS
-                # ─────────────────────────────
-                "intensity": float,
-                # 0.0 (very chill) → 1.0 (very active)
-
-                "physical_level": float | None,
-                # effort / movement intensity indicator
-
-                "social_level": float | None,
-                # solo → group-oriented activity scale
-
-                # ─────────────────────────────
-                # CONSTRAINT FIT
-                # ─────────────────────────────
-                "estimated_duration": float,
-                # minutes
-
-                "price_level": float,
-                # normalized cost scale
-
-                "indoor_outdoor": str,
-                # indoor / outdoor / mixed
-
-                "weather_dependent": bool,
-
-                # ─────────────────────────────
-                # CONTEXT FIT SIGNALS
-                # ─────────────────────────────
-                "time_of_day_suitable": str | None
-                # morning / afternoon / night / anytime
-            }
-        }
-    ]
+    "place":      { coordinates, distance_from_anchor_m, address },  # kế thừa anchor location
+    "signals":    { rating, popularity, image_url, website, opening_hours, phone },  # all null cho LLM
+    "provenance": { raw_source_id=None, source_url=None, raw={legacy_activity_id, metadata} }
 }
 
 ─────────────────────────────────────────────
 DESIGN NOTES:
-- Activities are derived from locations, not independent entities
-- Must be constraint-aware (budget, duration, group size)
-- Must be structured for downstream embedding (N6)
-- No embedding logic or ranking logic here (generation only)
+- Activities are derived from locations, not independent entities.
+- Constraint-aware (budget, duration, group size).
+- Output đã pass `activity_retrievals.schema.validate()`.
+- No embedding logic or ranking logic here (generation only).
 ─────────────────────────────────────────────
 """
 

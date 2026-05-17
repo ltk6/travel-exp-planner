@@ -23,9 +23,13 @@ def fetch_wikidata_nearby(lat: float, lng: float, radius: int = 20000) -> list:
     
     url = "https://query.wikidata.org/sparql"
     
-    # Query for entities within the radius that have coordinates
+    # Query for entities within the radius that have coordinates.
+    # P31 = "instance of" — dùng để map sang activity_type ở normalizer.
+    # Một place có thể có nhiều P31 → DISTINCT để giảm trùng; nếu vẫn duplicate
+    # thì normalizer dedupe theo entity Q-ID.
     query = f"""
-    SELECT ?place ?placeLabel ?location ?image ?description ?article WHERE {{
+    SELECT DISTINCT ?place ?placeLabel ?location ?image ?description ?article
+                    ?instance_of ?instance_ofLabel WHERE {{
       SERVICE wikibase:around {{
         ?place wdt:P625 ?location .
         bd:serviceParam wikibase:center "Point({lng} {lat})"^^geo:wktLiteral .
@@ -38,6 +42,7 @@ def fetch_wikidata_nearby(lat: float, lng: float, radius: int = 20000) -> list:
         ?article schema:inLanguage "en" .
         ?article schema:isPartOf <https://en.wikipedia.org/> .
       }}
+      OPTIONAL {{ ?place wdt:P31 ?instance_of. }}
       SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
     }}
     """

@@ -24,7 +24,11 @@
 #   Sau khi tính xong, sắp xếp giảm dần và lấy top_k.
 # =============================================================================
 
-import math   # dùng math.sqrt để tính cosine similarity
+import logging
+
+from backend.shared.math import cosine_normalized_unit as _cosine_unit
+
+logger = logging.getLogger(__name__)
 
 #=============================================================================
 #DANH SÁCH CÁC HÀM PHỤ HỖ TRỢ 
@@ -72,74 +76,20 @@ def _semantic_score(user_vectors, act_vectors):
         ("emotion", "intent", 0.25),   # cảm xúc khớp với ý định
     ]
 
-    sum_score=0.0 
-    total_weight=0.0
-    #duyệt qua từng channel
+    sum_score = 0.0
+    total_weight = 0.0
     for channel_user, channel_act, weight in channel_pairs:
         v_user = user_vectors.get(channel_user)
-        v_act = act_vectors.get(channel_act)
-
-        # nếu thiếu một trong hai thì bỏ qua cặp này
-        if v_user is None or v_act is None:
+        v_act  = act_vectors.get(channel_act)
+        if not v_user or not v_act:
             continue
-        if len(v_user)==0 or len(v_act)==0:
-            continue
-        
-        # tính cosine similarity (kết quả từ -1 đến 1)
+        # cosine_normalized_unit đã map [-1,1] → [0,1] và handle length mismatch.
+        sum_score += _cosine_unit(v_user, v_act) * weight
+        total_weight += weight
 
-        sim = cosine_similarity(v_user, v_act)
-
-        #đưa từ [-1,1] về [0,1] để dễ kết hợp với các điểm khác
-        normalized_sim = ( sim + 1.0 ) / 2.0
-
-        sum_score += normalized_sim * weight
-        total_weight +=weight
-
-    # nếu không có cặp vector nào ->trả về điểm trung tính 0.5
-    if total_weight ==0:
+    if total_weight == 0:
         return 0.5
-    
-    #lấy điểm trung bình có trọng số
-    return sum_score/total_weight
-
-
-def cosine_similarity(v1, v2):
-    """
-    tính cosine similarity giữa hai vector
-    công thức:      dot(v1, v2)
-      sim = ---------------------------
-               ||v1|| * ||v2||
-    ý nghĩa:
-    gần 1: hai vector cùng hướng(rất giống nhau)
-    gần 0: hai vector vuông góc(không liên quan)
-    gần -1:hai vector ngược hướng(đối lập nhau)
-    """
-    # 2 vector phải có cùng độ dài
-
-    if len(v1)!=len(v2):
-        return 0.0
-
-    # tích vô hướng
-    dot_product = 0.0
-    for i in range(len(v1)):
-        dot_product += v1[i] * v2[i]
-
-    #tính độ dài của mỗi vector
-
-    norm_v1=0.0
-    for x in v1:
-        norm_v1 +=x*x
-    norm_v1 = math.sqrt(norm_v1)
-
-    norm_v2=0.0
-    for x in v2:
-        norm_v2 +=x*x
-    norm_v2 = math.sqrt(norm_v2)
-    #tránh chia cho 0
-    if norm_v1==0 or norm_v2==0:
-        return 0.0
-    
-    return dot_product/(norm_v1*norm_v2)
+    return sum_score / total_weight
 
 #--------------------------------------------------------------------------------
 # Hàm 3: tính điểm phug hợp ràng buộc
@@ -322,18 +272,28 @@ def rank_activities(data):
     #bối cảnh (giờ, vị trí,...)
     context      =data.get("context",{})
     #danh sách các hoạt động từ N5
-    activities=data.get("activities",{})
+    activities=data.get("activities",[])
     #ngân sách thời gian,....
     constraints=data.get("constraints",{})
     #số lượng cần trả về
-    top_k=data.get("top_k",{})
+    top_k=data.get("top_k",0)
     #---------------------------------------------------
     # BƯỚC 2: trường hợp đặc biệt(không có gì để xếp hạng)
     if len(activities)==0 or top_k <=0:
         return {"activities": []}
-    
+
+    # Cảnh báo 1 lần nếu activities thiếu vectors → semantic_score sẽ luôn trả 0.5
+    # (điểm trung tính), khiến N6 mất ~50% sức mạnh ranking. Vectors phải được
+    # bơm vào bởi bước embedding (N1) trước khi gọi N6.
+    if not any(a.get("vectors") for a in activities):
+        logger.warning(
+            "[N6] %d activities có vectors=None/empty. semantic_score sẽ fallback 0.5. "
+            "Hãy chạy N1 embedding để enrich `vectors` trước khi gọi rank_activities().",
+            len(activities),
+        )
+
     #-------------------------------------------------------
-    # BƯỚC 3: duyệt qua từng hoạt động và tính điểm 
+    # BƯỚC 3: duyệt qua từng hoạt động và tính điểm
     scored_activities = []
     for activity in activities:
         metadata=activity.get("metadata",{})
