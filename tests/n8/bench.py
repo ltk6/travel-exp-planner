@@ -206,6 +206,55 @@ def _install_fake_dependencies() -> None:
     _register_module("modules.n1_embedding.embedder", n1_embedder)
     n1_pkg.embedder = n1_embedder
 
+    alt_n1_pkg = types.ModuleType("modules.alt_n1_embedding")
+    alt_n1_pkg.__path__ = []
+
+    def fake_alt_embed(data: dict, is_query: bool = False) -> dict:
+        STATE["embed_calls"] += 1
+        text = data.get("text", "")
+        tags = data.get("tags", [])
+        img_desc = data.get("img_desc", "")
+        return {
+            "text_k": min(len(text.split()), 4),
+            "tags_k": len(tags),
+            "preprocessed": {"text": text, "aug_text": text, "aug_tags": " ".join(tags), "img_desc": img_desc},
+            "vectors": {
+                "text": [1.0, 0.0, 0.0],
+                "aug_text": [1.0, 0.0, 0.0],
+                "aug_tags": [0.9, 0.1, 0.0],
+                "img_desc": [0.8, 0.2, 0.0] if img_desc else None,
+            },
+            "metadata": {"model": "fake-alt-embedder", "device": "cpu", "latency_ms": 1},
+        }
+
+    def fake_alt_embed_batch(data_list: list[dict], is_query: bool = False) -> list[dict]:
+        STATE["embed_batch_calls"] += 1
+        results = []
+        for item in data_list:
+            results.append({
+                "text_k": min(len(item.get("text", "").split()), 4),
+                "tags_k": len(item.get("tags", [])),
+                "preprocessed": item,
+                "vectors": {
+                    "text": [0.7, 0.1, 0.0],
+                    "aug_text": [0.7, 0.1, 0.0],
+                    "aug_tags": [0.6, 0.2, 0.0],
+                    "img_desc": [0.5, 0.3, 0.0],
+                },
+                "metadata": {"model": "fake-alt-embedder", "device": "cpu", "latency_ms": 1},
+            })
+        return results
+
+    alt_n1_pkg.embed = fake_alt_embed
+    alt_n1_pkg.embed_batch = fake_alt_embed_batch
+    _register_module("modules.alt_n1_embedding", alt_n1_pkg)
+    modules_pkg.alt_n1_embedding = alt_n1_pkg
+
+    alt_n1_embedder = types.ModuleType("modules.alt_n1_embedding.embedder")
+    alt_n1_embedder.get_model = lambda: SimpleNamespace(device="cpu")
+    _register_module("modules.alt_n1_embedding.embedder", alt_n1_embedder)
+    alt_n1_pkg.embedder = alt_n1_embedder
+
     n2_pkg = types.ModuleType("modules.n2_image_processing")
     n2_pkg.__path__ = []
 

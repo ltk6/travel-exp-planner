@@ -281,12 +281,31 @@ def activities_service(body):
     text = body.get("text", "").strip()
     img_desc = body.get("img_desc", "")
     tags = body.get("tags", [])
-    text_k = int(body.get("text_k", 0))
-    tags_k = int(body.get("tags_k", 0))
-    user_vectors = body.get("user_vectors", {})
     provider = body.get("provider")
     location = body.get("location", {})
     top_k_activities = int(body.get("top_k_activities", TOP_K_ACTIVITIES))
+
+    # ── alt_n1 — Build User Vectors ────────────
+    # Because we are using alt_n1 (multilingual-e5-small) for activities,
+    # we must also use alt_n1 to embed the user query to align vector spaces.
+    logger.info("N8 — Embedding user query via alt_n1...")
+    from modules.alt_n1_embedding import embed as alt_embed
+    alt_n1_result = alt_embed({
+        "text": text,
+        "tags": tags,
+        "img_desc": img_desc
+    }, is_query=True)
+
+    text_k = alt_n1_result.get("text_k", 0)
+    tags_k = alt_n1_result.get("tags_k", 0)
+    alt_vectors = alt_n1_result.get("vectors", {})
+
+    user_vectors = {
+        "text":     _safe_vec(alt_vectors.get("text")),
+        "aug_text": _safe_vec(alt_vectors.get("aug_text")),
+        "aug_tags": _safe_vec(alt_vectors.get("aug_tags")),
+        "img_desc": _safe_vec(alt_vectors.get("img_desc")),
+    }
 
     # ── N5 — Generate Activities ───────────────
     n5_input = {
@@ -301,7 +320,7 @@ def activities_service(body):
     n5_metadata = n5_result.get("metadata", {})
     per_loc_meta = n5_metadata.get("per_location", [])
 
-    # ── N1 — Embed Generated Activities ────────
+    # ── alt_n1 — Embed Generated Activities ────
     # Map N5 activities to N1 contract (text, tags, img_desc)
     # We use 'name' as 'text' and 'description' as 'img_desc' for N1 preprocessing
     n1_batch_input = []
@@ -313,13 +332,13 @@ def activities_service(body):
             "img_desc": meta.get("description", "")
         })
 
-    logger.info(f"N8 — Embedding {len(activities)} activities via N1...")
-    from modules.n1_embedding import embed_batch
-    n1_results = embed_batch(n1_batch_input)
+    logger.info(f"N8 — Embedding {len(activities)} activities via alt_n1...")
+    from modules.alt_n1_embedding import embed_batch as alt_embed_batch
+    alt_n1_results = alt_embed_batch(n1_batch_input, is_query=False)
     
     # Merge vectors back into activities for N6
     for i, act in enumerate(activities):
-        act["vectors"] = n1_results[i].get("vectors")
+        act["vectors"] = alt_n1_results[i].get("vectors")
 
     # ── N6 — Rank Activities ───────────────────
     n6_input = {
