@@ -312,33 +312,30 @@ def activities_service(body):
     per_loc_meta = n5_metadata.get("per_location", [])
 
     # ── N1 — Embed Generated Activities ────────
-    # Map N5 activities to N1 contract (text, tags, img_desc)
-    # We use 'name' as 'text' and 'description' as 'img_desc' for N1 preprocessing
     n1_batch_input = []
     for act in activities:
         meta = act.get("metadata", {})
         n1_batch_input.append({
-            "text": meta.get("name", ""),
-            "tags": meta.get("tags", []),
+            "text":    meta.get("name", ""),
+            "tags":    meta.get("tags", []),
             "img_desc": meta.get("description", "")
         })
 
     logger.info(f"N8 — Embedding {len(activities)} activities via N1...")
     from modules.n1_embedding import embed_batch
     n1_results = embed_batch(n1_batch_input)
-    
-    # Merge vectors back into activities for N6
+
     for i, act in enumerate(activities):
         act["vectors"] = n1_results[i].get("vectors")
 
-    # ── N6 — Rank Activities ───────────────────
+    # ── N6 — Rank Activities (semantic 50% + tag overlap 25% + attribute 25%) ─
     n6_input = {
-        "text_k": text_k,
-        "tags_k": tags_k,
-        "user_input": {"text": text, "tags": tags, "img_desc": img_desc},
+        "text_k":      text_k,
+        "tags_k":      tags_k,
+        "user_input":  {"text": text, "tags": tags, "img_desc": img_desc},
         "user_vectors": user_vectors,
-        "activities": activities,
-        "top_k": top_k_activities,
+        "activities":  activities,
+        "top_k":       top_k_activities,
     }
     n6_result = rank_activities(n6_input)
     ranked_acts = n6_result.get("activities", [])

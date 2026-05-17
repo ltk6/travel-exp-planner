@@ -11,8 +11,9 @@ from typing import Any, Dict, List, Optional, Tuple
 from backend.shared.weights import get_weights
 from .preferences import infer_user_preferences
 
-W_SEMANTIC = 0.5
-W_ATTRIBUTE = 0.5
+W_SEMANTIC  = 0.50
+W_TAG       = 0.25
+W_ATTRIBUTE = 0.25
 
 # =============================================================================
 # SEMANTIC SCORE
@@ -21,41 +22,40 @@ W_ATTRIBUTE = 0.5
 def cosine_similarity(v1: List[float], v2: List[float]) -> float:
     if not v1 or not v2 or len(v1) != len(v2):
         return 0.0
-    
-    # Tối ưu: Dùng list comprehension & sum built-in của C (nhanh hơn vòng lặp for thuần)
     dot = sum(a * b for a, b in zip(v1, v2))
-    n1 = math.sqrt(sum(a * a for a in v1))
-    n2 = math.sqrt(sum(b * b for b in v2))
-    
+    n1  = math.sqrt(sum(a * a for a in v1))
+    n2  = math.sqrt(sum(b * b for b in v2))
     if n1 == 0 or n2 == 0:
         return 0.0
     return dot / (n1 * n2)
 
-def _semantic_score(
-    user_vectors: Dict,
-    act_vectors: Dict,
-    weights: Dict[str, float]
-) -> float:
-    sum_score = 0.0
-    total_weight = 0.0
-    
-    # Unroll vòng lặp để tránh overhead tạo list tuple
-    for ch_user, ch_act, w_key in [("aug_tags", "tag", "aug_tags"), 
-                                   ("aug_text", "text", "aug_text"), 
-                                   ("text", "text", "text")]:
+def _semantic_score(user_vectors: Dict, act_vectors: Dict, weights: Dict[str, float]) -> float:
+    sum_score, total_weight = 0.0, 0.0
+    for ch_user, ch_act, w_key in [("aug_tags", "tag", "aug_tags"),
+                                   ("aug_text", "text", "aug_text"),
+                                   ("text",     "text", "text")]:
         w = weights.get(w_key, 0.0)
-        if w == 0.0: continue
-        
+        if w == 0.0:
+            continue
         v_user = user_vectors.get(ch_user)
-        v_act = act_vectors.get(ch_act)
-        
+        v_act  = act_vectors.get(ch_act)
         if v_user and v_act:
             sim = cosine_similarity(v_user, v_act)
-            normalized = (sim + 1.0) / 2.0
-            sum_score += normalized * w
+            sum_score    += ((sim + 1.0) / 2.0) * w
             total_weight += w
-
     return sum_score / total_weight if total_weight > 0 else 0.5
+
+# =============================================================================
+# TAG OVERLAP SCORE
+# =============================================================================
+
+def _tag_overlap_score(user_tags: List[str], act_tags: List[str]) -> float:
+    """Fraction of user tags covered by activity tags. Neutral 0.5 when no user tags."""
+    if not user_tags:
+        return 0.5
+    u = set(user_tags)  # already lowercased by caller
+    a = set(t.lower().strip() for t in (act_tags or []))
+    return len(u & a) / len(u)
 
 # =============================================================================
 # ATTRIBUTE SCORE
@@ -94,11 +94,11 @@ _REASON_BY_TYPE = {
 _REASON_DEFAULT = ["Lựa chọn tuyệt vời cho hành trình của bạn", "Trải nghiệm thú vị không nên bỏ lỡ"]
 _INTENSITY_LABELS = [(0.7, "mạnh mẽ"), (0.4, "vừa sức"), (0.0, "nhẹ nhàng")]
 
-def _build_reason(metadata: Dict, sem_score: float, attr_score: float) -> str:
+def _build_reason(metadata: Dict, sem_score: float, tag_score: float, attr_score: float) -> str:
     activity_type = metadata.get("activity_type", "nature")
     name_act = metadata.get("name", "Trải nghiệm")
     intensity = float(metadata.get("intensity") or 0.5)
-    
+
     intensity_hint = next((label for threshold, label in _INTENSITY_LABELS if intensity >= threshold), "nhẹ nhàng") + " "
 
     templates = _REASON_BY_TYPE.get(activity_type, _REASON_DEFAULT)
@@ -106,8 +106,8 @@ def _build_reason(metadata: Dict, sem_score: float, attr_score: float) -> str:
     body = templates[idx].format(intensity_hint=intensity_hint)
 
     highlights = []
-    if attr_score >= 0.8: highlights.append("rất hợp sở thích")
-    if sem_score >= 0.8:  highlights.append("đúng ý bạn tìm")
+    if attr_score >= 0.8:               highlights.append("rất hợp sở thích")
+    if max(sem_score, tag_score) >= 0.8: highlights.append("đúng ý bạn tìm")
 
     suffix = f" ({', '.join(highlights)})" if highlights else ""
     return f"{body}{suffix}."
@@ -119,7 +119,7 @@ def _build_reason(metadata: Dict, sem_score: float, attr_score: float) -> str:
 def rank_activities(data: Dict) -> Dict:
     import time
     t0 = time.time()
-    
+
     user_input   = data.get("user_input", {}) or {}
     user_vectors = data.get("user_vectors", {}) or {}
     activities   = data.get("activities", []) or []
@@ -131,69 +131,62 @@ def rank_activities(data: Dict) -> Dict:
         return {"activities": [], "metadata": {"latency_ms": 0}}
 
     user_prefs = infer_user_preferences(user_input)
-    weights = get_weights(text_k, tags_k)
+    user_tags  = [t.lower().strip() for t in (user_input.get("tags") or [])]
+    weights    = get_weights(text_k, tags_k)
 
     scored_heap = []
-    
-    # 1. TÍNH TOÁN & CHỌN LỌC NHANH (KHÔNG BUILD REASON Ở ĐÂY)
+
     for activity in activities:
         metadata = activity.get("metadata", {}) or {}
         vectors  = activity.get("vectors", {}) or {}
+        act_tags = metadata.get("tags") or []
 
-        sem_score = _semantic_score(user_vectors, vectors, weights)
+        sem_score  = _semantic_score(user_vectors, vectors, weights)
         sem_scaled = max(0.0, min(1.0, (sem_score - 0.5) * 2.0))
+        tag_score  = _tag_overlap_score(user_tags, act_tags)
         attr_score = _attribute_score(metadata, user_prefs)
+        total      = max(0.0, min(1.0, W_SEMANTIC * sem_scaled + W_TAG * tag_score + W_ATTRIBUTE * attr_score))
 
-        total = W_SEMANTIC * sem_scaled + W_ATTRIBUTE * attr_score
-        total = max(0.0, min(1.0, total))
+        heap_item = (total, activity.get("activity_id"), activity.get("location_id"), metadata, sem_scaled, tag_score, attr_score)
 
-        # Đưa vào heap, giữ kích thước heap nhỏ gọn
-        heap_item = (total, activity.get("activity_id"), activity.get("location_id"), metadata, sem_scaled, attr_score)
-        
         if len(scored_heap) < top_k:
             heapq.heappush(scored_heap, heap_item)
         else:
             heapq.heappushpop(scored_heap, heap_item)
 
-    # Lấy top K và sắp xếp giảm dần
     top_activities = sorted(scored_heap, key=lambda x: x[0], reverse=True)
 
-    # 2. XỬ LÝ FORMAT & REASON (CHỈ ÁP DỤNG CHO TOP K)
     final_results = []
     if top_activities:
-        max_s = top_activities[0][0]
-        min_s = top_activities[-1][0]
+        max_s  = top_activities[0][0]
+        min_s  = top_activities[-1][0]
         spread = max_s - min_s
         LOW, HIGH = 0.40, 1.0
 
-        n = len(top_activities)
+        n    = len(top_activities)
         step = (HIGH - LOW) / (n - 1) if n > 1 else 0.0
 
-        for i, (score, act_id, loc_id, meta, sem, attr) in enumerate(top_activities):
-            # Cân bằng điểm số (Min-Max Scaling)
+        for i, (score, act_id, loc_id, meta, sem_s, tag_s, attr) in enumerate(top_activities):
             if spread > 0.01:
                 norm_score = LOW + (score - min_s) / spread * (HIGH - LOW)
             else:
                 norm_score = HIGH - i * step
-            
-            final_score = round(max(0.0, min(1.0, norm_score)), 4)
 
-            # BÂY GIỜ MỚI BUILD REASON CHO 5-10 ITEMS NÀY
             final_results.append({
                 "activity_id": act_id,
                 "location_id": loc_id,
-                "score": final_score,
-                "reason": _build_reason(meta, sem, attr),
+                "score":       round(max(0.0, min(1.0, norm_score)), 4),
+                "reason":      _build_reason(meta, sem_s, tag_s, attr),
             })
 
     elapsed_ms = int((time.time() - t0) * 1000)
     return {
-        "activities": final_results, 
+        "activities": final_results,
         "metadata": {
             "user_prefs": user_prefs,
-            "weights": weights,
-            "text_k": text_k,
-            "tags_k": tags_k,
-            "latency_ms": elapsed_ms
-        }
+            "weights":    weights,
+            "text_k":     text_k,
+            "tags_k":     tags_k,
+            "latency_ms": elapsed_ms,
+        },
     }
