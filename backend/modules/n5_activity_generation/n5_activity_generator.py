@@ -100,9 +100,9 @@ def generate_activities(data: dict) -> dict:
             "anchor_lng":     (coords or {}).get("lng") if coords else None,
             "anchor_address": loc["metadata"].get("address"),
         }
-        unified = _llm_normalizer.normalize_all(legacy_activities, ctx)
+        unified = _llm_normalizer.normalize_all(activities, ctx)
 
-        unified_activities.extend(unified)
+        all_activities.extend(unified)
         logger.info(
             "Location '%s' (%s): generated %d activities (unified)",
             loc_name, loc_id, len(unified)
@@ -365,6 +365,26 @@ def _generate_for_location(
         target_total  = target_count,
     )
     return combined[:target_count]
+
+
+# =============================================================================
+# RATIO ENFORCEMENT (stub — original implementation missing)
+# =============================================================================
+
+def _ensure_sightseeing_ratio(
+    activities,
+    location_id,
+    location_name,
+    profile,
+    target_ratio: float = 0.40,
+    target_total: int = 10,
+):
+    """No-op stub. The original ratio-enforcement helper was missing from this
+    file, causing /activities to 500 whenever the LLM chain fell back to
+    templates. Returning activities unchanged preserves the previous behaviour
+    when the template path is exercised; reintroduce real ratio logic later
+    if the product still wants it."""
+    return activities
 
 
 # =============================================================================

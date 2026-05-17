@@ -15,6 +15,7 @@ Tham khảo SCHEMA.md để biết chi tiết unified schema.
 """
 
 from .orchestrator import ALL_SOURCES, retrieve_all
+from .processor import process_activities
 from .schema import (
     ALLOWED_ACTIVITY_TYPES,
     ALLOWED_INDOOR_OUTDOOR,
@@ -36,6 +37,7 @@ __all__ = [
     "build_activity",
     "haversine_m",
     "make_activity_id",
+    "process_activities",
     "retrieve_all",
     "strip_raw",
     "validate",

@@ -91,6 +91,8 @@ TRẢ LỜI:
   ...
 ]"""
 
+    return prompt
+
 
 # =============================================================================
 # RESPONSE PARSING & VALIDATION
@@ -229,7 +231,7 @@ def call_llm(
             logger.warning("Provider %s failed in pass %d", provider.name, pass_idx + 1)
 
         if pass_idx < retries:
-            wait = min(60.0, (LLM_RETRY_WAIT_BASE * (3 ** pass_idx)) + random.random())
+            wait = min(8.0, (LLM_RETRY_WAIT_BASE * (1.5 ** pass_idx)) + random.random())
             logger.warning("All models in chain failed. Waiting %.2fs before pass %d...", wait, pass_idx + 2)
             time.sleep(wait)
 

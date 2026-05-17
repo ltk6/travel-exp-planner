@@ -224,3 +224,10 @@ obj/
 
 # Rider (optional if mixed)
 .idea/
+
+# Claude Code local settings
+.claude/
+
+# Activity retrievals API response caches (regenerated at runtime)
+backend/modules/activity_retrievals/**/cache/
+backend/modules/activity_retrievals/processed/

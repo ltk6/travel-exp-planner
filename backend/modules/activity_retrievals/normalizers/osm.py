@@ -125,7 +125,7 @@ def _extract_address(tags: Dict[str, Any]) -> Dict[str, Any]:
 
 def normalize(raw_item: Dict[str, Any], ctx: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     tags = raw_item.get("tags") or {}
-    name = tags.get("name") or tags.get("name:en") or tags.get("name:vi")
+    name = tags.get("name:vi") or tags.get("name") or tags.get("name:en")
     if not name:
         return None
 
