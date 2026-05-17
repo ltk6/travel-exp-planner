@@ -15,6 +15,8 @@ INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "")
 
 # ── Model Settings ───────────────────────────────────────────────
 EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", "BAAI/bge-m3")
+ALT_EMBEDDING_MODEL_NAME = os.getenv("ALT_EMBEDDING_MODEL_NAME", "intfloat/multilingual-e5-small")
+
 
 GROQ_MODEL_NAME   = os.getenv("GROQ_MODEL_NAME", "llama-3.1-8b-instant")
 GROQ_VISION_MODEL = os.getenv("GROQ_VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
