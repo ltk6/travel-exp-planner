@@ -26,62 +26,77 @@ export type ActivityTypeMeta = {
   classes: string;
 };
 
+// Pattern: bg-{color}-100 text-{color}-800 border-{color}-400 font-bold — đậm
+// và rõ hơn bản trước (200/700/300) để mỗi type dễ phân biệt trên card.
 export const ACTIVITY_TYPE_META: Record<ActivityType, ActivityTypeMeta> = {
   food: {
     label: "Ẩm thực",
     Icon: Utensils,
     classes:
-      "bg-amber-100 text-amber-700 border-amber-300 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/40",
+      "bg-amber-100 text-amber-800 border-amber-400 font-bold dark:bg-amber-500/20 dark:text-amber-200 dark:border-amber-500/60",
   },
   adventure: {
     label: "Phiêu lưu",
     Icon: Mountain,
     classes:
-      "bg-red-100 text-red-700 border-red-300 dark:bg-red-500/15 dark:text-red-300 dark:border-red-500/40",
+      "bg-red-100 text-red-800 border-red-400 font-bold dark:bg-red-500/20 dark:text-red-200 dark:border-red-500/60",
   },
   culture: {
     label: "Văn hoá",
     Icon: Landmark,
     classes:
-      "bg-purple-100 text-purple-700 border-purple-300 dark:bg-purple-500/15 dark:text-purple-300 dark:border-purple-500/40",
+      "bg-purple-100 text-purple-800 border-purple-400 font-bold dark:bg-purple-500/20 dark:text-purple-200 dark:border-purple-500/60",
   },
   nightlife: {
     label: "Về đêm",
     Icon: Moon,
     classes:
-      "bg-indigo-100 text-indigo-700 border-indigo-300 dark:bg-indigo-500/15 dark:text-indigo-300 dark:border-indigo-500/40",
+      "bg-indigo-100 text-indigo-800 border-indigo-400 font-bold dark:bg-indigo-500/20 dark:text-indigo-200 dark:border-indigo-500/60",
   },
   shopping: {
     label: "Mua sắm",
     Icon: ShoppingBag,
     classes:
-      "bg-pink-100 text-pink-700 border-pink-300 dark:bg-pink-500/15 dark:text-pink-300 dark:border-pink-500/40",
+      "bg-pink-100 text-pink-800 border-pink-400 font-bold dark:bg-pink-500/20 dark:text-pink-200 dark:border-pink-500/60",
   },
   relaxation: {
     label: "Thư giãn",
     Icon: Leaf,
     classes:
-      "bg-teal-100 text-teal-700 border-teal-300 dark:bg-teal-500/15 dark:text-teal-300 dark:border-teal-500/40",
+      "bg-teal-100 text-teal-800 border-teal-400 font-bold dark:bg-teal-500/20 dark:text-teal-200 dark:border-teal-500/60",
   },
   nature: {
     label: "Thiên nhiên",
     Icon: TreePine,
     classes:
-      "bg-emerald-100 text-emerald-700 border-emerald-300 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/40",
+      "bg-emerald-100 text-emerald-800 border-emerald-400 font-bold dark:bg-emerald-500/20 dark:text-emerald-200 dark:border-emerald-500/60",
   },
   photography: {
     label: "Chụp ảnh",
     Icon: Camera,
     classes:
-      "bg-sky-100 text-sky-700 border-sky-300 dark:bg-sky-500/15 dark:text-sky-300 dark:border-sky-500/40",
+      "bg-sky-100 text-sky-800 border-sky-400 font-bold dark:bg-sky-500/20 dark:text-sky-200 dark:border-sky-500/60",
   },
   experience: {
     label: "Trải nghiệm",
     Icon: Sparkle,
     classes:
-      "bg-orange-100 text-orange-700 border-orange-300 dark:bg-orange-500/15 dark:text-orange-300 dark:border-orange-500/40",
+      "bg-orange-100 text-orange-800 border-orange-400 font-bold dark:bg-orange-500/20 dark:text-orange-200 dark:border-orange-500/60",
   },
 };
+
+/** Thứ tự hiển thị chip filter — sightseeing trước, activity sau. */
+export const ACTIVITY_TYPE_ORDER: ActivityType[] = [
+  "nature",
+  "culture",
+  "food",
+  "adventure",
+  "relaxation",
+  "nightlife",
+  "shopping",
+  "photography",
+  "experience",
+];
 
 const FALLBACK: ActivityTypeMeta = {
   label: "Khác",

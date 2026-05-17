@@ -1,0 +1,3048 @@
+[
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q2742286"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "former province of Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.75 22.33333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Hoàng Liên Sơn"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q3512306"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "mountain range in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.75 22.33333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Hoàng Liên Sơn mountain range"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/Hoang%20Lien.jpg"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q4361432"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.898297 22.303329)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "The Area of Old Carved Stone in Chapa"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/An%20ancient%20engraved%20rock%20of%20Sapa.JPG"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10743157"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune of Lai Chau province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.713888888 22.289444444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Bản Bo"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10743157"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune of Lai Chau province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.7175 22.28222222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Bản Bo"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10743160"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "village in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8341 22.3277)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Cát Cát"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10743168"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune of Lao Cai province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.93 22.21111111)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Bản Hồ"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10743169"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune of Lao Cai province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.804166666 22.414722222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Ngũ Chỉ Sơn"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10743169"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune of Lao Cai province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.7936111 22.43277778)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Ngũ Chỉ Sơn"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10771772"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.899444444 22.311388888)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Mường Hoa"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10771772"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8988889 22.31361111)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Mường Hoa"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10779508"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune of Lai Chau province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.5961111 22.22972222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Khun Há"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10779508"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune of Lai Chau province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.605555555 22.2275)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Khun Há"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10784406"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8558333 22.29)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Hoàng Liên"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10784406"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.863611111 22.288888888)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Hoàng Liên"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10796384"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune of Lai Chau province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.669722222 22.180833333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Mường Khoa"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10801945"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.6425 22.275)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nà Tăm"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10801945"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.647777777 22.274722222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nà Tăm"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10802029"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "mountain in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8614 22.3329)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Núi Hàm Rồng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10802160"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.618055555 22.316666666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nam Mu"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10802177"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.717777777 22.472222222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Pung"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10805756"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.852222222 22.4625)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Phìn Ngan"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10806214"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.7575 22.2525)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Phúc Khoa"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10812153"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.865 22.35888889)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sa Pả"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10812153"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.876944444 22.357222222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sa Pả"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10812496"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.808888888 22.319444444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Ô Quý Hồ"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10812496"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8052778 22.32444444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Ô Quý Hồ"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10823579"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.9266667 22.29138889)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sử Pán"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10823579"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.928611111 22.2925)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sử Pán"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10823892"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "township in Northwest, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.615555555 22.333611111)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Tam Đường"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10824785"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.9583333 22.29083333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Thanh Bình"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10824785"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.960555555 22.295277777)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Thanh Bình"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10825640"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.829573 22.329058)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Cát Cát waterfall"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/Tien%20Sa%20Waterfall.JPG"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10825870"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.788055555 22.134166666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Thân Thuộc"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10825870"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.7308333 22.16472222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Thân Thuộc"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10828287"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8936111 22.39444444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Trung Chải"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10828287"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.895 22.396111111)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Trung Chải"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10828448"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.831111111 22.169166666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Trung Đồng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10830959"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune of Lai Chau province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.780277777 22.198888888)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Tân Uyên"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10831516"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.74045383 22.413437701)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Ngũ Chỉ Sơn"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10831526"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune of Lao Cai province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8375 22.39944444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Tả Phìn"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10831536"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune of Lao Cai province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.870833333 22.379722222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Tả Van"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10840552"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "gap in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.764444444 22.353333333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Đèo Trạm Tôn"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q20451137"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.583 22.333)"
+    },
+    "placeLabel": {
+      "type": "literal",
+      "value": "Q20451137"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q31618396"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.716666666 22.4)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Ta Yang Ping"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q31618704"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "mountain in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.883333333 22.366666666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Khao Tao Pho"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q31634087"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "mountain in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8858 22.1758)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Ho Tao San"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q31635871"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "mountain in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.7142 22.4067)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Grande Aiguille"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q31636831"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.833333333 22.25)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Fan Si Pan"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q31636884"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8608 22.205)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Pic Est"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q31647218"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "mountain in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.77399 22.30145)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Phăng Xi Păng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q31655279"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "mountain in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.692222222 22.309166666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Núi Trung Liên"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q31666318"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "mountain in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.889444444 22.405555555)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Núi Pô Tính"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q31942265"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.868333333 22.313888888)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Lao Chải"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32184988"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.915277777 22.207222222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Dền Thàng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32191434"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.666666666 22.333333333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Hoăng Hồ"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32195527"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.666111111 22.338333333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Huổi Hô"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32195703"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.653333333 22.278333333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Huổi Ké"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32196881"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.599166666 22.291111111)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Huổi Ít"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32196896"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Lai Châu, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.58 22.331944444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Huổi Ít"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32202046"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.666666666 22.25)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Hủi Tiền"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32215679"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.666666666 22.266666666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nam Khế"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32216184"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.716666666 22.15)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nam Moun"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32216194"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.583333333 22.3)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nam Mu"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32216398"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.733333333 22.166666666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nam Pao"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32216858"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.75 22.166666666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nam Tchiang"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32218671"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.905 22.413888888)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Ngòi Đuôi"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32221156"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.708055555 22.167222222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Be"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32221167"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.716666666 22.224722222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Bon"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32221189"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.719722222 22.154166666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Cha"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32221319"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.708333333 22.166944444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Chăng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32221366"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.688055555 22.196944444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Cung"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32221508"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.612777777 22.289166666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Dê"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32221537"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.662777777 22.334166666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Giê"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32221754"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Lai Châu, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.617222222 22.319444444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm La"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32221846"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.722777777 22.155833333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Lúc"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32221857"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.679166666 22.271944444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Lăm"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32221916"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.761111111 22.143611111)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Lức"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32222161"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.716666666 22.166666666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Pao"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32222172"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.621944444 22.2975)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Pe"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32222181"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.678888888 22.218333333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Pha"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32222252"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.619722222 22.231666666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Páp"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32222386"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.702777777 22.192222222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm So"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32222589"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.698333333 22.15)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Tra"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32222599"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.936388888 22.215277777)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Trung Hồ"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32222643"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.669722222 22.260555555)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Tàng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32222653"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.611388888 22.323333333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Tâng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32222803"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.605833333 22.293055555)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Nậm Đich"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32235979"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.937777777 22.346944444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Cam Thăng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32236387"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.894166666 22.3975)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Cá Chỉ Vàng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32236470"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Lào Cai, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.846666666 22.316666666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Cát"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32237292"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.823611111 22.190555555)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Ho Trắng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32237348"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.777777777 22.160277777)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Hua Cưởm"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32238477"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.813888888 22.430277777)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Lạnh"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32238929"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.826388888 22.439444444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Mẩy Hồ"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32238984"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.904722222 22.414166666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Mống Xến"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32240574"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.898333333 22.414166666)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Pờ Si Ngài"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32241204"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.585555555 22.351944444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Sủi Phàng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32242022"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.94 22.219444444)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Tả Trung Hồ"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32242194"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.865555555 22.365)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Vàng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q123782"
+    },
+    "article": {
+      "type": "uri",
+      "value": "https://en.wikipedia.org/wiki/Fansipan"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "mountain in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.7753148 22.3033319)"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/Fansipan%20Summit.jpg"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Fansipan"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q1000140"
+    },
+    "article": {
+      "type": "uri",
+      "value": "https://en.wikipedia.org/wiki/Sa_Pa,_L%C3%A0o_Cai"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "ward of Lào Cai province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.841944444 22.335555555)"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/Nh%C3%A0%20th%E1%BB%9D%20%C4%91%C3%A1%20Sa%20Pa.jpg"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sa Pa"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q1137913"
+    },
+    "article": {
+      "type": "uri",
+      "value": "https://en.wikipedia.org/wiki/Ho%C3%A0ng_Li%C3%AAn_National_Park"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "national park in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.775139 22.303441)"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/Hoang%20Lien.jpg"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Hoang Lien National Park"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q7395483"
+    },
+    "article": {
+      "type": "uri",
+      "value": "https://en.wikipedia.org/wiki/Sa_Pa"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "old town of Lao Cai province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.841689 22.335701)"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/%C4%90%E1%BB%89nh%20sapa%20t%E1%BA%A1i%20th%C3%A1p%20viba%20s%C6%B0%C6%A1ng%20m%C3%B9%20-%20panoramio.jpg"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sa Pa"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q7680455"
+    },
+    "article": {
+      "type": "uri",
+      "value": "https://en.wikipedia.org/wiki/Tam_%C4%90%C6%B0%E1%BB%9Dng_district"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "former district of Lai Chau province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.620833333 22.329166666)"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/Sunset%20on%20O%20Quy%20Ho%20pass.jpg"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Tam Đường"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q7682148"
+    },
+    "article": {
+      "type": "uri",
+      "value": "https://en.wikipedia.org/wiki/T%C3%A2n_Uy%C3%AAn_district"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "former district of Lai Chau province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.7375 22.129166666)"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/N%E1%BA%ADm%20C%E1%BA%A7n%2C%20T%C3%A2n%20Uy%C3%AAn%2C%20Lai%20Ch%C3%A2u%2C%20Vietnam%20-%20panoramio.jpg"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Tân Uyên"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10742454"
+    },
+    "article": {
+      "type": "uri",
+      "value": "https://en.wikipedia.org/wiki/B%C3%ACnh_L%C6%B0"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune of Lai Chau province, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.647220194 22.317818387)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Bình Lư"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q10805753"
+    },
+    "article": {
+      "type": "uri",
+      "value": "https://en.wikipedia.org/wiki/Ph%C3%ACn_H%E1%BB%93,_%C4%90i%E1%BB%87n_Bi%C3%AAn"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "commune and village in Điện Biên, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8 22.43333333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Phìn Hồ"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32242247"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.903055555 22.4075)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Vù Lưng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32243103"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.939444444 22.271111111)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Séo Chong Hò"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32589018"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.759444444 22.438611111)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Tả Giàng Phình"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32589143"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.878888888 22.2425)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Tả Van"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q32607315"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "gap in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.783333333 22.133333333)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Đèo Khao Giàng"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q34857216"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "river in Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.833888888 22.327222222)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Suối Hu"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q49319922"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.670833333 22.287777777)"
+    },
+    "placeLabel": {
+      "type": "literal",
+      "value": "Q49319922"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122283"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8399125 22.3399492)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Lustig Hostel"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122287"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "guesthouse in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8857827 22.3025501)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Comlam Eco House - Mountain Retreat"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122284"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.83909 22.332594)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Oh Yeah! Hostel"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122285"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8438866 22.3377554)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Himalaya Hostel & Room"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122290"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.9033153 22.3004347)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Stunning Homestay"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122291"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8374058 22.332867)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Oh Yeah Hotel"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122288"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8434268 22.3320006)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Mega View Homestay"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122289"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.84446 22.33945)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Venus Sapa Hostel"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122295"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8956022 22.307056)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "ZiZi Mekhoo Sapa Homestay"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122292"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8945894 22.3014096)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Dzay House Homestay"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122293"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8383579 22.3327959)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Fansipan Terrace Cafe & Homestay"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122298"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8943369 22.3006028)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Luckydaisy's Buffalo Lounge"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122299"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "guesthouse in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8429301 22.3320467)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Little View Homestay"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122296"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8459505 22.3286687)"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/Sapa%20Charm%20hotel%20Vietnam.jpg"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sapa Odyssey Hostel"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122302"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8945107 22.3023931)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Tavan Chopai Homestay"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122301"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8955471 22.3070234)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Hmong Sister House"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122304"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.89951 22.31134)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Zihome Hmong House"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q111122305"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hostel in Sapa"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.8383109 22.3346384)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sapa Hostel"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117325486"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.843 22.3366)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Victoria SaPa Resort"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117325487"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.834312 22.340543)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Chau Long Sapa Hotel"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117325779"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.841416 22.335054)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "BB Hotel Spa"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117325794"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.844 22.3323)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Bamboo Sapa Hotel"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117325942"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.848 22.3378)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Muong Thanh Sapa"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117325977"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.84 22.3329)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Cosiana Hotel Sapa"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117326031"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.839 22.3365)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sapa Container Hotel"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117326034"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.842 22.3328)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Amazing Hotel Sapa"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117326032"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.856 22.3227)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sapa Jade Hill Resort & Spa"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117326033"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.844 22.3367)"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/Park%20bij%20Sapa%20Legend%20Hotel%20%26%20Spa.jpg"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sapa Legend Hotel & Spa"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117326123"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.840421 22.335051)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Hotel de la Coupole-MGallery"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117326161"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.838 22.3328)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sapa Vista Hotel"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q117326190"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "hotel in Sapa, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.842 22.3343)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Chapa Dew Boutique Hotel"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q124156643"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "church in Sa Pa, Lào Cai, Vietnam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.842263379 22.335114798)"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/Nha%20tho%20Da%20%2C%20Sapa%20vietnam%20-%20panoramio.jpg"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Sa Pa Church"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q124453288"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "valley in Viet Nam"
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.87737 22.3145)"
+    },
+    "image": {
+      "type": "uri",
+      "value": "http://commons.wikimedia.org/wiki/Special:FilePath/M%C6%B0%E1%BB%9Dng%20Hoa%20Valley%2006.jpg"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Muong Hoa Valley"
+    }
+  },
+  {
+    "place": {
+      "type": "uri",
+      "value": "http://www.wikidata.org/entity/Q138257253"
+    },
+    "description": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Y Linh Ho is a tranquil Hmong village known for its emerald stream, hydroelectric dam, and authentic trekking experiences."
+    },
+    "location": {
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "type": "literal",
+      "value": "Point(103.859727 22.310021)"
+    },
+    "placeLabel": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Y Linh Ho Village"
+    }
+  }
+]

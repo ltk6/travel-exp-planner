@@ -1,0 +1,4970 @@
+[
+  {
+    "description": "Du Lịch Thiểu Số, 785 Đường Điện Biên Phủ, TT. Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 2,
+        "offset": 0
+      },
+      {
+        "length": 2,
+        "offset": 22
+      }
+    ],
+    "place_id": "H0cyXavUhx11q07YztXv4w3W3Th27HZvpWZVCT4x6qdJaqkYOu1aE90bNIWKib5fTar1_BZGnqfRpPnNOjaKlamqrcBe-ybFHb6tdSYuDi3tukU4dveKbi2y5RjaLHPDL",
+    "reference": "H0cyXavUhx11q07YztXv4w3W3Th27HZvpWZVCT4x6qdJaqkYOu1aE90bNIWKib5fTar1_BZGnqfRpPnNOjaKlamqrcBe-ybFHb6tdSYuDi3tukU4dveKbi2y5RjaLHPDL",
+    "structured_formatting": {
+      "main_text": "Du Lịch Thiểu Số",
+      "main_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "785 Đường Điện Biên Phủ, TT. Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 4
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX9075 TT. Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YTK+CX9075"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Phan Si Păng",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Du Lịch Thiểu Số"
+      },
+      {
+        "offset": 23,
+        "value": "785 Đường Điện Biên Phủ"
+      },
+      {
+        "offset": 58,
+        "value": "TT. Sa Pa"
+      },
+      {
+        "offset": 62,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 76,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Du Lịch Nà Khương, Bản Nà Khương, Tam Đường, Lai Châu 30219",
+    "matched_substrings": [
+      {
+        "length": 2,
+        "offset": 0
+      },
+      {
+        "length": 2,
+        "offset": 38
+      }
+    ],
+    "place_id": "5cstarhPdpRKoSpApm6J7SOSaGq7bpHmT6GCXKREWPkIhYFcjUeBvQ_XJ2ekUKvVMq52Wr1ujd1OlCdkixuONMSsYmyMaYFJQa1baI19jeQbl0hquxudj1TC_QGmNGvbN",
+    "reference": "5cstarhPdpRKoSpApm6J7SOSaGq7bpHmT6GCXKREWPkIhYFcjUeBvQ_XJ2ekUKvVMq52Wr1ujd1OlCdkixuONMSsYmyMaYFJQa1baI19jeQbl0hquxudj1TC_QGmNGvbN",
+    "structured_formatting": {
+      "main_text": "Du Lịch Nà Khương",
+      "main_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Bản Nà Khương, Tam Đường, Lai Châu 30219",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 19
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CWMFL6 Bản Nà Khương, Tam Đường, Lai Châu 30219",
+      "global_code": "1SJ63+CWMFL6"
+    },
+    "compound": {
+      "district": "Tam Đường",
+      "commune": "Bản Bo",
+      "province": "Lai Châu"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Du Lịch Nà Khương"
+      },
+      {
+        "offset": 23,
+        "value": "Bản Nà Khương"
+      },
+      {
+        "offset": 43,
+        "value": "Tam Đường"
+      },
+      {
+        "offset": 58,
+        "value": "Lai Châu 30219"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "DU LỊCH SAPA - TÂY BẮC, Đường chánh sapa, Sa Pả, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 2,
+        "offset": 0
+      },
+      {
+        "length": 2,
+        "offset": 24
+      }
+    ],
+    "place_id": "jVtiU7SYO4qgmkdks0lB2EWySGOyYvndPrBtVb9w8MlAnVRSvBaKxUOdrnyDT7z1GVdifISzgutDnEd_hX2s6T3FV2aEX479QGNUZ7SigusUckdlghSSgj-wT2aECFfnC",
+    "reference": "jVtiU7SYO4qgmkdks0lB2EWySGOyYvndPrBtVb9w8MlAnVRSvBaKxUOdrnyDT7z1GVdifISzgutDnEd_hX2s6T3FV2aEX479QGNUZ7SigusUckdlghSSgj-wT2aECFfnC",
+    "structured_formatting": {
+      "main_text": "DU LỊCH SAPA - TÂY BẮC",
+      "main_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Đường chánh sapa, Sa Pả, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 0
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BLQIC8 Sa Pả, Sa Pa, Lào Cai 330000",
+      "global_code": "17YTN+BLQIC8"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pả",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "DU LỊCH SAPA - TÂY BẮC"
+      },
+      {
+        "offset": 28,
+        "value": "Đường chánh sapa"
+      },
+      {
+        "offset": 51,
+        "value": "Sa Pả"
+      },
+      {
+        "offset": 60,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 67,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Du Lịch Thác JGOOOOO, Séo Trung Hồ, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 2,
+        "offset": 0
+      }
+    ],
+    "place_id": "e1UlDl25TqlleWRcn4Ci5EhRQSyvVLbcTrpFW6t4hJp-hm89n1OQ4WaQTl6lUqapSfNRIZ1Vh5lmqzYHrnzq0XiKGl12mfU3IfLiuIZxomPF9gpi0rg6ImH9aVaqYD-PY",
+    "reference": "e1UlDl25TqlleWRcn4Ci5EhRQSyvVLbcTrpFW6t4hJp-hm89n1OQ4WaQTl6lUqapSfNRIZ1Vh5lmqzYHrnzq0XiKGl12mfU3IfLiuIZxomPF9gpi0rg6ImH9aVaqYD-PY",
+    "structured_formatting": {
+      "main_text": "Du Lịch Thác JGOOOOO",
+      "main_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Séo Trung Hồ, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX91IS Séo Trung Hồ, Sa Pa, Lào Cai",
+      "global_code": "17YTD+CX91IS"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Bản Hồ",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Du Lịch Thác JGOOOOO"
+      },
+      {
+        "offset": 24,
+        "value": "Séo Trung Hồ"
+      },
+      {
+        "offset": 41,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 48,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "DU LỊCH MẶT TRỜI MỌC (S-TRAVEL), 057 P. Bùi Đức Minh, Bắc Cường, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 2,
+        "offset": 0
+      },
+      {
+        "length": 2,
+        "offset": 44
+      }
+    ],
+    "place_id": "hTagar8wik1uli5qRGiN6WzPoiknTm3ilaVcS7xAbv1YuXIMiUOF02-5TTKW3VK_RYwZyqrlqhtlekCOBjx-JSmCoZsCIRYXhbalfS4l5ieBsk0wfvx-ZiW67RDSJHvLJ",
+    "reference": "hTagar8wik1uli5qRGiN6WzPoiknTm3ilaVcS7xAbv1YuXIMiUOF02-5TTKW3VK_RYwZyqrlqhtlekCOBjx-JSmCoZsCIRYXhbalfS4l5ieBsk0wfvx-ZiW67RDSJHvLJ",
+    "structured_formatting": {
+      "main_text": "DU LỊCH MẶT TRỜI MỌC (S-TRAVEL)",
+      "main_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "057 P. Bùi Đức Minh, Bắc Cường, Lào Cai",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 11
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX8VGI 057 P. Bùi Đức Minh, Bắc Cường, Lào Cai",
+      "global_code": "17XVV+CX8VGI"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Bắc Cường",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "DU LỊCH MẶT TRỜI MỌC (S-TRAVEL)"
+      },
+      {
+        "offset": 40,
+        "value": "057 P. Bùi Đức Minh"
+      },
+      {
+        "offset": 65,
+        "value": "Bắc Cường"
+      },
+      {
+        "offset": 81,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Du lịch Cộng Đồng Lao Chải 01 - Tam đường - Lai Châu, Tam Đường, Lai Châu",
+    "matched_substrings": [
+      {
+        "length": 2,
+        "offset": 0
+      },
+      {
+        "length": 2,
+        "offset": 36
+      },
+      {
+        "length": 2,
+        "offset": 58
+      }
+    ],
+    "place_id": "VtWT4LNePYtFo2i1uHI803GKdL2UbJzsQ4tVE6JxKL9y6nzprl8Fv0K_ZK26BlXDetdd7KJZmx15iU3UrmNR1nOlXp9eYFHtd613k0VjBfqNiXKDpXYuk3ShBeiTBCVrT",
+    "reference": "VtWT4LNePYtFo2i1uHI803GKdL2UbJzsQ4tVE6JxKL9y6nzprl8Fv0K_ZK26BlXDetdd7KJZmx15iU3UrmNR1nOlXp9eYFHtd613k0VjBfqNiXKDpXYuk3ShBeiTBCVrT",
+    "structured_formatting": {
+      "main_text": "Du lịch Cộng Đồng Lao Chải 01 - Tam đường - Lai Châu",
+      "main_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 0
+        },
+        {
+          "length": 2,
+          "offset": 36
+        }
+      ],
+      "secondary_text": "Tam Đường, Lai Châu",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 4
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BL2JKF Tam Đường, Lai Châu",
+      "global_code": "1SJ65+BL2JKF"
+    },
+    "compound": {
+      "district": "Tam Đường",
+      "commune": "Khun Há",
+      "province": "Lai Châu"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Du lịch Cộng Đồng Lao Chải 01 - Tam đường - Lai Châu"
+      },
+      {
+        "offset": 67,
+        "value": "Tam Đường"
+      },
+      {
+        "offset": 56,
+        "value": "Lai Châu"
+      }
+    ],
+    "types": [
+      "hotel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khu du lịch cổng trời Ô Quy Hồ, Quốc Lộ 4D, Xã Sơn Bình, Huyện Tam Đường, Tỉnh Lai Châu",
+    "matched_substrings": [
+      {
+        "length": 2,
+        "offset": 4
+      },
+      {
+        "length": 2,
+        "offset": 67
+      }
+    ],
+    "place_id": "PGb_SVN7eEhgw9wErEmraorBX0G4Tmzco59xMQbBJmY1TqVA8gFiF5WS1SDmuVZ2Cd4tyAYOp_sN4TyMlrGGJgFWks6QvE7ftYaW0R4V1hexgn0ATsxOVhWK3SDiFEv7F",
+    "reference": "PGb_SVN7eEhgw9wErEmraorBX0G4Tmzco59xMQbBJmY1TqVA8gFiF5WS1SDmuVZ2Cd4tyAYOp_sN4TyMlrGGJgFWks6QvE7ftYaW0R4V1hexgn0ATsxOVhWK3SDiFEv7F",
+    "structured_formatting": {
+      "main_text": "Khu du lịch cổng trời Ô Quy Hồ",
+      "main_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 4
+        }
+      ],
+      "secondary_text": "Quốc Lộ 4D, Xã Sơn Bình, Huyện Tam Đường, Tỉnh Lai Châu",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 35
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+VTFA Sơn Bình, Tam Đường, Lai Châu",
+      "global_code": "1SJ67+VTFA"
+    },
+    "compound": {
+      "district": "Tam Đường",
+      "commune": "Sơn Bình",
+      "province": "Lai Châu"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khu du lịch cổng trời Ô Quy Hồ"
+      },
+      {
+        "offset": 40,
+        "value": "Quốc Lộ 4D"
+      },
+      {
+        "offset": 56,
+        "value": "Xã Sơn Bình"
+      },
+      {
+        "offset": 72,
+        "value": "Huyện Tam Đường"
+      },
+      {
+        "offset": 95,
+        "value": "Tỉnh Lai Châu"
+      }
+    ],
+    "types": [
+      "site"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khu Du Lịch Cầu Kính Rồng Mây, QL4D, đèo Ô Quy Hồ, Tam Đường, Lai Châu",
+    "matched_substrings": [
+      {
+        "length": 2,
+        "offset": 4
+      },
+      {
+        "length": 2,
+        "offset": 55
+      }
+    ],
+    "place_id": "h4j0Rak2lqNrgCAAiZAZfWmtaCK6148ab5ZgTbGNuUZmr0Y09c-JAGiVdPa672t3Ssch4MKbzaGBlrkIApcmhRmrLRhO_ipx_a69ZTY_mjxlqlUoZuY9CGGi9n4ePMkJu",
+    "reference": "h4j0Rak2lqNrgCAAiZAZfWmtaCK6148ab5ZgTbGNuUZmr0Y09c-JAGiVdPa672t3Ssch4MKbzaGBlrkIApcmhRmrLRhO_ipx_a69ZTY_mjxlqlUoZuY9CGGi9n4ePMkJu",
+    "structured_formatting": {
+      "main_text": "Khu Du Lịch Cầu Kính Rồng Mây",
+      "main_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 4
+        }
+      ],
+      "secondary_text": "QL4D, đèo Ô Quy Hồ, Tam Đường, Lai Châu",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 24
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX8ZZ7 đèo Ô Quy Hồ, Tam Đường, Lai Châu",
+      "global_code": "1SJ67+CX8ZZ7"
+    },
+    "compound": {
+      "district": "Tam Đường",
+      "commune": "Sơn Bình",
+      "province": "Lai Châu"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khu Du Lịch Cầu Kính Rồng Mây"
+      },
+      {
+        "offset": 38,
+        "value": "QL4D"
+      },
+      {
+        "offset": 44,
+        "value": "đèo Ô Quy Hồ"
+      },
+      {
+        "offset": 63,
+        "value": "Tam Đường"
+      },
+      {
+        "offset": 78,
+        "value": "Lai Châu"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Khu du lịch Thác Bạc, Ô Quý Hồ, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 2,
+        "offset": 4
+      }
+    ],
+    "place_id": "P1tPo2EG0jbNmO22gZryJh1IwZUeKX4KyVLFbQ-JLrIZTxK4NqXD5ylMtriWHFY7qYptLArdIrPt_sERGh079wGOdLUeoUvzJcqJUQIJygutnmE9mtBSSghSwR2WCFfnC",
+    "reference": "P1tPo2EG0jbNmO22gZryJh1IwZUeKX4KyVLFbQ-JLrIZTxK4NqXD5ylMtriWHFY7qYptLArdIrPt_sERGh079wGOdLUeoUvzJcqJUQIJygutnmE9mtBSSghSwR2WCFfnC",
+    "structured_formatting": {
+      "main_text": "Khu du lịch Thác Bạc",
+      "main_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 4
+        }
+      ],
+      "secondary_text": "Ô Quý Hồ, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CZWE Ô Quý Hồ, Sa Pa, Lào Cai",
+      "global_code": "17YTL+CZWE"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Ô Quý Hồ",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khu du lịch Thác Bạc"
+      },
+      {
+        "offset": 26,
+        "value": "Ô Quý Hồ"
+      },
+      {
+        "offset": 40,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 47,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "site"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khu du lịch Cát Cát, Xã Hoàng Liên, Thị xã Sa Pa, Tỉnh Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 2,
+        "offset": 4
+      }
+    ],
+    "place_id": "L3lm021Tq393pLobmVu8lp5m0g-sXKtyc6dtMQJ5lk_dytZkvPAK91HOIsFKKZLyUcY9xGZYBkJVApls4ngKXkWiMQzKKW5bwcrZ3VJZmoP9zjEAAhgCWlnGkWyvtAaDW",
+    "reference": "L3lm021Tq393pLobmVu8lp5m0g-sXKtyc6dtMQJ5lk_dytZkvPAK91HOIsFKKZLyUcY9xGZYBkJVApls4ngKXkWiMQzKKW5bwcrZ3VJZmoP9zjEAAhgCWlnGkWyvtAaDW",
+    "structured_formatting": {
+      "main_text": "Khu du lịch Cát Cát",
+      "main_text_matched_substrings": [
+        {
+          "length": 2,
+          "offset": 4
+        }
+      ],
+      "secondary_text": "Xã Hoàng Liên, Thị xã Sa Pa, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CPKR Hoàng Liên, Sa Pa, Lào Cai",
+      "global_code": "17YSX+CPKR"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Hoàng Liên",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khu du lịch Cát Cát"
+      },
+      {
+        "offset": 24,
+        "value": "Xã Hoàng Liên"
+      },
+      {
+        "offset": 42,
+        "value": "Thị xã Sa Pa"
+      },
+      {
+        "offset": 59,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "site"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Nhà hàng ăn uống Xưa & Nay, 27 Cầu Mây, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "kvsvjJJQRJpCK0iioliO1UJVT1d2XuH0oYtiVHQGnvp4sTwglwWk20KKVwvhYqOVRLJEH5Nw6eFuolcQpAeg5UW_UnXOlJl--dvu8WJJikrJ3iFdfpASCknWgBF-SBenS",
+    "reference": "kvsvjJJQRJpCK0iioliO1UJVT1d2XuH0oYtiVHQGnvp4sTwglwWk20KKVwvhYqOVRLJEH5Nw6eFuolcQpAeg5UW_UnXOlJl--dvu8WJJikrJ3iFdfpASCknWgBF-SBenS",
+    "structured_formatting": {
+      "main_text": "Nhà hàng ăn uống Xưa & Nay",
+      "main_text_matched_substrings": [],
+      "secondary_text": "27 Cầu Mây, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BY65 Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+BY65"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Nhà hàng ăn uống Xưa & Nay"
+      },
+      {
+        "offset": 33,
+        "value": "27 Cầu Mây"
+      },
+      {
+        "offset": 48,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 48,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 62,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "restaurant"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Nhà hàng Hải Yến, 99 Hợp Thành, Phường Lào Cai, Thành phố Lào Cai, Tỉnh Lào Cai",
+    "matched_substrings": [],
+    "place_id": "3bHdbJH0dvYF02kR8nB2O1HqsUwivA-buYJJYbaMhocdL7khvtnyR2GC-NxK2JZW7Y9hyfrYT6nma2TMLnSmdYHzYan2bX-Oeeb1LbZ0LnfR4h1gLqyCNUHqvnQqrJOZQ",
+    "reference": "3bHdbJH0dvYF02kR8nB2O1HqsUwivA-buYJJYbaMhocdL7khvtnyR2GC-NxK2JZW7Y9hyfrYT6nma2TMLnSmdYHzYan2bX-Oeeb1LbZ0LnfR4h1gLqyCNUHqvnQqrJOZQ",
+    "structured_formatting": {
+      "main_text": "Nhà hàng Hải Yến",
+      "main_text_matched_substrings": [],
+      "secondary_text": "99 Hợp Thành, Phường Lào Cai, Thành phố Lào Cai, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+EAMA Lào Cai, Lào Cai, Lào Cai",
+      "global_code": "17XVB+EAMA"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Lào Cai",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Nhà hàng Hải Yến"
+      },
+      {
+        "offset": 23,
+        "value": "99 Hợp Thành"
+      },
+      {
+        "offset": 40,
+        "value": "Phường Lào Cai"
+      },
+      {
+        "offset": 60,
+        "value": "Thành phố Lào Cai"
+      },
+      {
+        "offset": 83,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "restaurant"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Nhà Hàng Ngòi Đum, Phường Kim Tân, Thành phố Lào Cai, Tỉnh Lào Cai",
+    "matched_substrings": [],
+    "place_id": "Z6mxg68UZ4NisSkkTmCuyIyxogB4TjqDiKItZYJxDcpisGtHFhheTy1WzSjKGFoPaasd4OapIuYBSmXQCsk6P3mOZeEKLcqG2Z6NVQdlzg-pmtUYVmWKTg2S1Tj6DFfjD",
+    "reference": "Z6mxg68UZ4NisSkkTmCuyIyxogB4TjqDiKItZYJxDcpisGtHFhheTy1WzSjKGFoPaasd4OapIuYBSmXQCsk6P3mOZeEKLcqG2Z6NVQdlzg-pmtUYVmWKTg2S1Tj6DFfjD",
+    "structured_formatting": {
+      "main_text": "Nhà Hàng Ngòi Đum",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Phường Kim Tân, Thành phố Lào Cai, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+EUUE Kim Tân, Lào Cai, Lào Cai",
+      "global_code": "17XVH+EUUE"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Kim Tân",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Nhà Hàng Ngòi Đum"
+      },
+      {
+        "offset": 22,
+        "value": "Phường Kim Tân"
+      },
+      {
+        "offset": 42,
+        "value": "Thành phố Lào Cai"
+      },
+      {
+        "offset": 65,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "restaurant"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Nhà hàng Tây Bắc, Hàm Nghi, Phường Kim Tân, Thành phố Lào Cai, Tỉnh Lào Cai",
+    "matched_substrings": [],
+    "place_id": "f0VktklNsLBkjyoWtCXOz9HyYXRuGb4ODV8a2JC4VmINgnrIZq3CcxlCfSQ6xZPv8cppzMYhiurN9x3cP2U2HyU2zZiC2XYDHVaCsQjlwgOllVmGAFpqQgGeyFj2AF_vA",
+    "reference": "f0VktklNsLBkjyoWtCXOz9HyYXRuGb4ODV8a2JC4VmINgnrIZq3CcxlCfSQ6xZPv8cppzMYhiurN9x3cP2U2HyU2zZiC2XYDHVaCsQjlwgOllVmGAFpqQgGeyFj2AF_vA",
+    "structured_formatting": {
+      "main_text": "Nhà hàng Tây Bắc",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Hàm Nghi, Phường Kim Tân, Thành phố Lào Cai, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+DUYI Kim Tân, Lào Cai, Lào Cai",
+      "global_code": "17XVH+DUYI"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Kim Tân",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Nhà hàng Tây Bắc"
+      },
+      {
+        "offset": 22,
+        "value": "Hàm Nghi"
+      },
+      {
+        "offset": 33,
+        "value": "Phường Kim Tân"
+      },
+      {
+        "offset": 53,
+        "value": "Thành phố Lào Cai"
+      },
+      {
+        "offset": 76,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "restaurant"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Nhà hàng Hải cảng Fansipan, Xã Hoàng Liên, Thị xã Sa Pa, Tỉnh Lào Cai",
+    "matched_substrings": [],
+    "place_id": "QIbG4JhL_WeOwl85thO8Uc-0fTeAZv3ZV7BnGMIohs5itXUirXWBhWOcQ2K3dLSBQ6VceLh0-e5vun4LrE-gP2SYccKqS6gGYrFQRKZ2hu9jnAEMQsBCJS2G0hjuGEZZL",
+    "reference": "QIbG4JhL_WeOwl85thO8Uc-0fTeAZv3ZV7BnGMIohs5itXUirXWBhWOcQ2K3dLSBQ6VceLh0-e5vun4LrE-gP2SYccKqS6gGYrFQRKZ2hu9jnAEMQsBCJS2G0hjuGEZZL",
+    "structured_formatting": {
+      "main_text": "Nhà hàng Hải cảng Fansipan",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Xã Hoàng Liên, Thị xã Sa Pa, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+C0YS Hoàng Liên, Sa Pa, Lào Cai",
+      "global_code": "17YSX+C0YS"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Hoàng Liên",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Nhà hàng Hải cảng Fansipan"
+      },
+      {
+        "offset": 33,
+        "value": "Xã Hoàng Liên"
+      },
+      {
+        "offset": 51,
+        "value": "Thị xã Sa Pa"
+      },
+      {
+        "offset": 68,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "restaurant"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Nhà hàng Thác bạc Sapa, Quốc Lộ 4D, Ô Quý Hồ, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "YoYTTxA_gzt4n2mwszyG2We2QzO0EaTDerUsGRJLjc94uq8miXWD23i1YSmKEfXuYqZPArZNhoFmn0tDgWaGhGK3KUKqeYrbe7BQRKZ2hu9jnEOOsBCWEGGA0S4Znhv3G",
+    "reference": "YoYTTxA_gzt4n2mwszyG2We2QzO0EaTDerUsGRJLjc94uq8miXWD23i1YSmKEfXuYqZPArZNhoFmn0tDgWaGhGK3KUKqeYrbe7BQRKZ2hu9jnEOOsBCWEGGA0S4Znhv3G",
+    "structured_formatting": {
+      "main_text": "Nhà hàng Thác bạc Sapa",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Quốc Lộ 4D, Ô Quý Hồ, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+VTF7 Ô Quý Hồ, Sa Pa, Lào Cai",
+      "global_code": "17YTL+VTF7"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Ô Quý Hồ",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Nhà hàng Thác bạc Sapa"
+      },
+      {
+        "offset": 28,
+        "value": "Quốc Lộ 4D"
+      },
+      {
+        "offset": 44,
+        "value": "Ô Quý Hồ"
+      },
+      {
+        "offset": 58,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 65,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "restaurant"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Nhà hàng Sapa, 21 Cầu Mây, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "p5S4coiNIKhsroE8p2yGeWi9tC6Pf4vUZKx5KYlujY5fvGEquRmginDJdU-lfpLxaZRbNGoagY28yDd-uEdv-WfJAU2lwtEKMaqJYTEN-judrro4YSxiejmm8QzOOGfXO",
+    "reference": "p5S4coiNIKhsroE8p2yGeWi9tC6Pf4vUZKx5KYlujY5fvGEquRmginDJdU-lfpLxaZRbNGoagY28yDd-uEdv-WfJAU2lwtEKMaqJYTEN-judrro4YSxiejmm8QzOOGfXO",
+    "structured_formatting": {
+      "main_text": "Nhà hàng Sapa",
+      "main_text_matched_substrings": [],
+      "secondary_text": "21 Cầu Mây, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+D5QY Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+D5QY"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Nhà hàng Sapa"
+      },
+      {
+        "offset": 16,
+        "value": "21 Cầu Mây"
+      },
+      {
+        "offset": 31,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 31,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 45,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "restaurant"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Nhà hàng Ngon, 9 Mường Hoa, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "lv-eO0C2ALZGpkxRplyK0UaIS1OlWuXwcI9mUJYCmv58tTgvkwHllHF3oCR5jQpaRQAOTG5d07eVqplMUoAOkumtbWyKhXLjhctBAVJaZZv9zjFMAcpaGlqCkWytxAe3W",
+    "reference": "lv-eO0C2ALZGpkxRplyK0UaIS1OlWuXwcI9mUJYCmv58tTgvkwHllHF3oCR5jQpaRQAOTG5d07eVqplMUoAOkumtbWyKhXLjhctBAVJaZZv9zjFMAcpaGlqCkWytxAe3W",
+    "structured_formatting": {
+      "main_text": "Nhà hàng Ngon",
+      "main_text_matched_substrings": [],
+      "secondary_text": "9 Mường Hoa, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+D7F5 Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+D7F5"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Nhà hàng Ngon"
+      },
+      {
+        "offset": 16,
+        "value": "9 Mường Hoa"
+      },
+      {
+        "offset": 32,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 32,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 46,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "cafe"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Nhà hàng Delta, 33 Cầu Mây, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "J2X6pl3jal1J621btqm5dI3V7eP21Ur0cvGI52a9Th352vDVCmlyTW6mAUpxNCbkxmthGmKGQCSWzSEbgrI-fA5GRQp62Cpxde79J9lJvnwl6hZ-fWgmPInitUt-fCOQm",
+    "reference": "J2X6pl3jal1J621btqm5dI3V7eP21Ur0cvGI52a9Th352vDVCmlyTW6mAUpxNCbkxmthGmKGQCSWzSEbgrI-fA5GRQp62Cpxde79J9lJvnwl6hZ-fWgmPInitUt-fCOQm",
+    "structured_formatting": {
+      "main_text": "Nhà hàng Delta",
+      "main_text_matched_substrings": [],
+      "secondary_text": "33 Cầu Mây, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+DDBR Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+DDBR"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Nhà hàng Delta"
+      },
+      {
+        "offset": 17,
+        "value": "33 Cầu Mây"
+      },
+      {
+        "offset": 32,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 32,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 46,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "restaurant"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Nhà hàng Hoàng Liên, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "LeYB63DRpn11m0FXk2aa3GnvZ1WTWYyO4dst0Fr1ncLiUjEJSkQN09UKOYBujArbUnNFkFKJ3mHOWdXM0pLeE6qJ7SRdpAefNprRCVpRklP1xjlECogKElHOmWSmUA-_U",
+    "reference": "LeYB63DRpn11m0FXk2aa3GnvZ1WTWYyO4dst0Fr1ncLiUjEJSkQN09UKOYBujArbUnNFkFKJ3mHOWdXM0pLeE6qJ7SRdpAefNprRCVpRklP1xjlECogKElHOmWSmUA-_U",
+    "structured_formatting": {
+      "main_text": "Nhà hàng Hoàng Liên",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+F1OI Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+F1OI"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Nhà hàng Hoàng Liên"
+      },
+      {
+        "offset": 24,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 24,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 38,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "restaurant"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Cafe Yến, 9 Hồ Tùng Mậu, Phường Lào Cai, Thành phố Lào Cai, Tỉnh Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 0
+      }
+    ],
+    "place_id": "mncWOohqYQ9ioHcyqWK6hfuzrCCBZqbacS6iJ4dgg4BRsm8ktxeuhGFkVjmrcJz_x2dVtrIUj0V-xnCDqUm692nHfEeGTIOCZKBWCTYBwgOllmkJFthaQgGeyTT2AjxfA",
+    "reference": "mncWOohqYQ9ioHcyqWK6hfuzrCCBZqbacS6iJ4dgg4BRsm8ktxeuhGFkVjmrcJz_x2dVtrIUj0V-xnCDqUm692nHfEeGTIOCZKBWCTYBwgOllmkJFthaQgGeyTT2AjxfA",
+    "structured_formatting": {
+      "main_text": "Cafe Yến",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "9 Hồ Tùng Mậu, Phường Lào Cai, Thành phố Lào Cai, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+EA6I Lào Cai, Lào Cai, Lào Cai",
+      "global_code": "17XVB+EA6I"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Lào Cai",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Cafe Yến"
+      },
+      {
+        "offset": 11,
+        "value": "9 Hồ Tùng Mậu"
+      },
+      {
+        "offset": 31,
+        "value": "Phường Lào Cai"
+      },
+      {
+        "offset": 51,
+        "value": "Thành phố Lào Cai"
+      },
+      {
+        "offset": 74,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "cafe"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Cafe Gem Valley, Làng Cát Cát, Phường Phan Si Păng, Thị xã Sa Pa, Tỉnh Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 0
+      }
+    ],
+    "place_id": "nQ5w1TuWdNNujEWjIKJ0l3qna6W_da_sWIpyFpR6mt56uUQJmgOQ10i5d7m7AKf0TCd_i5VIid16WLQto2a3_D9EcVCkdZaWQ7VwV5VllfxQj3IDowOFLFincPZWVAu4o",
+    "reference": "nQ5w1TuWdNNujEWjIKJ0l3qna6W_da_sWIpyFpR6mt56uUQJmgOQ10i5d7m7AKf0TCd_i5VIid16WLQto2a3_D9EcVCkdZaWQ7VwV5VllfxQj3IDowOFLFincPZWVAu4o",
+    "structured_formatting": {
+      "main_text": "Cafe Gem Valley",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Làng Cát Cát, Phường Phan Si Păng, Thị xã Sa Pa, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+DXY9 Phan Si Păng, Sa Pa, Lào Cai",
+      "global_code": "17YTK+DXY9"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Phan Si Păng",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Cafe Gem Valley"
+      },
+      {
+        "offset": 16,
+        "value": "Làng Cát Cát"
+      },
+      {
+        "offset": 33,
+        "value": "Phường Phan Si Păng"
+      },
+      {
+        "offset": 58,
+        "value": "Thị xã Sa Pa"
+      },
+      {
+        "offset": 75,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "cafe"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Cafe Nhân, Ngũ Chỉ Sơn, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 0
+      }
+    ],
+    "place_id": "mkSelYyZeY2_cW0ZprBpL6h_R97ThV1Vv0dlV9K7Zt-9RjAwjKygkWRrU1SmvWnSvHFhJLeeW3aQc3kA0M9alKRyQzK2uGbolnNAVIyWAP-gcVMApIYBlpZyWyu67XQfW",
+    "reference": "mkSelYyZeY2_cW0ZprBpL6h_R97ThV1Vv0dlV9K7Zt-9RjAwjKygkWRrU1SmvWnSvHFhJLeeW3aQc3kA0M9alKRyQzK2uGbolnNAVIyWAP-gcVMApIYBlpZyWyu67XQfW",
+    "structured_formatting": {
+      "main_text": "Cafe Nhân",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Ngũ Chỉ Sơn, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BYY1 Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+BYY1"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Cafe Nhân"
+      },
+      {
+        "offset": 11,
+        "value": "Ngũ Chỉ Sơn"
+      },
+      {
+        "offset": 28,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 28,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 42,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "cafe"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Cafe Buôn Mê, 11 Xuân Viên, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 0
+      }
+    ],
+    "place_id": "Q3H6hvLJKkNqvbQYu32WJHK-U4GIYRWNWcggjbwblo1ukEcXpX6RuG-AeRXFoje5bG999b1qP9cZlHkBv2nOJx2i9Wy64U47Jaq5YTI5-judrlEsYuBiejmm8QzOOGfXO",
+    "reference": "Q3H6hvLJKkNqvbQYu32WJHK-U4GIYRWNWcggjbwblo1ukEcXpX6RuG-AeRXFoje5bG999b1qP9cZlHkBv2nOJx2i9Wy64U47Jaq5YTI5-judrlEsYuBiejmm8QzOOGfXO",
+    "structured_formatting": {
+      "main_text": "Cafe Buôn Mê",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "11 Xuân Viên, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CP7Q Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+CP7Q"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Cafe Buôn Mê"
+      },
+      {
+        "offset": 15,
+        "value": "11 Xuân Viên"
+      },
+      {
+        "offset": 31,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 31,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 45,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "cafe"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Cafe Phố Xưa, Ngũ Chỉ Sơn, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 0
+      }
+    ],
+    "place_id": "PHakr4S2YwRtw13NZYWXBGO1SvdlEf8aebhB3rqo9zhSdFHBjKSIr3m0SWAbdaJ688Frg69nmAp5wCrEhBKEMGVJwYeCZLJGYHNS7fp0hBKLnkGEshJhO8ZS2ScSEE_89",
+    "reference": "PHakr4S2YwRtw13NZYWXBGO1SvdlEf8aebhB3rqo9zhSdFHBjKSIr3m0SWAbdaJ688Frg69nmAp5wCrEhBKEMGVJwYeCZLJGYHNS7fp0hBKLnkGEshJhO8ZS2ScSEE_89",
+    "structured_formatting": {
+      "main_text": "Cafe Phố Xưa",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Ngũ Chỉ Sơn, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+D1AI Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+D1AI"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Cafe Phố Xưa"
+      },
+      {
+        "offset": 16,
+        "value": "Ngũ Chỉ Sơn"
+      },
+      {
+        "offset": 33,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 33,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 47,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "cafe"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Cafe Linh Chi, 9 Xuân Viên, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 0
+      }
+    ],
+    "place_id": "XRQ9YrkJirpHj1kMo3Sckl2fRVORbdTNdoxjDqASpiPlxoE28oTCm2UddZ12YYruIcrGOcds2stZBozZdo3-cyUKKRh6WXKrvdLBGUpBgkPl1ilUGpgaAkHeiXS2QB-vQ",
+    "reference": "XRQ9YrkJirpHj1kMo3Sckl2fRVORbdTNdoxjDqASpiPlxoE28oTCm2UddZ12YYruIcrGOcds2stZBozZdo3-cyUKKRh6WXKrvdLBGUpBgkPl1ilUGpgaAkHeiXS2QB-vQ",
+    "structured_formatting": {
+      "main_text": "Cafe Linh Chi",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "9 Xuân Viên, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+C5XQ Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+C5XQ"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Cafe Linh Chi"
+      },
+      {
+        "offset": 14,
+        "value": "9 Xuân Viên"
+      },
+      {
+        "offset": 29,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 29,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 43,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "cafe"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Cafe Trúc Việt, Thác Bạc, Tổ 10 Xóm 3A, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 0
+      }
+    ],
+    "place_id": "D36Cbn7Zaue1S2IWsHa_0YOpllqnZLkiacNyKWLBStNBI3T8_smmjnkm4IDOya5XdZKk5K7NmVMB-uJEPn3l2kXzfTD2rVbebfblPW5l9mfCvg1wPaXyJeK-rVCSZmeIO",
+    "reference": "D36Cbn7Zaue1S2IWsHa_0YOpllqnZLkiacNyKWLBStNBI3T8_smmjnkm4IDOya5XdZKk5K7NmVMB-uJEPn3l2kXzfTD2rVbebfblPW5l9mfCvg1wPaXyJeK-rVCSZmeIO",
+    "structured_formatting": {
+      "main_text": "Cafe Trúc Việt",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Thác Bạc, Tổ 10 Xóm 3A, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CM4L Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+CM4L"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Cafe Trúc Việt"
+      },
+      {
+        "offset": 18,
+        "value": "Thác Bạc"
+      },
+      {
+        "offset": 31,
+        "value": "Tổ 10 Xóm 3A"
+      },
+      {
+        "offset": 48,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 48,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 62,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "cafe"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Cafe View & Bar, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 0
+      }
+    ],
+    "place_id": "Y4cZixB7iax5pXwgtHW18Ga0KQeAbqv0doh7So9Lpa1QtkBShHc-3WakUp-sdxz4ZrdOIa5n-INupGABetEqp_VG7aAGBWoPPY6dRRYd3h-5inUIRsbGXh2C1SjoRh_zH",
+    "reference": "Y4cZixB7iax5pXwgtHW18Ga0KQeAbqv0doh7So9Lpa1QtkBShHc-3WakUp-sdxz4ZrdOIa5n-INupGABetEqp_VG7aAGBWoPPY6dRRYd3h-5inUIRsbGXh2C1SjoRh_zH",
+    "structured_formatting": {
+      "main_text": "Cafe View & Bar",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+EZX3 Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+EZX3"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Cafe View & Bar"
+      },
+      {
+        "offset": 16,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 16,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 30,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "cafe"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Cafe in the Clouds, 58 Phan Xi Păng, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 0
+      }
+    ],
+    "place_id": "tqt7vBWVPEpztlcapA_p30t-XKwFDyOakkpmgZ9TqIXmu1cirUeG30yrMDetR7TgfIJpI6hTtPp7u08eqVaW8nCAYl-xeZnRfrpMWJpqmvN_gF8MrAyKmn2oVyeaDeHaM",
+    "reference": "tqt7vBWVPEpztlcapA_p30t-XKwFDyOakkpmgZ9TqIXmu1cirUeG30yrMDetR7TgfIJpI6hTtPp7u08eqVaW8nCAYl-xeZnRfrpMWJpqmvN_gF8MrAyKmn2oVyeaDeHaM",
+    "structured_formatting": {
+      "main_text": "Cafe in the Clouds",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "58 Phan Xi Păng, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+DR48 Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+DR48"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Cafe in the Clouds"
+      },
+      {
+        "offset": 19,
+        "value": "58 Phan Xi Păng"
+      },
+      {
+        "offset": 37,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 37,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 51,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "cafe"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Cafe Đức Anh Góc Phố, 25 Mường Hoa, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 0
+      }
+    ],
+    "place_id": "0nNfQxKSpKC-eHpVpV7okYucQ6QJYO121YxPu6IFnkIro1xU2o2OR2VShaSO5bbz5cJppUawHnox1yGlQoVmSlW6gV1e7W3PWdrJEUJ2ekvt3iFcEYgSCknWgXy-SBenS",
+    "reference": "0nNfQxKSpKC-eHpVpV7okYucQ6QJYO121YxPu6IFnkIro1xU2o2OR2VShaSO5bbz5cJppUawHnox1yGlQoVmSlW6gV1e7W3PWdrJEUJ2ekvt3iFcEYgSCknWgXy-SBenS",
+    "structured_formatting": {
+      "main_text": "Cafe Đức Anh Góc Phố",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "25 Mường Hoa, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CUZS Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+CUZS"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Cafe Đức Anh Góc Phố"
+      },
+      {
+        "offset": 27,
+        "value": "25 Mường Hoa"
+      },
+      {
+        "offset": 44,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 44,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 58,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "cafe"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khách sạn VPS, Thác Bạc, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "SWBj_sAgbZ6oUk0arhKi7beySTWaZ4zdU7pRZYUCiM1VtSJ3tXeq23nAIhK1dPqHY7RNJLNNhIeLtyMJt0g97JzDa2KyEwfMYIxSRoR0hK8Rh7UESshKUhGO2STmEE__E",
+    "reference": "SWBj_sAgbZ6oUk0arhKi7beySTWaZ4zdU7pRZYUCiM1VtSJ3tXeq23nAIhK1dPqHY7RNJLNNhIeLtyMJt0g97JzDa2KyEwfMYIxSRoR0hK8Rh7UESshKUhGO2STmEE__E",
+    "structured_formatting": {
+      "main_text": "Khách sạn VPS",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Thác Bạc, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BW7Z Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+BW7Z"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khách sạn VPS"
+      },
+      {
+        "offset": 17,
+        "value": "Thác Bạc"
+      },
+      {
+        "offset": 30,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 30,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 44,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "hotel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khách sạn Hoa Đào, 31 Xuân Viên, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "jDQcert3bYx3qUQNuDCv2XSTekK5TavBaZFMO21EjfeGz1wQgUSMbGiQHTjgp5X7L5NTT495-tBgtXkJiGaB-m6Hcja6aIH-balfS4l5ieBsv0ylkx-ZiW45fRL-JHvLJ",
+    "reference": "jDQcert3bYx3qUQNuDCv2XSTekK5TavBaZFMO21EjfeGz1wQgUSMbGiQHTjgp5X7L5NTT495-tBgtXkJiGaB-m6Hcja6aIH-balfS4l5ieBsv0ylkx-ZiW45fRL-JHvLJ",
+    "structured_formatting": {
+      "main_text": "Khách sạn Hoa Đào",
+      "main_text_matched_substrings": [],
+      "secondary_text": "31 Xuân Viên, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BQGX Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+BQGX"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khách sạn Hoa Đào"
+      },
+      {
+        "offset": 23,
+        "value": "31 Xuân Viên"
+      },
+      {
+        "offset": 39,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 39,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 53,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "hotel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khách sạn Cát Cát, 46 Phan Xi Păng, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "aW2XkKOYMSekXl4miWhL8pGRZwaJevuLdUWQB71FkNduVYc9vncmi1nOh4Cy5eJT0b5B4gI53gwhfhnPBvmyE4Hi4XTe-WanDbKheSoh4aeFtkk0evogeiG-6RTWIH_PI",
+    "reference": "aW2XkKOYMSekXl4miWhL8pGRZwaJevuLdUWQB71FkNduVYc9vncmi1nOh4Cy5eJT0b5B4gI53gwhfhnPBvmyE4Hi4XTe-WanDbKheSoh4aeFtkk0evogeiG-6RTWIH_PI",
+    "structured_formatting": {
+      "main_text": "Khách sạn Cát Cát",
+      "main_text_matched_substrings": [],
+      "secondary_text": "46 Phan Xi Păng, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CMX5 Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+CMX5"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khách sạn Cát Cát"
+      },
+      {
+        "offset": 23,
+        "value": "46 Phan Xi Păng"
+      },
+      {
+        "offset": 41,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 41,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 55,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "hotel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khách sạn Pao’s Sapa Leisure, Mường Hoa, Phường Cầu Mây, Thị xã Sa Pa, Tỉnh Lào Cai",
+    "matched_substrings": [],
+    "place_id": "Nja8gGvnh39mo0kPsRr8yl6QKRC9GpSPX75zAIpGqf3NfrkI3uFKTzWitdGuKUqH1IJd8aUJGoW5urr0LWu-DQ7mVd0plo4xspK9ZTY_Ej-ZqlUoZuRmfj2i9QjKPGPTP",
+    "reference": "Nja8gGvnh39mo0kPsRr8yl6QKRC9GpSPX75zAIpGqf3NfrkI3uFKTzWitdGuKUqH1IJd8aUJGoW5urr0LWu-DQ7mVd0plo4xspK9ZTY_Ej-ZqlUoZuRmfj2i9QjKPGPTP",
+    "structured_formatting": {
+      "main_text": "Khách sạn Pao’s Sapa Leisure",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Mường Hoa, Phường Cầu Mây, Thị xã Sa Pa, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+SIOC Cầu Mây, Sa Pa, Lào Cai",
+      "global_code": "17YTM+SIOC"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Cầu Mây",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khách sạn Pao’s Sapa Leisure"
+      },
+      {
+        "offset": 34,
+        "value": "Mường Hoa"
+      },
+      {
+        "offset": 48,
+        "value": "Phường Cầu Mây"
+      },
+      {
+        "offset": 70,
+        "value": "Thị xã Sa Pa"
+      },
+      {
+        "offset": 87,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "hotel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khách sạn Sa Pa Green, 1 Thác Bạc, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "uGhuiDCKRGy_bWBQR2iawM4JuwlMHPL6dLW3F1x5-tNfqaI1L3uFzF-6ok1meK_-d8yiMSdqlY6ldIkHfh-JaM3Mjz1fyfdpgamJS0x5iW3gk78fRB-ZiW657hjTyHonJ",
+    "reference": "uGhuiDCKRGy_bWBQR2iawM4JuwlMHPL6dLW3F1x5-tNfqaI1L3uFzF-6ok1meK_-d8yiMSdqlY6ldIkHfh-JaM3Mjz1fyfdpgamJS0x5iW3gk78fRB-ZiW657hjTyHonJ",
+    "structured_formatting": {
+      "main_text": "Khách sạn Sa Pa Green",
+      "main_text_matched_substrings": [],
+      "secondary_text": "1 Thác Bạc, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+D56M Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+D56M"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khách sạn Sa Pa Green"
+      },
+      {
+        "offset": 25,
+        "value": "1 Thác Bạc"
+      },
+      {
+        "offset": 12,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 12,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 54,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "hotel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khách Sạn Mường Thanh Sapa, Ngũ Chỉ Sơn, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "ga-cQWObToxTiloLt_9J-26lbEGFhEn-baZ_NYSAZ8ZlwFE_qIRn_rKtUUd6ooxlnItJAoPAEcNU4l0YroRJYNumSUe0fHR5YKQ9UoSEEu1hnkYSspQTh8GO2STmE_2XE",
+    "reference": "ga-cQWObToxTiloLt_9J-26lbEGFhEn-baZ_NYSAZ8ZlwFE_qIRn_rKtUUd6ooxlnItJAoPAEcNU4l0YroRJYNumSUe0fHR5YKQ9UoSEEu1hnkYSspQTh8GO2STmE_2XE",
+    "structured_formatting": {
+      "main_text": "Khách Sạn Mường Thanh Sapa",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Ngũ Chỉ Sơn, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+9X84KL Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+9X84KL"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khách Sạn Mường Thanh Sapa"
+      },
+      {
+        "offset": 33,
+        "value": "Ngũ Chỉ Sơn"
+      },
+      {
+        "offset": 50,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 50,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 64,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "hotel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khách sạn Ô Quy Hồ, Quốc Lộ 4D, Xã Sơn Bình, Huyện Tam Đường, Tỉnh Lai Châu",
+    "matched_substrings": [],
+    "place_id": "n5_jRlTW2VJJh54dqamxSk6vJkkLrbnCfbxaJ6hVh5B-s0omqAn2l0mAcAZ7brq6tK1CK2FSs354k01brJuRf36jQlyaJUoCae79JXZ9vn_Z6hVoJqQmPn3itUiKfCOTf",
+    "reference": "n5_jRlTW2VJJh54dqamxSk6vJkkLrbnCfbxaJ6hVh5B-s0omqAn2l0mAcAZ7brq6tK1CK2FSs354k01brJuRf36jQlyaJUoCae79JXZ9vn_Z6hVoJqQmPn3itUiKfCOTf",
+    "structured_formatting": {
+      "main_text": "Khách sạn Ô Quy Hồ",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Quốc Lộ 4D, Xã Sơn Bình, Huyện Tam Đường, Tỉnh Lai Châu",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+VTFB Sơn Bình, Tam Đường, Lai Châu",
+      "global_code": "1SJ67+VTFB"
+    },
+    "compound": {
+      "district": "Tam Đường",
+      "commune": "Sơn Bình",
+      "province": "Lai Châu"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khách sạn Ô Quy Hồ"
+      },
+      {
+        "offset": 25,
+        "value": "Quốc Lộ 4D"
+      },
+      {
+        "offset": 41,
+        "value": "Xã Sơn Bình"
+      },
+      {
+        "offset": 57,
+        "value": "Huyện Tam Đường"
+      },
+      {
+        "offset": 80,
+        "value": "Tỉnh Lai Châu"
+      }
+    ],
+    "types": [
+      "hotel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khách sạn Hải Yến, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "BaWlgyrTk1dDsjUMo3Cb-0OjQV5UY4vhbVYpaoJV37JFjo0o8pEWb4XeLfDy4YyrbQqBGm6JYFeB0jGPzk1qykHKxfAqlBJznd7NFUb9jn_p2k1YFiQWDcnShXi6Tk-gE",
+    "reference": "BaWlgyrTk1dDsjUMo3Cb-0OjQV5UY4vhbVYpaoJV37JFjo0o8pEWb4XeLfDy4YyrbQqBGm6JYFeB0jGPzk1qykHKxfAqlBJznd7NFUb9jn_p2k1YFiQWDcnShXi6Tk-gE",
+    "structured_formatting": {
+      "main_text": "Khách sạn Hải Yến",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+F2MT Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+F2MT"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khách sạn Hải Yến"
+      },
+      {
+        "offset": 25,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 25,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 39,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "hotel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khách sạn Anh Đào, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "qFMKWKIlueK5O2URZrlSCgJH4fyetU06H7fZDW55Skr107TAsmwntv3qZR1-vbp6-SO1IE5985a5i6Vscegus2GP3UyqoVLC-evdIXJ5unoR7npYIqAiOW3nerCOeCeWy",
+    "reference": "qFMKWKIlueK5O2URZrlSCgJH4fyetU06H7fZDW55Skr107TAsmwntv3qZR1-vbp6-SO1IE5985a5i6Vscegus2GP3UyqoVLC-evdIXJ5unoR7npYIqAiOW3nerCOeCeWy",
+    "structured_formatting": {
+      "main_text": "Khách sạn Anh Đào",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+F5IX Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+F5IX"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khách sạn Anh Đào"
+      },
+      {
+        "offset": 23,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 23,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 37,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "hotel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Khách sạn Darling, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "gQdcsgZwbYlsmX4ouGHiiUf5RBWiY53je45-F5Bhv9RsT11tXpr3uyGwEnlKUn2bwR6CZHLhzo8hwKEutkXCZ-AVWXCmRXLPVdbFHU5FhdfiRi1wHp6d0kXajVCwHkerR",
+    "reference": "gQdcsgZwbYlsmX4ouGHiiUf5RBWiY53je45-F5Bhv9RsT11tXpr3uyGwEnlKUn2bwR6CZHLhzo8hwKEutkXCZ-AVWXCmRXLPVdbFHU5FhdfiRi1wHp6d0kXajVCwHkerR",
+    "structured_formatting": {
+      "main_text": "Khách sạn Darling",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+F7KR Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+F7KR"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Khách sạn Darling"
+      },
+      {
+        "offset": 21,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 21,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 35,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "hotel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Resort Ham Rong, Hàm Rồng, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 6,
+        "offset": 0
+      }
+    ],
+    "place_id": "oBq2WoONa1qmgkkjaxhBi7mwjDltXVX1QJaEKlttrn-9ydFPaHOM06egfw5tfarOpq0iCl1_l8qKr1U-crqA6lGWNUlopbbyjKwQTml8jOW6lkk0aaxqcjIy-QTFoG_fM",
+    "reference": "oBq2WoONa1qmgkkjaxhBi7mwjDltXVX1QJaEKlttrn-9ydFPaHOM06egfw5tfarOpq0iCl1_l8qKr1U-crqA6lGWNUlopbbyjKwQTml8jOW6lkk0aaxqcjIy-QTFoG_fM",
+    "structured_formatting": {
+      "main_text": "Resort Ham Rong",
+      "main_text_matched_substrings": [
+        {
+          "length": 6,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Hàm Rồng, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+SIO0 Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+SIO0"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Resort Ham Rong"
+      },
+      {
+        "offset": 16,
+        "value": "Hàm Rồng"
+      },
+      {
+        "offset": 29,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 29,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 43,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "site"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Victoria Sapa Resort Spa, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 6,
+        "offset": 14
+      }
+    ],
+    "place_id": "oq6hTWyPhGlvhidRolmIHIC0PXu9RLJv8ZIuXolpqtVfzUt_uXek0VmINCaIHpbKv6kOUWl7h85ZqzpNMVWT7naSjl4UHrL2bKhKTYh4iOFtkh5Fvh6YiL66NUVv4H_PI",
+    "reference": "oq6hTWyPhGlvhidRolmIHIC0PXu9RLJv8ZIuXolpqtVfzUt_uXek0VmINCaIHpbKv6kOUWl7h85ZqzpNMVWT7naSjl4UHrL2bKhKTYh4iOFtkh5Fvh6YiL66NUVv4H_PI",
+    "structured_formatting": {
+      "main_text": "Victoria Sapa Resort Spa",
+      "main_text_matched_substrings": [
+        {
+          "length": 6,
+          "offset": 14
+        }
+      ],
+      "secondary_text": "Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+EM0K Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+EM0K"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Victoria Sapa Resort Spa"
+      },
+      {
+        "offset": 25,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 25,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 39,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "spa"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Sapa Resort, 52B Thác Bạc, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 6,
+        "offset": 5
+      }
+    ],
+    "place_id": "F3ZRRUHLmwWliWt3bnCx-FeMRqChB5-RdL9GM7pym_Jy11pSpJwG4W6ybx6kk6lycqNaN5XM4FlDo0YMrXPo6W6vKl66Yezvv3dgCJNjk_qziVYFpQWDk3ShXi6VTBOjT",
+    "reference": "F3ZRRUHLmwWliWt3bnCx-FeMRqChB5-RdL9GM7pym_Jy11pSpJwG4W6ybx6kk6lycqNaN5XM4FlDo0YMrXPo6W6vKl66Yezvv3dgCJNjk_qziVYFpQWDk3ShXi6VTBOjT",
+    "structured_formatting": {
+      "main_text": "Sapa Resort",
+      "main_text_matched_substrings": [
+        {
+          "length": 6,
+          "offset": 5
+        }
+      ],
+      "secondary_text": "52B Thác Bạc, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CJKR Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+CJKR"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Sapa Resort"
+      },
+      {
+        "offset": 12,
+        "value": "52B Thác Bạc"
+      },
+      {
+        "offset": 29,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 29,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 43,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "site"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Victoria Sapa Resort and Spa, 19 Mường Hoa, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 6,
+        "offset": 14
+      }
+    ],
+    "place_id": "ql-b8k6TWSZKu2wAsVacmn7cQpSdNDljnf7d0g39Wh-ielU4NemhW3nyoixSsDTHCeqetJ055esNy35y3nYd6_X8iQaudV-gif7tN5Ztrm1l-gV6TrQ2LDXypVpubDODb",
+    "reference": "ql-b8k6TWSZKu2wAsVacmn7cQpSdNDljnf7d0g39Wh-ielU4NemhW3nyoixSsDTHCeqetJ055esNy35y3nYd6_X8iQaudV-gif7tN5Ztrm1l-gV6TrQ2LDXypVpubDODb",
+    "structured_formatting": {
+      "main_text": "Victoria Sapa Resort and Spa",
+      "main_text_matched_substrings": [
+        {
+          "length": 6,
+          "offset": 14
+        }
+      ],
+      "secondary_text": "19 Mường Hoa, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+D9DW Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+D9DW"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Victoria Sapa Resort and Spa"
+      },
+      {
+        "offset": 29,
+        "value": "19 Mường Hoa"
+      },
+      {
+        "offset": 46,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 46,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 60,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "site"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Resort nghỉ dưỡng - Sapa Jade Hill, Khu du lịch nghỉ dưỡng cao cấp, Ng. Cầu Mây, Tổ 3, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 6,
+        "offset": 0
+      }
+    ],
+    "place_id": "R5JmbaFtxb-0nDt8smCC42ihGTexT5qAU09YRoxhhvZShSlAhHCs_maNYySEKdaKFZ7xwO_VPoOJim2UetBSu4GWScUCofZrKZqJUQIJygutnmEcUtBSSgmWwTz-CFfnC",
+    "reference": "R5JmbaFtxb-0nDt8smCC42ihGTexT5qAU09YRoxhhvZShSlAhHCs_maNYySEKdaKFZ7xwO_VPoOJim2UetBSu4GWScUCofZrKZqJUQIJygutnmEcUtBSSgmWwTz-CFfnC",
+    "structured_formatting": {
+      "main_text": "Resort nghỉ dưỡng - Sapa Jade Hill",
+      "main_text_matched_substrings": [
+        {
+          "length": 6,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Khu du lịch nghỉ dưỡng cao cấp, Ng. Cầu Mây, Tổ 3, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX90ZQ Tổ 3, Sa Pa, Lào Cai 330000",
+      "global_code": "17YTM+CX90ZQ"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Cầu Mây",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Resort nghỉ dưỡng - Sapa Jade Hill"
+      },
+      {
+        "offset": 40,
+        "value": "Khu du lịch nghỉ dưỡng cao cấp"
+      },
+      {
+        "offset": 81,
+        "value": "Ng. Cầu Mây"
+      },
+      {
+        "offset": 97,
+        "value": "Tổ 3"
+      },
+      {
+        "offset": 105,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 112,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "RESORT JNK, 46 Đường Điện Biên Phủ, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 6,
+        "offset": 0
+      }
+    ],
+    "place_id": "AefSLXNwOYSpikkNkkPvWXPS0Duqd4hNdZpNEpVmdd11pT4vvqZm3HW2QZuiZJwWdIxBraRllrhyll0gknWupXCnQVe-WbnccLRCVpRklP2ijlECcQKElOKKmWSmUA-_U",
+    "reference": "AefSLXNwOYSpikkNkkPvWXPS0Duqd4hNdZpNEpVmdd11pT4vvqZm3HW2QZuiZJwWdIxBraRllrhyll0gknWupXCnQVe-WbnccLRCVpRklP2ijlECcQKElOKKmWSmUA-_U",
+    "structured_formatting": {
+      "main_text": "RESORT JNK",
+      "main_text_matched_substrings": [
+        {
+          "length": 6,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "46 Đường Điện Biên Phủ, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BMY4GK 46 Đường Điện Biên Phủ, Sa Pa, Lào Cai",
+      "global_code": "17YTN+BMY4GK"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Hàm Rồng",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "RESORT JNK"
+      },
+      {
+        "offset": 11,
+        "value": "46 Đường Điện Biên Phủ"
+      },
+      {
+        "offset": 45,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 52,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "hotel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Resort : ĐẶNG TÌNH, Lê Hồng Phong, Duyên Hải, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 6,
+        "offset": 0
+      }
+    ],
+    "place_id": "XW9q0dhYQzeLdWYeoW6SkL1HfhGvcb_isnc6HKxdTkeuPcFgUoVyR7Z6vmS24YbCnjkZwB1i9irj5dlwVo9ejko91czeXYL_WsXRHU5FhkfiLdlQHpweBKKN1XJGRBuos",
+    "reference": "XW9q0dhYQzeLdWYeoW6SkL1HfhGvcb_isnc6HKxdTkeuPcFgUoVyR7Z6vmS24YbCnjkZwB1i9irj5dlwVo9ejko91czeXYL_WsXRHU5FhkfiLdlQHpweBKKN1XJGRBuos",
+    "structured_formatting": {
+      "main_text": "Resort : ĐẶNG TÌNH",
+      "main_text_matched_substrings": [
+        {
+          "length": 6,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Lê Hồng Phong, Duyên Hải, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX8U1E Lê Hồng Phong, Duyên Hải, Lào Cai",
+      "global_code": "17XV9+CX8U1E"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Duyên Hải",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Resort : ĐẶNG TÌNH"
+      },
+      {
+        "offset": 23,
+        "value": "Lê Hồng Phong"
+      },
+      {
+        "offset": 41,
+        "value": "Duyên Hải"
+      },
+      {
+        "offset": 55,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Sapa Catcat Hills Resort & Spa, 086 Fansipan, Phường Fansipan, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 6,
+        "offset": 18
+      }
+    ],
+    "place_id": "dPkS1LIkDi1xojWlRklyv6UW0TCGiWaPRQ7dIVrt1ppdzi2Iwkl6el7lrnRWlAKtujKT-LJBYipRrmjsKo3Gm3HVY51CrcJHFcUBDdJVXlfxwj1BlowOFlXKnWCiVAu7V",
+    "reference": "dPkS1LIkDi1xojWlRklyv6UW0TCGiWaPRQ7dIVrt1ppdzi2Iwkl6el7lrnRWlAKtujKT-LJBYipRrmjsKo3Gm3HVY51CrcJHFcUBDdJVXlfxwj1BlowOFlXKnWCiVAu7V",
+    "structured_formatting": {
+      "main_text": "Sapa Catcat Hills Resort & Spa",
+      "main_text_matched_substrings": [
+        {
+          "length": 6,
+          "offset": 18
+        }
+      ],
+      "secondary_text": "086 Fansipan, Phường Fansipan, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BM9XGO Phường Fansipan, Sa Pa, Lào Cai",
+      "global_code": "17YTK+BM9XGO"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Phan Si Păng",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Sapa Catcat Hills Resort & Spa"
+      },
+      {
+        "offset": 31,
+        "value": "086 Fansipan"
+      },
+      {
+        "offset": 45,
+        "value": "Phường Fansipan"
+      },
+      {
+        "offset": 65,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 72,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Ville De Mont Mountain Resort, Tổ 7, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 6,
+        "offset": 23
+      }
+    ],
+    "place_id": "jpd2cHONOJ5wW2k1s9ae5ndiWxaUsbzVdVtHP7ugksJvBUZ1Qu6OaREJZqDSUjHbuX2LUDbihROxLpF9RTyuClkNRRLuVsreQdmJEUJKIkvt3BFcEpKCCknUFXy-SvunS",
+    "reference": "jpd2cHONOJ5wW2k1s9ae5ndiWxaUsbzVdVtHP7ugksJvBUZ1Qu6OaREJZqDSUjHbuX2LUDbihROxLpF9RTyuClkNRRLuVsreQdmJEUJKIkvt3BFcEpKCCknUFXy-SvunS",
+    "structured_formatting": {
+      "main_text": "Ville De Mont Mountain Resort",
+      "main_text_matched_substrings": [
+        {
+          "length": 6,
+          "offset": 23
+        }
+      ],
+      "secondary_text": "Tổ 7, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BLWENW Tổ 7, Sa Pa, Lào Cai 330000",
+      "global_code": "17YSL+BLWENW"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Ville De Mont Mountain Resort"
+      },
+      {
+        "offset": 30,
+        "value": "Tổ 7"
+      },
+      {
+        "offset": 38,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 45,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Cat Cat Resort, Cát Cát, San Sả Hồ, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 6,
+        "offset": 8
+      }
+    ],
+    "place_id": "RpHxsa9Lk-VxiH4SoWKCXG_W1zyiceJ-RoltVpZzv5l11kgUun6n2XiLfg6dY73Vc7tfUqFyiJ5zKHCwoDvTTjUc2W1WsW53mdbFHU5Fhkfh0i1QHpweBkXajXCyRBurR",
+    "reference": "RpHxsa9Lk-VxiH4SoWKCXG_W1zyiceJ-RoltVpZzv5l11kgUun6n2XiLfg6dY73Vc7tfUqFyiJ5zKHCwoDvTTjUc2W1WsW53mdbFHU5Fhkfh0i1QHpweBkXajXCyRBurR",
+    "structured_formatting": {
+      "main_text": "Cat Cat Resort",
+      "main_text_matched_substrings": [
+        {
+          "length": 6,
+          "offset": 8
+        }
+      ],
+      "secondary_text": "Cát Cát, San Sả Hồ, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BKTA7S San Sả Hồ, Sa Pa, Lào Cai",
+      "global_code": "17YSX+BKTA7S"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Hoàng Liên",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Cat Cat Resort"
+      },
+      {
+        "offset": 15,
+        "value": "Cát Cát"
+      },
+      {
+        "offset": 26,
+        "value": "San Sả Hồ"
+      },
+      {
+        "offset": 41,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 48,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Homestay 715 Sa Pa, 715 Điện Biên Phủ, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 8,
+        "offset": 0
+      }
+    ],
+    "place_id": "1tRGoa5FpRZxsGsokGCglW7VZwmAcbnVcaJjCylaLJNGjk2tiGOh1kfWcQayXZC8dvFjD58EgHSsskWY43C6SBkayXW6cf5DpdLBrUpBgpvl1ilUGgAaQkHeiXS3rB6bQ",
+    "reference": "1tRGoa5FpRZxsGsokGCglW7VZwmAcbnVcaJjCylaLJNGjk2tiGOh1kfWcQayXZC8dvFjD58EgHSsskWY43C6SBkayXW6cf5DpdLBrUpBgpvl1ilUGgAaQkHeiXS3rB6bQ",
+    "structured_formatting": {
+      "main_text": "Homestay 715 Sa Pa",
+      "main_text_matched_substrings": [
+        {
+          "length": 8,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "715 Điện Biên Phủ, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+VTBM Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+VTBM"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Homestay 715 Sa Pa"
+      },
+      {
+        "offset": 19,
+        "value": "715 Điện Biên Phủ"
+      },
+      {
+        "offset": 12,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 12,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 58,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "motel_room"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Cối xay gió Homestay, Điện Biên Phủ, Ô Quý Hồ, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 8,
+        "offset": 12
+      }
+    ],
+    "place_id": "vWy7HYf8aFp1q1UFRmSlalu4tQ1w9G8d7i6pkNLprXc93t14QvByL61yFQkmghHqLWs9eCLiqk-2DkXNOu2mHXPW5ZCS9ZIfTb6tdSYsyi-Knbk57vR2bi5G5RjaLHPDL",
+    "reference": "vWy7HYf8aFp1q1UFRmSlalu4tQ1w9G8d7i6pkNLprXc93t14QvByL61yFQkmghHqLWs9eCLiqk-2DkXNOu2mHXPW5ZCS9ZIfTb6tdSYsyi-Knbk57vR2bi5G5RjaLHPDL",
+    "structured_formatting": {
+      "main_text": "Cối xay gió Homestay",
+      "main_text_matched_substrings": [
+        {
+          "length": 8,
+          "offset": 12
+        }
+      ],
+      "secondary_text": "Điện Biên Phủ, Ô Quý Hồ, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+VTBV Ô Quý Hồ, Sa Pa, Lào Cai",
+      "global_code": "17YTL+VTBV"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Ô Quý Hồ",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Cối xay gió Homestay"
+      },
+      {
+        "offset": 24,
+        "value": "Điện Biên Phủ"
+      },
+      {
+        "offset": 45,
+        "value": "Ô Quý Hồ"
+      },
+      {
+        "offset": 59,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 66,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "motel_room"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Ta Van View Homestay, Xã Tả Van, Thị xã Sa Pa, Tỉnh Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 8,
+        "offset": 12
+      }
+    ],
+    "place_id": "upyTcneWmwWgi3wqpWPg-0WLRhduYZ_heYx8FZJjvdZu1VlVKpu_BkHtXaRWk43yRaJvHrpxocpyr0lUkweb-nVKwXiuTXl7Xd7OxUZNjRfp2iVYFpQWDk3ShXi6TBOjT",
+    "reference": "upyTcneWmwWgi3wqpWPg-0WLRhduYZ_heYx8FZJjvdZu1VlVKpu_BkHtXaRWk43yRaJvHrpxocpyr0lUkweb-nVKwXiuTXl7Xd7OxUZNjRfp2iVYFpQWDk3ShXi6TBOjT",
+    "structured_formatting": {
+      "main_text": "Ta Van View Homestay",
+      "main_text_matched_substrings": [
+        {
+          "length": 8,
+          "offset": 12
+        }
+      ],
+      "secondary_text": "Xã Tả Van, Thị xã Sa Pa, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CR6Z Tả Van, Sa Pa, Lào Cai",
+      "global_code": "17YT7+CR6Z"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Tả Van",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Ta Van View Homestay"
+      },
+      {
+        "offset": 21,
+        "value": "Xã Tả Van"
+      },
+      {
+        "offset": 35,
+        "value": "Thị xã Sa Pa"
+      },
+      {
+        "offset": 52,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "motel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Mường Hoa River View Homestay Tavan, Xã Tả Van, Thị xã Sa Pa, Tỉnh Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 8,
+        "offset": 21
+      }
+    ],
+    "place_id": "eQaVMc1N3kKEvtmFHvFuRlw3RclWQA47qT7pyVJNbiuV3ukMAnmWGp3-YeRnpAJbPd6pDKpl0kc5_0lsvinee8HKmQ1KQWuXocragVEBmlv9zjJYAoACGlnGkWyuWAe3W",
+    "reference": "eQaVMc1N3kKEvtmFHvFuRlw3RclWQA47qT7pyVJNbiuV3ukMAnmWGp3-YeRnpAJbPd6pDKpl0kc5_0lsvinee8HKmQ1KQWuXocragVEBmlv9zjJYAoACGlnGkWyuWAe3W",
+    "structured_formatting": {
+      "main_text": "Mường Hoa River View Homestay Tavan",
+      "main_text_matched_substrings": [
+        {
+          "length": 8,
+          "offset": 21
+        }
+      ],
+      "secondary_text": "Xã Tả Van, Thị xã Sa Pa, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+QU7G Tả Van, Sa Pa, Lào Cai",
+      "global_code": "17YT7+QU7G"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Tả Van",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Mường Hoa River View Homestay Tavan"
+      },
+      {
+        "offset": 39,
+        "value": "Xã Tả Van"
+      },
+      {
+        "offset": 53,
+        "value": "Thị xã Sa Pa"
+      },
+      {
+        "offset": 70,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "motel_room"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Sapa Orange Homestay, Bản Hồ, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 8,
+        "offset": 12
+      }
+    ],
+    "place_id": "UoxOnnoShbdtpX9Frnuq5lKlUSSuTpzEVKhsQLYT-_uymyNGZUmMwoK2WSSCa73NZqcrR4JNpt1TnGAiuhO-i2u3VAS3e8aLYD1SZYSkhO1hRkF0shKUhGO2STm8EE__E",
+    "reference": "UoxOnnoShbdtpX9Frnuq5lKlUSSuTpzEVKhsQLYT-_uymyNGZUmMwoK2WSSCa73NZqcrR4JNpt1TnGAiuhO-i2u3VAS3e8aLYD1SZYSkhO1hRkF0shKUhGO2STm8EE__E",
+    "structured_formatting": {
+      "main_text": "Sapa Orange Homestay",
+      "main_text_matched_substrings": [
+        {
+          "length": 8,
+          "offset": 12
+        }
+      ],
+      "secondary_text": "Bản Hồ, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+9X8HOW Bản Hồ, Sa Pa, Lào Cai",
+      "global_code": "17YTD+9X8HOW"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Bản Hồ",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Sapa Orange Homestay"
+      },
+      {
+        "offset": 21,
+        "value": "Bản Hồ"
+      },
+      {
+        "offset": 33,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 40,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "motel_room"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Tavan Ecologic Homestay, Xã Tả Van, Thị xã Sa Pa, Tỉnh Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 8,
+        "offset": 15
+      }
+    ],
+    "place_id": "CnlIGyEBS618vWYllW2dqGPYagSYfI3YfK9uqwZXoJ5Lg0B8rLSF3XS8VG6YQL_8e6FQAp0JjdmSv0gko31j27HuZgu3cpHkv71LX51tnfRH4h1gLq3mNnQuvUCCdeubd",
+    "reference": "CnlIGyEBS618vWYllW2dqGPYagSYfI3YfK9uqwZXoJ5Lg0B8rLSF3XS8VG6YQL_8e6FQAp0JjdmSv0gko31j27HuZgu3cpHkv71LX51tnfRH4h1gLq3mNnQuvUCCdeubd",
+    "structured_formatting": {
+      "main_text": "Tavan Ecologic Homestay",
+      "main_text_matched_substrings": [
+        {
+          "length": 8,
+          "offset": 15
+        }
+      ],
+      "secondary_text": "Xã Tả Van, Thị xã Sa Pa, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CAGU Tả Van, Sa Pa, Lào Cai",
+      "global_code": "17YT7+CAGU"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Tả Van",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Tavan Ecologic Homestay"
+      },
+      {
+        "offset": 24,
+        "value": "Xã Tả Van"
+      },
+      {
+        "offset": 38,
+        "value": "Thị xã Sa Pa"
+      },
+      {
+        "offset": 55,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "motel"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Trung Kien Homestay, 297 Điện Biên Phủ, Sa Pả, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 8,
+        "offset": 11
+      }
+    ],
+    "place_id": "R4QUY46bPHNRnkgeqDiz52WeenGyQrvcfJ9cQLGJs01Qn1QCquGkx1GxeQG2XDJ3-Y6FQH7RMma186GVFh0ykx02tUUaGbqfjZWBXQ4GhgehkcUS3txcXgWazTJGBFvrB",
+    "reference": "R4QUY46bPHNRnkgeqDiz52WeenGyQrvcfJ9cQLGJs01Qn1QCquGkx1GxeQG2XDJ3-Y6FQH7RMma186GVFh0ykx02tUUaGbqfjZWBXQ4GhgehkcUS3txcXgWazTJGBFvrB",
+    "structured_formatting": {
+      "main_text": "Trung Kien Homestay",
+      "main_text_matched_substrings": [
+        {
+          "length": 8,
+          "offset": 11
+        }
+      ],
+      "secondary_text": "297 Điện Biên Phủ, Sa Pả, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+VT9P Sa Pả, Sa Pa, Lào Cai",
+      "global_code": "17YSV+VT9P"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pả",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Trung Kien Homestay"
+      },
+      {
+        "offset": 20,
+        "value": "297 Điện Biên Phủ"
+      },
+      {
+        "offset": 45,
+        "value": "Sa Pả"
+      },
+      {
+        "offset": 54,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 61,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "motel_room"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Homestay Hà Lù, TT. Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 8,
+        "offset": 0
+      }
+    ],
+    "place_id": "kHV4l3Zzkot2jT0dlASwlXSadT-nYJJ2i8p9UKwH6HJ7slsplFu06751aRCnWKzyX9WILbtPmu5ls18duH28K6TWW9R3W4EOorJEUJJikp1U3iFcEpAT7gnWgXy-SBenS",
+    "reference": "kHV4l3Zzkot2jT0dlASwlXSadT-nYJJ2i8p9UKwH6HJ7slsplFu06751aRCnWKzyX9WILbtPmu5ls18duH28K6TWW9R3W4EOorJEUJJikp1U3iFcEpAT7gnWgXy-SBenS",
+    "structured_formatting": {
+      "main_text": "Homestay Hà Lù",
+      "main_text_matched_substrings": [
+        {
+          "length": 8,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "TT. Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX900F TT. Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YTL+CX900F"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Ô Quý Hồ",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Homestay Hà Lù"
+      },
+      {
+        "offset": 17,
+        "value": "TT. Sa Pa"
+      },
+      {
+        "offset": 21,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 35,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Homestay Mao, Hoàng Liên, TT. Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 8,
+        "offset": 0
+      }
+    ],
+    "place_id": "i5uafKqtfPBlq04HDAzg3XLddDybV4efe4RgPaZr5Z5LglIgrlaUk0uEQi6eUaVWZrieL51qtNj0igV5-sVep6FiCfA2pDLfSf4NNWZtrf_KUgV4NrQ27m36pViZ6m-Db",
+    "reference": "i5uafKqtfPBlq04HDAzg3XLddDybV4efe4RgPaZr5Z5LglIgrlaUk0uEQi6eUaVWZrieL51qtNj0igV5-sVep6FiCfA2pDLfSf4NNWZtrf_KUgV4NrQ27m36pViZ6m-Db",
+    "structured_formatting": {
+      "main_text": "Homestay Mao",
+      "main_text_matched_substrings": [
+        {
+          "length": 8,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Hoàng Liên, TT. Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX90RV TT. Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+CX90RV"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Homestay Mao"
+      },
+      {
+        "offset": 13,
+        "value": "Hoàng Liên"
+      },
+      {
+        "offset": 27,
+        "value": "TT. Sa Pa"
+      },
+      {
+        "offset": 31,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 45,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Homestay - Ziang, Lao Chải, Sa Pa, Lào Cai",
+    "matched_substrings": [
+      {
+        "length": 8,
+        "offset": 0
+      }
+    ],
+    "place_id": "u7mRe7aUMI5vdV4XixzwzWJqZCy9zZeDa0dwhLp7LY9bkkL1vjKEjluUUkahN7Xgdkao7P416popuLU5IoUe5-GySbB25HJPCb6tdSYt7i-JukU4dvR2bi6dsRjaLHPDL",
+    "reference": "u7mRe7aUMI5vdV4XixzwzWJqZCy9zZeDa0dwhLp7LY9bkkL1vjKEjluUUkahN7Xgdkao7P416popuLU5IoUe5-GySbB25HJPCb6tdSYt7i-JukU4dvR2bi6dsRjaLHPDL",
+    "structured_formatting": {
+      "main_text": "Homestay - Ziang",
+      "main_text_matched_substrings": [
+        {
+          "length": 8,
+          "offset": 0
+        }
+      ],
+      "secondary_text": "Lao Chải, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX916Z Lao Chải, Sa Pa, Lào Cai",
+      "global_code": "17YSX+CX916Z"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Lao Chải",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Homestay - Ziang"
+      },
+      {
+        "offset": 17,
+        "value": "Lao Chải"
+      },
+      {
+        "offset": 29,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 36,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Chùa Bích Vân | Bích Vân Thiền Tự, San Sả Hồ, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "2eQbmLfXnm9ghGkRrmGdn3qycR6gfrCySO01U6NSnr14gBNXrlOe4n-yWzqoVKB_TIE4CKn2hXxJ2FcaJ5aselKAZawI4nbB5er5IXJ5unvd7hFsIkQionnmsUyOOCeXe",
+    "reference": "2eQbmLfXnm9ghGkRrmGdn3qycR6gfrCySO01U6NSnr14gBNXrlOe4n-yWzqoVKB_TIE4CKn2hXxJ2FcaJ5aselKAZawI4nbB5er5IXJ5unvd7hFsIkQionnmsUyOOCeXe",
+    "structured_formatting": {
+      "main_text": "Chùa Bích Vân | Bích Vân Thiền Tự",
+      "main_text_matched_substrings": [],
+      "secondary_text": "San Sả Hồ, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX914Y San Sả Hồ, Sa Pa, Lào Cai 330000",
+      "global_code": "1SJ63+CX914Y"
+    },
+    "compound": {
+      "district": "Tam Đường",
+      "commune": "Bản Bo",
+      "province": "Lai Châu"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Chùa Bích Vân | Bích Vân Thiền Tự"
+      },
+      {
+        "offset": 43,
+        "value": "San Sả Hồ"
+      },
+      {
+        "offset": 58,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 65,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Chùa Ô Quy Hồ, Sơn Bình, Tam Đường, Lai Châu",
+    "matched_substrings": [],
+    "place_id": "l7a-Z46QAFZqpHAzpGaylEG7bC5amHjtcoiR8EVqX6P59oWwSdo7o7nGXeC0ALrHKdYlCn70Y7GR9u1rQvni10XW0MFOhAbX3c7dBVZdnl_5yjVIBcwGHl6GlWipwAOzX",
+    "reference": "l7a-Z46QAFZqpHAzpGaylEG7bC5amHjtcoiR8EVqX6P59oWwSdo7o7nGXeC0ALrHKdYlCn70Y7GR9u1rQvni10XW0MFOhAbX3c7dBVZdnl_5yjVIBcwGHl6GlWipwAOzX",
+    "structured_formatting": {
+      "main_text": "Chùa Ô Quy Hồ",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Sơn Bình, Tam Đường, Lai Châu",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX903D Sơn Bình, Tam Đường, Lai Châu",
+      "global_code": "1SJ67+CX903D"
+    },
+    "compound": {
+      "district": "Tam Đường",
+      "commune": "Sơn Bình",
+      "province": "Lai Châu"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Chùa Ô Quy Hồ"
+      },
+      {
+        "offset": 18,
+        "value": "Sơn Bình"
+      },
+      {
+        "offset": 30,
+        "value": "Tam Đường"
+      },
+      {
+        "offset": 45,
+        "value": "Lai Châu"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Chùa Cam Lộ, Bình Minh, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "mG-xgJ-aUo9229clfq5GkHuHZ1h7U9m2UqwxXH5sl5tJhlIarQng40-GcBy2fLndeNtJEKFJgJp9Phka2r1MjmnrZOR2ps5fHe1RJXZ-_n_Z6hVoJqQmPn3itUiKfCOTf",
+    "reference": "mG-xgJ-aUo9229clfq5GkHuHZ1h7U9m2UqwxXH5sl5tJhlIarQng40-GcBy2fLndeNtJEKFJgJp9Phka2r1MjmnrZOR2ps5fHe1RJXZ-_n_Z6hVoJqQmPn3itUiKfCOTf",
+    "structured_formatting": {
+      "main_text": "Chùa Cam Lộ",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Bình Minh, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX8WE9 Bình Minh, Lào Cai",
+      "global_code": "17XW0+CX8WE9"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Bình Minh",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Chùa Cam Lộ"
+      },
+      {
+        "offset": 15,
+        "value": "Bình Minh"
+      },
+      {
+        "offset": 27,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Chùa Tâm Bảo, Phan Bội Châu, Phường Lào Cai, Thành phố Lào Cai, Tỉnh Lào Cai",
+    "matched_substrings": [],
+    "place_id": "WpcErnpJXZh_lpg3sgxBn3mkoi2tf2vhVIK6Ppl5TsUh3ZhPqWdj0Vu6vj6vDjbaebmDHrJrQd5Ju5S0nkUq_maConyxDk7mXbiYfJhoXZB9gogOrg5V8KX-q4yWYD1XY",
+    "reference": "WpcErnpJXZh_lpg3sgxBn3mkoi2tf2vhVIK6Ppl5TsUh3ZhPqWdj0Vu6vj6vDjbaebmDHrJrQd5Ju5S0nkUq_maConyxDk7mXbiYfJhoXZB9gogOrg5V8KX-q4yWYD1XY",
+    "structured_formatting": {
+      "main_text": "Chùa Tâm Bảo",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Phan Bội Châu, Phường Lào Cai, Thành phố Lào Cai, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+C5XK Lào Cai, Lào Cai, Lào Cai",
+      "global_code": "17XVB+C5XK"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Lào Cai",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Chùa Tâm Bảo"
+      },
+      {
+        "offset": 17,
+        "value": "Phan Bội Châu"
+      },
+      {
+        "offset": 35,
+        "value": "Phường Lào Cai"
+      },
+      {
+        "offset": 55,
+        "value": "Thành phố Lào Cai"
+      },
+      {
+        "offset": 78,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "pagoda"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Chùa Tân Bảo, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "a4NozG2VsBCKr1YDbW2c3LvLeyJyRpOPvG1jNHKwhMi7bSNOckei3KWsQgFrbLWMsa1WhGlAjDWMoHcBcBmC-EH_pklVY4SIjKxaT0ml8jOW6lkkauhqcjIy-QTFoG_fM",
+    "reference": "a4NozG2VsBCKr1YDbW2c3LvLeyJyRpOPvG1jNHKwhMi7bSNOckei3KWsQgFrbLWMsa1WhGlAjDWMoHcBcBmC-EH_pklVY4SIjKxaT0ml8jOW6lkkauhqcjIy-QTFoG_fM",
+    "structured_formatting": {
+      "main_text": "Chùa Tân Bảo",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BMHPN1 Lào Cai",
+      "global_code": "17XVB+BMHPN1"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Lào Cai",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Chùa Tân Bảo"
+      },
+      {
+        "offset": 17,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "chùa vạn hòa, Cầu Giang Đông, Vạn Hoà, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "oF6ZYWhueY9gql9Nunin93S4QBWgaYWLv5BmS6Brhct2zFwso4Ye0W-QMFO38rfNpXQET21Fs8G7kVQIgR-zlm256ckj9e6f2balfS4l5ROBsk4kfvx9MiW67RDSJHvLJ",
+    "reference": "oF6ZYWhueY9gql9Nunin93S4QBWgaYWLv5BmS6Brhct2zFwso4Ye0W-QMFO38rfNpXQET21Fs8G7kVQIgR-zlm256ckj9e6f2balfS4l5ROBsk4kfvx9MiW67RDSJHvLJ",
+    "structured_formatting": {
+      "main_text": "chùa vạn hòa",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Cầu Giang Đông, Vạn Hoà, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BMNOFB Cầu Giang Đông, Vạn Hoà, Lào Cai",
+      "global_code": "17XVR+BMNOFB"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Vạn Hòa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "chùa vạn hòa"
+      },
+      {
+        "offset": 17,
+        "value": "Cầu Giang Đông"
+      },
+      {
+        "offset": 37,
+        "value": "Vạn Hoà"
+      },
+      {
+        "offset": 49,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Chùa Hạ, San Sả Hồ, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "sE5ntWmq-MPqfmQnsHKmgFWveDpiqIOvOvlOBWYU_JxsmnFgGgxT8-mWabEKzYIzeYZ1WDKlzpcRpoE5CqmyhxWGiJEe1FaHjZ6NVQYNzg-pmmUYVtRWTi06xZD6DFPiD",
+    "reference": "sE5ntWmq-MPqfmQnsHKmgFWveDpiqIOvOvlOBWYU_JxsmnFgGgxT8-mWabEKzYIzeYZ1WDKlzpcRpoE5CqmyhxWGiJEe1FaHjZ6NVQYNzg-pmmUYVtRWTi06xZD6DFPiD",
+    "structured_formatting": {
+      "main_text": "Chùa Hạ",
+      "main_text_matched_substrings": [],
+      "secondary_text": "San Sả Hồ, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX9151 San Sả Hồ, Sa Pa, Lào Cai",
+      "global_code": "17YSX+CX9151"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Hoàng Liên",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Chùa Hạ"
+      },
+      {
+        "offset": 12,
+        "value": "San Sả Hồ"
+      },
+      {
+        "offset": 27,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 34,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Bản Chùa Khèo Thấp, Xã Khun Há, Huyện Tam Đường, Tỉnh Lai Châu",
+    "matched_substrings": [],
+    "place_id": "mNwOqlWYKUp8gao_ZFSi5n3csVt_eXnRfKuyGneTIcBP35BRnw8hr3y0s5d_ahidZrixgFVKVhNh6uKsYa2jjwXHfsl1ODnzRmLiYrlpofPF9gq5dVQ6ImH-qmCVVD-PY",
+    "reference": "mNwOqlWYKUp8gao_ZFSi5n3csVt_eXnRfKuyGneTIcBP35BRnw8hr3y0s5d_ahidZrixgFVKVhNh6uKsYa2jjwXHfsl1ODnzRmLiYrlpofPF9gq5dVQ6ImH-qmCVVD-PY",
+    "structured_formatting": {
+      "main_text": "Bản Chùa Khèo Thấp",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Xã Khun Há, Huyện Tam Đường, Tỉnh Lai Châu",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+A7QD Khun Há, Tam Đường, Lai Châu",
+      "global_code": "1SJ65+A7QD"
+    },
+    "compound": {
+      "district": "Tam Đường",
+      "commune": "Khun Há",
+      "province": "Lai Châu"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Bản Chùa Khèo Thấp"
+      },
+      {
+        "offset": 25,
+        "value": "Xã Khun Há"
+      },
+      {
+        "offset": 39,
+        "value": "Huyện Tam Đường"
+      },
+      {
+        "offset": 62,
+        "value": "Tỉnh Lai Châu"
+      }
+    ],
+    "types": [
+      "village"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Bản Chùa Khèo, Xã Khun Há, Huyện Tam Đường, Tỉnh Lai Châu",
+    "matched_substrings": [],
+    "place_id": "eiZVktfVc-x7c0sSk6OB23UHXBKgrunhb2JXDKyy4chEYHZfubOelUcELnuX17TlbHF9KrnWK5WdpDxzBI6abxxyZZKUstKRdmJEUUJKIkvt3BFcEpKCCknUFXy-SvunS",
+    "reference": "eiZVktfVc-x7c0sSk6OB23UHXBKgrunhb2JXDKyy4chEYHZfubOelUcELnuX17TlbHF9KrnWK5WdpDxzBI6abxxyZZKUstKRdmJEUUJKIkvt3BFcEpKCCknUFXy-SvunS",
+    "structured_formatting": {
+      "main_text": "Bản Chùa Khèo",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Xã Khun Há, Huyện Tam Đường, Tỉnh Lai Châu",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+A7W6 Khun Há, Tam Đường, Lai Châu",
+      "global_code": "1SJ65+A7W6"
+    },
+    "compound": {
+      "district": "Tam Đường",
+      "commune": "Khun Há",
+      "province": "Lai Châu"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Bản Chùa Khèo"
+      },
+      {
+        "offset": 18,
+        "value": "Xã Khun Há"
+      },
+      {
+        "offset": 32,
+        "value": "Huyện Tam Đường"
+      },
+      {
+        "offset": 55,
+        "value": "Tỉnh Lai Châu"
+      }
+    ],
+    "types": [
+      "village"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Chúa mẩy homestay(local house), Đội 1thôn Lếch Dao xã Thanh Bình Tx, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "QKtpvI5A761kLSuDukHy5GwNdb68boHlXEgmkopHjY9bNiOVvW_yyF8Tfr2kQLv5Wzdckqt-NI1fu11euimlKghqFbKONZ8hPdk9bl419jeRoG0i_uxudjWowbKGNQPbN",
+    "reference": "QKtpvI5A761kLSuDukHy5GwNdb68boHlXEgmkopHjY9bNiOVvW_yyF8Tfr2kQLv5Wzdckqt-NI1fu11euimlKghqFbKONZ8hPdk9bl419jeRoG0i_uxudjWowbKGNQPbN",
+    "structured_formatting": {
+      "main_text": "Chúa mẩy homestay(local house)",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Đội 1thôn Lếch Dao xã Thanh Bình Tx, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX91F1 Đội 1thôn Lếch Dao xã Thanh Bình Tx, Sa Pa, Lào Cai",
+      "global_code": "17YSZ+CX91F1"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Thanh Bình",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Chúa mẩy homestay(local house)"
+      },
+      {
+        "offset": 34,
+        "value": "Đội 1thôn Lếch Dao xã Thanh Bình Tx"
+      },
+      {
+        "offset": 79,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 86,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Bảo tàng tỉnh Lào Cai, 30 Tháng 4, Phường Nam Cường, Thành phố Lào Cai, Tỉnh Lào Cai",
+    "matched_substrings": [],
+    "place_id": "UF9t8kV2H7Nuh0Qmo7-BiUy1bjwdvI7wWJOlL4hoq9ReesxKuGiKiHe1UEuMH6_LaKgnD6N6ks9YqlA7j1SF73eTTBWgH7P3balfS4mGeeBsk0wfv4kwiUS7b5pmJHjTJ",
+    "reference": "UF9t8kV2H7Nuh0Qmo7-BiUy1bjwdvI7wWJOlL4hoq9ReesxKuGiKiHe1UEuMH6_LaKgnD6N6ks9YqlA7j1SF73eTTBWgH7P3balfS4mGeeBsk0wfv4kwiUS7b5pmJHjTJ",
+    "structured_formatting": {
+      "main_text": "Bảo tàng tỉnh Lào Cai",
+      "main_text_matched_substrings": [],
+      "secondary_text": "30 Tháng 4, Phường Nam Cường, Thành phố Lào Cai, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+VWYS Nam Cường, Lào Cai, Lào Cai",
+      "global_code": "17XVX+VWYS"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Nam Cường",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Bảo tàng tỉnh Lào Cai"
+      },
+      {
+        "offset": 28,
+        "value": "30 Tháng 4"
+      },
+      {
+        "offset": 41,
+        "value": "Phường Nam Cường"
+      },
+      {
+        "offset": 65,
+        "value": "Thành phố Lào Cai"
+      },
+      {
+        "offset": 88,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "museum"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Bảo tàng Ngoài trời tỉnh Lào Cai, Phường Nam Cường, Thành phố Lào Cai, Tỉnh Lào Cai",
+    "matched_substrings": [],
+    "place_id": "v0_fsb5-rkmzqXAte3yUmpeheFqQQia9_6xGr59WXptO2TAQtG3k13bbeBmaCJP3fJ4ZWH6pVseZirVlbmlPg3U97MFq1b-HUgHtJXZ9vn_Z6hVoJqQmPUnitnyKfCORS",
+    "reference": "v0_fsb5-rkmzqXAte3yUmpeheFqQQia9_6xGr59WXptO2TAQtG3k13bbeBmaCJP3fJ4ZWH6pVseZirVlbmlPg3U97MFq1b-HUgHtJXZ9vn_Z6hVoJqQmPUnitnyKfCORS",
+    "structured_formatting": {
+      "main_text": "Bảo tàng Ngoài trời tỉnh Lào Cai",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Phường Nam Cường, Thành phố Lào Cai, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+E32A Nam Cường, Lào Cai, Lào Cai",
+      "global_code": "17XVX+E32A"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Nam Cường",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Bảo tàng Ngoài trời tỉnh Lào Cai"
+      },
+      {
+        "offset": 42,
+        "value": "Phường Nam Cường"
+      },
+      {
+        "offset": 66,
+        "value": "Thành phố Lào Cai"
+      },
+      {
+        "offset": 89,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "museum"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Nhà bảo tàng đa dạng sinh học - Vườn quốc gia Hoàng Liên, Xóm 3, Phường Phan Si Păng, Thị xã Sa Pa, Tỉnh Lào Cai",
+    "matched_substrings": [],
+    "place_id": "opXQmrNYGgJ8uX0VqwDmU0SKMyynAKOVRaRpjnFckOkKtJ0tRUiPJWHS0yhW-Zrvvc41mLKdcu_V0tEARplmZ_X-PbVC-drnecZZDV5Vltfxwj1ADowOFlXKndCiVWO7V",
+    "reference": "opXQmrNYGgJ8uX0VqwDmU0SKMyynAKOVRaRpjnFckOkKtJ0tRUiPJWHS0yhW-Zrvvc41mLKdcu_V0tEARplmZ_X-PbVC-drnecZZDV5Vltfxwj1ADowOFlXKndCiVWO7V",
+    "structured_formatting": {
+      "main_text": "Nhà bảo tàng đa dạng sinh học - Vườn quốc gia Hoàng Liên",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Xóm 3, Phường Phan Si Păng, Thị xã Sa Pa, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CAC8 Phan Si Păng, Sa Pa, Lào Cai",
+      "global_code": "17YTK+CAC8"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Phan Si Păng",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Nhà bảo tàng đa dạng sinh học - Vườn quốc gia Hoàng Liên"
+      },
+      {
+        "offset": 73,
+        "value": "Xóm 3"
+      },
+      {
+        "offset": 81,
+        "value": "Phường Phan Si Păng"
+      },
+      {
+        "offset": 106,
+        "value": "Thị xã Sa Pa"
+      },
+      {
+        "offset": 123,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "museum"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Bảo Tàng Văn Hóa Lao Cai, ĐL Trần Hưng Đạo, Nam Cường, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "lp1oz2ZM7Gud0TJSoGeomtOKQBGUX7ksf2hM6rxkPjCdYpnEQpqO7ceKkdBV2TLR6cY-TDqJZiepEt24Mv2qd90KPYi2TSLfzcbVDV5Vllfxwj1ADowOFlXKnWCiVAu7V",
+    "reference": "lp1oz2ZM7Gud0TJSoGeomtOKQBGUX7ksf2hM6rxkPjCdYpnEQpqO7ceKkdBV2TLR6cY-TDqJZiepEt24Mv2qd90KPYi2TSLfzcbVDV5Vllfxwj1ADowOFlXKnWCiVAu7V",
+    "structured_formatting": {
+      "main_text": "Bảo Tàng Văn Hóa Lao Cai",
+      "main_text_matched_substrings": [],
+      "secondary_text": "ĐL Trần Hưng Đạo, Nam Cường, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BMOUSG ĐL Trần Hưng Đạo, Nam Cường, Lào Cai",
+      "global_code": "17XVX+BMOUSG"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Nam Cường",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Bảo Tàng Văn Hóa Lao Cai"
+      },
+      {
+        "offset": 30,
+        "value": "ĐL Trần Hưng Đạo"
+      },
+      {
+        "offset": 55,
+        "value": "Nam Cường"
+      },
+      {
+        "offset": 69,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "ViBerry Farm, Trụ quạt gió, đồi chè Cầu Đất Địa điểm sống ảo hot nhất, Tham quan hái dâu tại vườn, Xuân Trường, Đà Lạt, Lâm Đồng",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 71
+      },
+      {
+        "length": 4,
+        "offset": 76
+      }
+    ],
+    "place_id": "v7h4lj-Rf7mrgDMmmQ5n24WHXDmqVHPqt7hpJaczSe6rhjciqlMg-XC4UK8ARGTJirVEp6xQT9C7qT4Usw9Jwbx4VBmYeX24mZlPLW5lpfPCJg1wPrw9-meKrVCSZDn3Z",
+    "reference": "v7h4lj-Rf7mrgDMmmQ5n24WHXDmqVHPqt7hpJaczSe6rhjciqlMg-XC4UK8ARGTJirVEp6xQT9C7qT4Usw9Jwbx4VBmYeX24mZlPLW5lpfPCJg1wPrw9-meKrVCSZDn3Z",
+    "structured_formatting": {
+      "main_text": "ViBerry Farm",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Trụ quạt gió, đồi chè Cầu Đất Địa điểm sống ảo hot nhất, Tham quan hái dâu tại vườn, Xuân Trường, Đà Lạt, Lâm Đồng",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 57
+        },
+        {
+          "length": 4,
+          "offset": 62
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BN3QJJ Xuân Trường, Đà Lạt, Lâm Đồng",
+      "global_code": "3M3QQ+BN3QJJ"
+    },
+    "compound": {
+      "district": "Đà Lạt",
+      "commune": "Trạm Hành",
+      "province": "Lâm Đồng"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "ViBerry Farm"
+      },
+      {
+        "offset": 13,
+        "value": "Trụ quạt gió"
+      },
+      {
+        "offset": 32,
+        "value": "đồi chè Cầu Đất Địa điểm sống ảo hot nhất"
+      },
+      {
+        "offset": 96,
+        "value": "Tham quan hái dâu tại vườn"
+      },
+      {
+        "offset": 131,
+        "value": "Xuân Trường"
+      },
+      {
+        "offset": 148,
+        "value": "Đà Lạt"
+      },
+      {
+        "offset": 160,
+        "value": "Lâm Đồng"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Điểm Tham Quan Du Lịch, 444 Đ. Hoàng Hoa Thám, Thuỵ Khuê, Tây Hồ, Hà Nội",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 5
+      },
+      {
+        "length": 4,
+        "offset": 41
+      },
+      {
+        "length": 4,
+        "offset": 10
+      }
+    ],
+    "place_id": "rBnGtgG_VshyyyU6skaixGtrdDW9RfT7vGtFAYlsn4hxvmAqbqU20lm_dLmPfz2Ka3MqAbLJwUodekaErvEWXQl-zjCCKQpd8a69ZTY-jj-Zqf0oZuZWfj2i9QjKPGPTP",
+    "reference": "rBnGtgG_VshyyyU6skaixGtrdDW9RfT7vGtFAYlsn4hxvmAqbqU20lm_dLmPfz2Ka3MqAbLJwUodekaErvEWXQl-zjCCKQpd8a69ZTY-jj-Zqf0oZuZWfj2i9QjKPGPTP",
+    "structured_formatting": {
+      "main_text": "Điểm Tham Quan Du Lịch",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 5
+        },
+        {
+          "length": 4,
+          "offset": 10
+        }
+      ],
+      "secondary_text": "444 Đ. Hoàng Hoa Thám, Thuỵ Khuê, Tây Hồ, Hà Nội",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 17
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CXG6EM Thuỵ Khuê, Tây Hồ, Hà Nội 100000",
+      "global_code": "LNJZ+CXG6EM"
+    },
+    "compound": {
+      "district": "Tây Hồ",
+      "commune": "Thụy Khuê",
+      "province": "Hà Nội"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Điểm Tham Quan Du Lịch"
+      },
+      {
+        "offset": 28,
+        "value": "444 Đ. Hoàng Hoa Thám"
+      },
+      {
+        "offset": 54,
+        "value": "Thuỵ Khuê"
+      },
+      {
+        "offset": 68,
+        "value": "Tây Hồ"
+      },
+      {
+        "offset": 79,
+        "value": "Hà Nội"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Điểm tham quan (attractions) - Quán ăn (restaurant)- View đẹp ngắm cảnh (Nice view to admire the scenery), TT. Yên Minh, Yên Minh, Hà Giang",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 5
+      },
+      {
+        "length": 4,
+        "offset": 10
+      },
+      {
+        "length": 4,
+        "offset": 31
+      }
+    ],
+    "place_id": "qrOOb-l-czhho00WZH-pgqmad4hicJxBCVqNV4qphrvR-TbIltm-69GFFexmzj2X5YKxZJ7O-k4VQxDlnvhaiyWqjAQ6pSv-2ZKBWQvpwgIBlmkUWthaQgGeyTT2AF_vA",
+    "reference": "qrOOb-l-czhho00WZH-pgqmad4hicJxBCVqNV4qphrvR-TbIltm-69GFFexmzj2X5YKxZJ7O-k4VQxDlnvhaiyWqjAQ6pSv-2ZKBWQvpwgIBlmkUWthaQgGeyTT2AF_vA",
+    "structured_formatting": {
+      "main_text": "Điểm tham quan (attractions) - Quán ăn (restaurant)- View đẹp ngắm cảnh (Nice view to admire the scenery)",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 5
+        },
+        {
+          "length": 4,
+          "offset": 10
+        },
+        {
+          "length": 4,
+          "offset": 31
+        }
+      ],
+      "secondary_text": "TT. Yên Minh, Yên Minh, Hà Giang",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX5TNY TT. Yên Minh, Yên Minh, Hà Giang",
+      "global_code": "173H7+CX5TNY"
+    },
+    "compound": {
+      "district": "Yên Minh",
+      "commune": "Lao Và Chải",
+      "province": "Hà Giang"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Điểm tham quan (attractions) - Quán ăn (restaurant)- View đẹp ngắm cảnh (Nice view to admire the scenery)"
+      },
+      {
+        "offset": 118,
+        "value": "TT. Yên Minh"
+      },
+      {
+        "offset": 122,
+        "value": "Yên Minh"
+      },
+      {
+        "offset": 144,
+        "value": "Hà Giang"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Điểm tham quan hoa dã quỳ Ba Vì, Vân Hòa, Ba Vì, Hà Nội",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 5
+      },
+      {
+        "length": 4,
+        "offset": 10
+      }
+    ],
+    "place_id": "pLF4dpKeX3Z1jTVVuXGW8nfUPDK7cY75db5HUKRbc-ZDomkXp52e0F--bAySWLTKfaFpLaJxksJFizhRlASR25qzfVaTXp57-rJEUC9ikvuSiFcEdwSCkiugUX3WSBenS",
+    "reference": "pLF4dpKeX3Z1jTVVuXGW8nfUPDK7cY75db5HUKRbc-ZDomkXp52e0F--bAySWLTKfaFpLaJxksJFizhRlASR25qzfVaTXp57-rJEUC9ikvuSiFcEdwSCkiugUX3WSBenS",
+    "structured_formatting": {
+      "main_text": "Điểm tham quan hoa dã quỳ Ba Vì",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 5
+        },
+        {
+          "length": 4,
+          "offset": 10
+        }
+      ],
+      "secondary_text": "Vân Hòa, Ba Vì, Hà Nội",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BKZHTM Vân Hòa, Ba Vì, Hà Nội",
+      "global_code": "LPLT+BKZHTM"
+    },
+    "compound": {
+      "district": "Ba Vì",
+      "commune": "Vân Hòa",
+      "province": "Hà Nội"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Điểm tham quan hoa dã quỳ Ba Vì"
+      },
+      {
+        "offset": 39,
+        "value": "Vân Hòa"
+      },
+      {
+        "offset": 31,
+        "value": "Ba Vì"
+      },
+      {
+        "offset": 58,
+        "value": "Hà Nội"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "điểm thăm quan chè tân cương thủy toán, Tân Cương, Thái Nguyên, Thái Nguyên",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 5
+      },
+      {
+        "length": 4,
+        "offset": 10
+      }
+    ],
+    "place_id": "s7ml-43B9qNhmkgZrGZhzGK5QCKnTo2sb0ipIYURgMJUal9HtXSrimDDaiKsEtW7YbRqHoJn9hTxkqUjarxC_ZFSLUDyvJZlIYaVTR4V1hexgn0ATsxOVhWK3SDiFEv7F",
+    "reference": "s7ml-43B9qNhmkgZrGZhzGK5QCKnTo2sb0ipIYURgMJUal9HtXSrimDDaiKsEtW7YbRqHoJn9hTxkqUjarxC_ZFSLUDyvJZlIYaVTR4V1hexgn0ATsxOVhWK3SDiFEv7F",
+    "structured_formatting": {
+      "main_text": "điểm thăm quan chè tân cương thủy toán",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 5
+        },
+        {
+          "length": 4,
+          "offset": 10
+        }
+      ],
+      "secondary_text": "Tân Cương, Thái Nguyên, Thái Nguyên",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+BLII82 Tân Cương, Thái Nguyên, Thái Nguyên",
+      "global_code": "1A329+BLII82"
+    },
+    "compound": {
+      "district": "Thái Nguyên",
+      "commune": "Tân Cương",
+      "province": "Thái Nguyên"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "điểm thăm quan chè tân cương thủy toán"
+      },
+      {
+        "offset": 50,
+        "value": "Tân Cương"
+      },
+      {
+        "offset": 64,
+        "value": "Thái Nguyên"
+      },
+      {
+        "offset": 64,
+        "value": "Thái Nguyên"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Điểm tham quan hướng nội tâm tới Chân Thiện Mỹ, Lê Lợi, Thành phố Hạ Long, Quảng Ninh",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 5
+      },
+      {
+        "length": 4,
+        "offset": 10
+      },
+      {
+        "length": 4,
+        "offset": 75
+      }
+    ],
+    "place_id": "gU2JJqDiOY6tWj18Oskv6_mugaUSATIH7aKN6MLdghcNgxThUga2z8mBMOkKHsr_nZsVMB0xgicZRnoYdWBSB3nyjeUJlTJmEsaFXQ2Vxgehkm0QXtxeRgWazTDyBFvrB",
+    "reference": "gU2JJqDiOY6tWj18Oskv6_mugaUSATIH7aKN6MLdghcNgxThUga2z8mBMOkKHsr_nZsVMB0xgicZRnoYdWBSB3nyjeUJlTJmEsaFXQ2Vxgehkm0QXtxeRgWazTDyBFvrB",
+    "structured_formatting": {
+      "main_text": "Điểm tham quan hướng nội tâm tới Chân Thiện Mỹ",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 5
+        },
+        {
+          "length": 4,
+          "offset": 10
+        }
+      ],
+      "secondary_text": "Lê Lợi, Thành phố Hạ Long, Quảng Ninh",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 27
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CWFAED Lê Lợi, Thành phố Hạ Long, Quảng Ninh",
+      "global_code": "1C88B+CWFAED"
+    },
+    "compound": {
+      "district": "Hạ Long",
+      "commune": "Lê Lợi",
+      "province": "Quảng Ninh"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Điểm tham quan hướng nội tâm tới Chân Thiện Mỹ"
+      },
+      {
+        "offset": 63,
+        "value": "Lê Lợi"
+      },
+      {
+        "offset": 74,
+        "value": "Thành phố Hạ Long"
+      },
+      {
+        "offset": 98,
+        "value": "Quảng Ninh"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "ĐIỂM THAM QUAN CON ĐƯỜNG TƠ LỤA, Hoàng quốc việt, Hùng Thắng, Thành phố Hạ Long, Quảng Ninh",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 5
+      },
+      {
+        "length": 4,
+        "offset": 10
+      },
+      {
+        "length": 4,
+        "offset": 81
+      }
+    ],
+    "place_id": "aEFtrlw3NZRtoFbTjBhKj3LJfw-KGqKDbJJZbb4Szq5ovHdBjW229WivVk0mmb6r-QZKgDLF-hP-6aMpOSW7R8L2SQgO9QPOLaKxaTox8jOVplkkauhqcjGu-QTGMG_fM",
+    "reference": "aEFtrlw3NZRtoFbTjBhKj3LJfw-KGqKDbJJZbb4Szq5ovHdBjW229WivVk0mmb6r-QZKgDLF-hP-6aMpOSW7R8L2SQgO9QPOLaKxaTox8jOVplkkauhqcjGu-QTGMG_fM",
+    "structured_formatting": {
+      "main_text": "ĐIỂM THAM QUAN CON ĐƯỜNG TƠ LỤA",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 5
+        },
+        {
+          "length": 4,
+          "offset": 10
+        }
+      ],
+      "secondary_text": "Hoàng quốc việt, Hùng Thắng, Thành phố Hạ Long, Quảng Ninh",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 48
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CWFVXT Hùng Thắng, Thành phố Hạ Long, Quảng Ninh 01000",
+      "global_code": "1C87P+CWFVXT"
+    },
+    "compound": {
+      "district": "Hạ Long",
+      "commune": "Hùng Thắng",
+      "province": "Quảng Ninh"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "ĐIỂM THAM QUAN CON ĐƯỜNG TƠ LỤA"
+      },
+      {
+        "offset": 42,
+        "value": "Hoàng quốc việt"
+      },
+      {
+        "offset": 64,
+        "value": "Hùng Thắng"
+      },
+      {
+        "offset": 79,
+        "value": "Thành phố Hạ Long"
+      },
+      {
+        "offset": 103,
+        "value": "Quảng Ninh"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Điểm Tham Quan Hội Quán Hải Nam, 10 Đường Trần Phú, Phường Minh An, Thành Phố Hội An, Tỉnh Quảng Nam",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 5
+      },
+      {
+        "length": 4,
+        "offset": 10
+      },
+      {
+        "length": 4,
+        "offset": 19
+      },
+      {
+        "length": 4,
+        "offset": 91
+      }
+    ],
+    "place_id": "4M_R8JJbDndvvYMVlXiXRmuiWk6ORzJv4s5WhKJr-GpqlCUUilq58XmnVU-4Rq38XJUhD4x4pflckXNMuGv4zV27VXgW6Qq3Wb6tdSYt7i-JukU4dvR2bi2y5RjaLHPDL",
+    "reference": "4M_R8JJbDndvvYMVlXiXRmuiWk6ORzJv4s5WhKJr-GpqlCUUilq58XmnVU-4Rq38XJUhD4x4pflckXNMuGv4zV27VXgW6Qq3Wb6tdSYt7i-JukU4dvR2bi2y5RjaLHPDL",
+    "structured_formatting": {
+      "main_text": "Điểm Tham Quan Hội Quán Hải Nam",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 5
+        },
+        {
+          "length": 4,
+          "offset": 10
+        },
+        {
+          "length": 4,
+          "offset": 19
+        }
+      ],
+      "secondary_text": "10 Đường Trần Phú, Phường Minh An, Thành Phố Hội An, Tỉnh Quảng Nam",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 58
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CER3G7 Phường Minh An, Thành Phố Hội An, Tỉnh Quảng Nam",
+      "global_code": "2ZTEL+CER3G7"
+    },
+    "compound": {
+      "district": "Hội An",
+      "commune": "Minh An",
+      "province": "Quảng Nam"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Điểm Tham Quan Hội Quán Hải Nam"
+      },
+      {
+        "offset": 40,
+        "value": "10 Đường Trần Phú"
+      },
+      {
+        "offset": 66,
+        "value": "Phường Minh An"
+      },
+      {
+        "offset": 85,
+        "value": "Thành Phố Hội An"
+      },
+      {
+        "offset": 108,
+        "value": "Tỉnh Quảng Nam"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Điểm Tham Quan Du Lịch làng Bích Hoạ Tam Thanh, 30 Thanh Niên, Tam Thanh, Tam Kỳ, Quảng Nam",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 5
+      },
+      {
+        "length": 4,
+        "offset": 10
+      },
+      {
+        "length": 4,
+        "offset": 82
+      }
+    ],
+    "place_id": "qEWXTph55FVIlElbqlWotHmXRTeeaoGZT4BNA54Nh5xmkGharWffnHmUkFx8ZbiuIbXznUFVhlMOtmMhn1GH-kqqYzatUrjcfJhOWphogvFK9iF0Org6qmH_jVSWYD7TY",
+    "reference": "qEWXTph55FVIlElbqlWotHmXRTeeaoGZT4BNA54Nh5xmkGharWffnHmUkFx8ZbiuIbXznUFVhlMOtmMhn1GH-kqqYzatUrjcfJhOWphogvFK9iF0Org6qmH_jVSWYD7TY",
+    "structured_formatting": {
+      "main_text": "Điểm Tham Quan Du Lịch làng Bích Hoạ Tam Thanh",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 5
+        },
+        {
+          "length": 4,
+          "offset": 10
+        }
+      ],
+      "secondary_text": "30 Thanh Niên, Tam Thanh, Tam Kỳ, Quảng Nam",
+      "secondary_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 34
+        }
+      ]
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CWPGY6 Tam Thanh, Tam Kỳ, Quảng Nam",
+      "global_code": "2ZT9R+CWPGY6"
+    },
+    "compound": {
+      "district": "Tam Kỳ",
+      "commune": "Tam Thanh",
+      "province": "Quảng Nam"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Điểm Tham Quan Du Lịch làng Bích Hoạ Tam Thanh"
+      },
+      {
+        "offset": 56,
+        "value": "30 Thanh Niên"
+      },
+      {
+        "offset": 45,
+        "value": "Tam Thanh"
+      },
+      {
+        "offset": 83,
+        "value": "Tam Kỳ"
+      },
+      {
+        "offset": 93,
+        "value": "Quảng Nam"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Điểm Tham Quan Vườn Tiêu Thuận Đông, Đường Cửa Cạn Gành Dầu, Xã Cửa Cạn, Thành Phố Phú Quốc, Tỉnh Kiên Giang",
+    "matched_substrings": [
+      {
+        "length": 4,
+        "offset": 5
+      },
+      {
+        "length": 4,
+        "offset": 10
+      }
+    ],
+    "place_id": "WKWMPWHJ_f3Bppl9QvEiN_EW5YhSrd6f-Q49mE79nmexrjXowuViR7HS_SDW5RbP3mii0G6JcWOKdWG4hpWWn9XCNbRq_AOr0nbVDV5VllXGjj3ED_AOFlVCnLKOVAu7V",
+    "reference": "WKWMPWHJ_f3Bppl9QvEiN_EW5YhSrd6f-Q49mE79nmexrjXowuViR7HS_SDW5RbP3mii0G6JcWOKdWG4hpWWn9XCNbRq_AOr0nbVDV5VllXGjj3ED_AOFlVCnLKOVAu7V",
+    "structured_formatting": {
+      "main_text": "Điểm Tham Quan Vườn Tiêu Thuận Đông",
+      "main_text_matched_substrings": [
+        {
+          "length": 4,
+          "offset": 5
+        },
+        {
+          "length": 4,
+          "offset": 10
+        }
+      ],
+      "secondary_text": "Đường Cửa Cạn Gành Dầu, Xã Cửa Cạn, Thành Phố Phú Quốc, Tỉnh Kiên Giang",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CEPTU4 Xã Cửa Cạn, Thành Phố Phú Quốc, Tỉnh Kiên Giang",
+      "global_code": "4UARR+CEPTU4"
+    },
+    "compound": {
+      "district": "Phú Quốc",
+      "commune": "Cửa Cạn",
+      "province": "Kiên Giang"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Điểm Tham Quan Vườn Tiêu Thuận Đông"
+      },
+      {
+        "offset": 47,
+        "value": "Đường Cửa Cạn Gành Dầu"
+      },
+      {
+        "offset": 82,
+        "value": "Xã Cửa Cạn"
+      },
+      {
+        "offset": 99,
+        "value": "Thành Phố Phú Quốc"
+      },
+      {
+        "offset": 125,
+        "value": "Tỉnh Kiên Giang"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Quán ăn đêm 379 Điện Biên Phủ, 379 Điện Biên Phủ, Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "aCLSuw2Ust9_k1Y8elepgn7lNZ1ihepDSf6h8t7FSm8NMGXTcrAym3UuqVimsDIOeZSJ837JWh9t5Kn8bqGvgVlbcwl6xDZtyf7tNrVlrm_J-gV6brQ2Lm3ypViabDODb",
+    "reference": "aCLSuw2Ust9_k1Y8elepgn7lNZ1ihepDSf6h8t7FSm8NMGXTcrAym3UuqVimsDIOeZSJ837JWh9t5Kn8bqGvgVlbcwl6xDZtyf7tNrVlrm_J-gV6brQ2Lm3ypViabDODb",
+    "structured_formatting": {
+      "main_text": "Quán ăn đêm 379 Điện Biên Phủ",
+      "main_text_matched_substrings": [],
+      "secondary_text": "379 Điện Biên Phủ, Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+VTA1 Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YSL+VTA1"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Sa Pa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Quán ăn đêm 379 Điện Biên Phủ"
+      },
+      {
+        "offset": 15,
+        "value": "379 Điện Biên Phủ"
+      },
+      {
+        "offset": 65,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 65,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 79,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [
+      "restaurant"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Quán ăn Hùng Thu, 116 Châu Úy, Phường Nam Cường, Thành phố Lào Cai, Tỉnh Lào Cai",
+    "matched_substrings": [],
+    "place_id": "inEG2KZrQJBCiTowkXGQ-HmiTl26cqLVedRWXadanClu11Xxu2CS-JEa8TTahYo_WcnRZFJhbua2fbbwf2H-zkrGPBhG5YuuUdLBGUqZgkPl1ilUGkAaAkHeiXS2QB-vQ",
+    "reference": "inEG2KZrQJBCiTowkXGQ-HmiTl26cqLVedRWXadanClu11Xxu2CS-JEa8TTahYo_WcnRZFJhbua2fbbwf2H-zkrGPBhG5YuuUdLBGUqZgkPl1ilUGkAaAkHeiXS2QB-vQ",
+    "structured_formatting": {
+      "main_text": "Quán ăn Hùng Thu",
+      "main_text_matched_substrings": [],
+      "secondary_text": "116 Châu Úy, Phường Nam Cường, Thành phố Lào Cai, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+G28W Nam Cường, Lào Cai, Lào Cai",
+      "global_code": "17XVX+G28W"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Nam Cường",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Quán ăn Hùng Thu"
+      },
+      {
+        "offset": 20,
+        "value": "116 Châu Úy"
+      },
+      {
+        "offset": 35,
+        "value": "Phường Nam Cường"
+      },
+      {
+        "offset": 59,
+        "value": "Thành phố Lào Cai"
+      },
+      {
+        "offset": 82,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [
+      "restaurant"
+    ],
+    "distance_meters": null
+  },
+  {
+    "description": "Quán Ăn Thủy Sơn, 442 Đường Điện Biên, Phường Phan Si Păng, Thị Xã Sa Pa, Tỉnh Lào Cai",
+    "matched_substrings": [],
+    "place_id": "RwirM6tbzu1I_2Fdco26GzmOvR11Tbqz2eYCoLEdSrJF0gHobqFPkvGWETgefb5aSTodxJ7cJ_JlirkMxtG7hwWOBMBGZfuWcer5_sp5Invd7XG6EqAiOnnmsUyOeCeXe",
+    "reference": "RwirM6tbzu1I_2Fdco26GzmOvR11Tbqz2eYCoLEdSrJF0gHobqFPkvGWETgefb5aSTodxJ7cJ_JlirkMxtG7hwWOBMBGZfuWcer5_sp5Invd7XG6EqAiOnnmsUyOeCeXe",
+    "structured_formatting": {
+      "main_text": "Quán Ăn Thủy Sơn",
+      "main_text_matched_substrings": [],
+      "secondary_text": "442 Đường Điện Biên, Phường Phan Si Păng, Thị Xã Sa Pa, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CEQ5H2 Phường Phan Si Păng, Thị Xã Sa Pa, Tỉnh Lào Cai",
+      "global_code": "17YTK+CEQ5H2"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Phan Si Păng",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Quán Ăn Thủy Sơn"
+      },
+      {
+        "offset": 22,
+        "value": "442 Đường Điện Biên"
+      },
+      {
+        "offset": 51,
+        "value": "Phường Phan Si Păng"
+      },
+      {
+        "offset": 76,
+        "value": "Thị Xã Sa Pa"
+      },
+      {
+        "offset": 93,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Quán Ăn Giàng A Lử, Thôn Hàng Lao Chải, Xã Hoàng Liên, Thị Xã Sa Pa, Tỉnh Lào Cai",
+    "matched_substrings": [],
+    "place_id": "hI-enEG-ZVWMuFEYtgFPVdubYzGydYz2V8cB4i4V7Cv55uGumgmem-lKafwS0Trr6eT1KwLdlqNl5hH8EtFlCz26kcz1gWYiHhEmyRqR0hO1hUmASshKUhGO2STmEE__E",
+    "reference": "hI-enEG-ZVWMuFEYtgFPVdubYzGydYz2V8cB4i4V7Cv55uGumgmem-lKafwS0Trr6eT1KwLdlqNl5hH8EtFlCz26kcz1gWYiHhEmyRqR0hO1hUmASshKUhGO2STmEE__E",
+    "structured_formatting": {
+      "main_text": "Quán Ăn Giàng A Lử",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Thôn Hàng Lao Chải, Xã Hoàng Liên, Thị Xã Sa Pa, Tỉnh Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CEQ5L4 Xã Hoàng Liên, Thị Xã Sa Pa, Tỉnh Lào Cai",
+      "global_code": "17YSX+CEQ5L4"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Hoàng Liên",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Quán Ăn Giàng A Lử"
+      },
+      {
+        "offset": 24,
+        "value": "Thôn Hàng Lao Chải"
+      },
+      {
+        "offset": 48,
+        "value": "Xã Hoàng Liên"
+      },
+      {
+        "offset": 66,
+        "value": "Thị Xã Sa Pa"
+      },
+      {
+        "offset": 83,
+        "value": "Tỉnh Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Quán ăn Bích Phượng, 194 Đường Điện Biên Phủ, TT. Sa Pa, Sa Pa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "jr7hb5meoIRgvlMm7W6u1mCiWwiRJ478TIBXCLxarIsdPv1MbgkOj4neWNCuSb7dTSMbYELwKmGp8smZbsFKr3H--ZQKkUp7Ber5IXJ5uen-ohFsIe_eeCHmsUyPlCaje",
+    "reference": "jr7hb5meoIRgvlMm7W6u1mCiWwiRJ478TIBXCLxarIsdPv1MbgkOj4neWNCuSb7dTSMbYELwKmGp8smZbsFKr3H--ZQKkUp7Ber5IXJ5uen-ohFsIe_eeCHmsUyPlCaje",
+    "structured_formatting": {
+      "main_text": "Quán ăn Bích Phượng",
+      "main_text_matched_substrings": [],
+      "secondary_text": "194 Đường Điện Biên Phủ, TT. Sa Pa, Sa Pa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX906T TT. Sa Pa, Sa Pa, Lào Cai",
+      "global_code": "17YTN+CX906T"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Hàm Rồng",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Quán ăn Bích Phượng"
+      },
+      {
+        "offset": 26,
+        "value": "194 Đường Điện Biên Phủ"
+      },
+      {
+        "offset": 61,
+        "value": "TT. Sa Pa"
+      },
+      {
+        "offset": 65,
+        "value": "Sa Pa"
+      },
+      {
+        "offset": 79,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Quán ăn truyền thống dao đỏ, Ngã ba xã Mường Hoa thị xã Sapa, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "QXGVT4ttsZV8ykU1lHG63Hy9VU6-a7nkQJJVPr5mjfZBhHcJrmq8km1B9U-AXKWDG3djI-5wpv-gfFEh87yL020yTIgP3aIyOfKxaToxpuuUalm0anEmMjBu-azH3aLrM",
+    "reference": "QXGVT4ttsZV8ykU1lHG63Hy9VU6-a7nkQJJVPr5mjfZBhHcJrmq8km1B9U-AXKWDG3djI-5wpv-gfFEh87yL020yTIgP3aIyOfKxaToxpuuUalm0anEmMjBu-azH3aLrM",
+    "structured_formatting": {
+      "main_text": "Quán ăn truyền thống dao đỏ",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Ngã ba xã Mường Hoa thị xã Sapa, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX91CE Ngã ba xã Mường Hoa thị xã Sapa, Lào Cai, 330000",
+      "global_code": "17YT9+CX91CE"
+    },
+    "compound": {
+      "district": "Sa Pa",
+      "commune": "Mường Hoa",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Quán ăn truyền thống dao đỏ"
+      },
+      {
+        "offset": 37,
+        "value": "Ngã ba xã Mường Hoa thị xã Sapa"
+      },
+      {
+        "offset": 78,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Quán Ăn Ngọc Hưng, Pắc Ta, Tân Uyên, Lai Châu",
+    "matched_substrings": [],
+    "place_id": "3n4i5WXj2GbllkbFMWm216V2Vv01WG5yMabOlO6NvoW5oVq4qf-3wfWuQskslQqnSaL6mGXNv9Mlxo71LzxiT1mu8NmcBGJfka6-PgEp_a-ZNlbmPQhlqj2i9jzKHGPRC",
+    "reference": "3n4i5WXj2GbllkbFMWm216V2Vv01WG5yMabOlO6NvoW5oVq4qf-3wfWuQskslQqnSaL6mGXNv9Mlxo71LzxiT1mu8NmcBGJfka6-PgEp_a-ZNlbmPQhlqj2i9jzKHGPRC",
+    "structured_formatting": {
+      "main_text": "Quán Ăn Ngọc Hưng",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Pắc Ta, Tân Uyên, Lai Châu",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CWME99 Pắc Ta, Tân Uyên, Lai Châu",
+      "global_code": "1SJXJ+CWME99"
+    },
+    "compound": {
+      "district": "Tân Uyên",
+      "commune": "Pắc Ta",
+      "province": "Lai Châu"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Quán Ăn Ngọc Hưng"
+      },
+      {
+        "offset": 23,
+        "value": "Pắc Ta"
+      },
+      {
+        "offset": 33,
+        "value": "Tân Uyên"
+      },
+      {
+        "offset": 45,
+        "value": "Lai Châu"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Quán ăn gia bảo, QL4D, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "WkK5hMgIzLlpyCohvG6Q1l2gUQNBboOJbYK_SUJFnI5yulpOhG2clWWyoCvwQDXVaCatbb2ySshrr0VvshqpjmyWe02JRv7HaKxaTox8jOVp0lkkauhqcg2u-QTGMG4z3",
+    "reference": "WkK5hMgIzLlpyCohvG6Q1l2gUQNBboOJbYK_SUJFnI5yulpOhG2clWWyoCvwQDXVaCatbb2ySshrr0VvshqpjmyWe02JRv7HaKxaTox8jOVp0lkkauhqcg2u-QTGMG4z3",
+    "structured_formatting": {
+      "main_text": "Quán ăn gia bảo",
+      "main_text_matched_substrings": [],
+      "secondary_text": "QL4D, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX8VUZ QL4D, Lào Cai",
+      "global_code": "17XW5+CX8VUZ"
+    },
+    "compound": {
+      "district": "Lào Cai",
+      "commune": "Cốc San",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Quán ăn gia bảo"
+      },
+      {
+        "offset": 20,
+        "value": "QL4D"
+      },
+      {
+        "offset": 26,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Quán Ăn Quý Khuê, Cốc San, Bát Xát, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "O20Zg7GgS3l_xiVFZnC_xHydV7cGSP37aLSuMJtzithmW40HsWGr_mahrE-EcaOBZmOKW7WYnkFTTv0bqEH2K4FWYdTqEX6DkZqJUQIJygutnmEcUtBSSgmWwTz-CFfnC",
+    "reference": "O20Zg7GgS3l_xiVFZnC_xHydV7cGSP37aLSuMJtzithmW40HsWGr_mahrE-EcaOBZmOKW7WYnkFTTv0bqEH2K4FWYdTqEX6DkZqJUQIJygutnmEcUtBSSgmWwTz-CFfnC",
+    "structured_formatting": {
+      "main_text": "Quán Ăn Quý Khuê",
+      "main_text_matched_substrings": [],
+      "secondary_text": "Cốc San, Bát Xát, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX8VV0 Cốc San, Bát Xát, Lào Cai",
+      "global_code": "17XW5+CX8VV0"
+    },
+    "compound": {
+      "district": "Bát Xát",
+      "commune": "Cốc San",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Quán Ăn Quý Khuê"
+      },
+      {
+        "offset": 21,
+        "value": "Cốc San"
+      },
+      {
+        "offset": 32,
+        "value": "Bát Xát"
+      },
+      {
+        "offset": 43,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  },
+  {
+    "description": "Quán Ăn Thúy Lành, ĐT156, TT. Bát Sát, Bát Xát, Lào Cai",
+    "matched_substrings": [],
+    "place_id": "QO2GmpKgc0CZt20xk1904prSXxKQZrjRcbVDO79flsZrpEBUvwEv1p6YT6y_dzFx6ohPCbxmiqBypVtV6EuGv0eJclWRdLOUQLZyVHeWW_9zjJYAZgC6lnFTWyuQWAaTW",
+    "reference": "QO2GmpKgc0CZt20xk1904prSXxKQZrjRcbVDO79flsZrpEBUvwEv1p6YT6y_dzFx6ohPCbxmiqBypVtV6EuGv0eJclWRdLOUQLZyVHeWW_9zjJYAZgC6lnFTWyuQWAaTW",
+    "structured_formatting": {
+      "main_text": "Quán Ăn Thúy Lành",
+      "main_text_matched_substrings": [],
+      "secondary_text": "ĐT156, TT. Bát Sát, Bát Xát, Lào Cai",
+      "secondary_text_matched_substrings": []
+    },
+    "has_children": false,
+    "plus_code": {
+      "compound_code": "+CX8XO4 TT. Bát Sát, Bát Xát, Lào Cai",
+      "global_code": "17YBX+CX8XO4"
+    },
+    "compound": {
+      "district": "Bát Xát",
+      "commune": "Bát Xát",
+      "province": "Lào Cai"
+    },
+    "terms": [
+      {
+        "offset": 0,
+        "value": "Quán Ăn Thúy Lành"
+      },
+      {
+        "offset": 22,
+        "value": "ĐT156"
+      },
+      {
+        "offset": 30,
+        "value": "TT. Bát Sát"
+      },
+      {
+        "offset": 45,
+        "value": "Bát Xát"
+      },
+      {
+        "offset": 56,
+        "value": "Lào Cai"
+      }
+    ],
+    "types": [],
+    "distance_meters": null
+  }
+]

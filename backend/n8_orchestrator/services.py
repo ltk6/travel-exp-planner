@@ -1,6 +1,7 @@
 import base64
 import os
 import json
+import time
 from config import (
     TOP_K_LOCATIONS, TOP_K_ACTIVITIES, LLM_N5_TARGET_COUNT, setup_logging, API_DEBUG
 )
@@ -43,6 +44,21 @@ IMG_CACHE_DIR = os.path.join(CACHE_DIR, "image_cache")
 # Đảm bảo thư mục cache ảnh tồn tại
 os.makedirs(IMG_CACHE_DIR, exist_ok=True)
 
+# Fingerprint TTL — tránh hit DB mỗi request trong dev
+_FP_TTL_SEC = 10.0
+_FP_CACHE = {"value": None, "expires": 0.0}
+
+
+def _fingerprint_cached() -> str:
+    """Wrap get_db_fingerprint() với TTL ngắn để giảm round-trip Postgres."""
+    now = time.time()
+    if _FP_CACHE["value"] is not None and now < _FP_CACHE["expires"]:
+        return _FP_CACHE["value"]
+    fp = get_db_fingerprint()
+    _FP_CACHE["value"] = fp
+    _FP_CACHE["expires"] = now + _FP_TTL_SEC
+    return fp
+
 def _save_images_to_local_cache(location_id, images_b64):
     """Lưu danh sách ảnh Base64 từ N3 thành file cục bộ của N8."""
     saved_paths = []
@@ -60,20 +76,14 @@ def _save_images_to_local_cache(location_id, images_b64):
             logger.warning(f"Lỗi lưu ảnh cache cho {location_id}: {e}")
     return saved_paths
 
-def _get_images_from_local_cache(location_id):
-    """Đọc ảnh từ file cục bộ và trả về dạng Base64 (data URI)."""
-    encoded_images = []
-    # Tìm các file có dạng location_id_*.jpg
-    for i in range(10): # Giả định tối đa 10 ảnh
+def _get_image_urls(location_id):
+    """Trả về list URL trỏ tới /api/images/{filename}. Frontend lazy-load."""
+    urls = []
+    for i in range(10):  # Giả định tối đa 10 ảnh
         file_path = os.path.join(IMG_CACHE_DIR, f"{location_id}_{i}.jpg")
         if os.path.exists(file_path):
-            try:
-                with open(file_path, "rb") as f:
-                    b64_str = base64.b64encode(f.read()).decode("utf-8")
-                    encoded_images.append(f"data:image/jpeg;base64,{b64_str}")
-            except Exception as e:
-                logger.warning(f"Lỗi đọc ảnh cache {file_path}: {e}")
-    return encoded_images
+            urls.append(f"/api/images/{location_id}_{i}.jpg")
+    return urls
 
 # ── Core Services ──
 
@@ -85,7 +95,7 @@ def get_all_locations_cached(force_refresh=False):
     3. Check Disk (location_cache.json)
     """
     global _CACHED_LOCATIONS_DATA, _CACHED_FINGERPRINT
-    current_fp = get_db_fingerprint()
+    current_fp = _fingerprint_cached()
     
     if not force_refresh:
         # RAM Hit?
@@ -150,7 +160,7 @@ def explore_locations_service():
     out = []
     for loc in locations:
         loc_id = loc.get("location_id")
-        imgs = _get_images_from_local_cache(loc_id) if loc_id else []
+        imgs = _get_image_urls(loc_id) if loc_id else []
         first_img = imgs[0] if imgs else None
         out.append({
             "location_id": loc_id,
@@ -226,7 +236,7 @@ def recommend_service(body):
     # ── Final Enrichment (Attach images from N8's LOCAL cache) ──
     for loc_rank in ranked:
         loc_id = loc_rank.get("location_id")
-        loc_rank["images"] = _get_images_from_local_cache(loc_id)
+        loc_rank["images"] = _get_image_urls(loc_id)
         # Find and attach metadata from original locations list
         original = next((l for l in locations if l["location_id"] == loc_id), {})
         loc_rank["metadata"] = original.get("metadata", {})
@@ -375,6 +385,273 @@ def activities_service(body):
         "meta": per_loc_meta[0] if per_loc_meta else {},
         "ranking_meta": n6_result.get("metadata", {})
     }
+
+
+# Gợi ý ngôn ngữ tự nhiên cho N5 LLM khi user chọn chip — tag literal như "nature"
+# không gọi gợi cho prompt; cụm tiếng Việt mô tả sở thích thì có.
+_TYPE_HINT_TEXT = {
+    "nature":      "thích thiên nhiên, ngắm cảnh, leo núi, ngắm thác, công viên, biển",
+    "culture":     "thích văn hoá, di tích, đền chùa, lịch sử, bảo tàng",
+    "food":        "thích ăn uống, ẩm thực địa phương, quán cà phê, đặc sản",
+    "adventure":   "thích phiêu lưu, mạo hiểm, thể thao mạo hiểm, trekking",
+    "relaxation":  "thích thư giãn, spa, nghỉ dưỡng, suối nước nóng",
+    "nightlife":   "thích về đêm, bar, quán đêm, chợ đêm",
+    "shopping":    "thích mua sắm, chợ, làng nghề thủ công",
+    "photography": "thích chụp ảnh, check-in điểm đẹp, cảnh quan",
+    "experience":  "thích trải nghiệm độc đáo, văn hoá địa phương, homestay",
+}
+
+
+def _n5_fallback_generate(location: dict, preferred_types: list, top_k: int) -> list:
+    """
+    Gọi N5 LLM sinh top_k activities cho location, dùng preferred_types làm
+    gợi ý tiếng Việt ('thích thiên nhiên, ngắm cảnh, ...'). Trả list activities
+    theo unified schema (giống output v2).
+    """
+    if preferred_types:
+        user_text = "; ".join(_TYPE_HINT_TEXT.get(t, t) for t in preferred_types)
+    else:
+        user_text = ""
+
+    # Đảm bảo location.metadata.coordinates có lat/lng để n5 normalizer kế thừa.
+    loc_for_n5 = {
+        "location_id": location["location_id"],
+        "metadata": {
+            **(location.get("metadata") or {}),
+            "name":        (location.get("metadata") or {}).get("name") or location["location_id"],
+            "tags":        preferred_types or [],
+            "coordinates": location.get("geo") or {"lat": None, "lng": None},
+        },
+    }
+
+    n5_input = {
+        "user":        {"text": user_text, "tags": preferred_types or [], "img_desc": ""},
+        "locations":   [loc_for_n5],
+        "constraints": {},
+    }
+    try:
+        n5_result = generate_activities(n5_input)
+    except Exception as e:
+        logger.warning("N5 fallback raised: %s", e)
+        return []
+    return n5_result.get("activities", []) or []
+
+
+def _name_key(name: str) -> str:
+    """Normalize name cho dedupe (lowercase + bỏ dấu + bỏ ký tự đặc biệt)."""
+    import re, unicodedata
+    if not name:
+        return ""
+    s = unicodedata.normalize("NFD", name.lower())
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    s = s.replace("đ", "d").replace("Đ", "D")
+    s = re.sub(r"[^\w\s]", " ", s, flags=re.UNICODE)
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def _merge_v2_n5(
+    v2_acts: list,
+    n5_acts: list,
+    preferred_types: list,
+    top_k: int,
+) -> list:
+    """
+    Trộn V2 (POI thật) + N5 (LLM sinh), dedupe theo normalized name.
+    Khi có preferred_types: ưu tiên N5 cho slot preferred (LLM biết địa danh,
+    sinh được hoạt động cụ thể), dùng V2 cho diversity. Khi không: V2 trước
+    (POI thật ưu thế), N5 chỉ lấp slot trống.
+    """
+    seen: set = set()
+    out: list = []
+
+    def _add(a):
+        key = _name_key(a.get("metadata", {}).get("name", ""))
+        if not key or key in seen:
+            return False
+        seen.add(key)
+        out.append(a)
+        return True
+
+    if preferred_types:
+        prefs = set(preferred_types)
+        pref_quota = max(1, int(round(top_k * 0.7)))
+
+        # 1. N5 acts khớp preferred (LLM context-aware → tốt cho ngữ cảnh location)
+        for a in n5_acts:
+            if a.get("metadata", {}).get("activity_type") in prefs and _add(a) and len(out) >= pref_quota:
+                break
+        # 2. V2 acts khớp preferred — lấp thêm slot preferred
+        for a in v2_acts:
+            if a.get("metadata", {}).get("activity_type") in prefs and _add(a) and len(out) >= pref_quota:
+                break
+        # 3. V2 non-preferred cho diversity
+        for a in v2_acts:
+            if a.get("metadata", {}).get("activity_type") not in prefs:
+                if _add(a) and len(out) >= top_k:
+                    break
+        # 4. N5 non-preferred (last resort)
+        for a in n5_acts:
+            if a.get("metadata", {}).get("activity_type") not in prefs:
+                if _add(a) and len(out) >= top_k:
+                    break
+    else:
+        for a in v2_acts:
+            if _add(a) and len(out) >= top_k:
+                break
+        for a in n5_acts:
+            if _add(a) and len(out) >= top_k:
+                break
+    return out[:top_k]
+
+
+def activities_v2_service(body):
+    """
+    Pipeline v2 (DB-backed): đọc activities đã seed sẵn ở N9-N14 từ Postgres,
+    embed user_input qua N1 → rank qua N6 (cosine + 3 trục attribute).
+    Fallback N5 LLM nếu DB sparse (chưa seed hoặc seed thất bại).
+
+    Khác v2 cũ: KHÔNG fetch+embed runtime. Acts + vectors đã có sẵn ở DB sau
+    khi chạy seed_activities.py.
+    """
+    import time
+    from n3_database.db_manager import get_activities_for_location
+
+    t0 = time.time()
+    text     = body.get("text", "").strip()
+    img_desc = body.get("img_desc", "")
+    tags     = body.get("tags", [])
+    text_k   = int(body.get("text_k", 0))
+    tags_k   = int(body.get("tags_k", 0))
+    user_vectors = body.get("user_vectors", {}) or {}
+    location = body.get("location", {})
+    top_k    = int(body.get("top_k_activities", TOP_K_ACTIVITIES))
+
+    loc_id   = location.get("location_id", "")
+    loc_meta = location.get("metadata", {}) or {}
+    loc_name = loc_meta.get("name") or loc_id
+
+    if not loc_id:
+        return {
+            "status": "error",
+            "error":  "location must have location_id",
+            "activities": [],
+        }
+
+    pref_raw = body.get("preferred_types") or []
+    preferred_types = [str(t).lower().strip() for t in pref_raw if isinstance(t, str) and t.strip()]
+
+    # ── 1. Đọc activities từ DB (UNION 6 bảng cho 1 loc) ────────────────────
+    db_acts = get_activities_for_location(loc_id, include_vectors=True)
+    logger.info("activities_v2: loc=%s db_acts=%d", loc_id, len(db_acts))
+
+    # ── 2. Fallback N5 khi DB sparse (chưa seed hoặc seed lỗi) ─────────────
+    fallback_used = False
+    fallback_n5_count = 0
+    if len(db_acts) < 3:
+        logger.info("v2 DB sparse (n_acts=%d) loc=%s — triggering N5 fallback", len(db_acts), loc_id)
+        n5_acts = _n5_fallback_generate(location, preferred_types, top_k)
+        from modules.activity_retrievals.processor import _drop_anchor_duplicates
+        n5_acts = _drop_anchor_duplicates(n5_acts, loc_name)
+        if n5_acts:
+            # N5 sinh act không có vectors → embed batch ngay
+            n1_inputs = []
+            for a in n5_acts:
+                md = a.get("metadata", {})
+                n1_inputs.append({
+                    "text":     (md.get("name") or "") + ". " + (md.get("description") or ""),
+                    "tags":     md.get("tags") or [],
+                    "img_desc": "",
+                })
+            n1_results = embed_batch(n1_inputs)
+            for a, r in zip(n5_acts, n1_results):
+                v = r.get("vectors") or {}
+                a["vectors"] = {"text": v.get("text"), "tag": v.get("aug_tags")}
+            db_acts = db_acts + n5_acts
+            fallback_used = True
+            fallback_n5_count = len(n5_acts)
+
+    if not db_acts:
+        elapsed_ms = int((time.time() - t0) * 1000)
+        return {
+            "status":      "success",
+            "location_id": loc_id,
+            "activities":  [],
+            "meta": {
+                "provider_used": "n9-n14_db",
+                "model_used":    "multi-source-cached",
+                "latency_ms":    elapsed_ms,
+                "fallback_used": fallback_used,
+                "db_acts_count": 0,
+                "warning":       "Location chưa được seed — chạy seed_activities.py",
+            },
+            "ranking_meta": {},
+        }
+
+    # ── 3. Embed user_input nếu chưa có user_vectors ────────────────────────
+    if not user_vectors and (text or tags or img_desc):
+        user_emb = embed({"text": text, "tags": tags, "img_desc": img_desc})
+        user_vectors = user_emb.get("vectors") or {}
+
+    # ── 4. N6 rank (cosine + attribute) ─────────────────────────────────────
+    n6_input = {
+        "text_k":       text_k,
+        "tags_k":       tags_k,
+        "user_input":   {"text": text, "tags": tags, "img_desc": img_desc},
+        "user_vectors": user_vectors,
+        "activities":   db_acts,
+        "top_k":        top_k,
+    }
+    n6_result = rank_activities(n6_input)
+    ranked = n6_result.get("activities", []) or []
+
+    # ── 5. Map về FE ActivityResult shape ──────────────────────────────────
+    act_map = {a["activity_id"]: a for a in db_acts}
+    enriched = []
+    for ra in ranked:
+        aid  = ra.get("activity_id")
+        orig = act_map.get(aid, {})
+        md   = orig.get("metadata", {}) or {}
+        plc  = orig.get("place", {}) or {}
+        sg   = orig.get("signals", {}) or {}
+        dist = plc.get("distance_from_anchor_m")
+
+        enriched.append({
+            "activity_id": aid,
+            "location_id": orig.get("location_id") or loc_id,
+            "score":       ra.get("score", 0),
+            "reason":      ra.get("reason", ""),
+            "metadata": {
+                "name":           md.get("name"),
+                "description":    md.get("description"),
+                "activity_type":  md.get("activity_type"),
+                "indoor_outdoor": md.get("indoor_outdoor"),
+                "tags":           md.get("categories_raw", []) or md.get("tags", []),
+                "source":         orig.get("source"),
+                "coordinates":    plc.get("coordinates"),
+                "distance_m":     dist,
+                "rating":         sg.get("rating"),
+                "image_url":      sg.get("image_url"),
+                "website":        sg.get("website"),
+                "opening_hours":  sg.get("opening_hours"),
+            },
+        })
+
+    elapsed_ms = int((time.time() - t0) * 1000)
+    return {
+        "status":      "success",
+        "location_id": loc_id,
+        "activities":  enriched,
+        "meta": {
+            "provider_used":     "n9-n14_db" + ("+n5_fallback" if fallback_used else ""),
+            "model_used":        "bge-m3+n6-cosine" + (" + qwen/llama" if fallback_used else ""),
+            "latency_ms":        elapsed_ms,
+            "fallback_used":     fallback_used,
+            "fallback_n5_count": fallback_n5_count,
+            "db_acts_count":     len(db_acts),
+        },
+        "ranking_meta": n6_result.get("metadata", {}),
+    }
+
 
 def feedback_recommend_service(body):
     """

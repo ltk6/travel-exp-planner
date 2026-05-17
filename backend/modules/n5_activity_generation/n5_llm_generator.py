@@ -90,6 +90,7 @@ TRẢ LỜI:
   }},
   ...
 ]"""
+
     return prompt
 
 
@@ -101,10 +102,8 @@ def _parse_llm_response(response_text: str) -> Optional[List[Dict]]:
     """Parse JSON từ LLM response. Xử lý: pure JSON, markdown code block, JSON trong text."""
     if not response_text or not response_text.strip():
         return None
-
     text = response_text.strip()
 
-    # Case 1: parse trực tiếp
     try:
         data = json.loads(text)
         if isinstance(data, list):
@@ -232,7 +231,7 @@ def call_llm(
             logger.warning("Provider %s failed in pass %d", provider.name, pass_idx + 1)
 
         if pass_idx < retries:
-            wait = min(60.0, (LLM_RETRY_WAIT_BASE * (3 ** pass_idx)) + random.random())
+            wait = min(8.0, (LLM_RETRY_WAIT_BASE * (1.5 ** pass_idx)) + random.random())
             logger.warning("All models in chain failed. Waiting %.2fs before pass %d...", wait, pass_idx + 2)
             time.sleep(wait)
 

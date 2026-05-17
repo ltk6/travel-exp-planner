@@ -1,0 +1,5561 @@
+[
+  {
+    "type": "node",
+    "id": 854823033,
+    "lat": 22.304065,
+    "lon": 103.8985557,
+    "tags": {
+      "name": "Carved Boulder Museum",
+      "tourism": "museum"
+    }
+  },
+  {
+    "type": "node",
+    "id": 977781119,
+    "lat": 22.3368747,
+    "lon": 103.8459755,
+    "tags": {
+      "name": "North Star Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 977821311,
+    "lat": 22.3328003,
+    "lon": 103.8435717,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Sapa Firer"
+    }
+  },
+  {
+    "type": "node",
+    "id": 977821328,
+    "lat": 22.3340559,
+    "lon": 103.8424978,
+    "tags": {
+      "name": "Cha Pa Garden",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 977821334,
+    "lat": 22.3343865,
+    "lon": 103.8423151,
+    "tags": {
+      "addr:housenumber": "18",
+      "addr:street": "Phạm Xuân Huân",
+      "name": "Sapa Horizon Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 977821357,
+    "lat": 22.3320555,
+    "lon": 103.8438561,
+    "tags": {
+      "name": "Bamboo Sapa Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 977821372,
+    "lat": 22.3333453,
+    "lon": 103.8424254,
+    "tags": {
+      "addr:housenumber": "34",
+      "addr:street": "Cau May",
+      "amenity": "restaurant",
+      "name": "Michell Restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989239333,
+    "lat": 22.3358845,
+    "lon": 103.8441478,
+    "tags": {
+      "addr:housenumber": "28",
+      "name": "Thu Hà",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989239376,
+    "lat": 22.3362749,
+    "lon": 103.8426919,
+    "tags": {
+      "addr:housenumber": "17",
+      "addr:street": "Xuân Viên",
+      "amenity": "restaurant",
+      "name": "Napoli's pizza"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989239423,
+    "lat": 22.3346457,
+    "lon": 103.8413535,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "The Lizard"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989239477,
+    "lat": 22.3359666,
+    "lon": 103.8436441,
+    "tags": {
+      "name": "Việt - Anh",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989239500,
+    "lat": 22.3372096,
+    "lon": 103.8468757,
+    "tags": {
+      "addr:housenumber": "18",
+      "addr:street": "Đường Ngũ Chỉ Sơn",
+      "name": "Riverside II Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989239564,
+    "lat": 22.3337884,
+    "lon": 103.8424662,
+    "tags": {
+      "addr:housenumber": "27",
+      "addr:street": "Cau May",
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "diet:vegetarian": "yes",
+      "name": "Viet Emotion"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989239631,
+    "lat": 22.3373207,
+    "lon": 103.8439379,
+    "tags": {
+      "addr:city": "Sa Pa",
+      "addr:country": "VN",
+      "addr:housenumber": "75",
+      "addr:street": "Xuân Viên",
+      "name": "Sapa Eco-Home - Mountain retreat",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989239648,
+    "lat": 22.3363404,
+    "lon": 103.8432161,
+    "tags": {
+      "addr:street": "Xuân Vien",
+      "name": "Thanh Son",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989239943,
+    "lat": 22.3362718,
+    "lon": 103.8434396,
+    "tags": {
+      "addr:housenumber": "51",
+      "addr:street": "Xuân Vien",
+      "name": "Anh Tuan",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989240075,
+    "lat": 22.335258,
+    "lon": 103.8445822,
+    "tags": {
+      "addr:housenumber": "1",
+      "addr:street": "Đường Thạch Sơn",
+      "name": "Linh Trang",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989240226,
+    "lat": 22.3366701,
+    "lon": 103.8443326,
+    "tags": {
+      "addr:housenumber": "65",
+      "addr:street": "Xuân Viên",
+      "amenity": "cafe",
+      "name": "Memory Coffee"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989240239,
+    "lat": 22.335945,
+    "lon": 103.843792,
+    "tags": {
+      "addr:housenumber": "34",
+      "addr:street": "Hàm Rồng",
+      "name": "Lan Hương",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989240263,
+    "lat": 22.3362503,
+    "lon": 103.8424649,
+    "tags": {
+      "addr:housenumber": "17",
+      "addr:street": "Xuân Vien",
+      "email": "vietemotionsapa@gmail.com",
+      "internet_access": "wlan",
+      "name": "Viêt Emotion",
+      "phone": "02143872669",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989240348,
+    "lat": 22.3359669,
+    "lon": 103.843616,
+    "tags": {
+      "addr:housenumber": "10",
+      "addr:street": "Đường Thạch Sơn",
+      "name": "Quỳnh Mai",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989240357,
+    "lat": 22.3361624,
+    "lon": 103.8448818,
+    "tags": {
+      "name": "Đông Á",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989240410,
+    "lat": 22.3362449,
+    "lon": 103.842335,
+    "tags": {
+      "addr:street": "Xuân Viên",
+      "amenity": "cafe",
+      "cuisine": "vietnamese;french;breakfast",
+      "diet:vegetarian": "yes",
+      "internet_access": "wlan",
+      "name": "Madame Thao Cafe & Breakfast"
+    }
+  },
+  {
+    "type": "node",
+    "id": 989240435,
+    "lat": 22.3363379,
+    "lon": 103.843336,
+    "tags": {
+      "addr:housenumber": "49",
+      "addr:street": "Xuân Vien",
+      "name": "Tùng Lâm",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991621794,
+    "lat": 22.3325656,
+    "lon": 103.839818,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Nature View"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991621816,
+    "lat": 22.3330467,
+    "lon": 103.840504,
+    "tags": {
+      "addr:housenumber": "25",
+      "addr:street": "Fan Xi Păng",
+      "name": "Bella Vista",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991621827,
+    "lat": 22.3330245,
+    "lon": 103.8400185,
+    "tags": {
+      "addr:district": "Sa pa",
+      "addr:housenumber": "042",
+      "addr:province": "Lao Cai",
+      "addr:street": "Fansipan",
+      "addr:subdistrict": "Sa pa",
+      "name": "Cat Cat Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991621837,
+    "lat": 22.3345397,
+    "lon": 103.8409899,
+    "tags": {
+      "addr:housenumber": "7",
+      "addr:street": "Fanxifăng",
+      "name": "Pink Dream Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991621856,
+    "lat": 22.3340243,
+    "lon": 103.8407756,
+    "tags": {
+      "addr:housenumber": "25",
+      "addr:street": "Fan Xi Păng",
+      "check_date": "2025-11-05",
+      "name": "Son Ha Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991621896,
+    "lat": 22.3343499,
+    "lon": 103.8409095,
+    "tags": {
+      "addr:housenumber": "13",
+      "addr:street": "Fanxifăng",
+      "name": "Thanh Quyên",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991621920,
+    "lat": 22.334406,
+    "lon": 103.8409407,
+    "tags": {
+      "addr:housenumber": "11",
+      "addr:street": "Fanxifăng",
+      "name": "Cam Tu",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991996259,
+    "lat": 22.3353947,
+    "lon": 103.8431843,
+    "tags": {
+      "name": "Vietnam Trade Union Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991996346,
+    "lat": 22.3350055,
+    "lon": 103.8434094,
+    "tags": {
+      "name": "Thái Bình Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991996432,
+    "lat": 22.3350215,
+    "lon": 103.8430665,
+    "tags": {
+      "name": "Ham Rong Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991996459,
+    "lat": 22.3372465,
+    "lon": 103.8240277,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Fansipan View"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991996626,
+    "lat": 22.334453,
+    "lon": 103.8422285,
+    "tags": {
+      "addr:housenumber": "12",
+      "addr:street": "Phạm Xuân Huân",
+      "name": "Ha Giang",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 991996791,
+    "lat": 22.3285327,
+    "lon": 103.8346798,
+    "tags": {
+      "name": "Cát Cát",
+      "name:en": "Cat Cat Village",
+      "name:ko": "깟깟",
+      "place": "village",
+      "tourism": "attraction",
+      "wikidata": "Q10743160",
+      "wikipedia": "vi:Bản Cát Cát"
+    }
+  },
+  {
+    "type": "node",
+    "id": 1675595831,
+    "lat": 22.3352031,
+    "lon": 103.8395857,
+    "tags": {
+      "name": "Sapa Starlight Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 1714876169,
+    "lat": 22.3362612,
+    "lon": 103.8425511,
+    "tags": {
+      "name": "Quynh Anh Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 2024643568,
+    "lat": 22.3773798,
+    "lon": 103.8513176,
+    "tags": {
+      "designation": "Ta Phin Monastery",
+      "historic": "ruins",
+      "name": "Tu viện Tả Phìn",
+      "source": "GPS"
+    }
+  },
+  {
+    "type": "node",
+    "id": 2027787358,
+    "lat": 22.3343421,
+    "lon": 103.7797703,
+    "tags": {
+      "name": "View Point, altitute 2143m",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 2440165326,
+    "lat": 22.3550702,
+    "lon": 103.7607199,
+    "tags": {
+      "name": "Trạm Tôn",
+      "name:en": "Tram Ton pass",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 2506824901,
+    "lat": 22.3329875,
+    "lon": 103.8399232,
+    "tags": {
+      "addr:city": "Sa Pa",
+      "addr:housenumber": "044",
+      "addr:street": "Phan Xi Pang Str.",
+      "internet_access": "wlan",
+      "internet_access:fee": "no",
+      "name": "Enjoy Sapa Hostel",
+      "smoking": "outside",
+      "tourism": "hostel",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3115632663,
+    "lat": 22.3368323,
+    "lon": 103.8408622,
+    "tags": {
+      "name": "Elegance",
+      "stars": "3",
+      "tourism": "hotel",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3115632664,
+    "lat": 22.3368146,
+    "lon": 103.8420571,
+    "tags": {
+      "name": "SaPa Elite",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3115632665,
+    "lat": 22.336838,
+    "lon": 103.8422253,
+    "tags": {
+      "name": "SaPa Panorama",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3115632666,
+    "lat": 22.336879,
+    "lon": 103.8423629,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Sapa View"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3115632667,
+    "lat": 22.3369648,
+    "lon": 103.8427771,
+    "tags": {
+      "email": "resa.sapa@victoriahotels.com",
+      "internet_access": "wlan",
+      "name": "Victoria SaPa",
+      "opening_hours": "24/7",
+      "phone": "+84203871522",
+      "tourism": "hotel",
+      "website": "https://www.victoriahotels.asia/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3223460910,
+    "lat": 22.3326799,
+    "lon": 103.8433811,
+    "tags": {
+      "addr:city": "Sa Pa",
+      "addr:province": "Lào Cai",
+      "addr:street": "Cầu Mây",
+      "name": "Holiday Sapa Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3223469462,
+    "lat": 22.2940958,
+    "lon": 103.9053772,
+    "tags": {
+      "name": "Waterfall Quy Khach",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3282483154,
+    "lat": 22.335151,
+    "lon": 103.8376719,
+    "tags": {
+      "ele": "1532.7",
+      "name": "HMong sapa hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3294225161,
+    "lat": 22.3608757,
+    "lon": 103.7781092,
+    "tags": {
+      "amenity": "cafe",
+      "ele": "1814.6",
+      "name": "Cafe",
+      "source:ele": "gpx"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3294230932,
+    "lat": 22.3150443,
+    "lon": 103.6623453,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "name": "Restaurant small"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3294246962,
+    "lat": 22.3193539,
+    "lon": 103.6289056,
+    "tags": {
+      "name": "Nha Nghi Sign",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3326505783,
+    "lat": 22.3328324,
+    "lon": 103.8431148,
+    "tags": {
+      "addr:housenumber": "9",
+      "addr:street": "Muong Hoa, Pho Cau May",
+      "email": "sapaqueenpalacehotel@gmail.com",
+      "name": "Sapa Queen Hotel",
+      "phone": "(+84)203507899",
+      "tourism": "hotel",
+      "website": "sapaqueenpalace.com"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3326508296,
+    "lat": 22.3328117,
+    "lon": 103.8423321,
+    "tags": {
+      "addr:housenumber": "26",
+      "addr:street": "Pho Dong Loi",
+      "name": "Casablanca Hôtel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3475113390,
+    "lat": 22.3372641,
+    "lon": 103.8465067,
+    "tags": {
+      "addr:housenumber": "18",
+      "addr:street": "Ngu Chi Son",
+      "name": "Sapa Legacy Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3668718612,
+    "lat": 22.3374694,
+    "lon": 103.8423587,
+    "tags": {
+      "leisure": "sports_centre",
+      "name": "Victoria SaPa Spa",
+      "sport": "spa"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3668724311,
+    "lat": 22.3355407,
+    "lon": 103.8400955,
+    "tags": {
+      "addr:housenumber": "103",
+      "addr:street": "Xuân Vien",
+      "check_date": "2025-11-05",
+      "fee": "yes",
+      "internet_access": "no",
+      "level": "1",
+      "name": "Bảo Tàng Sapa",
+      "name:en": "Sa Pa Museum",
+      "name:vi": "Bảo Tàng Sapa",
+      "opening_hours": "07:00-19:00",
+      "tourism": "museum",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3770159057,
+    "lat": 22.3299372,
+    "lon": 103.8456004,
+    "tags": {
+      "name": "HomeStay Manh Quan",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3824250500,
+    "lat": 22.3320945,
+    "lon": 103.8390779,
+    "tags": {
+      "addr:housenumber": "060",
+      "addr:street": "Fansipan",
+      "amenity": "cafe",
+      "name": "Cafe in the cloud",
+      "opening_hours": "Mo-Su 06:00-23:00"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3824250501,
+    "lat": 22.3326868,
+    "lon": 103.8392689,
+    "tags": {
+      "name": "Grand View Sapa",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 3856260582,
+    "lat": 22.335382,
+    "lon": 103.8407385,
+    "tags": {
+      "check_date": "2025-11-05",
+      "information": "office",
+      "internet_access": "no",
+      "name": "Sa Pa Tourist Information Center",
+      "name:vi": "Thông tin và Xúc tiến Du lịch tỉnh Lào Cai tại Sa Pa",
+      "tourism": "information",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4016191397,
+    "lat": 22.3311296,
+    "lon": 103.8446163,
+    "tags": {
+      "name": "Luang Thuy Family Guest House",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4125686589,
+    "lat": 22.3040993,
+    "lon": 103.8904529,
+    "tags": {
+      "addr:city": "Laocai",
+      "addr:district": "Sapa",
+      "addr:housenumber": "01",
+      "addr:province": "Laocai",
+      "addr:street": "Tavan Dzay",
+      "description": "This is a hostel basic in Sapa.",
+      "internet_access": "yes",
+      "name": "Sapa Volunteer Homestay",
+      "phone": "+84985171522",
+      "rooms": "10",
+      "smoking": "outside",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4125686590,
+    "lat": 22.3397828,
+    "lon": 103.8072139,
+    "tags": {
+      "name": "Christopher little waterfall",
+      "toilets:wheelchair": "no",
+      "tourism": "attraction",
+      "waterway": "waterfall",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4154802841,
+    "lat": 22.3359465,
+    "lon": 103.8391015,
+    "tags": {
+      "addr:housenumber": "3a",
+      "addr:street": "Thac Bac",
+      "name": "Sapa House",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4175437889,
+    "lat": 22.3000868,
+    "lon": 103.8942334,
+    "tags": {
+      "name": "homestay sapa trekking",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4180461889,
+    "lat": 22.3087719,
+    "lon": 103.9078657,
+    "tags": {
+      "name": "homestay",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4186862389,
+    "lat": 22.3327697,
+    "lon": 103.8403159,
+    "tags": {
+      "name": "Azure Sapa Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4187141490,
+    "lat": 22.3319573,
+    "lon": 103.8439052,
+    "tags": {
+      "addr:housenumber": "20",
+      "name": "Sapa Lodge",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4196295489,
+    "lat": 22.333437,
+    "lon": 103.8427094,
+    "tags": {
+      "addr:housenumber": "31",
+      "addr:street": "Cầu Mây",
+      "name": "Sa Pa Sunflower Hostel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4198265989,
+    "lat": 22.3379462,
+    "lon": 103.8483288,
+    "tags": {
+      "addr:housenumber": "44",
+      "addr:street": "Ngu Chi Son Sapa",
+      "internet_access": "wlan",
+      "name": "Muong Thanh Sapa Hotel",
+      "opening_hours": "24/7",
+      "phone": "+84203887766",
+      "tourism": "hotel",
+      "website": "www.sapa.muongthanh.vn"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4214505940,
+    "lat": 22.3333524,
+    "lon": 103.8417165,
+    "tags": {
+      "name": "Pumpkin Hotel",
+      "source": "personal experience",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4246072743,
+    "lat": 22.328725,
+    "lon": 103.8417786,
+    "tags": {
+      "name": "rice hike",
+      "tourism": "artwork"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4252023719,
+    "lat": 22.3608495,
+    "lon": 103.7902987,
+    "tags": {
+      "name": "Waterfall",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4264138592,
+    "lat": 22.3003592,
+    "lon": 103.8934571,
+    "tags": {
+      "addr:street": "Ta Van, sa pa",
+      "internet_access": "wlan",
+      "name": "Chopai Hotel",
+      "name:en": "Chopai Homestay",
+      "name:vi": "Chopai Homestay",
+      "opening_hours": "24/7",
+      "operator": "Thang",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4264297289,
+    "lat": 22.3320507,
+    "lon": 103.8441564,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Little Viet nam",
+      "name:ko": "리틀 베트남"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4265540293,
+    "lat": 22.3028321,
+    "lon": 103.8874467,
+    "tags": {
+      "name": "Anh Duc Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4266480589,
+    "lat": 22.3347065,
+    "lon": 103.8377815,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "Go Sapa Hostel",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4271331892,
+    "lat": 22.3088561,
+    "lon": 103.9082878,
+    "tags": {
+      "name": "Mama Ti HomeStay",
+      "phone": "+84947597207",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4272684090,
+    "lat": 22.3333597,
+    "lon": 103.8408382,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "Phuong Nam",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4279009492,
+    "lat": 22.3065979,
+    "lon": 103.9089778,
+    "tags": {
+      "name": "Mama Shushu's Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4283989993,
+    "lat": 22.3370478,
+    "lon": 103.8438984,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Pho Bo"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4290682593,
+    "lat": 22.3027179,
+    "lon": 103.9036167,
+    "tags": {
+      "addr:street": "VMM trail 2015",
+      "internet_access": "wlan",
+      "name": "Mama Sa Homestay",
+      "phone": "01686918188",
+      "tourism": "guest_house",
+      "website": "https://m.facebook.com/Mamasa-SAPA-trekking-and-homestay-892937377484230/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4297711790,
+    "lat": 22.3360221,
+    "lon": 103.8434704,
+    "tags": {
+      "addr:housenumber": "8",
+      "addr:street": "Thạch Sơn",
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "internet_access": "wlan",
+      "name": "Nhà hàng Ô Quý Hồ",
+      "opening_hours": "Mo-Su 09:00-22:00",
+      "website": "https://oquyhorestaurant.com/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4301523295,
+    "lat": 22.3332709,
+    "lon": 103.8417759,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Oishi Sapa"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4301534889,
+    "lat": 22.3334533,
+    "lon": 103.8423966,
+    "tags": {
+      "addr:housenumber": "28",
+      "addr:street": "Cau May",
+      "amenity": "restaurant",
+      "cuisine": "italian_pizza;pizza;vietnamese",
+      "internet_access": "wlan",
+      "name": "La Roma Pizza"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4326475189,
+    "lat": 22.3332851,
+    "lon": 103.8428661,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "italian",
+      "internet_access": "wlan",
+      "name": "Delta"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4338110892,
+    "lat": 22.3362874,
+    "lon": 103.8398872,
+    "tags": {
+      "addr:housenumber": "4B",
+      "addr:street": "Thac Bac road",
+      "amenity": "restaurant",
+      "email": "hiendreddaohousesapa@yahoo.com.vn",
+      "name": "Red Dao House",
+      "operator": "ms. Nguyen Thi Hien",
+      "phone": "0984699149"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4353673000,
+    "lat": 22.3327863,
+    "lon": 103.8420178,
+    "tags": {
+      "name": "Châu Long hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4370514789,
+    "lat": 22.3344667,
+    "lon": 103.8409493,
+    "tags": {
+      "addr:housenumber": "09",
+      "addr:street": "Phan Xi Pang Str.",
+      "internet_access": "wlan",
+      "name": "Graceful hotel",
+      "name:en": "Graceful Hotel",
+      "name:vi": "Graceful hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4370771787,
+    "lat": 22.352974,
+    "lon": 103.7648085,
+    "tags": {
+      "name": "Heaven's Gate",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4374908689,
+    "lat": 22.3331821,
+    "lon": 103.8425416,
+    "tags": {
+      "addr:housenumber": "040",
+      "addr:street": "Cầu Mây",
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "email": "booking@chaparestaurant.com.vn",
+      "internet_access": "wlan",
+      "name": "Nha Hang",
+      "name:en": "Chapa Restaurant",
+      "name:vi": "Nha Hang",
+      "opening_hours": "Mo-Su 10:00-22:00",
+      "phone": "+840203871045",
+      "website": "http://www.chapastarrestaurant.com"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4383126390,
+    "lat": 22.3051889,
+    "lon": 103.9088707,
+    "tags": {
+      "name": "Vu vi Homestay",
+      "name:vi": "Vu vi Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4401492789,
+    "lat": 22.333385,
+    "lon": 103.84228,
+    "tags": {
+      "name": "Royal View Hotel",
+      "name:vi": "Royal View Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4421722183,
+    "lat": 22.3019845,
+    "lon": 103.8919998,
+    "tags": {
+      "addr:city": "Sapa",
+      "addr:district": "Tavan Village",
+      "addr:postcode": "33000",
+      "addr:province": "Lao Cai",
+      "addr:street": "Tavan Dayz 1",
+      "description": "This is true homestay for backpacker ,quiet, isolated, beautiful scenery, cheap rooms, friendly",
+      "email": "tavanbackpacker@gmail.com",
+      "fixme": "check exact location",
+      "internet_access": "yes",
+      "internet_access:fee": "no",
+      "name": "Tavan Ethnic Homestay",
+      "phone": "+84 973960471",
+      "rooms": "10",
+      "smoking": "outside",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4457451189,
+    "lat": 22.3337725,
+    "lon": 103.8422198,
+    "tags": {
+      "addr:street": "Cầu Mây",
+      "internet_access": "wlan",
+      "name": "Chapa Dew Boutique Hotel",
+      "name:vi": "Chapa Dew Boutique Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4458860990,
+    "lat": 22.3142646,
+    "lon": 103.8763269,
+    "tags": {
+      "name": "Floating Homestay",
+      "name:vi": "Floating Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4463097995,
+    "lat": 22.2979064,
+    "lon": 103.9022699,
+    "tags": {
+      "name": "Giang ta chai homestay",
+      "name:en": "Homestay Giang ta chai",
+      "tourism": "camp_site"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4465496881,
+    "lat": 22.2949,
+    "lon": 103.9048,
+    "tags": {
+      "addr:country": "VN",
+      "addr:hamlet": "Giang Ta Chai",
+      "name": "Cau May Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4501782989,
+    "lat": 22.3608196,
+    "lon": 103.7783146,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "email": "songnhisapa@gmail.com",
+      "name": "Nhà hàng song nhi sapa",
+      "name:en": "Song Nhi Sapa Restaurant",
+      "name:vi": "Nhà hàng song nhi sapa",
+      "phone": "0976373366",
+      "website": "https://songnhisapa.com/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4502008989,
+    "lat": 22.3309912,
+    "lon": 103.8338547,
+    "tags": {
+      "addr:street": "Cat Cat Road",
+      "amenity": "restaurant",
+      "name": "Nhà hàng Sa Pa Sky",
+      "name:vi": "Nhà hàng Sa Pa Sky",
+      "phone": "0203871333"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4529344893,
+    "lat": 22.3313235,
+    "lon": 103.8443914,
+    "tags": {
+      "addr:housenumber": "026B",
+      "addr:street": "muong hoa street",
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "email": "themomentrestaurant@gmail.com",
+      "internet_access": "wlan",
+      "name": "moment romantic restaurant and bar",
+      "phone": "0982884965"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4539038792,
+    "lat": 22.2936565,
+    "lon": 103.9228442,
+    "tags": {
+      "name": "Su Pan",
+      "place": "hamlet",
+      "tourism": "attraction"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4539039490,
+    "lat": 22.3045054,
+    "lon": 103.9073002,
+    "tags": {
+      "name": "Mamachu homestay",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4539039789,
+    "lat": 22.3041452,
+    "lon": 103.9078262,
+    "tags": {
+      "name": "Hau Thao",
+      "place": "hamlet",
+      "tourism": "attraction"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4539039890,
+    "lat": 22.317926,
+    "lon": 103.896191,
+    "tags": {
+      "name": "Hâu Thào village",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4541141393,
+    "lat": 22.3382901,
+    "lon": 103.8515533,
+    "tags": {
+      "addr:housenumber": "078",
+      "addr:street": "Luong Dinh Cua",
+      "email": "anhnhihotel@gmail.com",
+      "internet_access": "wlan",
+      "name": "Anh Nhi",
+      "name:vi": "Anh Nhi",
+      "phone": "0084985658399",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4551886091,
+    "lat": 22.3143814,
+    "lon": 103.9024043,
+    "tags": {
+      "addr:street": "VMM trail 2015",
+      "name": "Mu homestay",
+      "name:vi": "Mu homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4553642589,
+    "lat": 22.3353071,
+    "lon": 103.8395091,
+    "tags": {
+      "addr:housenumber": "102",
+      "addr:street": "khách sạn hoàng hà",
+      "amenity": "restaurant",
+      "cuisine": "fish;vietnamese;breakfast;local",
+      "name": "Bia Hơi 102",
+      "name:de": "Frischbier",
+      "name:en": "Fresh Beer",
+      "name:vi": "Bia Hơi 102"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4555932190,
+    "lat": 22.3218491,
+    "lon": 103.6229098,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "Putaleng Hotel",
+      "name:vi": "Putaleng Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4561184895,
+    "lat": 22.330309,
+    "lon": 103.8359679,
+    "tags": {
+      "name": "Heaven Sapa",
+      "name:vi": "Heaven Sapa",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4566036992,
+    "lat": 22.3375758,
+    "lon": 103.8515911,
+    "tags": {
+      "name": "Hometravel Sapa",
+      "name:en": "Long Anh Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4579523193,
+    "lat": 22.3071145,
+    "lon": 103.8963314,
+    "tags": {
+      "addr:postcode": "350000",
+      "addr:street": "Ban Pho - Hau Thao village",
+      "email": "zihomethebest@gmail.com",
+      "internet_access": "wlan",
+      "internet_access:password": "zizifamily",
+      "name": "Zizi Homestay",
+      "name:en": "Zizi homestay & trekking",
+      "name:vi": "Zizi Homestay & trekking",
+      "opening_hours": "24/7",
+      "operator": "Zizi homestay(wifi pass: zizifamily)",
+      "phone": "0969859371",
+      "tourism": "guest_house",
+      "website": "http://gowherevn.com"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4590838689,
+    "lat": 22.3031147,
+    "lon": 103.8575421,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Family H'Mong"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4609107289,
+    "lat": 22.3299008,
+    "lon": 103.8459583,
+    "tags": {
+      "addr:housenumber": "47",
+      "addr:street": "Mường Hoa",
+      "amenity": "restaurant",
+      "cuisine": "italian_pizza;local;noodles;pasta;pizza;savory_pancakes",
+      "email": "goodmorningviewsapa@gmail.com",
+      "internet_access": "wlan",
+      "name": "Good Morning View Restaurant",
+      "name:vi": "Good Morning View",
+      "opening_hours": "Mo-Su 09:30-22:00",
+      "phone": "+84 91 292 78 10"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4652848590,
+    "lat": 22.3368856,
+    "lon": 103.8375378,
+    "tags": {
+      "addr:housenumber": "42",
+      "addr:street": "Thác Bạc",
+      "internet_access": "wlan",
+      "name": "Nhà nghỉ kháng linh",
+      "name:en": "Hotel khanh linh",
+      "name:vi": "Nhà nghỉ kháng linh",
+      "phone": "01656665655",
+      "tourism": "motel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4658435849,
+    "lat": 22.30322,
+    "lon": 103.8913641,
+    "tags": {
+      "name": "Homestay Chuong An",
+      "opening_hours": "Mo-Su 07:00-22:00",
+      "phone": "0915669113",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4697330396,
+    "lat": 22.3317203,
+    "lon": 103.8443884,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "local;asian",
+      "name": "Sapa Sympa",
+      "name:vi": "Sapa Sympa"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4714701994,
+    "lat": 22.3325668,
+    "lon": 103.8434679,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Pinocchio Hotel",
+      "name:vi": "Pinocchio Hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4717746090,
+    "lat": 22.3287917,
+    "lon": 103.8456587,
+    "tags": {
+      "name": "Sapa Odyssey hostel",
+      "name:vi": "Sapa Odyssey hostel",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4721787910,
+    "lat": 22.3301079,
+    "lon": 103.8459082,
+    "tags": {
+      "name": "Green Valley Hotel",
+      "name:vi": "Green Valley Hotel",
+      "phone": "0912491675",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4728971189,
+    "lat": 22.4387124,
+    "lon": 103.9245263,
+    "tags": {
+      "name": "Thành Công Hotel",
+      "name:vi": "Thành Công Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4742684323,
+    "lat": 22.3243889,
+    "lon": 103.8545455,
+    "tags": {
+      "name": "Jade Hill Resort & Spa",
+      "name:en": "Jade Hill",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4748804954,
+    "lat": 22.3343139,
+    "lon": 103.8420479,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Nhà Hàng T-Bone",
+      "name:en": "T-Bone Steak House"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4748806280,
+    "lat": 22.3340656,
+    "lon": 103.8422665,
+    "tags": {
+      "addr:housenumber": "23",
+      "amenity": "restaurant",
+      "cuisine": "regional;italian;american",
+      "name": "Fansipang",
+      "payment:cash": "yes",
+      "payment:jcb": "yes",
+      "payment:mastercard": "yes",
+      "payment:visa": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4748807077,
+    "lat": 22.3342585,
+    "lon": 103.8422892,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Sapa Paradise View Restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4748826402,
+    "lat": 22.3329923,
+    "lon": 103.8377032,
+    "tags": {
+      "name": "Sapa Vista Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4778659922,
+    "lat": 22.3329207,
+    "lon": 103.8434543,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Cinnamon Restaurant",
+      "name:vi": "Cinnamon Restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4791048522,
+    "lat": 22.304817,
+    "lon": 103.90817,
+    "tags": {
+      "name": "Homestay Chi",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4794363123,
+    "lat": 22.2969994,
+    "lon": 103.9201088,
+    "tags": {
+      "name": "Su Pan Homestay",
+      "name:en": "Su Pan Homestay",
+      "name:vi": "Su Pan Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4794468129,
+    "lat": 22.29604,
+    "lon": 103.89589,
+    "tags": {
+      "addr:street": "Road to Ta Van",
+      "name": "Cho Cho Homestay",
+      "name:en": "Cho Cho Homestay",
+      "name:vi": "Cho Cho Homestay",
+      "phone": "+84 98 400 03 91",
+      "tourism": "guest_house",
+      "website": "https://www.tripadvisor.com/Hotel_Review-g311304-d11711640-Reviews-Cho_cho_s_Trecking_home_stay-Sapa_Lao_Cai_Province.html;https://www.facebook.com/sausapay/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4839665131,
+    "lat": 22.3043278,
+    "lon": 103.9085097,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "Mama-Mah Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4846987722,
+    "lat": 22.3031148,
+    "lon": 103.8866759,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "Ta Van Hostel",
+      "opening_hours": "24/7",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4849750623,
+    "lat": 22.3030244,
+    "lon": 103.8916925,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "Trek King Kong House",
+      "name:vi": "Trek King Kong House",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4871035521,
+    "lat": 22.3004954,
+    "lon": 103.9033698,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "Stunning Homestay",
+      "name:vi": "Stunning Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4907187521,
+    "lat": 22.4450865,
+    "lon": 103.8081277,
+    "tags": {
+      "name": "Homestay",
+      "name:vi": "Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4908326521,
+    "lat": 22.3103381,
+    "lon": 103.9090872,
+    "tags": {
+      "name": "Mama Zuzu Homestay",
+      "name:en": "Mama Zuzu Homestay",
+      "name:vi": "Mama Zuzu Homestay",
+      "phone": "+84 1675312817",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4934692221,
+    "lat": 22.3372254,
+    "lon": 103.842461,
+    "tags": {
+      "addr:housenumber": "07",
+      "addr:street": "Hoang Dieu",
+      "internet_access": "wlan",
+      "name": "Sapa Paramount Hotel",
+      "name:vi": "Sapa Paramount Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4954109621,
+    "lat": 22.3376565,
+    "lon": 103.8478876,
+    "tags": {
+      "addr:housenumber": "01 phố Kim Đồng",
+      "addr:street": "Đường Ngũ Chỉ Sơn",
+      "internet_access": "wlan",
+      "name": "Nhà Nghỉ Đức Nhung",
+      "name:en": "Guest House Đức Nhung",
+      "phone": "0985180828",
+      "tourism": "motel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4958268122,
+    "lat": 22.3360988,
+    "lon": 103.8466424,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "internet_access": "wlan",
+      "name": "Art House - Tiềm 098"
+    }
+  },
+  {
+    "type": "node",
+    "id": 4959491122,
+    "lat": 22.3377889,
+    "lon": 103.8522134,
+    "tags": {
+      "addr:housenumber": "549",
+      "addr:street": "Hàm Rồng",
+      "amenity": "cafe",
+      "brand": "Coffee Time",
+      "brand:wikidata": "Q5140932",
+      "cuisine": "coffee_shop",
+      "diet:vegetarian": "yes",
+      "internet_access": "wlan",
+      "name": "Coffee Time",
+      "name:nl": "Coffee Time",
+      "takeaway": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5061182624,
+    "lat": 22.337641,
+    "lon": 103.8511187,
+    "tags": {
+      "addr:city": "Sa Pa",
+      "addr:housenumber": "161",
+      "addr:street": "Thach Son",
+      "internet_access": "wlan",
+      "internet_access:fee": "no",
+      "name": "Sapa Luxury Hotel",
+      "name:de": "Sapa Luxury Hotel",
+      "tourism": "hotel",
+      "website": "https://sapaluxuryhotel.com/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5088400123,
+    "lat": 22.3611735,
+    "lon": 103.7797955,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "ร้านปลาเซลมอน",
+      "name:vi": "ร้านปลาเซลมอน"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5097249121,
+    "lat": 22.3363052,
+    "lon": 103.8430427,
+    "tags": {
+      "amenity": "cafe",
+      "brand": "Cộng Cà Phê",
+      "brand:wikidata": "Q63864181",
+      "cuisine": "coffee_shop;vietnamese",
+      "internet_access": "wlan",
+      "name": "Cộng Cà Phê",
+      "name:de": "Công Café",
+      "name:en": "Công Café",
+      "name:vi": "Cộng Cà Phê",
+      "takeaway": "yes",
+      "website": "http://congcaphe.com"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5100630950,
+    "lat": 22.3363951,
+    "lon": 103.8422947,
+    "tags": {
+      "name": "Nhà Ngî Sapatrek",
+      "name:en": "Sapa Trek Hostel",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5120061021,
+    "lat": 22.306142,
+    "lon": 103.8958552,
+    "tags": {
+      "name": "Chai homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5125803727,
+    "lat": 22.4002855,
+    "lon": 103.8381245,
+    "tags": {
+      "addr:street": "Đường đi Tả Phìn từ QL 4D",
+      "email": "annykmm@gmail.com",
+      "name": "ChaoTaMay Homestay",
+      "name:en": "ChaoTaMay HomeStay",
+      "operator": "ChaoTaMay",
+      "phone": "+841664620433",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5129620121,
+    "lat": 22.3348324,
+    "lon": 103.8410956,
+    "tags": {
+      "addr:housenumber": "8",
+      "addr:street": "Cầu Mây",
+      "name": "BB Sapa Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5153580825,
+    "lat": 22.3146236,
+    "lon": 103.7656173,
+    "tags": {
+      "description": "very simple sleeping accommodation",
+      "name": "Trạm nghỉ chân Phan Xi Păng",
+      "name:de": "Fan Si Pan Base Camp",
+      "name:en": "Fan Si Pan Base Camp",
+      "tourism": "alpine_hut"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5174770626,
+    "lat": 22.2933654,
+    "lon": 103.921943,
+    "tags": {
+      "amenity": "cafe",
+      "cuisine": "asian",
+      "name": "Tho Hau"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5197200321,
+    "lat": 22.3071258,
+    "lon": 103.8767983,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "no n’aime"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5207683225,
+    "lat": 22.3949063,
+    "lon": 103.8579303,
+    "tags": {
+      "email": "tsen-ang@hotmail.com",
+      "name": "Chez Xi Quan",
+      "phone": "+841666924727",
+      "tourism": "guest_house",
+      "website": "https://chezxiquan.jimdo.com/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5217298723,
+    "lat": 22.3376876,
+    "lon": 103.8441471,
+    "tags": {
+      "amenity": "cafe",
+      "brand": "Mixue Ice Cream & Tea",
+      "brand:wikidata": "Q107406476",
+      "cuisine": "ice_cream;bubble_tea",
+      "name": "Mixue",
+      "takeaway": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5223996421,
+    "lat": 22.3332165,
+    "lon": 103.8418657,
+    "tags": {
+      "name": "Pumpkin",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5231752222,
+    "lat": 22.3364437,
+    "lon": 103.8426851,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Anise Restaurant",
+      "name:pl": "Restauracja Anyż"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5273330522,
+    "lat": 22.2977267,
+    "lon": 103.8933289,
+    "tags": {
+      "addr:street": "Road to Ta Van",
+      "internet_access": "wlan",
+      "name": "Crazy Lazy",
+      "name:en": "Lazycrazy Homestay",
+      "operator": "John",
+      "phone": "+841639809197",
+      "tourism": "guest_house",
+      "website": "http://www.lazycrazyhomestay.com"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5292788422,
+    "lat": 22.3349421,
+    "lon": 103.8398431,
+    "tags": {
+      "name": "KS SAPA",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5300993321,
+    "lat": 22.3994822,
+    "lon": 103.8699219,
+    "tags": {
+      "name": "Old valley path",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5350183221,
+    "lat": 22.3073067,
+    "lon": 103.8977391,
+    "tags": {
+      "name": "Mae's Homestay",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5356297325,
+    "lat": 22.3064609,
+    "lon": 103.8958933,
+    "tags": {
+      "alt_name": "Miku chill house",
+      "internet_access": "wlan",
+      "name": "Miku Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5357940521,
+    "lat": 22.3043237,
+    "lon": 103.8903524,
+    "tags": {
+      "name": "Ta Van",
+      "name:en": "Homestay Ta Van Giay",
+      "name:vi": "Ta Van",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5369941721,
+    "lat": 22.3355493,
+    "lon": 103.8395251,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "Sapa House Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5374136821,
+    "lat": 22.2649206,
+    "lon": 103.9325618,
+    "tags": {
+      "name": "Homestay",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5395063322,
+    "lat": 22.3051719,
+    "lon": 103.8819651,
+    "tags": {
+      "addr:street": "Road to Ta Van",
+      "internet_access": "wlan",
+      "name": "Amica house",
+      "opening_hours": "Mo-Su 09:00-22:00",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5403233925,
+    "lat": 22.3325185,
+    "lon": 103.8429278,
+    "tags": {
+      "addr:city": "Sa Pa",
+      "addr:district": "Sapa",
+      "addr:housenumber": "042 Cau May",
+      "addr:postcode": "333320",
+      "addr:province": "Lào Cai",
+      "addr:street": "Cau May Alley",
+      "addr:subdistrict": "Sapa",
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "email": "littleviewrestaurant@gmail.com",
+      "internet_access": "wlan",
+      "name": "Little View Restaurant",
+      "opening_hours": "Mo-Su 08:29-21:30",
+      "operator": "Owner",
+      "phone": "+84988787711",
+      "tourism": "guest_house",
+      "website": "http://www.littleviewhomestay.com"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5417774921,
+    "lat": 22.3044145,
+    "lon": 103.7753907,
+    "tags": {
+      "artwork_type": "statue",
+      "ele": "3094",
+      "name": "Đại Tượng Phật",
+      "name:en": "Grand Buddha Statue",
+      "name:id": "Patung Buddha Agung",
+      "name:zh": "大佛像",
+      "tourism": "artwork"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5423652424,
+    "lat": 22.3335682,
+    "lon": 103.8417243,
+    "tags": {
+      "addr:street": "Phố Đồng Lợi",
+      "internet_access": "wlan",
+      "name": "Heart of sapa",
+      "name:ru": "Сердце Сапа",
+      "opening_hours": "24/7",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5447154521,
+    "lat": 22.3397635,
+    "lon": 103.8438326,
+    "tags": {
+      "name": "Nha nghi hoi nga",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5447928021,
+    "lat": 22.3079407,
+    "lon": 103.8766255,
+    "tags": {
+      "name": "Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5473248731,
+    "lat": 22.3358538,
+    "lon": 103.8399729,
+    "tags": {
+      "name": "Sapa Garden Hotel",
+      "name:th": "ซาปา กาเด้น โฮเตล",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5473353423,
+    "lat": 22.3362983,
+    "lon": 103.8428713,
+    "tags": {
+      "addr:housenumber": "33",
+      "addr:street": "Xuân Vien",
+      "amenity": "cafe",
+      "cuisine": "vietnamese",
+      "diet:vegan": "yes",
+      "email": "duonggecko@gmail.com",
+      "internet_access": "wlan",
+      "name": "Le Gecko",
+      "name:en": "Le Gecko",
+      "opening_hours": "Mo-Su 06:30-22:30",
+      "phone": "+84 214 3871 898",
+      "website": "https://www.legeckosapa.com"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5474491223,
+    "lat": 22.3421991,
+    "lon": 103.8563013,
+    "tags": {
+      "name": "Quet Tinh",
+      "name:en": "Quet Tinh Sapa Backpacker Hotel",
+      "name:vi": "Quyet Tinh Sapa Backpacker Hotel",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5474499721,
+    "lat": 22.3367135,
+    "lon": 103.8466639,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "Q Sapa Hotel",
+      "tourism": "hotel",
+      "website": "https://visiontravelagent.com"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5482532022,
+    "lat": 22.3361525,
+    "lon": 103.8469793,
+    "tags": {
+      "name": "Sweden Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5544530023,
+    "lat": 22.3023024,
+    "lon": 103.8946438,
+    "tags": {
+      "name": "Mountain River View",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5549438722,
+    "lat": 22.3302266,
+    "lon": 103.8458065,
+    "tags": {
+      "addr:housenumber": "043",
+      "addr:street": "Mường Hoa",
+      "amenity": "restaurant",
+      "cuisine": "burger;pasta;italian;breakfast;curry;coffee_shop;local",
+      "internet_access": "wlan",
+      "name": "Family Coffee Fast Food",
+      "name:de": "Family Restaurant - Coffee Fast Food",
+      "name:en": "Family Restaurant - Coffee Fast Food",
+      "name:vi": "Family Restaurant - Coffee Fast Food",
+      "phone": "0976780735"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5552264122,
+    "lat": 22.3396326,
+    "lon": 103.6695634,
+    "tags": {
+      "addr:street": "Bản Chu Va 8",
+      "name": "Cầu Treo Chu Va 8",
+      "name:en": "Bridge",
+      "tourism": "attraction"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5568708722,
+    "lat": 22.3382111,
+    "lon": 103.8510454,
+    "tags": {
+      "name": "Ubytovani sapa",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5592107389,
+    "lat": 22.3343794,
+    "lon": 103.8411883,
+    "tags": {
+      "addr:housenumber": "08A",
+      "addr:street": "Tuệ Tĩnh",
+      "internet_access": "wlan",
+      "internet_access:fee": "no",
+      "name": "Vinh Quang",
+      "name:en": "Sapa Glory",
+      "tourism": "hotel",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5618663621,
+    "lat": 22.3375188,
+    "lon": 103.8507897,
+    "tags": {
+      "name": "Thanh Cong hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5649548421,
+    "lat": 22.3359647,
+    "lon": 103.8461827,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Com for 30000dong"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5670884521,
+    "lat": 22.3019022,
+    "lon": 103.8911016,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Lá Dao Spa-Home-Restaurant",
+      "name:en": "La Dao Spa & Coffee",
+      "name:zh": "La Dao Spa & 美景咖啡"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5672789925,
+    "lat": 22.337128,
+    "lon": 103.8426884,
+    "tags": {
+      "addr:city": "Sa Pa",
+      "addr:district": "Sapa",
+      "addr:housenumber": "06",
+      "addr:postcode": "330000",
+      "addr:province": "Lào Cai",
+      "addr:street": "Hoang Dieu",
+      "addr:subdistrict": "Sapa",
+      "internet_access": "yes",
+      "name": "Saparis Hotel",
+      "rooms": "18",
+      "tourism": "motel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5672849848,
+    "lat": 22.318535,
+    "lon": 103.858128,
+    "tags": {
+      "addr:city": "Lào Cai",
+      "addr:district": "Sapa",
+      "addr:postcode": "330000",
+      "addr:province": "Lào Cai",
+      "addr:street": "Mường Hoa",
+      "addr:subdistrict": "Sapa",
+      "name": "Sapa Eco-Home - Mountain Retreat",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5734008322,
+    "lat": 22.3045477,
+    "lon": 103.9083999,
+    "tags": {
+      "name": "Mama Mu's homestay",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5745423821,
+    "lat": 22.3011676,
+    "lon": 103.9050738,
+    "tags": {
+      "name": "mama shushu",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5781630853,
+    "lat": 22.3341679,
+    "lon": 103.8409645,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "diet:vegan": "yes",
+      "diet:vegetarian": "yes",
+      "name": "Nhà Hàng Hoa Tâm",
+      "name:en": "Hoa Tam Vegetarian Restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5801976447,
+    "lat": 22.2997025,
+    "lon": 103.894977,
+    "tags": {
+      "name": "SpicknSpan Homestead",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5807297353,
+    "lat": 22.3367571,
+    "lon": 103.848271,
+    "tags": {
+      "addr:housenumber": "144",
+      "addr:street": "Thach Son",
+      "internet_access": "wlan",
+      "name": "Olympia Sapa Hotel",
+      "name:de": "Olympia Sapa Hotel",
+      "phone": "0084 96 119 11 71",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5816785953,
+    "lat": 22.3593187,
+    "lon": 103.809039,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "name": "Thuong Dinh Quan"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5835501186,
+    "lat": 22.332129,
+    "lon": 103.8418934,
+    "tags": {
+      "name": "Check in Hostel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5847820785,
+    "lat": 22.3388517,
+    "lon": 103.8505108,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Mr Ha’s Restaurant",
+      "name:en": "Mr Ha’s Restaurant- best wonton soup"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5907401185,
+    "lat": 22.3344262,
+    "lon": 103.8406857,
+    "tags": {
+      "name": "A Phủ Quán",
+      "tourism": "information"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5918783387,
+    "lat": 22.3034307,
+    "lon": 103.8871153,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "pizza",
+      "name": "Truong Giang"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5918784285,
+    "lat": 22.3361784,
+    "lon": 103.8395591,
+    "tags": {
+      "name": "Muong hoa valley",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5918784286,
+    "lat": 22.4024316,
+    "lon": 103.8366466,
+    "tags": {
+      "name": "Terrace rice fields shin chai",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5918784287,
+    "lat": 22.330181,
+    "lon": 103.8447857,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Yummy"
+    }
+  },
+  {
+    "type": "node",
+    "id": 5928863687,
+    "lat": 22.3325339,
+    "lon": 103.8435105,
+    "tags": {
+      "addr:street": "Mường Hoa",
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "internet_access": "wlan",
+      "name": "Good Morning Sa Pa"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6021307685,
+    "lat": 22.3067177,
+    "lon": 103.9093456,
+    "tags": {
+      "name": "Mister Pao Homestay",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6040604985,
+    "lat": 22.3380453,
+    "lon": 103.8432088,
+    "tags": {
+      "addr:city": "Sa Pa Town",
+      "addr:district": "Sapa",
+      "addr:housenumber": "No.26",
+      "addr:postcode": "330000",
+      "addr:province": "Lào Cai",
+      "addr:street": "Hùng Hồ alley",
+      "addr:subdistrict": "Sapa",
+      "description": "The property is close to several well-known attractions. Popular points of interest near Fancy Sapa Hostel include Sun Plaza (3-min walk), Sa Pa Lake (5-min walk) and Sa Pa Stone Church (3-min walk).",
+      "email": "fancysapahostel@gmail.com",
+      "guest_house": "hostel",
+      "internet_access": "wlan",
+      "internet_access:fee": "no",
+      "name": "Fancy Sapa Hostel 2",
+      "operator": "Hoang Thi Diu",
+      "phone": "0912337669",
+      "rooms": "6",
+      "tourism": "hostel",
+      "website": "https://fancysapahostel.com/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6071822385,
+    "lat": 22.3396922,
+    "lon": 103.8485527,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Mong Tea (& Coffee)"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6087200386,
+    "lat": 22.3008972,
+    "lon": 103.913788,
+    "tags": {
+      "name": "Mama mao homestay",
+      "tourism": "apartment"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6111964087,
+    "lat": 22.3343485,
+    "lon": 103.8395156,
+    "tags": {
+      "addr:housenumber": "027",
+      "addr:street": "Hoàng Liên",
+      "name": "Sa Pa Pearl Hotel",
+      "phone": "0978398308",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6114429388,
+    "lat": 22.4578927,
+    "lon": 103.7675311,
+    "tags": {
+      "name": "Ta Giang Phing",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6114429389,
+    "lat": 22.3038585,
+    "lon": 103.8902172,
+    "tags": {
+      "name": "Ta Van",
+      "name:ko": "타반",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6141757902,
+    "lat": 22.333208,
+    "lon": 103.8429328,
+    "tags": {
+      "addr:housenumber": "007",
+      "addr:postcode": "33000",
+      "addr:street": "Mường Hoa",
+      "amenity": "restaurant",
+      "cuisine": "italian_pizza;local;coffee_shop",
+      "email": "lacasapizza007@gmail.com",
+      "name": "La Casa Pizza",
+      "name:en": "La Casa Pizza Restaurant",
+      "opening_hours": "24/7",
+      "phone": "0916089968",
+      "website": "http://sapalacasapizza.com"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6226247685,
+    "lat": 22.3064436,
+    "lon": 103.8791037,
+    "tags": {
+      "name": "Ja’s house",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6251245786,
+    "lat": 22.3391081,
+    "lon": 103.8541877,
+    "tags": {
+      "name": "Peace Valley Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6263341785,
+    "lat": 22.3368858,
+    "lon": 103.8464208,
+    "tags": {
+      "addr:housenumber": "004",
+      "addr:postcode": "33000",
+      "addr:street": "Lê Văn Tám",
+      "internet_access": "wlan",
+      "name": "Nhà Nghỉ Vượng Hà",
+      "name:en": "Vượng Hà Guesthouse",
+      "phone": "03888543123",
+      "tourism": "motel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6277955415,
+    "lat": 22.3324481,
+    "lon": 103.8390209,
+    "tags": {
+      "addr:street": "Fansipan Street",
+      "amenity": "restaurant",
+      "check_date": "2025-11-05",
+      "cuisine": "regional;international",
+      "name": "White Cloud",
+      "name:en": "White Cloud",
+      "outdoor_seating": "yes",
+      "payment:cash": "yes",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "strapline": "Coffee & Restaurant",
+      "toilets": "yes",
+      "wheelchair": "limited"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6278132286,
+    "lat": 22.3398805,
+    "lon": 103.8464814,
+    "tags": {
+      "addr:housenumber": "611",
+      "addr:postcode": "33000",
+      "addr:street": "Điện Biên Phủ",
+      "amenity": "restaurant",
+      "cuisine": "pizza;diner;coffee_shop;fish_and_chips;pasta;steak_house;deli;vietnamese;italian;italian_pizza;local",
+      "email": "romanorestaurant@gmail.com",
+      "internet_access": "wlan",
+      "name": "Romano Pizza",
+      "name:en": "Romano Pizza Restaurant",
+      "opening_hours": "24/7",
+      "phone": "0974686789"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6278133985,
+    "lat": 22.3367705,
+    "lon": 103.8468789,
+    "tags": {
+      "addr:housenumber": "01",
+      "addr:postcode": "330000",
+      "addr:street": "Võ Thị Sáu",
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "email": "nhahangs88@gmail.com",
+      "internet_access": "wlan",
+      "name": "Nhà Hàng S88",
+      "name:en": "S88 Restaurant",
+      "opening_hours": "24/7",
+      "phone": "0976461268"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6293321387,
+    "lat": 22.3591235,
+    "lon": 103.8093065,
+    "tags": {
+      "addr:street": "Ô Quý Hồ Tổ 13 (cách sân ga Cáp treo 1.5km theo đường Thác Bạc), Sa Pa, , Viêt Nam -",
+      "internet_access": "wlan",
+      "name": "Sapa Dao Homestay ( vrai emplacement)",
+      "opening_hours": "24/7",
+      "phone": "841682842666",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6296905786,
+    "lat": 22.3026307,
+    "lon": 103.8880683,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "name": "Quan An Ban Lang"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6296905985,
+    "lat": 22.3020555,
+    "lon": 103.8889424,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "pizza;vietnamese",
+      "name": "Hoa Tay"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6297301686,
+    "lat": 22.3003574,
+    "lon": 103.893562,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "diet:vegetarian": "yes",
+      "name": "Dzay Restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6299040887,
+    "lat": 22.3393448,
+    "lon": 103.8525834,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Nhà hàng ven dô 2",
+      "name:fr": "Nhà hàng ven dô 2 (resto pas chère, prendre food portion )"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6300872985,
+    "lat": 22.331621,
+    "lon": 103.8441503,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Yummy restaurant ( the real place)"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6328671285,
+    "lat": 22.3369578,
+    "lon": 103.8495054,
+    "tags": {
+      "addr:street": "129 Thạch Sơn, TT. Sa Pa, Sa Pa, Lào Cai, Vietnam",
+      "amenity": "restaurant",
+      "name": "Hao Hue",
+      "name:vi": "Nhà hàng Hảo Huệ"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6380504685,
+    "lat": 22.3358135,
+    "lon": 103.843,
+    "tags": {
+      "addr:city": "Sapa",
+      "addr:housenumber": "04",
+      "addr:postcode": "330000",
+      "addr:province": "Lào Cai",
+      "addr:street": "Đường Thạch Sơn",
+      "amenity": "restaurant",
+      "bar": "yes",
+      "cuisine": "vietnamese;international;asian;pizza;pasta;barista_coffee",
+      "description": "We are proud to be one of the few pioneering family-run restaurant in Sapa since 1991 (known as the Observatory). We serve authentic and fresh Vietnamese food, as well as great pasta, pizza and burgers. Our kitchen has always been run by our mama for almo",
+      "diet:dairy_free": "yes",
+      "diet:gluten_free": "yes",
+      "diet:meat": "yes",
+      "diet:organic": "yes",
+      "diet:vegan": "yes",
+      "diet:vegetarian": "yes",
+      "email": "ladybirdsapa@gmail.com",
+      "internet_access": "wlan",
+      "name": "Ladybird Restaurant & Hotel",
+      "name:vi": "Nhà Hàng Ladybird Sapa",
+      "opening_hours": "Mo-Su 06:45-22:00",
+      "outdoor_seating": "yes",
+      "phone": "+84 97 521 32 28",
+      "takeaway": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6390635658,
+    "lat": 22.3319675,
+    "lon": 103.8273906,
+    "tags": {
+      "addr:city": "Sa Pa",
+      "addr:province": "Lao Cai",
+      "addr:subdistrict": "Cát Cát",
+      "name": "Chin Chin",
+      "operator": "Ma Vinh Chinh",
+      "phone": "+84 962511175",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6401642686,
+    "lat": 22.3004821,
+    "lon": 103.8942715,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "regional;asian;vietnamese",
+      "internet_access": "wlan",
+      "internet_access:fee": "no",
+      "name": "Bamboo Bar",
+      "name:en": "Bamboo bar & restaurant",
+      "name:vi": "Bamboo bar & restaurant",
+      "smoking": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6419224832,
+    "lat": 22.3376493,
+    "lon": 103.8427725,
+    "tags": {
+      "name": "Cuong Phuong Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6420009785,
+    "lat": 22.3143871,
+    "lon": 103.8572582,
+    "tags": {
+      "addr:street": "Lao Chai San",
+      "amenity": "cafe",
+      "cuisine": "chicken;regional;noodles;oriental;sandwich;vietnamese;coffee_shop;curry;ice_cream;local;deli;tea;burger",
+      "email": "sapamomentvietnam@gmail.com",
+      "internet_access": "wlan",
+      "name": "Điểm dừng chân Ý Linh Hồ",
+      "name:en": "Y Linh Ho Stopping Point",
+      "phone": "0888058666"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6427598985,
+    "lat": 22.2988937,
+    "lon": 103.8937326,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "Luckydaisy's Buffalo house",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6476741385,
+    "lat": 22.3398502,
+    "lon": 103.844369,
+    "tags": {
+      "addr:street": "d. dien bien phu",
+      "name": "xe greenbus",
+      "tourism": "information"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6484971889,
+    "lat": 22.3361407,
+    "lon": 103.8443948,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "name": "Ha Tien"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6518161705,
+    "lat": 22.336241,
+    "lon": 103.842285,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Duong Pho Quon"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6567516187,
+    "lat": 22.3361316,
+    "lon": 103.8398616,
+    "tags": {
+      "addr:housenumber": "4",
+      "addr:street": "Thác Bacj",
+      "amenity": "restaurant",
+      "check_date": "2025-11-04",
+      "cuisine": "regional",
+      "internet_access": "wlan",
+      "internet_access:fee": "customers",
+      "name": "Red Dzao",
+      "outdoor_seating": "yes",
+      "payment:cash": "yes",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "wheelchair": "limited"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6570349585,
+    "lat": 22.3005321,
+    "lon": 103.8915067,
+    "tags": {
+      "name": "The Little Village Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6593030885,
+    "lat": 22.3341366,
+    "lon": 103.840796,
+    "tags": {
+      "amenity": "restaurant",
+      "diet:vegetarian": "yes",
+      "internet_access": "wlan",
+      "name": "Hello Vietnam"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6646580785,
+    "lat": 22.3342942,
+    "lon": 103.8411039,
+    "tags": {
+      "amenity": "restaurant",
+      "description": "Small local vegetarian restaurant",
+      "diet:vegetarian": "only",
+      "name": "Nha Hang Chay",
+      "name:en": "Vegetarian restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6709995293,
+    "lat": 22.3244563,
+    "lon": 103.6186239,
+    "tags": {
+      "historic": "monument",
+      "name": "Đài tưởng niệm Liệt sĩ"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6712202605,
+    "lat": 22.3476248,
+    "lon": 103.6134553,
+    "tags": {
+      "name": "Thác Tác Tình",
+      "name:en": "Tác Tình Waterfall",
+      "tourism": "attraction",
+      "waterway": "waterfall"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6743366780,
+    "lat": 22.3031392,
+    "lon": 103.7772943,
+    "tags": {
+      "artwork_type": "statue",
+      "name": "Tượng Quán Thế Âm",
+      "name:en": "Guan Yin Statue",
+      "tourism": "artwork"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6743366793,
+    "lat": 22.3050544,
+    "lon": 103.7756025,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Vân Sơn Trà Quán"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6774443685,
+    "lat": 22.3326243,
+    "lon": 103.8434133,
+    "tags": {
+      "amenity": "restaurant",
+      "internet_access": "wlan",
+      "name": "little vietnam restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6801525088,
+    "lat": 22.332742,
+    "lon": 103.8388113,
+    "tags": {
+      "addr:housenumber": "64B",
+      "addr:postcode": "333100",
+      "addr:street": "Fansipan Street",
+      "internet_access": "wlan",
+      "name": "Oh Yeah ! Hostel",
+      "phone": "02143 888 128",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6810681005,
+    "lat": 22.3369202,
+    "lon": 103.8379184,
+    "tags": {
+      "addr:housenumber": "40",
+      "addr:street": "Đường Thác Bạc",
+      "internet_access": "wlan",
+      "name": "Ni Ni homestay Sa Pa",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6810681006,
+    "lat": 22.3372654,
+    "lon": 103.8366666,
+    "tags": {
+      "name": "Vinasapa hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6810681007,
+    "lat": 22.3358312,
+    "lon": 103.8391649,
+    "tags": {
+      "name": "Eden Boutique Hotel & Spa",
+      "tourism": "hotel",
+      "website": "https://edenboutiquehotelspa.com/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6810681008,
+    "lat": 22.3358018,
+    "lon": 103.8376042,
+    "tags": {
+      "name": "Nha Nghi Trung Kien",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6810681009,
+    "lat": 22.3354316,
+    "lon": 103.839343,
+    "tags": {
+      "name": "La Casa hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6810681010,
+    "lat": 22.3353432,
+    "lon": 103.8382987,
+    "tags": {
+      "brand": "Four Seasons",
+      "brand:wikidata": "Q1424786",
+      "name": "Four seasons",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6810693516,
+    "lat": 22.3386314,
+    "lon": 103.8364781,
+    "tags": {
+      "name": "Homestay Discovery Sapa",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6814150888,
+    "lat": 22.3295932,
+    "lon": 103.8455354,
+    "tags": {
+      "name": "Charm hotel",
+      "tourism": "hotel",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6829133826,
+    "lat": 22.3402543,
+    "lon": 103.8479618,
+    "tags": {
+      "name": "Freesia Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6873081194,
+    "lat": 22.3516712,
+    "lon": 103.8555026,
+    "tags": {
+      "name": "Cave",
+      "tourism": "attraction"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6878263985,
+    "lat": 22.3317613,
+    "lon": 103.8440716,
+    "tags": {
+      "addr:housenumber": "22",
+      "addr:postcode": "333100",
+      "addr:street": "Đường Mường Hoat",
+      "amenity": "restaurant",
+      "diet:vegan": "only",
+      "internet_access": "wlan",
+      "name": "Sapa Classic Vegan Restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6986474188,
+    "lat": 22.3363372,
+    "lon": 103.8430979,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Pho ly quoc su"
+    }
+  },
+  {
+    "type": "node",
+    "id": 6988706985,
+    "lat": 22.3367862,
+    "lon": 103.8458571,
+    "tags": {
+      "amenity": "restaurant",
+      "internet_access": "wlan",
+      "name": "Street BBQ"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7017188370,
+    "lat": 22.3373413,
+    "lon": 103.8424146,
+    "tags": {
+      "name": "Van Hung Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7023282086,
+    "lat": 22.3352005,
+    "lon": 103.8393511,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "local",
+      "internet_access": "wlan",
+      "name": "Am thuc Bình dan",
+      "name:en": "Local food good price",
+      "name:es": "Comida local barata"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7037687885,
+    "lat": 22.3309332,
+    "lon": 103.834866,
+    "tags": {
+      "addr:street": "Cat Cat Road",
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "internet_access": "wlan",
+      "name": "Gem Coffee Art",
+      "name:en": "Gem Valley Coffee Art",
+      "name:vi": "Gem Valley Coffee Art",
+      "opening_hours": "Mo-Su 07:00-21:00",
+      "phone": "+84 91 284 97 53",
+      "website": "https://dichoisapa.com/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7041239590,
+    "lat": 22.3455799,
+    "lon": 103.8244908,
+    "tags": {
+      "name": "Tran Ton Pass",
+      "name:ru": "Дорога в облаках",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7043569424,
+    "lat": 22.3337048,
+    "lon": 103.8425004,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Gerbera Restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7052260188,
+    "lat": 22.457504,
+    "lon": 103.9534927,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Com Gao Nuong"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7055996287,
+    "lat": 22.3361884,
+    "lon": 103.8460065,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "diet:vegetarian": "yes",
+      "name": "Hà Tiên",
+      "name:en": "Mixed rice"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7060350385,
+    "lat": 22.3374359,
+    "lon": 103.8471978,
+    "tags": {
+      "name": "Sapa O Chau",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7100391185,
+    "lat": 22.3295484,
+    "lon": 103.8458597,
+    "tags": {
+      "addr:housenumber": "051A",
+      "addr:street": "Mường Hoa",
+      "internet_access": "wlan",
+      "name": "Sapa Mountain City Hôtel",
+      "opening_hours": "24/7",
+      "tourism": "hotel",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7125610787,
+    "lat": 22.3340401,
+    "lon": 103.841125,
+    "tags": {
+      "amenity": "restaurant",
+      "diet:vegetarian": "only",
+      "name": "Nha Hang Chay (Vegetarian food)"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7132939986,
+    "lat": 22.333546,
+    "lon": 103.8405795,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Sapa 24 Restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7148557586,
+    "lat": 22.2995336,
+    "lon": 103.9091266,
+    "tags": {
+      "addr:housenumber": "km5 Ban Den",
+      "addr:postcode": "330000",
+      "addr:street": "VMM trail 2015",
+      "email": "thelittlehmonghouse@gmail.com",
+      "internet_access": "wlan",
+      "name": "The little hmong house",
+      "name:en": "The little Hmong house",
+      "opening_hours": "Mo-Su 06:00-22:00",
+      "operator": "thelittlehmoghouse",
+      "phone": "+84987596644",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7148557587,
+    "lat": 22.2981065,
+    "lon": 103.9089408,
+    "tags": {
+      "addr:postcode": "33000",
+      "addr:street": "VMM trail 2015",
+      "email": "sapassoulhouse@gmail.com",
+      "internet_access": "wlan",
+      "name": "Hmong house",
+      "name:en": "Sapa's Soul homestay",
+      "name:vi": "Sapa's Soul house",
+      "phone": "0376679232",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7170607930,
+    "lat": 22.3356867,
+    "lon": 103.8392113,
+    "tags": {
+      "name": "Sapa Dragon Hotel",
+      "tourism": "hotel",
+      "website": "www.sapadragonhotel.com"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7170643914,
+    "lat": 22.3376244,
+    "lon": 103.8475277,
+    "tags": {
+      "name": "May Ho Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7171959797,
+    "lat": 22.329264,
+    "lon": 103.829452,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Tiny"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7171960921,
+    "lat": 22.3961402,
+    "lon": 103.8423744,
+    "tags": {
+      "name": "Stone Garden Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7171963201,
+    "lat": 22.3312607,
+    "lon": 103.8291593,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Woody"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7171966548,
+    "lat": 22.3315752,
+    "lon": 103.8257421,
+    "tags": {
+      "name": "The Warm Sapa",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7173933785,
+    "lat": 22.3293035,
+    "lon": 103.845729,
+    "tags": {
+      "amenity": "restaurant",
+      "diet:vegan": "only",
+      "internet_access": "wlan",
+      "name": "Vegan restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174594380,
+    "lat": 22.3355714,
+    "lon": 103.8392544,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Sapa Cardamom Restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174597670,
+    "lat": 22.3024831,
+    "lon": 103.8887224,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Ethnic"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174600772,
+    "lat": 22.3016836,
+    "lon": 103.8907218,
+    "tags": {
+      "name": "Po Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174602738,
+    "lat": 22.3282425,
+    "lon": 103.8463701,
+    "tags": {
+      "name": "My Gallery Boutique Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174604764,
+    "lat": 22.3357304,
+    "lon": 103.8393967,
+    "tags": {
+      "amenity": "cafe",
+      "description": "Bar & Coffee",
+      "name": "Garden"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174612212,
+    "lat": 22.3027917,
+    "lon": 103.887581,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Anh Duc Restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174614013,
+    "lat": 22.3310761,
+    "lon": 103.845012,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Tam Tam"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174615840,
+    "lat": 22.3050523,
+    "lon": 103.8813525,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Windhouse"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174615841,
+    "lat": 22.3314472,
+    "lon": 103.8443069,
+    "tags": {
+      "name": "Chapa",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174617930,
+    "lat": 22.3080612,
+    "lon": 103.8867146,
+    "tags": {
+      "name": "Mutong Hoa River View",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174618018,
+    "lat": 22.3094198,
+    "lon": 103.8763735,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Black Hmong"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174623487,
+    "lat": 22.3037686,
+    "lon": 103.8844701,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Tropical Garden",
+      "takeaway": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174624499,
+    "lat": 22.3194803,
+    "lon": 103.8575437,
+    "tags": {
+      "name": "Cozy Home",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174624937,
+    "lat": 22.3079851,
+    "lon": 103.8867522,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Mutong Hoa River View"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174630536,
+    "lat": 22.3020436,
+    "lon": 103.8890945,
+    "tags": {
+      "name": "Ta Van Go",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174630689,
+    "lat": 22.3097921,
+    "lon": 103.8758014,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Kien Hieu"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174630894,
+    "lat": 22.3273339,
+    "lon": 103.8340437,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Riverside"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174631987,
+    "lat": 22.3050504,
+    "lon": 103.8810827,
+    "tags": {
+      "name": "Lao Chai Room",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174635032,
+    "lat": 22.3045189,
+    "lon": 103.8822189,
+    "tags": {
+      "name": "Sapa Rice Road",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7174636926,
+    "lat": 22.3303323,
+    "lon": 103.8457273,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Yummy"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7176409060,
+    "lat": 22.4571151,
+    "lon": 103.9569974,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Com Xua"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7176460343,
+    "lat": 22.3453025,
+    "lon": 103.8568017,
+    "tags": {
+      "name": "Eva Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7176464942,
+    "lat": 22.3472361,
+    "lon": 103.8562736,
+    "tags": {
+      "name": "Hotel Yen Ngoc",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7193196886,
+    "lat": 22.3377528,
+    "lon": 103.8438894,
+    "tags": {
+      "name": "Himalaya Hostel",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7200179386,
+    "lat": 22.3185713,
+    "lon": 103.6241498,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "nhà nghì tién tói",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7208120985,
+    "lat": 22.406731,
+    "lon": 103.7890475,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "Chào Dao Phù",
+      "tourism": "alpine_hut"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7241740911,
+    "lat": 22.3399889,
+    "lon": 103.847643,
+    "tags": {
+      "name": "Sapa Everest Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 7244060878,
+    "lat": 22.3044133,
+    "lon": 103.9055371,
+    "tags": {
+      "name": "Bau's Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 8088663905,
+    "lat": 22.3399091,
+    "lon": 103.8473826,
+    "tags": {
+      "addr:city": "Sa Pa",
+      "addr:district": "Sapa",
+      "addr:housenumber": "516",
+      "addr:province": "Lào Cai",
+      "addr:street": "Đường Điện Biên Phủ - Quốc lộ 4D",
+      "addr:subdistrict": "Phan Xi Păng",
+      "internet_access": "yes",
+      "internet_access:fee": "no",
+      "name": "Flaco Hostel",
+      "operator": "Flaco Hostel",
+      "tourism": "chalet"
+    }
+  },
+  {
+    "type": "node",
+    "id": 8145440717,
+    "lat": 22.3003833,
+    "lon": 103.8936553,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Wildbeast Bar Café",
+      "name:en": "The Wild Beast"
+    }
+  },
+  {
+    "type": "node",
+    "id": 8363070266,
+    "lat": 22.2996117,
+    "lon": 103.8948242,
+    "tags": {
+      "addr:city": "Sa Pa",
+      "addr:district": "Ta Van Village",
+      "addr:postcode": "330000",
+      "addr:province": "Lao Cai",
+      "brand": "S+ House",
+      "guest_house": "bed_and_breakfast",
+      "internet_access": "yes",
+      "internet_access:fee": "no",
+      "name": "S+ House",
+      "rooms": "7",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 8429448717,
+    "lat": 22.334535,
+    "lon": 103.8421226,
+    "tags": {
+      "addr:housenumber": "8",
+      "addr:street": "Phạm Xuân Huân",
+      "name": "Tưởng Mai",
+      "opening_hours": "24/7",
+      "phone": "0983374169",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 10228570017,
+    "lat": 22.3328043,
+    "lon": 103.8402034,
+    "tags": {
+      "addr:housenumber": "45a",
+      "addr:postcode": "330000",
+      "addr:street": "Fansipan Street",
+      "amenity": "restaurant",
+      "cuisine": "asian;breakfast;vietnamese",
+      "diet:vegetarian": "yes",
+      "internet_access": "wlan",
+      "name": "Hello Vietnam Restaurant",
+      "opening_hours": "Mo-Su 07:00-22:30",
+      "phone": "+84976582898"
+    }
+  },
+  {
+    "type": "node",
+    "id": 10232732817,
+    "lat": 22.2927685,
+    "lon": 103.9215718,
+    "tags": {
+      "name": "Pavi home",
+      "name:en": "Pavi home",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 10246389886,
+    "lat": 22.2862344,
+    "lon": 103.9311818,
+    "tags": {
+      "addr:street": "Muong hoa",
+      "description": "Very nice Homestay",
+      "name": "My's Homestay",
+      "phone": "+84365850510",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 10571969743,
+    "lat": 22.304956,
+    "lon": 103.9084003,
+    "tags": {
+      "name": "Pang homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 10679913854,
+    "lat": 22.3373561,
+    "lon": 103.8504156,
+    "tags": {
+      "name": "May Sapa Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 10682695095,
+    "lat": 22.3029877,
+    "lon": 103.8944939,
+    "tags": {
+      "addr:housenumber": "+84 398995229",
+      "name": "River Mountain View Home stay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 10682705333,
+    "lat": 22.302857,
+    "lon": 103.8944975,
+    "tags": {
+      "addr:street": "Ta van giay 1",
+      "name": "Dzay House homestay",
+      "phone": "+84984655683",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 10740820705,
+    "lat": 22.3373824,
+    "lon": 103.839636,
+    "tags": {
+      "name": "Tubotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 10994201805,
+    "lat": 22.313634,
+    "lon": 103.885261,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "regional;vietnamese",
+      "name": "Hien"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11377884269,
+    "lat": 22.3144929,
+    "lon": 103.8773698,
+    "tags": {
+      "name": "Muong Hoa Valley",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11377886669,
+    "lat": 22.3727007,
+    "lon": 103.7572886,
+    "tags": {
+      "name": "Khu Du Lịch Cầu Kính Rồng Mây",
+      "name:en": "Rong May Glass Bridge",
+      "tourism": "attraction"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11383277335,
+    "lat": 22.3393618,
+    "lon": 103.8389236,
+    "tags": {
+      "name": "Homestay 715",
+      "phone": "+84 336 134 455",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11527371179,
+    "lat": 22.3140978,
+    "lon": 103.8572515,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Café"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11530643243,
+    "lat": 22.3027418,
+    "lon": 103.8881361,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Thoc Restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11530680520,
+    "lat": 22.3027785,
+    "lon": 103.8881163,
+    "tags": {
+      "name": "Thoc Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11530685565,
+    "lat": 22.2960865,
+    "lon": 103.8898876,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Café Restaurant"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11530689674,
+    "lat": 22.3046814,
+    "lon": 103.8905734,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Restaurant Cafe Ly Ly"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11553215369,
+    "lat": 22.3472902,
+    "lon": 103.8559084,
+    "tags": {
+      "internet_access": "wlan",
+      "name": "Sapa Garden Bungalow",
+      "phone": "+84 976535135",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11839226083,
+    "lat": 22.3359373,
+    "lon": 103.8457956,
+    "tags": {
+      "amenity": "restaurant",
+      "diet:vegan": "yes",
+      "name": "Trang Sapa Kitchen",
+      "opening_hours": "Mo-Su 19:00-23:00"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11839226086,
+    "lat": 22.3356483,
+    "lon": 103.8383152,
+    "tags": {
+      "amenity": "restaurant",
+      "diet:vegan": "only",
+      "name": "Thong Dong Vegan 2"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11839226087,
+    "lat": 22.336569,
+    "lon": 103.8365365,
+    "tags": {
+      "amenity": "restaurant",
+      "diet:vegan": "yes",
+      "diet:vegetarian": "yes",
+      "name": "Yen Kitchen (vegan)",
+      "opening_hours": "Mo-Su,PH 09:30-21:30"
+    }
+  },
+  {
+    "type": "node",
+    "id": 11871599148,
+    "lat": 22.3225629,
+    "lon": 103.8665646,
+    "tags": {
+      "addr:district": "thị xã Sa Pa",
+      "addr:housenumber": "Tổ 3",
+      "addr:province": "Lào Cai",
+      "addr:subdistrict": "phường Cầu Mây",
+      "leisure": "park",
+      "name": "Alpine Coaster Sapa",
+      "opening_hours": "Mo-Su 08:00-21:00"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12248236361,
+    "lat": 22.3340988,
+    "lon": 103.8410052,
+    "tags": {
+      "amenity": "restaurant",
+      "diet:vegan": "only",
+      "name": "Sa Pa Vegan Kitchen Quá ăn Chay"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12248255018,
+    "lat": 22.3113344,
+    "lon": 103.8628824,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Maison de Lao Chai"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12248286646,
+    "lat": 22.3366743,
+    "lon": 103.8425864,
+    "tags": {
+      "addr:housenumber": "08B",
+      "addr:street": "Hoang Dieu",
+      "amenity": "restaurant",
+      "contact:instagram": "thongdonvegan",
+      "diet:vegan": "only",
+      "name": "Thong Dong Vegan Kitchen & Café",
+      "opening_hours": "We-Mo 08:00-16:00, 17:30-21:30",
+      "phone": "+84858250522;+84397978355",
+      "self_service": "partially",
+      "website": "https://thongdongvegan.com/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12301281456,
+    "lat": 22.3004787,
+    "lon": 103.8928735,
+    "tags": {
+      "addr:city": "Sapa",
+      "addr:postcode": "330000",
+      "addr:province": "Lao Cai",
+      "addr:street": "Ta Van Day",
+      "addr:subdistrict": "Ta Van",
+      "amenity": "restaurant",
+      "contact:facebook": "https://www.facebook.com/thehmongsisterstavan/",
+      "cuisine": "burger;french;regional",
+      "name": "The Hmong Sisters Tavan",
+      "opening_hours": "Mo-Su 10:00-22:00"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12420693202,
+    "lat": 22.3025234,
+    "lon": 103.8858213,
+    "tags": {
+      "addr:street": "Road to Ta Van",
+      "contact:facebook": "comlamecohouse",
+      "email": "infocomlamecohouse@gmail.com",
+      "guest_house": "guest_house",
+      "internet_access": "yes",
+      "internet_access:fee": "customers",
+      "name": "Comlam Eco House",
+      "phone": "+84 866 599 588",
+      "tourism": "guest_house",
+      "website": "https://comlamecohouseandcafe.com/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12536787303,
+    "lat": 22.3328918,
+    "lon": 103.8424156,
+    "tags": {
+      "addr:housenumber": "33",
+      "addr:street": "Phố Đồng Lợi",
+      "email": "khongtienthuong.vp2@gmail.com",
+      "internet_access": "wlan",
+      "name": "Nhà nghỉ Nhật Sapa Central",
+      "name:en": "Nhat's Sapa Central Hostel",
+      "phone": "+84 973 021 389",
+      "tourism": "hostel",
+      "website": "http://khongtienthuong.vp2@gmail.com"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12661932001,
+    "lat": 22.3367754,
+    "lon": 103.8480484,
+    "tags": {
+      "name": "Stella Boutique Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12756714062,
+    "lat": 22.2646707,
+    "lon": 103.69573,
+    "tags": {
+      "direction": "170",
+      "name": "Tea Fields View",
+      "tourism": "viewpoint"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12757194905,
+    "lat": 22.3343296,
+    "lon": 103.8223135,
+    "tags": {
+      "name": "Sin Chai Ecolodge",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12768302901,
+    "lat": 22.3525244,
+    "lon": 103.7652475,
+    "tags": {
+      "historic": "monument",
+      "name": "Buddha"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12771601101,
+    "lat": 22.3360067,
+    "lon": 103.8435799,
+    "tags": {
+      "addr:housenumber": "12",
+      "addr:street": "Thạch Sơn",
+      "amenity": "restaurant",
+      "name": "Hai yen restaurant (buffet 199-299k)",
+      "opening_hours": "Mo-Su 10:00-22:00",
+      "self_service": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12775578003,
+    "lat": 22.3405761,
+    "lon": 103.8456431,
+    "tags": {
+      "addr:housenumber": "576",
+      "addr:street": "Đường Điện Biên Phủ - Quốc lộ 4D",
+      "amenity": "restaurant",
+      "cuisine": "asian",
+      "name": "Pho, Bun, Com (English menu)",
+      "opening_hours": "Mo-Su 09:00-18:00"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12823775528,
+    "lat": 22.335584,
+    "lon": 103.8345203,
+    "tags": {
+      "access": "customers",
+      "addr:city": "Phan Si Păng - Sa Pa",
+      "addr:district": "Sapa",
+      "addr:housenumber": "73",
+      "addr:postcode": "31786",
+      "addr:province": "Lào Cai",
+      "addr:street": "Nguyễn Chí Thanh",
+      "addr:subdistrict": "Phan Si Păng",
+      "camp_site": "serviced",
+      "capacity:persons": "20",
+      "capacity:tents": "10",
+      "drinking_water": "yes",
+      "fee": "yes",
+      "name": "Glamper Sapa Campground",
+      "openfire": "yes",
+      "payment:cash": "yes",
+      "phone": "0919118858",
+      "power_supply": "yes",
+      "shower": "yes",
+      "tents": "yes",
+      "toilets": "yes",
+      "tourism": "camp_site"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12824980786,
+    "lat": 22.3298346,
+    "lon": 103.8459,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Andee Sapa Restaurant - Buffet Grill Hotpot and Vegan Food"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12824980787,
+    "lat": 22.3270114,
+    "lon": 103.8466396,
+    "tags": {
+      "name": "Pao's Sapa Leisure Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12944640908,
+    "lat": 22.3363042,
+    "lon": 103.8473543,
+    "tags": {
+      "addr:housenumber": "116 Đ.",
+      "addr:postcode": "300000",
+      "addr:street": "Thạch Sơn",
+      "internet_access": "wlan",
+      "name": "Central Sapa Serenity Homestay",
+      "phone": "0373 668 576",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 12995786601,
+    "lat": 22.3307808,
+    "lon": 103.8441282,
+    "tags": {
+      "addr:street": "050 Violet",
+      "name": "Still cafe home kictchen",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13004885602,
+    "lat": 22.3025844,
+    "lon": 103.8855893,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Lúa Café"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13007772801,
+    "lat": 22.3006286,
+    "lon": 103.8925013,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Sa Mộc"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13007772902,
+    "lat": 22.3018899,
+    "lon": 103.8902621,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Samu"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13007773001,
+    "lat": 22.3005979,
+    "lon": 103.8848062,
+    "tags": {
+      "name": "Táo Tày House",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13009198902,
+    "lat": 22.3007694,
+    "lon": 103.8846125,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Hugo"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13022654002,
+    "lat": 22.4002158,
+    "lon": 103.8387044,
+    "tags": {
+      "addr:street": "Đội 4, Thôn Sả Séng",
+      "internet_access": "wlan",
+      "name": "Lý Mẩy Đào",
+      "phone": "+84365503692;+84362494322",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13037226567,
+    "lat": 22.3698104,
+    "lon": 103.7980759,
+    "tags": {
+      "name": "Song Nhu",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13037241616,
+    "lat": 22.3698366,
+    "lon": 103.7969177,
+    "tags": {
+      "name": "Nha Khach Guest House",
+      "phone": "0976373366",
+      "tourism": "motel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13038546488,
+    "lat": 22.3404424,
+    "lon": 103.8477647,
+    "tags": {
+      "name": "Minh Anh House",
+      "tourism": "motel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13041591629,
+    "lat": 22.3374121,
+    "lon": 103.8240356,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Buffet"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13077423847,
+    "lat": 22.3341613,
+    "lon": 103.8418132,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Ca Phê Bao Câ"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13084307428,
+    "lat": 22.4110327,
+    "lon": 103.7952538,
+    "tags": {
+      "name": "Ngũ Chỉ Sơn",
+      "tourism": "guest_house",
+      "website": "https://nguchisontrekking.com/"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13084344806,
+    "lat": 22.3518073,
+    "lon": 103.8174629,
+    "tags": {
+      "name": "Cuu Hop Lop",
+      "tourism": "attraction"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13084364009,
+    "lat": 22.3442159,
+    "lon": 103.8204362,
+    "tags": {
+      "name": "Po Mu",
+      "tourism": "attraction"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13086412390,
+    "lat": 22.3622753,
+    "lon": 103.8068546,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Vong Canh Quán"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13086419155,
+    "lat": 22.4067614,
+    "lon": 103.7891654,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "name": "Dào Phú"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13086714074,
+    "lat": 22.3657245,
+    "lon": 103.7931234,
+    "tags": {
+      "name": "Homestay Ha Lu",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13086740713,
+    "lat": 22.3524677,
+    "lon": 103.7649859,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "O Quy Ho"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13086750606,
+    "lat": 22.3667585,
+    "lon": 103.7934198,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Mong Mo SaPa"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13134419368,
+    "lat": 22.297789,
+    "lon": 103.9175836,
+    "tags": {
+      "brand": "Lagom Home",
+      "email": "lagomsapa@gmail.com",
+      "internet_access": "wlan",
+      "internet_access:fee": "no",
+      "name": "Lagom Home - Bamboo Forest",
+      "phone": "+84333039369",
+      "rooms": "8",
+      "tourism": "hotel",
+      "website": "https://lagomhome.vn"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13154793644,
+    "lat": 22.2994834,
+    "lon": 103.895183,
+    "tags": {
+      "addr:housenumber": "1",
+      "addr:street": "Tan Van Giay",
+      "amenity": "restaurant",
+      "contact:whatsapp": "+84971398708",
+      "diet:vegan": "yes",
+      "diet:vegetarian": "only",
+      "name": "Tree vegan Food & Drink",
+      "opening_hours": "Mo-Su,PH 08:00-19:30",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13276672582,
+    "lat": 22.3402438,
+    "lon": 103.8533418,
+    "tags": {
+      "amenity": "restaurant",
+      "check_date": "2025-11-03",
+      "cuisine": "regional",
+      "name": "Bản Quán",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13276672583,
+    "lat": 22.3403206,
+    "lon": 103.8532989,
+    "tags": {
+      "amenity": "restaurant",
+      "check_date": "2025-11-03",
+      "cuisine": "korean",
+      "level": "1",
+      "name": "Nhà Hãng Hãn Quốc Sa Pa",
+      "name:ko": "사파한국식당"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13276672585,
+    "lat": 22.3400915,
+    "lon": 103.8537598,
+    "tags": {
+      "amenity": "restaurant",
+      "check_date": "2025-11-03",
+      "cuisine": "korean",
+      "name": "Kogi"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13276702876,
+    "lat": 22.3401067,
+    "lon": 103.8408066,
+    "tags": {
+      "addr:street": "Đường Điện Biên Phủ",
+      "check_date": "2025-11-03",
+      "name": "Green Villa",
+      "tourism": "guest_house",
+      "wheelchair": "limited"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13276734817,
+    "lat": 22.339895,
+    "lon": 103.840963,
+    "tags": {
+      "addr:housenumber": "689B",
+      "addr:street": "Đường Điện Biên Phủ",
+      "check_date": "2025-11-04",
+      "elevator": "no",
+      "name": "Sapa Indigo Inn",
+      "payment:cash": "yes",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "tourism": "guest_house",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13279137013,
+    "lat": 22.3370777,
+    "lon": 103.8440401,
+    "tags": {
+      "air_conditioning": "no",
+      "amenity": "cafe",
+      "check_date": "2025-11-04",
+      "name": "Cà Phê Bao Cấp",
+      "name:vi": "Cà Phê Bao Cấp"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13279268955,
+    "lat": 22.3405449,
+    "lon": 103.8421317,
+    "tags": {
+      "addr:housenumber": "706",
+      "addr:street": "Đường Điện Biên Phủ",
+      "amenity": "restaurant",
+      "check_date": "2025-11-05",
+      "cuisine": "korean",
+      "name": "Seoul Restaurant",
+      "name:ko": "서울 식당",
+      "name:vi": "Nhà Hàng Seoul",
+      "opening_hours": "Mo-Su 11:00+",
+      "outdoor_seating": "yes",
+      "payment:cash": "yes",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "wheelchair": "limited"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13282179825,
+    "lat": 22.3033319,
+    "lon": 103.7753148,
+    "tags": {
+      "country": "VN",
+      "ele": "3141",
+      "flag:type": "national",
+      "height": "25",
+      "man_made": "flagpole",
+      "name": "Cột cờ Fansipan",
+      "name:en": "Fansipan Flagpole",
+      "name:vi": "Cột cờ Fansipan",
+      "start_date": "2017-01-13",
+      "tourism": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13282194526,
+    "lat": 22.3407487,
+    "lon": 103.8416703,
+    "tags": {
+      "addr:housenumber": "720",
+      "addr:street": "Đường Điện Biên Phủ",
+      "check_date": "2025-11-05",
+      "name": "Sapa Warm Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13282245157,
+    "lat": 22.3406302,
+    "lon": 103.8419373,
+    "tags": {
+      "check_date": "2025-11-05",
+      "name": "A Lử Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13282529025,
+    "lat": 22.3350096,
+    "lon": 103.8406711,
+    "tags": {
+      "amenity": "cafe",
+      "brand": "Highlands Coffee",
+      "cuisine": "coffee_shop;vietnamese",
+      "name": "Highlands Coffee",
+      "name:en": "Highlands Coffee",
+      "takeaway": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13282532012,
+    "lat": 22.3362099,
+    "lon": 103.8400663,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Ngân"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13282898096,
+    "lat": 22.3347479,
+    "lon": 103.8406897,
+    "tags": {
+      "amenity": "cafe",
+      "brand": "Starbucks",
+      "brand:wikidata": "Q37158",
+      "check_date": "2025-11-05",
+      "cuisine": "coffee_shop",
+      "name": "Starbucks",
+      "official_name": "Starbucks Coffee",
+      "takeaway": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13282898097,
+    "lat": 22.3345353,
+    "lon": 103.8405848,
+    "tags": {
+      "amenity": "cafe",
+      "brand": "Highlands Coffee",
+      "brand:wikidata": "Q5759361",
+      "check_date": "2025-11-05",
+      "cuisine": "coffee_shop;vietnamese",
+      "level": "0",
+      "name": "Highlands Coffee",
+      "name:en": "Highlands Coffee",
+      "payment:cash": "yes",
+      "payment:credit_cards": "yes",
+      "payment:debit_cards": "yes",
+      "takeaway": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13282898098,
+    "lat": 22.3338095,
+    "lon": 103.840504,
+    "tags": {
+      "check_date": "2025-11-05",
+      "name": "Sapa Green View Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13282967119,
+    "lat": 22.3347396,
+    "lon": 103.8403466,
+    "tags": {
+      "addr:housename": "Hotel de la Coupole",
+      "amenity": "restaurant",
+      "name": "Cacao",
+      "payment:credit_cards": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13282967120,
+    "lat": 22.3347725,
+    "lon": 103.8403835,
+    "tags": {
+      "addr:housenumber": "1",
+      "addr:street": "Đường Hoàng Liên",
+      "name": "Hotel de la Coupole",
+      "payment:credit_cards": "yes",
+      "tourism": "hotel",
+      "website": "https://hoteldelacoupole.com"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13282967121,
+    "lat": 22.3348252,
+    "lon": 103.8404166,
+    "tags": {
+      "addr:housename": "Hotel de la Coupole",
+      "amenity": "restaurant",
+      "name": "Chic",
+      "payment:credit_cards": "yes"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13341850401,
+    "lat": 22.3369795,
+    "lon": 103.8488472,
+    "tags": {
+      "addr:street": "Thạch Sơn",
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "diet:vegetarian": "yes",
+      "name": "Sapa Memory Restaurant & Vegan",
+      "opening_hours": "Mo-Su 09:00-23:00"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13342091301,
+    "lat": 22.336274,
+    "lon": 103.8371785,
+    "tags": {
+      "amenity": "cafe",
+      "name": "The Pine Forest Sapa",
+      "opening_hours": "Mo-Su 07:00-22:00"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13342091302,
+    "lat": 22.3363078,
+    "lon": 103.836965,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "diet:vegan": "yes",
+      "name": "Green Sapa Bistrot",
+      "opening_hours": "Mo-Su 07:30-21:00"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13352909401,
+    "lat": 22.3367783,
+    "lon": 103.8492292,
+    "tags": {
+      "name": "Grand Blue Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13359172503,
+    "lat": 22.3368386,
+    "lon": 103.8463284,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "name": "Bánh Mỳ Phương Nhi"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13359172504,
+    "lat": 22.3365259,
+    "lon": 103.845218,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "name": "Phở Sạch Bắc Hà"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13363212701,
+    "lat": 22.3343716,
+    "lon": 103.8415233,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Café baocap"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13363726901,
+    "lat": 22.337624,
+    "lon": 103.8502081,
+    "tags": {
+      "name": "London Sa Pa Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13369094401,
+    "lat": 22.336796,
+    "lon": 103.8448509,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Aloha Coffee"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13369352601,
+    "lat": 22.3322187,
+    "lon": 103.8354412,
+    "tags": {
+      "name": "Cat Cat Garden Homestay",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13369683223,
+    "lat": 22.3367329,
+    "lon": 103.8471942,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "name": "Tiêm Pho Ngon"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13380426001,
+    "lat": 22.3988296,
+    "lon": 103.8447553,
+    "tags": {
+      "name": "Sapanapro",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13381247201,
+    "lat": 22.3356581,
+    "lon": 103.8367369,
+    "tags": {
+      "name": "Sapa Binh Lan Homestay",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13381247202,
+    "lat": 22.3347735,
+    "lon": 103.8379948,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "chinese;indian",
+      "indoor_seating": "yes",
+      "name": "Kachi Kitchen Sapa",
+      "outdoor_seating": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13381274001,
+    "lat": 22.3307963,
+    "lon": 103.8357375,
+    "tags": {
+      "amenity": "cafe",
+      "name": "Quan Gio Sapa"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13382719001,
+    "lat": 22.3367258,
+    "lon": 103.847675,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Phô Minh"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13385308701,
+    "lat": 22.3337197,
+    "lon": 103.8415915,
+    "tags": {
+      "amenity": "restaurant",
+      "cuisine": "vietnamese",
+      "name": "Minh Châu Food"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13417882401,
+    "lat": 22.3250192,
+    "lon": 103.8455147,
+    "tags": {
+      "name": "Phansi",
+      "tourism": "camp_site"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13513865201,
+    "lat": 22.3322559,
+    "lon": 103.8369277,
+    "tags": {
+      "name": "Impossible to pass, blocked",
+      "tourism": "attraction"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13513865301,
+    "lat": 22.3315433,
+    "lon": 103.8363915,
+    "tags": {
+      "name": "impossible to pass, blocked",
+      "tourism": "attraction"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13513865302,
+    "lat": 22.3291412,
+    "lon": 103.8421408,
+    "tags": {
+      "name": "impossible to pass, blocked",
+      "tourism": "attraction"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13528807921,
+    "lat": 22.3362842,
+    "lon": 103.8412003,
+    "tags": {
+      "amenity": "restaurant",
+      "name": "Saparis"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13542290978,
+    "lat": 22.3008258,
+    "lon": 103.8942278,
+    "tags": {
+      "amenity": "cafe",
+      "contact:phone": "+84 367 132 700",
+      "cuisine": "breakfast; bakery",
+      "diet:vegan": "yes",
+      "indoor_seating": "yes",
+      "internet_access": "no",
+      "level": "1",
+      "name": "Loco.bakery",
+      "opening_hours": "08:30-22:00",
+      "toilets": "no",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13601116101,
+    "lat": 22.3350384,
+    "lon": 103.8376823,
+    "tags": {
+      "name": "Viet Duc Guest House",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13628898701,
+    "lat": 22.2998961,
+    "lon": 103.8878205,
+    "tags": {
+      "addr:street": "Ta Van",
+      "name": "NaChi Homesray",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13658427801,
+    "lat": 22.3342967,
+    "lon": 103.8418026,
+    "tags": {
+      "addr:housenumber": "013",
+      "addr:street": "Cầu Mây",
+      "amenity": "restaurant",
+      "check_date": "2026-03-18",
+      "cuisine": "vietnamese",
+      "name": "Phô Mây Restaurant",
+      "phone": "0914 403242"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13666989223,
+    "lat": 22.3413133,
+    "lon": 103.8470161,
+    "tags": {
+      "name": "Sapa Jungle Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "node",
+    "id": 13707477574,
+    "lat": 22.3366235,
+    "lon": 103.8440533,
+    "tags": {
+      "addr:housenumber": "012",
+      "addr:postcode": "330000",
+      "addr:province": "Lào Cai",
+      "addr:street": "Xuân Viên",
+      "addr:subdistrict": "Sapa",
+      "amenity": "restaurant",
+      "diet:local": "yes",
+      "email": "nhahanghuyvansapa@gmail.com",
+      "mobile": "0988789313",
+      "name": "NHÀ HÀNG HUY VÂN SAPA",
+      "opening_hours": "Mo-Su 08:00-23:00",
+      "website": "https://www.facebook.com/nhahanghuyvansapa"
+    }
+  },
+  {
+    "type": "way",
+    "id": 85529099,
+    "center": {
+      "lat": 22.3287499,
+      "lon": 103.829448
+    },
+    "nodes": [
+      991996504,
+      991996670
+    ],
+    "tags": {
+      "bridge": "yes",
+      "highway": "footway",
+      "layer": "1",
+      "name": "Cat Cat Bridge",
+      "name:vi": "Cầu treo Cát Cát",
+      "tourism": "attraction"
+    }
+  },
+  {
+    "type": "way",
+    "id": 672018312,
+    "center": {
+      "lat": 22.309578,
+      "lon": 103.8606921
+    },
+    "nodes": [
+      6293188686,
+      6293188685
+    ],
+    "tags": {
+      "bridge": "yes",
+      "highway": "tertiary",
+      "layer": "1",
+      "name": "Cầu Treo Lao Chải San II",
+      "name:en": "Suspension Bridge",
+      "surface": "metal",
+      "tourism": "attraction"
+    }
+  },
+  {
+    "type": "way",
+    "id": 713668261,
+    "center": {
+      "lat": 22.3239074,
+      "lon": 103.6249016
+    },
+    "nodes": [
+      6709995348,
+      6709995347,
+      6709995346,
+      6709995345,
+      6709995344,
+      6709995343,
+      6709995342,
+      6709995341,
+      6709995340,
+      6709995348
+    ],
+    "tags": {
+      "landuse": "commercial",
+      "name": "Nhà khách Hoa Ban",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "way",
+    "id": 713668268,
+    "center": {
+      "lat": 22.3240358,
+      "lon": 103.6154864
+    },
+    "nodes": [
+      6709995473,
+      6709995472,
+      6709995471,
+      6709995470,
+      6709995469,
+      6709995468,
+      6709995467,
+      6709995466,
+      6709995465,
+      6709995464,
+      6709995463,
+      6709995462,
+      6709995473
+    ],
+    "tags": {
+      "leisure": "sports_centre",
+      "name": "Sân vận động trung tâm huyện Tam Đường"
+    }
+  },
+  {
+    "type": "way",
+    "id": 713668317,
+    "center": {
+      "lat": 22.3243272,
+      "lon": 103.6214062
+    },
+    "nodes": [
+      6709995775,
+      6709995762,
+      6709995761,
+      6709995774,
+      6709995773,
+      6709995772,
+      6709995771,
+      6709995770,
+      6709995769,
+      6709995768,
+      6709995767,
+      6709995766,
+      6709995765,
+      6709995764,
+      6709995763,
+      6709995775
+    ],
+    "tags": {
+      "leisure": "park",
+      "name": "Công viên Tả Liên Sơn"
+    }
+  },
+  {
+    "type": "way",
+    "id": 741352658,
+    "center": {
+      "lat": 22.3312368,
+      "lon": 103.8291918
+    },
+    "nodes": [
+      6940401272,
+      6940401273,
+      6940401274,
+      6940401275,
+      6940401272
+    ],
+    "tags": {
+      "addr:city": "TP Lao Cai",
+      "addr:district": "Huyen Sapa",
+      "addr:postcode": "661300",
+      "addr:province": "Lao Cai",
+      "addr:street": "Cat Cat Road",
+      "addr:subdistrict": "TT Sapa",
+      "building": "yes",
+      "capacity": "30",
+      "description": "Homestay, coffee, Restaurant",
+      "email": "toquynh91@gmail.com",
+      "level": "2",
+      "name": "Woody Homestay Sapa",
+      "opening_hours": "24/7",
+      "outdoor_seating": "no",
+      "payment:cash": "yes",
+      "phone": "0911789528",
+      "smoking": "no",
+      "start_date": "3/2018",
+      "takeaway": "yes",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "way",
+    "id": 741352659,
+    "center": {
+      "lat": 22.3311832,
+      "lon": 103.8290657
+    },
+    "nodes": [
+      6940401276,
+      6940401277,
+      6940401278,
+      6940401279,
+      6940401276
+    ],
+    "tags": {
+      "building": "yes",
+      "internet_access": "wlan",
+      "internet_access:fee": "no",
+      "internet_access:ssid": "CHAPI HOMESTAY",
+      "name": "Chapi Homestay",
+      "phone": "+84975073437",
+      "tourism": "hostel"
+    }
+  },
+  {
+    "type": "way",
+    "id": 946390565,
+    "center": {
+      "lat": 22.3276441,
+      "lon": 103.8305268
+    },
+    "nodes": [
+      8760570347,
+      8760570348,
+      8760570349,
+      8760570350,
+      8760570347
+    ],
+    "tags": {
+      "addr:street": "Cat Cat Road",
+      "building": "house",
+      "email": "phuocvu000999@gmail.com",
+      "name": "Terraced H'Mong Homestay",
+      "name:en": "Terraced H'mong Homestay",
+      "opening_hours": "24/7",
+      "operator": "Phuoc Le Duc (Reception);Phuoc Le Duc",
+      "phone": "+84905839989",
+      "tourism": "guest_house",
+      "wheelchair": "no"
+    }
+  },
+  {
+    "type": "way",
+    "id": 946390618,
+    "center": {
+      "lat": 22.32768,
+      "lon": 103.8335842
+    },
+    "nodes": [
+      8760572163,
+      8760572164,
+      8760572165,
+      12526217547,
+      8760572166,
+      8760572163
+    ],
+    "tags": {
+      "amenity": "cafe",
+      "building": "house",
+      "layer": "1",
+      "name": "Mị Cà Phê",
+      "name:zh": "竹筏米傳說咖啡店"
+    }
+  },
+  {
+    "type": "way",
+    "id": 946390620,
+    "center": {
+      "lat": 22.3273122,
+      "lon": 103.8360208
+    },
+    "nodes": [
+      8760572171,
+      8760572172,
+      8760572173,
+      8760572174,
+      8760572171
+    ],
+    "tags": {
+      "building": "house",
+      "name": "Apao Homestay",
+      "tourism": "guest_house"
+    }
+  },
+  {
+    "type": "way",
+    "id": 1055051249,
+    "center": {
+      "lat": 22.3210865,
+      "lon": 103.6232408
+    },
+    "nodes": [
+      9694790670,
+      9694790673,
+      9694790665,
+      9694790663,
+      9694790677,
+      9694790666,
+      9694790670
+    ],
+    "tags": {
+      "leisure": "park",
+      "name": "Công viên Pu Ta Leng"
+    }
+  },
+  {
+    "type": "way",
+    "id": 1149132933,
+    "center": {
+      "lat": 22.3362834,
+      "lon": 103.8454546
+    },
+    "nodes": [
+      10690628760,
+      10690628761,
+      10690628762,
+      10690628763,
+      10690628764,
+      10690628760
+    ],
+    "tags": {
+      "addr:city": "Sa Pa",
+      "addr:district": "Sa Pa",
+      "addr:housenumber": "19",
+      "addr:postcode": "330000",
+      "addr:province": "Lào Cai",
+      "addr:street": "Hoàng Văn Thụ",
+      "amenity": "restaurant",
+      "building": "yes",
+      "cuisine": "vietnamese",
+      "diet:vegetarian": "yes",
+      "name": "NHÀ HÀNG SAPA TV",
+      "opening_hours": "24/7",
+      "phone": "+84 563 456 789",
+      "website": "https://sapatv.vn/"
+    }
+  },
+  {
+    "type": "way",
+    "id": 1215081887,
+    "center": {
+      "lat": 22.3317101,
+      "lon": 103.8433855
+    },
+    "nodes": [
+      11257717186,
+      11257717183,
+      11257717184,
+      11257717185,
+      11257717186
+    ],
+    "tags": {
+      "addr:city": "Sa Pa",
+      "addr:district": "Sapa",
+      "addr:housenumber": "24",
+      "addr:postcode": "333101",
+      "addr:province": "Lào Cai",
+      "addr:street": "Ngo Cau May",
+      "addr:subdistrict": "Sapa",
+      "building": "yes",
+      "email": "megaviewhomestay@gmail.com",
+      "name": "Mega View Homestay",
+      "phone": "+84 924 551 552",
+      "tourism": "chalet",
+      "website": "www.MegaViewHomestay.com"
+    }
+  },
+  {
+    "type": "way",
+    "id": 1262076050,
+    "center": {
+      "lat": 22.2869093,
+      "lon": 103.9095906
+    },
+    "nodes": [
+      11726545120,
+      11726545121,
+      11726545122,
+      11726545123,
+      11726545120
+    ],
+    "tags": {
+      "building": "yes",
+      "name": "Mama Pham",
+      "tourism": "apartment"
+    }
+  },
+  {
+    "type": "way",
+    "id": 1323660974,
+    "center": {
+      "lat": 22.3100855,
+      "lon": 103.8607482
+    },
+    "nodes": [
+      12248657196,
+      12248657198,
+      12248657197,
+      12248657195,
+      12248657196
+    ],
+    "tags": {
+      "amenity": "cafe",
+      "building": "yes",
+      "name": "Sapana 2 Cafe & Bistro",
+      "outdoor_seating": "yes",
+      "toilets:access": "customers",
+      "wheelchair": "limited"
+    }
+  },
+  {
+    "type": "way",
+    "id": 1324773443,
+    "center": {
+      "lat": 22.3356942,
+      "lon": 103.8408604
+    },
+    "nodes": [
+      12259132227,
+      12259132224,
+      13474208925,
+      12259132225,
+      12259132226,
+      12259132227
+    ],
+    "tags": {
+      "addr:city": "Sa Pa",
+      "addr:district": "Sa Pa",
+      "addr:housenumber": "001",
+      "addr:postcode": "33300",
+      "addr:province": "Lào Cai",
+      "addr:street": "Phan Xi Păng",
+      "addr:subdistrict": "Sapa",
+      "leisure": "park",
+      "name": "Không Gian Văn Hóa - Sapa Tinh Hoa Hội Tụ",
+      "opening_hours": "24/7",
+      "operator": "Hợp tác xa văn hoa kết nối cộng đồng",
+      "operator:type": "public",
+      "razed:building": "yes"
+    }
+  },
+  {
+    "type": "way",
+    "id": 1385230987,
+    "center": {
+      "lat": 22.3286543,
+      "lon": 103.8460717
+    },
+    "nodes": [
+      12824980774,
+      12824980775,
+      12824980776,
+      12824980777,
+      12824980774
+    ],
+    "tags": {
+      "building": "yes",
+      "name": "Liberty Sapa Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "way",
+    "id": 1385230988,
+    "center": {
+      "lat": 22.328565,
+      "lon": 103.846125
+    },
+    "nodes": [
+      12824980778,
+      12824980779,
+      12824980780,
+      12824980781,
+      12824980778
+    ],
+    "tags": {
+      "building": "yes",
+      "name": "My Gallery Boutique Hotel & Spa",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "way",
+    "id": 1385230989,
+    "center": {
+      "lat": 22.3285244,
+      "lon": 103.8456125
+    },
+    "nodes": [
+      12824980782,
+      12824980783,
+      12824980784,
+      12824980785,
+      12824980782
+    ],
+    "tags": {
+      "building": "yes",
+      "name": "Mường Hoa View Hotel",
+      "tourism": "hotel"
+    }
+  },
+  {
+    "type": "way",
+    "id": 1452808663,
+    "center": {
+      "lat": 22.3397101,
+      "lon": 103.846196
+    },
+    "nodes": [
+      13323702383,
+      13323702384,
+      13323702385,
+      13323702386,
+      13323702383
+    ],
+    "tags": {
+      "leisure": "pitch",
+      "name": "Sân PickleBall Sa Pa",
+      "sport": "pickleball"
+    }
+  },
+  {
+    "type": "way",
+    "id": 1453073041,
+    "center": {
+      "lat": 22.3127031,
+      "lon": 103.8786903
+    },
+    "nodes": [
+      13325983171,
+      13325983172,
+      13325983173,
+      13325983174,
+      13325983171
+    ],
+    "tags": {
+      "amenity": "cafe",
+      "building": "yes",
+      "name": "Wind Lao Chải"
+    }
+  },
+  {
+    "type": "way",
+    "id": 1453073047,
+    "center": {
+      "lat": 22.3089453,
+      "lon": 103.8735336
+    },
+    "nodes": [
+      13325983189,
+      13325983190,
+      13325983191,
+      13325983192,
+      13325983189
+    ],
+    "tags": {
+      "building": "yes",
+      "name": "H'mong Eco House",
+      "tourism": "hotel"
+    }
+  }
+]

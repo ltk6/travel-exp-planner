@@ -36,6 +36,10 @@ export const apiClient = {
   activities: (payload: ActivitiesPayload) =>
     postJson<ActivitiesResponse>("/api/activities", payload),
 
+  /** v2: real map-source activities (N9-N14 processor) instead of N5 LLM. */
+  activitiesV2: (payload: ActivitiesPayload) =>
+    postJson<ActivitiesResponse>("/api/activities/v2", payload),
+
   feedback: <T>(endpoint: FeedbackEndpoint, body: FeedbackPayload) =>
     postJson<T>(`/api/feedback/${endpoint}`, body),
 
