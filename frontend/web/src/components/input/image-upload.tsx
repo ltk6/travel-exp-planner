@@ -90,7 +90,7 @@ export function ImageUpload() {
             <CardTitle>Hình ảnh</CardTitle>
             <CardDescription>
               Tải lên 1 ảnh mô tả phong cảnh — AI sẽ phân tích để tìm địa điểm tương tự. Tối đa 5MB
-              · PNG/JPG. <span className="text-foreground">Cần kèm thêm text hoặc tag.</span>
+              · PNG/JPG.
             </CardDescription>
           </div>
           <Badge variant="outline">
