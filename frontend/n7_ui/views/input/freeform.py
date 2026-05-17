@@ -61,7 +61,7 @@ def render_image_input_tab() -> None:
 
     st.file_uploader(
         "Tải lên các bức ảnh",
-        type=["png", "jpg", "jpeg"],
+        type=["png", "jpg", "jpeg", "webp", "gif", "bmp"],
         key="freeform_image_uploader",
         accept_multiple_files=True,
         on_change=on_image_change,

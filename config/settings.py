@@ -16,10 +16,13 @@ INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "")
 # ── Model Settings ───────────────────────────────────────────────
 EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", "BAAI/bge-m3")
 
-
 GROQ_MODEL_NAME   = os.getenv("GROQ_MODEL_NAME", "llama-3.1-8b-instant")
 GROQ_VISION_MODEL = os.getenv("GROQ_VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
 GROQ_API_URL      = os.getenv("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions")
+
+# ── Gemini Specific ───────────────────────────────────────────────
+GEMINI_MODEL_NAME=os.getenv("GEMINI_MODEL_NAME", "gemini-2.0-flash")
+GEMINI_API_BASE=os.getenv("GEMINI_API_BASE", "https://generativelanguage.googleapis.com/v1beta/models")
 
 GROQ_MODELS = {
     "gpt_120b":      os.getenv("GROQ_GPT_120B", "openai/gpt-oss-120b"),

@@ -139,7 +139,6 @@ def get_all_locations_cached(force_refresh=False):
 
 def recommend_service(body):
     text = body.get("text", "").strip()
-    image_b64 = body.get("image", "")
     tags = body.get("tags", [])
     constraints = body.get("constraints", {})
     context_data = body.get("context", {})
@@ -148,13 +147,21 @@ def recommend_service(body):
 
     # ── N2 — Image → img_desc ──────────────────
     img_desc = body.get("img_desc", "")
-    if not img_desc and image_b64:
-        try:
-            img_bytes = base64.b64decode(image_b64)
-            n2_result = process_image({"image": img_bytes})
-            img_desc = n2_result.get("img_desc", "")
-        except Exception as e:
-            logger.warning(f"N2 processing failed: {e}")
+    if not img_desc:
+        image_b64 = body.get("image", "")
+        if not image_b64 and body.get("images"):
+            imgs = body.get("images", [])
+            if isinstance(imgs, list) and len(imgs) > 0:
+                image_b64 = imgs[0]
+
+        if image_b64:
+            try:
+                b64_data = image_b64.split(",")[1] if "," in image_b64 else image_b64
+                img_bytes = base64.b64decode(b64_data)
+                n2_result = process_image({"image": img_bytes})
+                img_desc = n2_result.get("img_desc", "")
+            except Exception as e:
+                logger.warning(f"N2 processing failed: {e}")
 
     # ── N1 — Build User Vectors ────────────────
     n1_result = embed({
