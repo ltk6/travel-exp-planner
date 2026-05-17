@@ -1,6 +1,6 @@
 # N8 - Module Orchestrator: Báo Cáo Bench Test
 
-**Ngày:** 2026-05-15  
+**Ngày:** 2026-05-17  
 **Chế độ bench:** Mocked downstream modules (N1, N2, N3, N4, N5, N6, N17) để đo dung lượng overhead của N8  
 **Mục tiêu:** Cache behavior, service orchestration, endpoint routing, feedback loop  
 
@@ -22,10 +22,10 @@ Bài bench này mock toàn bộ module bên dưới để loại bỏ noise từ
 
 | Giai đoạn | Latency (ms) | DB fetch trước | DB fetch sau | Bản ghi | Trạng thái |
 |-----------|:------------:|:--------------:|:------------:|:-------:|:---------:|
-| cold_fetch | 8 | 0 | 1 | 3 | PASS |
+| cold_fetch | 1 | 0 | 1 | 3 | PASS |
 | warm_ram | 0 | 1 | 1 | 3 | PASS |
-| warm_disk | 3 | 1 | 1 | 3 | PASS |
-| force_refresh | 4 | 1 | 2 | 3 | PASS |
+| warm_disk | 6 | 1 | 1 | 3 | PASS |
+| force_refresh | 1 | 1 | 2 | 3 | PASS |
 
 - Cache file tạo thành công: **True**
 - Số file ảnh cache tạo được: **3**
@@ -37,14 +37,14 @@ Bài bench này mock toàn bộ module bên dưới để loại bỏ noise từ
 
 | Test | Route | Code | Latency (ms) | Status | Module deltas |
 |------|-------|:----:|:------------:|:------:|---------------|
-| health | `GET /health` | 200 | 7 | PASS | `{'db_fetches': 0, 'fingerprint_calls': 0, 'embed_calls': 0, 'embed_batch_calls': 0, 'n2_calls': 0, 'rank_location_calls': 0, 'n5_calls': 0, 'rank_activity_calls': 0, 'feedback_calls': 0}` |
-| fingerprint | `GET /cache/fingerprint` | 200 | 1 | PASS | `{'db_fetches': 0, 'fingerprint_calls': 1, 'embed_calls': 0, 'embed_batch_calls': 0, 'n2_calls': 0, 'rank_location_calls': 0, 'n5_calls': 0, 'rank_activity_calls': 0, 'feedback_calls': 0}` |
-| recommend_cold | `POST /recommend` | 200 | 17 | PASS | `{'db_fetches': 1, 'fingerprint_calls': 1, 'embed_calls': 1, 'embed_batch_calls': 0, 'n2_calls': 0, 'rank_location_calls': 1, 'n5_calls': 0, 'rank_activity_calls': 0, 'feedback_calls': 0}` |
-| recommend_warm | `POST /recommend` | 200 | 6 | PASS | `{'db_fetches': 0, 'fingerprint_calls': 1, 'embed_calls': 1, 'embed_batch_calls': 0, 'n2_calls': 0, 'rank_location_calls': 1, 'n5_calls': 0, 'rank_activity_calls': 0, 'feedback_calls': 0}` |
-| activities | `POST /activities` | 200 | 4 | PASS | `{'db_fetches': 0, 'fingerprint_calls': 0, 'embed_calls': 0, 'embed_batch_calls': 1, 'n2_calls': 0, 'rank_location_calls': 0, 'n5_calls': 1, 'rank_activity_calls': 1, 'feedback_calls': 0}` |
-| feedback_recommend | `POST /feedback/recommend` | 200 | 3 | PASS | `{'db_fetches': 0, 'fingerprint_calls': 1, 'embed_calls': 1, 'embed_batch_calls': 0, 'n2_calls': 0, 'rank_location_calls': 1, 'n5_calls': 0, 'rank_activity_calls': 0, 'feedback_calls': 1}` |
-| feedback_activities | `POST /feedback/activities` | 200 | 2 | PASS | `{'db_fetches': 0, 'fingerprint_calls': 0, 'embed_calls': 0, 'embed_batch_calls': 1, 'n2_calls': 0, 'rank_location_calls': 0, 'n5_calls': 1, 'rank_activity_calls': 1, 'feedback_calls': 1}` |
-| cache_reset | `POST /cache/reset` | 200 | 7 | PASS | `{'db_fetches': 1, 'fingerprint_calls': 1, 'embed_calls': 0, 'embed_batch_calls': 0, 'n2_calls': 0, 'rank_location_calls': 0, 'n5_calls': 0, 'rank_activity_calls': 0, 'feedback_calls': 0}` |
+| health | `GET /health` | 200 | 2 | PASS | `{'db_fetches': 0, 'fingerprint_calls': 0, 'embed_calls': 0, 'embed_batch_calls': 0, 'n2_calls': 0, 'rank_location_calls': 0, 'n5_calls': 0, 'rank_activity_calls': 0, 'feedback_calls': 0}` |
+| fingerprint | `GET /cache/fingerprint` | 200 | 0 | PASS | `{'db_fetches': 0, 'fingerprint_calls': 1, 'embed_calls': 0, 'embed_batch_calls': 0, 'n2_calls': 0, 'rank_location_calls': 0, 'n5_calls': 0, 'rank_activity_calls': 0, 'feedback_calls': 0}` |
+| recommend_cold | `POST /recommend` | 200 | 19 | PASS | `{'db_fetches': 1, 'fingerprint_calls': 1, 'embed_calls': 1, 'embed_batch_calls': 0, 'n2_calls': 0, 'rank_location_calls': 1, 'n5_calls': 0, 'rank_activity_calls': 0, 'feedback_calls': 0}` |
+| recommend_warm | `POST /recommend` | 200 | 1 | PASS | `{'db_fetches': 0, 'fingerprint_calls': 1, 'embed_calls': 1, 'embed_batch_calls': 0, 'n2_calls': 0, 'rank_location_calls': 1, 'n5_calls': 0, 'rank_activity_calls': 0, 'feedback_calls': 0}` |
+| activities | `POST /activities` | 200 | 1 | PASS | `{'db_fetches': 0, 'fingerprint_calls': 0, 'embed_calls': 1, 'embed_batch_calls': 1, 'n2_calls': 0, 'rank_location_calls': 0, 'n5_calls': 1, 'rank_activity_calls': 1, 'feedback_calls': 0}` |
+| feedback_recommend | `POST /feedback/recommend` | 200 | 0 | PASS | `{'db_fetches': 0, 'fingerprint_calls': 1, 'embed_calls': 1, 'embed_batch_calls': 0, 'n2_calls': 0, 'rank_location_calls': 1, 'n5_calls': 0, 'rank_activity_calls': 0, 'feedback_calls': 1}` |
+| feedback_activities | `POST /feedback/activities` | 200 | 0 | PASS | `{'db_fetches': 0, 'fingerprint_calls': 0, 'embed_calls': 1, 'embed_batch_calls': 1, 'n2_calls': 0, 'rank_location_calls': 0, 'n5_calls': 1, 'rank_activity_calls': 1, 'feedback_calls': 1}` |
+| cache_reset | `POST /cache/reset` | 200 | 1 | PASS | `{'db_fetches': 1, 'fingerprint_calls': 1, 'embed_calls': 0, 'embed_batch_calls': 0, 'n2_calls': 0, 'rank_location_calls': 0, 'n5_calls': 0, 'rank_activity_calls': 0, 'feedback_calls': 0}` |
 
 **Pass endpoint tests:** 8/8
 

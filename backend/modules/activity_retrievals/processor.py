@@ -299,6 +299,69 @@ def _enforce_source_diversity(
     return primary + overflow[:remaining]
 
 
+# =============================================================================
+# QUALITY + LANGUAGE FILTERS (for DB seed path)
+# =============================================================================
+
+# Unicode blocks that signal "không phải tiếng Việt/Anh latin" — drop để DB
+# không bị noise tiếng Nga/Trung/Nhật/Hàn/Ả-rập từ các nguồn tourist quốc tế.
+# Tiếng Việt có dấu vẫn nằm trong Latin Extended-A/B (< U+0400) nên an toàn.
+_FOREIGN_SCRIPT_RE = re.compile(
+    "["
+    "Ѐ-ӿ"   # Cyrillic
+    "֐-׿"   # Hebrew
+    "؀-ۿ"   # Arabic
+    "一-鿿"   # CJK Unified
+    "぀-ゟ"   # Hiragana
+    "゠-ヿ"   # Katakana
+    "가-힯"   # Hangul
+    "]"
+)
+
+
+def _has_foreign_script(text: str) -> bool:
+    """True nếu chuỗi chứa ít nhất 1 ký tự thuộc script không Latin."""
+    if not text:
+        return False
+    return bool(_FOREIGN_SCRIPT_RE.search(text))
+
+
+def drop_foreign_script(activities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Loại activity có name/description chứa ký tự script ngoài Latin."""
+    out = []
+    dropped = 0
+    for a in activities:
+        md = a.get("metadata", {})
+        if _has_foreign_script(md.get("name") or "") or _has_foreign_script(md.get("description") or ""):
+            dropped += 1
+            continue
+        out.append(a)
+    if dropped:
+        logger.info("Dropped %d activities with foreign script", dropped)
+    return out
+
+
+def filter_by_quality(activities: List[Dict[str, Any]], min_quality: float = 0.3) -> List[Dict[str, Any]]:
+    """Drop activity có _quality < min_quality. Assumes _quality đã được set."""
+    out = [a for a in activities if (a.get("_quality") or 0.0) >= min_quality]
+    if len(out) < len(activities):
+        logger.info("Quality filter (>=%.2f): %d → %d", min_quality, len(activities), len(out))
+    return out
+
+
+def cap_per_source(activities: List[Dict[str, Any]], max_per: int = 30) -> List[Dict[str, Any]]:
+    """Cap số acts per source. Assumes input đã sort theo quality desc."""
+    seen: Dict[str, int] = {}
+    out: List[Dict[str, Any]] = []
+    for a in activities:
+        s = a.get("source", "unknown")
+        if seen.get(s, 0) >= max_per:
+            continue
+        out.append(a)
+        seen[s] = seen.get(s, 0) + 1
+    return out
+
+
 def _enrich_descriptions(
     activities: List[Dict[str, Any]],
     location_name: str,

@@ -291,12 +291,31 @@ def activities_service(body):
     text = body.get("text", "").strip()
     img_desc = body.get("img_desc", "")
     tags = body.get("tags", [])
-    text_k = int(body.get("text_k", 0))
-    tags_k = int(body.get("tags_k", 0))
-    user_vectors = body.get("user_vectors", {})
     provider = body.get("provider")
     location = body.get("location", {})
     top_k_activities = int(body.get("top_k_activities", TOP_K_ACTIVITIES))
+
+    # ── alt_n1 — Build User Vectors ────────────
+    # Because we are using alt_n1 (multilingual-e5-small) for activities,
+    # we must also use alt_n1 to embed the user query to align vector spaces.
+    logger.info("N8 — Embedding user query via alt_n1...")
+    from modules.alt_n1_embedding import embed as alt_embed
+    alt_n1_result = alt_embed({
+        "text": text,
+        "tags": tags,
+        "img_desc": img_desc
+    }, is_query=True)
+
+    text_k = alt_n1_result.get("text_k", 0)
+    tags_k = alt_n1_result.get("tags_k", 0)
+    alt_vectors = alt_n1_result.get("vectors", {})
+
+    user_vectors = {
+        "text":     _safe_vec(alt_vectors.get("text")),
+        "aug_text": _safe_vec(alt_vectors.get("aug_text")),
+        "aug_tags": _safe_vec(alt_vectors.get("aug_tags")),
+        "img_desc": _safe_vec(alt_vectors.get("img_desc")),
+    }
 
     # ── N5 — Generate Activities ───────────────
     n5_input = {
@@ -311,7 +330,7 @@ def activities_service(body):
     n5_metadata = n5_result.get("metadata", {})
     per_loc_meta = n5_metadata.get("per_location", [])
 
-    # ── N1 — Embed Generated Activities ────────
+    # ── alt_n1 — Embed Generated Activities ────
     # Map N5 activities to N1 contract (text, tags, img_desc)
     # We use 'name' as 'text' and 'description' as 'img_desc' for N1 preprocessing
     n1_batch_input = []
@@ -323,13 +342,13 @@ def activities_service(body):
             "img_desc": meta.get("description", "")
         })
 
-    logger.info(f"N8 — Embedding {len(activities)} activities via N1...")
-    from modules.n1_embedding import embed_batch
-    n1_results = embed_batch(n1_batch_input)
+    logger.info(f"N8 — Embedding {len(activities)} activities via alt_n1...")
+    from modules.alt_n1_embedding import embed_batch as alt_embed_batch
+    alt_n1_results = alt_embed_batch(n1_batch_input, is_query=False)
     
     # Merge vectors back into activities for N6
     for i, act in enumerate(activities):
-        act["vectors"] = n1_results[i].get("vectors")
+        act["vectors"] = alt_n1_results[i].get("vectors")
 
     # ── N6 — Rank Activities ───────────────────
     n6_input = {
@@ -487,116 +506,133 @@ def _merge_v2_n5(
 
 def activities_v2_service(body):
     """
-    Pipeline v2: N9-N14 retrieval + dedup + filter + LLM enrich, có fallback
-    sang N5 LLM gen khi output không đủ tốt (sparse map data hoặc filter quá hẹp).
+    Pipeline v2 (DB-backed): đọc activities đã seed sẵn ở N9-N14 từ Postgres,
+    embed user_input qua N1 → rank qua N6 (cosine + 3 trục attribute).
+    Fallback N5 LLM nếu DB sparse (chưa seed hoặc seed thất bại).
+
+    Khác v2 cũ: KHÔNG fetch+embed runtime. Acts + vectors đã có sẵn ở DB sau
+    khi chạy seed_activities.py.
     """
     import time
-    from modules.activity_retrievals import process_activities
+    from n3_database.db_manager import get_activities_for_location
 
     t0 = time.time()
+    text     = body.get("text", "").strip()
+    img_desc = body.get("img_desc", "")
+    tags     = body.get("tags", [])
+    text_k   = int(body.get("text_k", 0))
+    tags_k   = int(body.get("tags_k", 0))
+    user_vectors = body.get("user_vectors", {}) or {}
     location = body.get("location", {})
-    top_k = int(body.get("top_k_activities", TOP_K_ACTIVITIES))
+    top_k    = int(body.get("top_k_activities", TOP_K_ACTIVITIES))
 
     loc_id   = location.get("location_id", "")
     loc_meta = location.get("metadata", {}) or {}
-    loc_geo  = location.get("geo", {}) or {}
+    loc_name = loc_meta.get("name") or loc_id
 
-    if not loc_id or "lat" not in loc_geo or "lng" not in loc_geo:
+    if not loc_id:
         return {
             "status": "error",
-            "error":  "location must have location_id + geo{lat,lng}",
+            "error":  "location must have location_id",
             "activities": [],
         }
-
-    processor_input = {
-        "location_id": loc_id,
-        "lat":         float(loc_geo["lat"]),
-        "lng":         float(loc_geo["lng"]),
-        "name":        loc_meta.get("name") or loc_id,
-    }
 
     pref_raw = body.get("preferred_types") or []
     preferred_types = [str(t).lower().strip() for t in pref_raw if isinstance(t, str) and t.strip()]
 
-    proc_result = process_activities(
-        processor_input,
-        radius=int(body.get("radius_m", 20000)),
-        top_k=top_k,
-        enrich_descriptions=bool(body.get("enrich_descriptions", True)),
-        persist=True,
-        preferred_types=preferred_types or None,
-    )
-    proc_activities = proc_result["activities"]
+    # ── 1. Đọc activities từ DB (UNION 6 bảng cho 1 loc) ────────────────────
+    db_acts = get_activities_for_location(loc_id, include_vectors=True)
+    logger.info("activities_v2: loc=%s db_acts=%d", loc_id, len(db_acts))
 
-    # ── Fallback N5 khi v2 không đủ chất lượng ──────────────────────────────
-    # Trigger nếu: (a) có preferred_types và <50% output khớp preferred, hoặc
-    # (b) tổng output < 3 (map data quá sparse).
+    # ── 2. Fallback N5 khi DB sparse (chưa seed hoặc seed lỗi) ─────────────
     fallback_used = False
     fallback_n5_count = 0
-    if preferred_types:
-        prefs_set = set(preferred_types)
-        n_matching = sum(
-            1 for a in proc_activities
-            if a.get("metadata", {}).get("activity_type") in prefs_set
-        )
-        min_matching = max(2, top_k // 2)
-        need_fallback = n_matching < min_matching
-    else:
-        need_fallback = len(proc_activities) < 3
-
-    if need_fallback:
-        logger.info(
-            "v2 output insufficient for loc=%s prefs=%s (n_acts=%d matching=%s) — triggering N5 fallback",
-            loc_id, preferred_types, len(proc_activities),
-            "n/a" if not preferred_types else sum(
-                1 for a in proc_activities
-                if a.get("metadata", {}).get("activity_type") in set(preferred_types)
-            ),
-        )
+    if len(db_acts) < 3:
+        logger.info("v2 DB sparse (n_acts=%d) loc=%s — triggering N5 fallback", len(db_acts), loc_id)
         n5_acts = _n5_fallback_generate(location, preferred_types, top_k)
-        # Reuse processor's anchor-dup filter trên N5 acts để loại bỏ "Khám phá <anchor>"
-        # do LLM thường sinh ra entry trùng anchor.
         from modules.activity_retrievals.processor import _drop_anchor_duplicates
-        anchor_name = loc_meta.get("name") or loc_id
-        n5_acts = _drop_anchor_duplicates(n5_acts, anchor_name)
+        n5_acts = _drop_anchor_duplicates(n5_acts, loc_name)
         if n5_acts:
-            proc_activities = _merge_v2_n5(proc_activities, n5_acts, preferred_types, top_k)
+            # N5 sinh act không có vectors → embed batch ngay
+            n1_inputs = []
+            for a in n5_acts:
+                md = a.get("metadata", {})
+                n1_inputs.append({
+                    "text":     (md.get("name") or "") + ". " + (md.get("description") or ""),
+                    "tags":     md.get("tags") or [],
+                    "img_desc": "",
+                })
+            n1_results = embed_batch(n1_inputs)
+            for a, r in zip(n5_acts, n1_results):
+                v = r.get("vectors") or {}
+                a["vectors"] = {"text": v.get("text"), "tag": v.get("aug_tags")}
+            db_acts = db_acts + n5_acts
             fallback_used = True
             fallback_n5_count = len(n5_acts)
 
-    # ── Map processor schema → frontend ActivityResult shape ──────────────
-    n = len(proc_activities)
+    if not db_acts:
+        elapsed_ms = int((time.time() - t0) * 1000)
+        return {
+            "status":      "success",
+            "location_id": loc_id,
+            "activities":  [],
+            "meta": {
+                "provider_used": "n9-n14_db",
+                "model_used":    "multi-source-cached",
+                "latency_ms":    elapsed_ms,
+                "fallback_used": fallback_used,
+                "db_acts_count": 0,
+                "warning":       "Location chưa được seed — chạy seed_activities.py",
+            },
+            "ranking_meta": {},
+        }
+
+    # ── 3. Embed user_input nếu chưa có user_vectors ────────────────────────
+    if not user_vectors and (text or tags or img_desc):
+        user_emb = embed({"text": text, "tags": tags, "img_desc": img_desc})
+        user_vectors = user_emb.get("vectors") or {}
+
+    # ── 4. N6 rank (cosine + attribute) ─────────────────────────────────────
+    n6_input = {
+        "text_k":       text_k,
+        "tags_k":       tags_k,
+        "user_input":   {"text": text, "tags": tags, "img_desc": img_desc},
+        "user_vectors": user_vectors,
+        "activities":   db_acts,
+        "top_k":        top_k,
+    }
+    n6_result = rank_activities(n6_input)
+    ranked = n6_result.get("activities", []) or []
+
+    # ── 5. Map về FE ActivityResult shape ──────────────────────────────────
+    act_map = {a["activity_id"]: a for a in db_acts}
     enriched = []
-    for i, a in enumerate(proc_activities):
-        md   = a.get("metadata", {})
-        sg   = a.get("signals", {})
-        plc  = a.get("place", {})
+    for ra in ranked:
+        aid  = ra.get("activity_id")
+        orig = act_map.get(aid, {})
+        md   = orig.get("metadata", {}) or {}
+        plc  = orig.get("place", {}) or {}
+        sg   = orig.get("signals", {}) or {}
         dist = plc.get("distance_from_anchor_m")
-        # Score: rank-based 1.0 → 0.4 (top first, descending)
-        score = round(1.0 - 0.6 * (i / max(1, n - 1)) if n > 1 else 1.0, 4)
-        reason = md.get("description") or f"Địa điểm {md.get('activity_type','')} từ {a.get('source','map')}"
-        if dist is not None:
-            reason = f"Cách {int(dist)}m. {reason}"
 
         enriched.append({
-            "activity_id": a.get("activity_id"),
-            "location_id": loc_id,
-            "score":       score,
-            "reason":      reason,
+            "activity_id": aid,
+            "location_id": orig.get("location_id") or loc_id,
+            "score":       ra.get("score", 0),
+            "reason":      ra.get("reason", ""),
             "metadata": {
-                "name":            md.get("name"),
-                "description":     md.get("description"),
-                "activity_type":   md.get("activity_type"),
-                "indoor_outdoor":  md.get("indoor_outdoor"),
-                "tags":            md.get("categories_raw", []),
-                # Processor-only fields surfaced for UI/map:
-                "source":          a.get("source"),
-                "coordinates":     plc.get("coordinates"),
-                "distance_m":      dist,
-                "rating":          sg.get("rating"),
-                "image_url":       sg.get("image_url"),
-                "website":         sg.get("website"),
-                "opening_hours":   sg.get("opening_hours"),
+                "name":           md.get("name"),
+                "description":    md.get("description"),
+                "activity_type":  md.get("activity_type"),
+                "indoor_outdoor": md.get("indoor_outdoor"),
+                "tags":           md.get("categories_raw", []) or md.get("tags", []),
+                "source":         orig.get("source"),
+                "coordinates":    plc.get("coordinates"),
+                "distance_m":     dist,
+                "rating":         sg.get("rating"),
+                "image_url":      sg.get("image_url"),
+                "website":        sg.get("website"),
+                "opening_hours":  sg.get("opening_hours"),
             },
         })
 
@@ -606,14 +642,14 @@ def activities_v2_service(body):
         "location_id": loc_id,
         "activities":  enriched,
         "meta": {
-            "provider_used":     "n9-n14_processor" + ("+n5_llm_fallback" if fallback_used else ""),
-            "model_used":        "multi-source-map-retrieval" + (" + qwen/llama" if fallback_used else ""),
+            "provider_used":     "n9-n14_db" + ("+n5_fallback" if fallback_used else ""),
+            "model_used":        "bge-m3+n6-cosine" + (" + qwen/llama" if fallback_used else ""),
             "latency_ms":        elapsed_ms,
             "fallback_used":     fallback_used,
             "fallback_n5_count": fallback_n5_count,
-            **proc_result["stats"],
+            "db_acts_count":     len(db_acts),
         },
-        "ranking_meta": {},
+        "ranking_meta": n6_result.get("metadata", {}),
     }
 
 
