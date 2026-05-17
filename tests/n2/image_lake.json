@@ -1,11 +1,11 @@
 {
-  "img_desc": "Hồ núi cao giữa khung cảnh thiên nhiên hùng vĩ, nước trong vắt, sâu thẳm. Các ngọn núi cao vút bao quanh tạo nên bức tranh tuyệt mỹ về sức sống của thiên nhiên. Màu xanh của nước và cây cối tạo cảm giác yên bình, thư thái.",
+  "img_desc": "Hồ nước màu ngọc bích nằm giữa những ngọn núi hùng vĩ, được bao quanh bởi rừng thông xanh biếc và các mỏm núi tuyết. Không khí trong lành, yên bình, tạo nên một bức tranh thiên nhiên tuyệt đẹp, khiến du khách không thể rời mắt.",
   "metadata": {
     "model": "meta-llama/llama-4-scout-17b-16e-instruct",
     "usage": {
       "prompt_tokens": 2490,
-      "completion_tokens": 62,
-      "total_tokens": 2552
+      "completion_tokens": 59,
+      "total_tokens": 2549
     }
   }
 }

@@ -66,7 +66,7 @@ def recommend():
     body, err = _get_json()
     if err: return err
 
-    if not body.get("text") and not body.get("tags") and not body.get("image") and not body.get("img_desc"):
+    if not body.get("text") and not body.get("tags") and not body.get("image") and not body.get("images") and not body.get("img_desc"):
         return _err("Provide text, tags, or image")
 
     try:
