@@ -106,11 +106,10 @@ export function ActivityCard({ activity, index }: { activity: ActivityResult; in
           ) : null}
         </div>
 
-        {activity.reason ? (
+        {desc ? (
+          <p className="text-muted-foreground mt-2 text-sm leading-relaxed">{desc}</p>
+        ) : activity.reason ? (
           <p className="text-muted-foreground mt-2 text-sm leading-relaxed">💡 {activity.reason}</p>
-        ) : null}
-        {desc && desc !== activity.reason ? (
-          <p className="text-muted-foreground/80 mt-1 text-sm leading-relaxed">{desc}</p>
         ) : null}
 
         {meta.opening_hours ? (
