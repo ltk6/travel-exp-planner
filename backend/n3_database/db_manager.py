@@ -195,3 +195,75 @@ def get_all_locations(include_images: bool = True) -> Dict[str, Any]:
             "data": [],
             "metadata": {"source": "postgresql", "latency_ms": 0}
         }
+
+# ──────────────── USER PROFILE FEATURES ────────────────
+def init_profile_db():
+    """Khởi tạo bảng lưu trữ hồ sơ người dùng nếu chưa tồn tại"""
+    conn = _get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS user_profiles (
+            user_id VARCHAR(255) PRIMARY KEY,
+            username VARCHAR(255),
+            full_name VARCHAR(255),
+            preferences JSONB, -- Lưu sở thích du lịch (Ví dụ: thích đi biển, đi núi...)
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+    conn.commit()
+    cur.close()
+    conn.close()
+    logger.info("Khởi tạo bảng user_profiles thành công!")
+
+def save_user_profile(profile_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Lưu hoặc cập nhật thông tin hồ sơ người dùng"""
+    try:
+        conn = _get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO user_profiles (user_id, username, full_name, preferences, updated_at)
+            VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)
+            ON CONFLICT (user_id)
+            DO UPDATE SET
+                username = EXCLUDED.username,
+                full_name = EXCLUDED.full_name,
+                preferences = EXCLUDED.preferences,
+                updated_at = CURRENT_TIMESTAMP;
+        """, (
+            profile_data.get("user_id"),
+            profile_data.get("username"),
+            profile_data.get("full_name"),
+            json.dumps(profile_data.get("preferences", {}))
+        ))
+        conn.commit()
+        cur.close()
+        conn.close()
+        return {"status": "success", "message": "Đã lưu hồ sơ thành công!"}
+    except Exception as e:
+        logger.error(f"Lỗi lưu User Profile: {e}")
+        return {"status": "error", "message": str(e)}
+
+def get_user_profile(user_id: str) -> Dict[str, Any]:
+    """Tải thông tin hồ sơ người dùng dựa vào user_id"""
+    try:
+        conn = _get_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT user_id, username, full_name, preferences FROM user_profiles WHERE user_id = %s;", (user_id,))
+        row = cur.fetchone()
+        cur.close()
+        conn.close()
+        
+        if row:
+            return {
+                "status": "success",
+                "data": {
+                    "user_id": row["user_id"],
+                    "username": row["username"],
+                    "full_name": row["full_name"],
+                    "preferences": row["preferences"] if isinstance(row["preferences"], dict) else json.loads(row["preferences"] or "{}")
+                }
+            }
+        return {"status": "error", "message": "Không tìm thấy người dùng"}
+    except Exception as e:
+        logger.error(f"Lỗi tải User Profile: {e}")
+        return {"status": "error", "message": str(e)}

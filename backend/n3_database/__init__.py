@@ -8,6 +8,9 @@ from .db_manager import (
     get_db_fingerprint,
     init_db,
     save_location,
+    init_profile_db,       # Thêm dòng này
+    save_user_profile,     # Thêm dòng này
+    get_user_profile,       # Thêm dòng này
 )
 
 __all__ = [
@@ -16,4 +19,7 @@ __all__ = [
     "get_db_fingerprint",
     "init_db",
     "save_location",
+    "init_profile_db",     # Thêm dòng này
+    "save_user_profile",   # Thêm dòng này
+    "get_user_profile",    # Thêm dòng này
 ]
