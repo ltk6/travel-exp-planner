@@ -1,0 +1,200 @@
+{
+  "metadata": {
+    "module": "N4 — Location Ranking",
+    "date": "2026-05-15",
+    "top_k": 5
+  },
+  "results": [
+    {
+      "name": "beach_user_ranks_beach_first",
+      "desc": "User mê biển → Beach phải đứng #1",
+      "latency_ms": 3,
+      "status": "PASS",
+      "checks": {
+        "top1_correct": true,
+        "order_correct": true
+      },
+      "top1_id": "loc_beach",
+      "top1_score": 1.0,
+      "weights": {
+        "text": 0.5,
+        "aug_text": 0.2,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
+      "result_ids": [
+        "loc_beach",
+        "loc_mountain",
+        "loc_city"
+      ],
+      "scores": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "city_user_ranks_city_first",
+      "desc": "User thích đô thị → City phải đứng #1",
+      "latency_ms": 2,
+      "status": "PASS",
+      "checks": {
+        "top1_correct": true,
+        "order_correct": true
+      },
+      "top1_id": "loc_city",
+      "top1_score": 1.0,
+      "weights": {
+        "text": 0.1,
+        "aug_text": 0.6,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
+      "result_ids": [
+        "loc_city",
+        "loc_beach",
+        "loc_mountain"
+      ],
+      "scores": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "mixed_user_prefers_beach",
+      "desc": "User mix beach+mountain (70/30) → Beach phải đứng #1",
+      "latency_ms": 7,
+      "status": "PASS",
+      "checks": {
+        "top1_correct": true,
+        "order_correct": true
+      },
+      "top1_id": "loc_beach",
+      "top1_score": 1.0,
+      "weights": {
+        "text": 0.5,
+        "aug_text": 0.2,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
+      "result_ids": [
+        "loc_beach",
+        "loc_mountain",
+        "loc_city"
+      ],
+      "scores": [
+        1.0,
+        0.4286,
+        0.0
+      ]
+    },
+    {
+      "name": "null_vectors_graceful",
+      "desc": "Partial null vectors không crash, vẫn trả về kết quả",
+      "latency_ms": 0,
+      "status": "PASS",
+      "checks": {
+        "top1_correct": true
+      },
+      "top1_id": "loc_b",
+      "top1_score": 1.0,
+      "weights": {
+        "text": 0.1,
+        "aug_text": 0.6,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
+      "result_ids": [
+        "loc_b",
+        "loc_a"
+      ],
+      "scores": [
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "name": "top_k_truncation",
+      "desc": "top_k=2 với 5 địa điểm → chỉ trả về 2",
+      "latency_ms": 8,
+      "status": "PASS",
+      "checks": {
+        "count_correct": true
+      },
+      "top1_id": "loc_0",
+      "top1_score": 1.0,
+      "weights": {
+        "text": 0.5,
+        "aug_text": 0.2,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
+      "result_ids": [
+        "loc_0",
+        "loc_1"
+      ],
+      "scores": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "normalization_top1_is_1",
+      "desc": "Sau normalize, score của #1 phải là 1.0",
+      "latency_ms": 2,
+      "status": "PASS",
+      "checks": {
+        "top1_score_is_1": true
+      },
+      "top1_id": "loc_beach",
+      "top1_score": 1.0,
+      "weights": {
+        "text": 0.5,
+        "aug_text": 0.2,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
+      "result_ids": [
+        "loc_beach",
+        "loc_mountain"
+      ],
+      "scores": [
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "name": "performance_28_locations",
+      "desc": "28 địa điểm (realistic DB size) — kiểm tra tốc độ",
+      "latency_ms": 32,
+      "status": "PASS",
+      "checks": {
+        "count_correct": true,
+        "perf_ok": true
+      },
+      "top1_id": "loc_000",
+      "top1_score": 1.0,
+      "weights": {
+        "text": 0.5,
+        "aug_text": 0.2,
+        "aug_tags": 0.3,
+        "img_desc": 0.2
+      },
+      "result_ids": [
+        "loc_000",
+        "loc_001",
+        "loc_002",
+        "loc_003",
+        "loc_004"
+      ],
+      "scores": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ]
+}

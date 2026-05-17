@@ -1,0 +1,12 @@
+{
+  "location_id": "loc_new_place",
+  "metadata": {
+    "name": "Ten dia diem moi",
+    "description": "Mo ta chi tiet, giau ngu nghia de N1 tao embedding tot.",
+    "tags": ["beach", "picturesque", "relax"]
+  },
+  "geo": {
+    "lat": 0.0,
+    "lng": 0.0
+  }
+}

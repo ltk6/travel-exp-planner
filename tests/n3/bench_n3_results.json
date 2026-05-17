@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "date": "2026-05-15"
+  },
+  "connectivity": {
+    "status": "PASS",
+    "latency_ms": 247,
+    "error": null
+  },
+  "fingerprint": {
+    "status": "PASS",
+    "latency_ms": 250,
+    "fingerprint": "25:2026-05-14 11:08:27.189066"
+  },
+  "save_tests": [
+    {
+      "name": "loc_beach",
+      "label": "Bãi Sao Phú Quốc",
+      "location_id": "bench_loc_001",
+      "latency_ms": 341,
+      "status": "PASS"
+    }
+  ],
+  "get_all_full": {
+    "latency_ms": 3274,
+    "status": "PASS",
+    "total": 26
+  },
+  "get_all_light": {
+    "latency_ms": 511,
+    "status": "PASS",
+    "total": 26
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "module": "N2 — Image Understanding",
+    "date": "2026-05-15",
+    "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+    "image_tests": [
+      "beach",
+      "city",
+      "lake"
+    ]
+  },
+  "results": [
+    {
+      "name": "beach",
+      "label": "Bãi Biển Nhiệt Đới",
+      "scene_type": "coastal / nature",
+      "file_size_kb": 1332,
+      "status": "PASS",
+      "latency_ms": 1943,
+      "word_count": 51,
+      "paragraphs": 1,
+      "kw_hits": 2,
+      "kw_total": 5,
+      "quality": "PASS",
+      "prompt_tokens": 2055,
+      "completion_tokens": 63,
+      "total_tokens": 2118,
+      "error": "",
+      "desc_preview": "Bãi biển tuyệt đẹp với những cây dừa xanh tươi nghiêng mình bên bờ cát trắng mịn, nước biển trong xanh dưới bầu trời rạng rỡ. Không khí trong lành, yên bình tạo nên một bức tranh thiên nhiên hoàn hảo, khiến lòng ai cũng cảm thấy thư thái, dễ chịu.",
+      "full_desc": "Bãi biển tuyệt đẹp với những cây dừa xanh tươi nghiêng mình bên bờ cát trắng mịn, nước biển trong xanh dưới bầu trời rạng rỡ. Không khí trong lành, yên bình tạo nên một bức tranh thiên nhiên hoàn hảo, khiến lòng ai cũng cảm thấy thư thái, dễ chịu."
+    },
+    {
+      "name": "city",
+      "label": "Thành Phố Đô Thị",
+      "scene_type": "urban / architecture",
+      "file_size_kb": 1169,
+      "status": "PASS",
+      "latency_ms": 1288,
+      "word_count": 51,
+      "paragraphs": 1,
+      "kw_hits": 2,
+      "kw_total": 5,
+      "quality": "PASS",
+      "prompt_tokens": 2055,
+      "completion_tokens": 69,
+      "total_tokens": 2124,
+      "error": "",
+      "desc_preview": "Cảm giác sảng khoái của hoàng hôn buổi chiều đông, thành phố nhộn nhịp bừng sáng. Những tòa nhà chọc trời sừng sững giữa khung cảnh đường xá rộng lớn, sặc sỡ ánh đèn nền hòa quyện tạo nên bức tranh thành thị lung linh, hiện đại và đầy sức sống.",
+      "full_desc": "Cảm giác sảng khoái của hoàng hôn buổi chiều đông, thành phố nhộn nhịp bừng sáng. Những tòa nhà chọc trời sừng sững giữa khung cảnh đường xá rộng lớn, sặc sỡ ánh đèn nền hòa quyện tạo nên bức tranh thành thị lung linh, hiện đại và đầy sức sống."
+    },
+    {
+      "name": "lake",
+      "label": "Hồ Núi Thiên Nhiên",
+      "scene_type": "mountain / lake",
+      "file_size_kb": 2411,
+      "status": "PASS",
+      "latency_ms": 1850,
+      "word_count": 50,
+      "paragraphs": 1,
+      "kw_hits": 4,
+      "kw_total": 5,
+      "quality": "PASS",
+      "prompt_tokens": 2490,
+      "completion_tokens": 66,
+      "total_tokens": 2556,
+      "error": "",
+      "desc_preview": "Hồ núi cao giữa khung cảnh thiên nhiên hùng vĩ, nước trong vắt, xanh ngắt. Những dãy núi nhấp nhô, phủ đầy cây xanh và một ít tuyết trắng xen kẽ tạo nên bức tranh tuyệt mỹ. Không khí trong lành, yên bình, khiến du khách không thể rời mắt.",
+      "full_desc": "Hồ núi cao giữa khung cảnh thiên nhiên hùng vĩ, nước trong vắt, xanh ngắt. Những dãy núi nhấp nhô, phủ đầy cây xanh và một ít tuyết trắng xen kẽ tạo nên bức tranh tuyệt mỹ. Không khí trong lành, yên bình, khiến du khách không thể rời mắt."
+    }
+  ]
+}

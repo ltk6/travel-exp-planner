@@ -1,72 +1,129 @@
-import google.generativeai as genai
+import json
+import base64
+import urllib.request
 from PIL import Image
 import io
-from config.settings import GEMINI_API_KEY
-
-genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel('gemini-2.5-flash')
+from config import GROQ_API_KEY, GROQ_VISION_MODEL, GROQ_API_URL, USER_AGENT, setup_logging
+logger = setup_logging("N2")
 
 def process_image(data: dict) -> dict:
     """
     Hàm xử lý ảnh duy nhất (Public API) của Module N2
+    Sử dụng Groq Vision (Llama 3.2 Vision)
     Input: {"image": bytes}
     Output: {"img_desc": "..."}
     """
     image_bytes = data.get("image")
     if not image_bytes:
+        logger.warning("No image provided to N2")
         return {
             "img_desc": "",
             "error": "No image provided"
         }
 
 
+    logger.info(f"Processing image ({len(image_bytes)} bytes) via Groq Vision...")
 
     try:
-        # Xử lý ảnh
         img = Image.open(io.BytesIO(image_bytes))
         if img.mode != 'RGB':
             img = img.convert('RGB')
 
+        # Optimize for Vision API: Downscale if too large and compress
+        img.thumbnail((1560, 1560)) 
+        
+        buffer = io.BytesIO()
+        img.save(buffer, format='JPEG', quality=85, optimize=True)
+        img_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        
+        logger.info(f"Image optimized: {len(buffer.getvalue())} bytes (original: {len(image_bytes)})")
+
         prompt = """
-        [Context]: Bạn là một chuyên gia phân tích dữ liệu du lịch chuyên nghiệp.
-        [Task]: Hãy phân tích hình ảnh được cung cấp để trích xuất các đặc trưng ngữ nghĩa phục vụ cho hệ thống gợi ý điểm đến.
-        
-        [Constraints]: Đoạn mô tả phải tập trung vào 3 yếu tố cốt lõi:
-        1. Loại hình địa điểm (Ví dụ: bãi biển, đền chùa, quán cafe, công viên...).
-        2. Kiến trúc hoặc Cảnh quan (Ví dụ: phong cách hiện đại, cổ kính, rừng nguyên sinh...).
-        3. Không khí mang lại (Ví dụ: yên bình, náo nhiệt, hùng vĩ, ấm cúng...).
+        Bạn là chuyên gia mô tả địa điểm du lịch.
+        Quan sát ảnh và viết MỘT đoạn văn ngắn gọn, súc tích, giàu tính gợi hình bằng Tiếng Việt.
 
-        [Noise Reduction]: 
-        - Tuyệt đối KHÔNG mô tả các chi tiết vụn vặt không liên quan đến du lịch như: biển số xe, màu sắc trang phục của người đi đường, nhãn hiệu đồ dùng cá nhân, hoặc các nhiễu động trong khung hình.
-        - Không có lời dẫn (ví dụ: "Trong ảnh là...", "Tôi thấy...") và không có lời kết.
-
-        [Format Enforcement]: 
-        - Kết quả phải là MỘT ĐOẠN VĂN DUY NHẤT.
-        - Độ dài tối đa từ 2 ĐẾN 3 CÂU.
-        - Ngôn ngữ: Tiếng Việt.
+        YÊU CẦU TUYỆT ĐỐI:
+        - Tối đa 50 từ — KHÔNG được vượt quá.
+        - Nêu rõ: loại địa điểm, đặc điểm nổi bật nhất, cảm xúc/không khí.
+        - Dùng ngôn ngữ biểu cảm, chọn lọc (không liệt kê dài dòng).
+        - KHÔNG dùng lời dẫn 'Trong ảnh có...' hay 'Tôi thấy...'.
+        - KHÔNG mô tả biển số xe, nhãn hiệu, ngày giờ.
+        - Chỉ trả về đoạn văn, không giải thích thêm.
         """
-        
-        result = model.generate_content([prompt, img])
-        
-        # Trả về đúng định dạng dict yêu cầu
-        if not result:
-            return {
-                "img_desc": "",
-                "error": "Empty response from model"
-            }
 
-        if not hasattr(result, "text") or not result.text:
-            return {
-                "img_desc": "",
-                "error": "No text returned (possible safety block or invalid image)"
-            }
-
-        return {
-            "img_desc": result.text.strip()
+        payload = {
+            "model": GROQ_VISION_MODEL,
+            "messages": [{
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": prompt
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{img_base64}"
+                        }
+                    }
+                ]
+            }],
+            "max_tokens": 300,
         }
 
+        req_data = json.dumps(payload).encode("utf-8")
+        req = urllib.request.Request(
+            GROQ_API_URL, data=req_data,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {GROQ_API_KEY}",
+                "User-Agent": USER_AGENT,
+            },
+            method="POST",
+        )
+
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            result = json.loads(resp.read().decode("utf-8"))
+
+        usage = result.get("usage", {})
+        prompt_tokens = usage.get("prompt_tokens", 0)
+        completion_tokens = usage.get("completion_tokens", 0)
+        logger.info(f"N2 usage: {prompt_tokens} prompt tokens, {completion_tokens} completion tokens.")
+
+        choices = result.get("choices", [])
+        if not choices:
+            return {"img_desc": "", "error": "Empty response from model"}
+
+        text = choices[0].get("message", {}).get("content", "")
+        if not text:
+            return {"img_desc": "", "error": "No text returned (possible safety block or invalid image)"}
+
+        metadata = {
+            "model": GROQ_VISION_MODEL,
+            "usage": {
+                "prompt_tokens":     prompt_tokens,
+                "completion_tokens": completion_tokens,
+                "total_tokens":      prompt_tokens + completion_tokens,
+            },
+        }
+
+        return {
+            "img_desc": text.strip(),
+            "metadata": metadata,
+        }
+
+    except urllib.error.HTTPError as e:
+        error_body = e.read().decode("utf-8")
+        logger.error(f"HTTPError in N2 image processing: {e.code} - {error_body}")
+        return {
+            "img_desc": "", 
+            "error": f"HTTPError: {e.code} - {error_body}",
+            "metadata": {"model": GROQ_VISION_MODEL, "usage": {}}
+        }
     except Exception as e:
+        logger.exception(f"Exception in N2 image processing: {e}")
         return {
             "img_desc": "",
-            "error": str(e)
+            "error": str(e),
+            "metadata": {"model": GROQ_VISION_MODEL, "usage": {}}
         }

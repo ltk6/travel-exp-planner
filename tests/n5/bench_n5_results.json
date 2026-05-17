@@ -1,0 +1,355 @@
+{
+  "metadata": {
+    "module": "N5 — Activity Generation",
+    "date": "2026-05-15",
+    "llm_min_valid": 5,
+    "chain": [
+      "groq_70b",
+      "qwen_32b",
+      "groq_8b",
+      "groq_scout"
+    ],
+    "location_tests": [
+      "loc_bai_sao",
+      "loc_fansipan",
+      "loc_hoi_an"
+    ]
+  },
+  "per_model": [
+    {
+      "model_alias": "gpt_120b",
+      "model_name": "openai/gpt-oss-120b",
+      "locations": [
+        {
+          "location": "loc_bai_sao",
+          "latency_ms": 6617,
+          "prompt_tokens": 1572,
+          "completion_tokens": 2889,
+          "total_tokens": 4461,
+          "valid_count": 10,
+          "passed_threshold": true
+        },
+        {
+          "location": "loc_fansipan",
+          "latency_ms": 356,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
+        },
+        {
+          "location": "loc_hoi_an",
+          "latency_ms": 328,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
+        }
+      ],
+      "summary": {
+        "avg_latency_ms": 2433.7,
+        "avg_prompt_tokens": 1572.0,
+        "avg_completion_tokens": 2889.0,
+        "avg_total_tokens": 4461.0,
+        "pass_count": 1,
+        "total_locations": 3,
+        "pass_rate": 0.33
+      }
+    },
+    {
+      "model_alias": "groq_70b",
+      "model_name": "llama-3.3-70b-versatile",
+      "locations": [
+        {
+          "location": "loc_bai_sao",
+          "latency_ms": 3862,
+          "prompt_tokens": 1532,
+          "completion_tokens": 1549,
+          "total_tokens": 3081,
+          "valid_count": 10,
+          "passed_threshold": true
+        },
+        {
+          "location": "loc_fansipan",
+          "latency_ms": 4609,
+          "prompt_tokens": 1529,
+          "completion_tokens": 1594,
+          "total_tokens": 3123,
+          "valid_count": 10,
+          "passed_threshold": true
+        },
+        {
+          "location": "loc_hoi_an",
+          "latency_ms": 4666,
+          "prompt_tokens": 1530,
+          "completion_tokens": 1871,
+          "total_tokens": 3401,
+          "valid_count": 10,
+          "passed_threshold": true
+        }
+      ],
+      "summary": {
+        "avg_latency_ms": 4379.0,
+        "avg_prompt_tokens": 1530.3,
+        "avg_completion_tokens": 1671.3,
+        "avg_total_tokens": 3201.7,
+        "pass_count": 3,
+        "total_locations": 3,
+        "pass_rate": 1.0
+      }
+    },
+    {
+      "model_alias": "qwen_32b",
+      "model_name": "qwen/qwen3-32b",
+      "locations": [
+        {
+          "location": "loc_bai_sao",
+          "latency_ms": 5103,
+          "prompt_tokens": 1495,
+          "completion_tokens": 2115,
+          "total_tokens": 3610,
+          "valid_count": 10,
+          "passed_threshold": true
+        },
+        {
+          "location": "loc_fansipan",
+          "latency_ms": 321,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
+        },
+        {
+          "location": "loc_hoi_an",
+          "latency_ms": 328,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
+        }
+      ],
+      "summary": {
+        "avg_latency_ms": 1917.3,
+        "avg_prompt_tokens": 1495.0,
+        "avg_completion_tokens": 2115.0,
+        "avg_total_tokens": 3610.0,
+        "pass_count": 1,
+        "total_locations": 3,
+        "pass_rate": 0.33
+      }
+    },
+    {
+      "model_alias": "groq_8b",
+      "model_name": "llama-3.1-8b-instant",
+      "locations": [
+        {
+          "location": "loc_bai_sao",
+          "latency_ms": 3186,
+          "prompt_tokens": 1532,
+          "completion_tokens": 1799,
+          "total_tokens": 3331,
+          "valid_count": 10,
+          "passed_threshold": true
+        },
+        {
+          "location": "loc_fansipan",
+          "latency_ms": 360,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
+        },
+        {
+          "location": "loc_hoi_an",
+          "latency_ms": 331,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
+        }
+      ],
+      "summary": {
+        "avg_latency_ms": 1292.3,
+        "avg_prompt_tokens": 1532.0,
+        "avg_completion_tokens": 1799.0,
+        "avg_total_tokens": 3331.0,
+        "pass_count": 1,
+        "total_locations": 3,
+        "pass_rate": 0.33
+      }
+    },
+    {
+      "model_alias": "gpt_20b",
+      "model_name": "openai/gpt-oss-20b",
+      "locations": [
+        {
+          "location": "loc_bai_sao",
+          "latency_ms": 4684,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
+        },
+        {
+          "location": "loc_fansipan",
+          "latency_ms": 331,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
+        },
+        {
+          "location": "loc_hoi_an",
+          "latency_ms": 371,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
+        }
+      ],
+      "summary": {
+        "avg_latency_ms": 1795.3,
+        "avg_prompt_tokens": null,
+        "avg_completion_tokens": null,
+        "avg_total_tokens": null,
+        "pass_count": 0,
+        "total_locations": 3,
+        "pass_rate": 0.0
+      }
+    },
+    {
+      "model_alias": "gpt_safeguard",
+      "model_name": "openai/gpt-oss-safeguard-20b",
+      "locations": [
+        {
+          "location": "loc_bai_sao",
+          "latency_ms": 4670,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
+        },
+        {
+          "location": "loc_fansipan",
+          "latency_ms": 339,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
+        },
+        {
+          "location": "loc_hoi_an",
+          "latency_ms": 294,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null,
+          "valid_count": 0,
+          "passed_threshold": false
+        }
+      ],
+      "summary": {
+        "avg_latency_ms": 1767.7,
+        "avg_prompt_tokens": null,
+        "avg_completion_tokens": null,
+        "avg_total_tokens": null,
+        "pass_count": 0,
+        "total_locations": 3,
+        "pass_rate": 0.0
+      }
+    },
+    {
+      "model_alias": "groq_scout",
+      "model_name": "meta-llama/llama-4-scout-17b-16e-instruct",
+      "locations": [
+        {
+          "location": "loc_bai_sao",
+          "latency_ms": 3693,
+          "prompt_tokens": 1463,
+          "completion_tokens": 1421,
+          "total_tokens": 2884,
+          "valid_count": 10,
+          "passed_threshold": true
+        },
+        {
+          "location": "loc_fansipan",
+          "latency_ms": 4461,
+          "prompt_tokens": 1460,
+          "completion_tokens": 1752,
+          "total_tokens": 3212,
+          "valid_count": 10,
+          "passed_threshold": true
+        },
+        {
+          "location": "loc_hoi_an",
+          "latency_ms": 3550,
+          "prompt_tokens": 1462,
+          "completion_tokens": 1322,
+          "total_tokens": 2784,
+          "valid_count": 10,
+          "passed_threshold": true
+        }
+      ],
+      "summary": {
+        "avg_latency_ms": 3901.3,
+        "avg_prompt_tokens": 1461.7,
+        "avg_completion_tokens": 1498.3,
+        "avg_total_tokens": 2960.0,
+        "pass_count": 3,
+        "total_locations": 3,
+        "pass_rate": 1.0
+      }
+    }
+  ],
+  "end_to_end": {
+    "total_latency_ms": 14977,
+    "total_activities": 30,
+    "activities_per_location": {
+      "loc_015": 10,
+      "loc_001": 10,
+      "loc_007": 10
+    },
+    "per_location_meta": [
+      {
+        "location_id": "loc_015",
+        "provider_used": "groq",
+        "model_used": "llama-3.3-70b-versatile",
+        "latency_ms": 4277,
+        "prompt_tokens": 1535,
+        "completion_tokens": 1530,
+        "total_tokens": 3065,
+        "used_llm": true
+      },
+      {
+        "location_id": "loc_001",
+        "provider_used": "groq",
+        "model_used": "llama-3.3-70b-versatile",
+        "latency_ms": 4038,
+        "prompt_tokens": 1526,
+        "completion_tokens": 1467,
+        "total_tokens": 2993,
+        "used_llm": true
+      },
+      {
+        "location_id": "loc_007",
+        "provider_used": "groq",
+        "model_used": "llama-3.3-70b-versatile",
+        "latency_ms": 6658,
+        "prompt_tokens": 1531,
+        "completion_tokens": 1847,
+        "total_tokens": 3378,
+        "used_llm": true
+      }
+    ]
+  }
+}

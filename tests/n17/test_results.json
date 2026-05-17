@@ -1,0 +1,78 @@
+[
+  {
+    "case": "Change intensity (Beach -> Quiet)",
+    "input": {
+      "name": "Change intensity (Beach -> Quiet)",
+      "user_input": "Tôi muốn đi du lịch biển sôi động",
+      "user_tags": [
+        "beach",
+        "party",
+        "nightlife"
+      ],
+      "img_desc": "Hình ảnh một bãi biển đông đúc với âm nhạc",
+      "feedback": "Thực ra tôi thấy hơi mệt, tôi muốn tìm một nơi nào đó cực kỳ yên tĩnh, không dùng cái ảnh này nữa"
+    },
+    "output": {
+      "refined_text": "Tôi muốn tìm một nơi yên tĩnh để du lịch",
+      "refined_tags": [
+        "peaceful",
+        "cozy",
+        "nature reserve",
+        "luxury travel",
+        "wellness retreat"
+      ],
+      "refined_img_desc": "",
+      "explanation": "Tôi đã cập nhật lại tìm kiếm để ưu tiên các không gian yên tĩnh và gỡ bỏ ảnh cũ cho bạn. Bạn sẽ tìm thấy những nơi tuyệt vời để thư giãn và tận hưởng không gian yên bình.",
+      "metadata": {
+        "model": "llama-3.3-70b-versatile",
+        "provider": "groq",
+        "usage": {
+          "queue_time": 0.162097082,
+          "prompt_tokens": 1143,
+          "prompt_time": 0.057225109,
+          "completion_tokens": 116,
+          "completion_time": 0.292653069,
+          "total_tokens": 1259,
+          "total_time": 0.349878178
+        }
+      }
+    }
+  },
+  {
+    "case": "Add specific preference",
+    "input": {
+      "name": "Add specific preference",
+      "user_input": "Du lịch Đà Lạt",
+      "user_tags": [
+        "nature",
+        "cool climate"
+      ],
+      "img_desc": "",
+      "feedback": "Tôi muốn thêm các hoạt động trải nghiệm cà phê và săn mây"
+    },
+    "output": {
+      "refined_text": "Du lịch Đà Lạt với trải nghiệm cà phê và săn mây",
+      "refined_tags": [
+        "coffee",
+        "cloud sea",
+        "cool climate",
+        "hill"
+      ],
+      "refined_img_desc": "Ảnh chụp cảnh săn mây và thưởng thức cà phê tại Đà Lạt",
+      "explanation": "Tôi đã cập nhật lại tìm kiếm của bạn để ưu tiên các hoạt động trải nghiệm cà phê và săn mây tại Đà Lạt, cùng với đó là những cảnh quan thiên nhiên tuyệt đẹp và khí hậu mát mẻ. Bạn sẽ có những trải nghiệm tuyệt vời với cà phê và săn mây tại đây!",
+      "metadata": {
+        "model": "llama-3.3-70b-versatile",
+        "provider": "groq",
+        "usage": {
+          "queue_time": 0.165426822,
+          "prompt_tokens": 1102,
+          "prompt_time": 0.082122288,
+          "completion_tokens": 146,
+          "completion_time": 0.409722018,
+          "total_tokens": 1248,
+          "total_time": 0.491844306
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "img_desc": "Bãi biển tuyệt đẹp với những cây dừa xanh tươi nghiêng mình theo gió, bờ cát trắng mịn và nước biển trong xanh. Không khí trong lành, thư giãn, tạo cảm giác yên bình và thoải mái cho du khách. Một điểm đến lý tưởng để thư giãn và tận hưởng.",
+  "metadata": {
+    "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+    "usage": {
+      "prompt_tokens": 2055,
+      "completion_tokens": 61,
+      "total_tokens": 2116
+    }
+  }
+}

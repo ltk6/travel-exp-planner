@@ -1,53 +1,19 @@
-"""
-─────────────────────────────────────────────
-N3 — DATABASE LAYER (POSTGRES + JSONB STORAGE)
-─────────────────────────────────────────────
+"""N3: PostgreSQL-backed location persistence API."""
 
-SAVE LOCATION:
-Input:
-{
-    "location_id": str,
-
-    "vectors": {
-        "text": str,
-        "aug_text": str,
-        "aug_tags": str,
-        "img_desc": str
-    },
-
-    "metadata": dict,
-    "geo": dict
-}
-
-Output:
-{
-    "status": "success" | "error",
-    "message": str (optional on error)
-}
-
-GET ALL LOCATIONS:
-Output:
-[
-    {
-        "location_id": str,
-
-        "vectors": {
-            "text": str,
-            "aug_text": str,
-            "aug_tags": str,
-            "img_desc": str
-        },
-
-        "metadata": dict,
-        "geo": dict
-    }
-]
-"""
+from __future__ import annotations
 
 from .db_manager import (
-    init_db,
-    save_user_profile,
-    save_location,
+    attach_image_to_location,
     get_all_locations,
-    filter_locations
+    get_db_fingerprint,
+    init_db,
+    save_location,
 )
+
+__all__ = [
+    "attach_image_to_location",
+    "get_all_locations",
+    "get_db_fingerprint",
+    "init_db",
+    "save_location",
+]

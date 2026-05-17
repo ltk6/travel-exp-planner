@@ -1,0 +1,168 @@
+{
+  "metadata": {
+    "module": "N6 — Activity Ranking",
+    "date": "2026-05-15",
+    "top_k": 5
+  },
+  "results": [
+    {
+      "name": "semantic_beach_user_ranks_beach_activity_first",
+      "desc": "User vector beach → activity về biển phải đứng #1",
+      "latency_ms": 1,
+      "status": "PASS",
+      "checks": {
+        "top1_correct": true
+      },
+      "prefs": {
+        "intensity": null,
+        "physical": null,
+        "social": null
+      },
+      "top1_id": "act_snorkel",
+      "scores": [
+        1.0,
+        0.4,
+        0.4
+      ]
+    },
+    {
+      "name": "attribute_relaxed_user_avoids_high_intensity",
+      "desc": "User 'yên bình' → activity intensity thấp phải lên trên",
+      "latency_ms": 0,
+      "status": "PASS",
+      "checks": {
+        "top1_correct": true
+      },
+      "prefs": {
+        "intensity": 0.214,
+        "physical": 0.343,
+        "social": 0.389
+      },
+      "top1_id": "act_relax",
+      "scores": [
+        1.0,
+        0.4
+      ]
+    },
+    {
+      "name": "preference_inference_adventure_tags",
+      "desc": "Tags adventure+trekking → intensity cao, physical cao",
+      "latency_ms": 0,
+      "status": "PASS",
+      "checks": {
+        "intensity_pref_ok": true,
+        "physical_pref_ok": true
+      },
+      "prefs": {
+        "intensity": 0.881,
+        "physical": 0.881,
+        "social": null
+      },
+      "top1_id": null,
+      "scores": []
+    },
+    {
+      "name": "preference_inference_peaceful_tags",
+      "desc": "Tags peaceful, solo → intensity thấp, social thấp",
+      "latency_ms": 0,
+      "status": "PASS",
+      "checks": {
+        "intensity_pref_ok": true,
+        "social_pref_ok": true
+      },
+      "prefs": {
+        "intensity": 0.25,
+        "physical": 0.343,
+        "social": 0.154
+      },
+      "top1_id": null,
+      "scores": []
+    },
+    {
+      "name": "normalization_spread",
+      "desc": "Sau normalize: top score trong [0.8, 1.0], bottom score trong [0.4, 0.6]",
+      "latency_ms": 3,
+      "status": "PASS",
+      "checks": {
+        "top_score_ok": true,
+        "bottom_score_ok": true
+      },
+      "prefs": {
+        "intensity": null,
+        "physical": null,
+        "social": null
+      },
+      "top1_id": "act_1",
+      "scores": [
+        1.0,
+        1.0,
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    {
+      "name": "null_vectors_graceful",
+      "desc": "Activity có vectors=None không crash, rơi về attribute score",
+      "latency_ms": 0,
+      "status": "PASS",
+      "checks": {
+        "no_crash": true,
+        "count_correct": true
+      },
+      "prefs": {
+        "intensity": null,
+        "physical": null,
+        "social": null
+      },
+      "top1_id": "act_b",
+      "scores": [
+        1.0,
+        0.4
+      ]
+    },
+    {
+      "name": "top_k_truncation",
+      "desc": "top_k=3 với 10 activities → chỉ trả về 3",
+      "latency_ms": 4,
+      "status": "PASS",
+      "checks": {
+        "count_correct": true
+      },
+      "prefs": {
+        "intensity": null,
+        "physical": null,
+        "social": null
+      },
+      "top1_id": "act_0",
+      "scores": [
+        1.0,
+        0.9333,
+        0.8667
+      ]
+    },
+    {
+      "name": "performance_50_activities",
+      "desc": "50 activities (realistic) — kiểm tra tốc độ",
+      "latency_ms": 21,
+      "status": "PASS",
+      "checks": {
+        "count_correct": true,
+        "perf_ok": true
+      },
+      "prefs": {
+        "intensity": 0.731,
+        "physical": 0.69,
+        "social": null
+      },
+      "top1_id": "act_000",
+      "scores": [
+        1.0,
+        0.7974,
+        0.7875,
+        0.7689,
+        0.7689
+      ]
+    }
+  ]
+}

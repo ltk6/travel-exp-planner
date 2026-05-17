@@ -1,0 +1,208 @@
+{
+  "metadata": {
+    "module": "N8 - Orchestrator",
+    "date": "2026-05-15",
+    "mode": "mocked_downstream_modules"
+  },
+  "cache": {
+    "status": "PASS",
+    "stages": [
+      {
+        "name": "cold_fetch",
+        "latency_ms": 8,
+        "db_fetches_before": 0,
+        "db_fetches_after": 1,
+        "count": 3,
+        "status": "PASS"
+      },
+      {
+        "name": "warm_ram",
+        "latency_ms": 0,
+        "db_fetches_before": 1,
+        "db_fetches_after": 1,
+        "count": 3,
+        "status": "PASS"
+      },
+      {
+        "name": "warm_disk",
+        "latency_ms": 3,
+        "db_fetches_before": 1,
+        "db_fetches_after": 1,
+        "count": 3,
+        "status": "PASS"
+      },
+      {
+        "name": "force_refresh",
+        "latency_ms": 4,
+        "db_fetches_before": 1,
+        "db_fetches_after": 2,
+        "count": 3,
+        "status": "PASS"
+      }
+    ],
+    "cache_file_exists": true,
+    "image_cache_files": 3
+  },
+  "endpoints": [
+    {
+      "name": "health",
+      "method": "GET",
+      "path": "/health",
+      "latency_ms": 7,
+      "status_code": 200,
+      "status": "PASS",
+      "note": "health ok",
+      "module_deltas": {
+        "db_fetches": 0,
+        "fingerprint_calls": 0,
+        "embed_calls": 0,
+        "embed_batch_calls": 0,
+        "n2_calls": 0,
+        "rank_location_calls": 0,
+        "n5_calls": 0,
+        "rank_activity_calls": 0,
+        "feedback_calls": 0
+      }
+    },
+    {
+      "name": "fingerprint",
+      "method": "GET",
+      "path": "/cache/fingerprint",
+      "latency_ms": 1,
+      "status_code": 200,
+      "status": "PASS",
+      "note": "fingerprint route",
+      "module_deltas": {
+        "db_fetches": 0,
+        "fingerprint_calls": 1,
+        "embed_calls": 0,
+        "embed_batch_calls": 0,
+        "n2_calls": 0,
+        "rank_location_calls": 0,
+        "n5_calls": 0,
+        "rank_activity_calls": 0,
+        "feedback_calls": 0
+      }
+    },
+    {
+      "name": "recommend_cold",
+      "method": "POST",
+      "path": "/recommend",
+      "latency_ms": 17,
+      "status_code": 200,
+      "status": "PASS",
+      "note": "cold cache recommend",
+      "module_deltas": {
+        "db_fetches": 1,
+        "fingerprint_calls": 1,
+        "embed_calls": 1,
+        "embed_batch_calls": 0,
+        "n2_calls": 0,
+        "rank_location_calls": 1,
+        "n5_calls": 0,
+        "rank_activity_calls": 0,
+        "feedback_calls": 0
+      }
+    },
+    {
+      "name": "recommend_warm",
+      "method": "POST",
+      "path": "/recommend",
+      "latency_ms": 6,
+      "status_code": 200,
+      "status": "PASS",
+      "note": "warm cache recommend",
+      "module_deltas": {
+        "db_fetches": 0,
+        "fingerprint_calls": 1,
+        "embed_calls": 1,
+        "embed_batch_calls": 0,
+        "n2_calls": 0,
+        "rank_location_calls": 1,
+        "n5_calls": 0,
+        "rank_activity_calls": 0,
+        "feedback_calls": 0
+      }
+    },
+    {
+      "name": "activities",
+      "method": "POST",
+      "path": "/activities",
+      "latency_ms": 4,
+      "status_code": 200,
+      "status": "PASS",
+      "note": "activities pipeline",
+      "module_deltas": {
+        "db_fetches": 0,
+        "fingerprint_calls": 0,
+        "embed_calls": 0,
+        "embed_batch_calls": 1,
+        "n2_calls": 0,
+        "rank_location_calls": 0,
+        "n5_calls": 1,
+        "rank_activity_calls": 1,
+        "feedback_calls": 0
+      }
+    },
+    {
+      "name": "feedback_recommend",
+      "method": "POST",
+      "path": "/feedback/recommend",
+      "latency_ms": 3,
+      "status_code": 200,
+      "status": "PASS",
+      "note": "recommend feedback loop",
+      "module_deltas": {
+        "db_fetches": 0,
+        "fingerprint_calls": 1,
+        "embed_calls": 1,
+        "embed_batch_calls": 0,
+        "n2_calls": 0,
+        "rank_location_calls": 1,
+        "n5_calls": 0,
+        "rank_activity_calls": 0,
+        "feedback_calls": 1
+      }
+    },
+    {
+      "name": "feedback_activities",
+      "method": "POST",
+      "path": "/feedback/activities",
+      "latency_ms": 2,
+      "status_code": 200,
+      "status": "PASS",
+      "note": "activities feedback loop",
+      "module_deltas": {
+        "db_fetches": 0,
+        "fingerprint_calls": 0,
+        "embed_calls": 0,
+        "embed_batch_calls": 1,
+        "n2_calls": 0,
+        "rank_location_calls": 0,
+        "n5_calls": 1,
+        "rank_activity_calls": 1,
+        "feedback_calls": 1
+      }
+    },
+    {
+      "name": "cache_reset",
+      "method": "POST",
+      "path": "/cache/reset",
+      "latency_ms": 7,
+      "status_code": 200,
+      "status": "PASS",
+      "note": "manual cache refresh",
+      "module_deltas": {
+        "db_fetches": 1,
+        "fingerprint_calls": 1,
+        "embed_calls": 0,
+        "embed_batch_calls": 0,
+        "n2_calls": 0,
+        "rank_location_calls": 0,
+        "n5_calls": 0,
+        "rank_activity_calls": 0,
+        "feedback_calls": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "img_desc": "Cảm giác chìm đắm trong ánh vàng của hoàng hôn, thành phố sôi động bừng sáng. Những tòa nhà cao tầng vươn lên từ biển ánh sáng, đường phố như dải ngọc chiếu sáng rực rỡ. Không khí năng động, hiện đại, thắm đượm vẻ đẹp của cuộc sống về đêm.",
+  "metadata": {
+    "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+    "usage": {
+      "prompt_tokens": 2055,
+      "completion_tokens": 70,
+      "total_tokens": 2125
+    }
+  }
+}

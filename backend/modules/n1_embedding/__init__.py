@@ -1,51 +1,106 @@
-"""
-n1_embedding — Unified embedding API.
-Preprocesses multi-channel inputs, generates vectors, and returns signal metadata.
-"""
+"""N1: Unified multi-channel embedding API."""
 
 from __future__ import annotations
 
-from typing import Dict, Any
+from typing import Any
 
-from .embedder import embed_texts
-from .preprocessor import build_inputs
+from .embedder import embed_strings
+from .preprocessor import preprocess
 
-def embed(data: Dict[str, Any]) -> Dict[str, Any]:
+from config import EMBEDDING_MODEL_NAME, setup_logging
+
+logger = setup_logging("N1")
+
+
+def embed(data: dict[str, Any]) -> dict[str, Any]:
     """
-    Single entry point for the embedding pipeline.
-
-    Input:  { text, tags, img_desc }
-    Output: { preprocessed, vectors, sig_k }
-
-    sig_k = keyword expansion signal strength (count of expansions detected).
+    Entry point to embed a single multi-channel input.
     """
-    if not isinstance(data, dict):
-        raise ValueError("embed() accepts a single dict only")
+    results = embed_batch([data])
+    return results[0]
 
-    preprocessed = build_inputs(
-        text     = data.get("text", ""),
-        tags     = data.get("tags", []),
-        img_desc = data.get("img_desc", ""),
-    )
 
-    # Channel order: text, aug_text, aug_tags, img_desc
+def embed_batch(data_list: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """
+    Entry point to embed multiple multi-channel inputs efficiently.
+    Performs exactly one forward pass through the model.
+    """
+    if not data_list:
+        return []
+
+    import time
+
+    t0 = time.time()
+
+    # 1. Preprocess all inputs
+    logger.info(f"Preprocessing {len(data_list)} inputs...")
+    all_preprocessed = []
+    for data in data_list:
+        p = preprocess(
+            text=data.get("text", ""),
+            tags=data.get("tags", []),
+            img_desc=data.get("img_desc", ""),
+        )
+        all_preprocessed.append(p)
+
+    # 2. Flatten channels into one massive list
     channels = ["text", "aug_text", "aug_tags", "img_desc"]
-    vectors = embed_texts([preprocessed[ch] for ch in channels])
+    flat_strings = []
+    for p in all_preprocessed:
+        for ch in channels:
+            flat_strings.append(p[ch])
 
-    return {
-        "sig_k":        preprocessed["kw_count"],
-        "preprocessed": {
-            "text":     preprocessed["text"],
-            "aug_text": preprocessed["aug_text"],
-            "aug_tags": preprocessed["aug_tags"],
-            "img_desc": preprocessed["img_desc"],
-        },
-        "vectors": {
-            "text":     vectors[0],
-            "aug_text": vectors[1],
-            "aug_tags": vectors[2],
-            "img_desc": vectors[3],
-        },  
-    }
+    # 3. Batch encode (SentenceTransformer natively handles batching optimally)
+    logger.info(
+        f"Batch encoding {len(flat_strings)} strings "
+        f"({len(data_list)} items * {len(channels)} channels)..."
+    )
+    flat_vectors = embed_strings(flat_strings)
 
-__all__ = ["embed"]
+    # 4. Unflatten back into per-item outputs
+    logger.info("Unflattening vectors back to items...")
+    results = []
+    num_channels = len(channels)
+    for i, p in enumerate(all_preprocessed):
+        start_idx = i * num_channels
+        item_vecs = flat_vectors[start_idx : start_idx + num_channels]
+
+        results.append(
+            {
+                "text_k": p["text_k"],
+                "tags_k": p["tags_k"],
+                "preprocessed": {
+                    "text": p["text"],
+                    "aug_text": p["aug_text"],
+                    "aug_tags": p["aug_tags"],
+                    "img_desc": p["img_desc"],
+                },
+                "vectors": {
+                    "text": item_vecs[0],
+                    "aug_text": item_vecs[1],
+                    "aug_tags": item_vecs[2],
+                    "img_desc": item_vecs[3],
+                },
+            }
+        )
+
+    elapsed_ms = int((time.time() - t0) * 1000)
+    logger.info(f"N1 embedding completed in {elapsed_ms}ms for {len(data_list)} items.")
+
+    # 5. Add metadata to each result
+    from .embedder import get_model
+
+    model_instance = get_model()
+    device = str(model_instance.device) if hasattr(model_instance, "device") else "unknown"
+
+    for res in results:
+        res["metadata"] = {
+            "model": EMBEDDING_MODEL_NAME,
+            "device": device,
+            "latency_ms": elapsed_ms / len(data_list) if data_list else 0,
+        }
+
+    return results
+
+
+__all__ = ["embed", "embed_batch"]
