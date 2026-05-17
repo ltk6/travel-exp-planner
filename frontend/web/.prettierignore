@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+build
+coverage
+public/sw.js
+public/sw.js.map
+public/workbox-*.js
+public/swe-worker-*.js
+.env*
+*.tsbuildinfo
+next-env.d.ts
