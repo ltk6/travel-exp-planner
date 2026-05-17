@@ -25,15 +25,13 @@ CORS(app, origins=ALLOWED_ORIGINS)
 
 # Register routes
 app.register_blueprint(n8_bp)
-app.register_blueprint(profile_bp) #  KÍCH HOẠT
+app.register_blueprint(profile_bp)
 
 if __name__ == "__main__":
-    # Import và kích hoạt tạo bảng tự động một cách trực tiếp khi khởi động server
     from backend.n3_database import init_profile_db
     try:
         init_profile_db()
     except Exception as e:
-        logger.error(f"Không thể khởi tạo bảng User Profile: {e}")
+        logger.error(f"Khong the khoi tao bang: {e}")
 
-    # Chạy Flask Server
     app.run(host=HOST, port=PORT, debug=DEBUG)
