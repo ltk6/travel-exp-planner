@@ -1,8 +1,16 @@
-from flask import request, jsonify, abort, Blueprint, g
+from flask import request, jsonify, abort, Blueprint, g, send_from_directory
 import time
 from config import INTERNAL_API_KEY, PROTECTED_ROUTES, setup_logging
 from .utils import _err, _get_json
-from .services import recommend_service, activities_service, feedback_recommend_service, feedback_activities_service, explore_locations_service
+from .services import (
+    recommend_service,
+    activities_service,
+    activities_v2_service,
+    feedback_recommend_service,
+    feedback_activities_service,
+    explore_locations_service,
+    IMG_CACHE_DIR,
+)
 
 logger = setup_logging("N8.routes")
 
@@ -89,6 +97,21 @@ def get_activities():
         logger.error(f"Activities service failed: {e}")
         return _err(f"Internal error: {str(e)}", 500)
 
+@bp.post("/activities/v2")
+def get_activities_v2():
+    """v2: N9-N14 processor (real map sources) instead of N5 LLM gen.
+    Same request/response contract as /activities for drop-in A/B testing."""
+    body = request.get_json() or {}
+    if not body.get("location"):
+        return _err("Missing location data")
+    try:
+        result = activities_v2_service(body)
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"Activities v2 service failed: {e}")
+        return _err(f"Internal error: {str(e)}", 500)
+
+
 @bp.post("/locations")
 def list_locations():
     """Slim list of all locations for Explore mode — không có vectors, mỗi loc kèm 1 ảnh đại diện."""
@@ -98,6 +121,16 @@ def list_locations():
     except Exception as e:
         logger.error(f"Explore locations failed: {e}")
         return _err(f"Internal error: {str(e)}", 500)
+
+@bp.get("/api/images/<path:filename>")
+def serve_image(filename):
+    """Serve location images directly from disk cache.
+    Public (not in PROTECTED_ROUTES) so <img src=...> works without auth header.
+    Browser caches via max_age."""
+    if ".." in filename or filename.startswith("/") or filename.startswith("\\"):
+        abort(400)
+    return send_from_directory(IMG_CACHE_DIR, filename, max_age=86400)
+
 
 @bp.post("/cache/reset")
 def reset_cache():

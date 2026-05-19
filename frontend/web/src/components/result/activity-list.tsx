@@ -1,14 +1,17 @@
 "use client";
 
+import { useState } from "react";
+import { AlertCircle, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ActivityCard } from "./activity-card";
 import { ActivitySkeleton } from "./activity-skeleton";
+import { ActivityFilterChips } from "./activity-filter-chips";
 import { useActivitiesQuery } from "@/hooks/use-activities-query";
-import type { LocationResult } from "@/lib/types";
-import { AlertCircle, Sparkles } from "lucide-react";
+import type { ActivityType, LocationResult } from "@/lib/types";
 
 export function ActivityList({ loc }: { loc: LocationResult }) {
-  const query = useActivitiesQuery(loc);
+  const [preferredTypes, setPreferredTypes] = useState<ActivityType[]>([]);
+  const query = useActivitiesQuery(loc, { preferredTypes });
 
   return (
     <div className="space-y-2.5">
@@ -17,15 +20,28 @@ export function ActivityList({ loc }: { loc: LocationResult }) {
         <span className="text-primary text-xs font-bold tracking-wider uppercase">
           Gợi ý hoạt động
         </span>
-        {query.data?.meta?.provider_used ? (
-          <Badge variant="outline" className="border-primary/30 ml-auto text-[10px]">
-            ✦ {query.data.meta.provider_used}
-            {query.data.meta.model_used ? ` · ${query.data.meta.model_used.split("/").pop()}` : ""}
+        {query.data?.meta ? (
+          <Badge
+            variant="outline"
+            className={
+              query.data.meta.fallback_used
+                ? "ml-auto border-amber-400/60 bg-amber-50 text-[10px] text-amber-800 dark:bg-amber-500/15 dark:text-amber-300"
+                : "border-primary/30 ml-auto text-[10px]"
+            }
+            title={
+              query.data.meta.fallback_used
+                ? `Bù dữ liệu bằng N5 LLM (${query.data.meta.fallback_n5_count} gợi ý)`
+                : "Lấy từ N9-N14 (OSM, Wikidata, ...)"
+            }
+          >
+            ✦ {query.data.meta.fallback_used ? "Map + LLM" : "Map"}
           </Badge>
         ) : null}
       </div>
 
-      {query.isPending ? (
+      <ActivityFilterChips selected={preferredTypes} onChange={setPreferredTypes} />
+
+      {query.isPending || query.isFetching ? (
         <ActivitySkeleton />
       ) : query.isError ? (
         <div className="border-destructive/40 bg-destructive/5 text-destructive flex items-start gap-2 rounded-lg border p-3 text-xs">

@@ -1,0 +1,3241 @@
+[
+  {
+    "fsq_place_id": "56e62678498e553b7a719cf4",
+    "latitude": 22.300283,
+    "longitude": 103.892628,
+    "categories": [
+      {
+        "fsq_category_id": "52e81612bcbc57f1066b7a13",
+        "name": "Nature Preserve",
+        "short_name": "Preserve",
+        "plural_name": "Nature Preserves",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/naturepreserve_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2016-03-14",
+    "date_refreshed": "2026-04-22",
+    "distance": 12607,
+    "extended_location": {},
+    "link": "/places/56e62678498e553b7a719cf4",
+    "location": {
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Sapa Rice Fields",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/56e62678498e553b7a719cf4",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4ebf1aa90e019a162a78fa12",
+    "latitude": 22.303268,
+    "longitude": 103.775005,
+    "categories": [
+      {
+        "fsq_category_id": "4eb1d4d54b900d56c88a45fc",
+        "name": "Mountain",
+        "short_name": "Mountain",
+        "plural_name": "Mountains",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/mountain_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d159941735",
+        "name": "Hiking Trail",
+        "short_name": "Trail",
+        "plural_name": "Hiking Trails",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/hikingtrail_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-11-13",
+    "date_refreshed": "2026-04-27",
+    "distance": 629,
+    "extended_location": {},
+    "link": "/places/4ebf1aa90e019a162a78fa12",
+    "location": {
+      "address": "Dãy Núi Hoàng Liên Sơn",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "Dãy Núi Hoàng Liên Sơn, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Fansipan (Phan Xi Păng (Fansipan))",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4ebf1aa90e019a162a78fa12",
+    "related_places": {
+      "children": [
+        {
+          "fsq_place_id": "6516891d233d5e416f96b422",
+          "categories": [
+            {
+              "fsq_category_id": "52e81612bcbc57f1066b7a3e",
+              "name": "Buddhist Temple",
+              "short_name": "Buddhist Temple",
+              "plural_name": "Buddhist Temples",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/building/religious_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "Bao An Zen Monastery Trinh Pagoda"
+        },
+        {
+          "fsq_place_id": "65165a5ffe3adb07d5112c87",
+          "categories": [
+            {
+              "fsq_category_id": "52f2ab2ebcbc57f1066b8b50",
+              "name": "Cable Car",
+              "short_name": "Cable Car",
+              "plural_name": "Cable Cars",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/travel/trainstation_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "Fansipan Station"
+        },
+        {
+          "fsq_place_id": "651658820ae5511036b09e0b",
+          "categories": [
+            {
+              "fsq_category_id": "52f2ab2ebcbc57f1066b8b50",
+              "name": "Cable Car",
+              "short_name": "Cable Car",
+              "plural_name": "Cable Cars",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/travel/trainstation_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "Cable Car"
+        },
+        {
+          "fsq_place_id": "651694c5ebb1293b68314a1b",
+          "categories": [
+            {
+              "fsq_category_id": "56aa371be4b08b9a8d573560",
+              "name": "Waterfall",
+              "short_name": "Waterfall",
+              "plural_name": "Waterfalls",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/default_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "9-Level Waterfall"
+        },
+        {
+          "fsq_place_id": "69edf22cee899f19ef029214",
+          "categories": [
+            {
+              "fsq_category_id": "4bf58dd8d48988d1e0931735",
+              "name": "Coffee Shop",
+              "short_name": "Coffee Shop",
+              "plural_name": "Coffee Shops",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/food/coffeeshop_",
+                "suffix": ".png"
+              }
+            },
+            {
+              "fsq_category_id": "4bf58dd8d48988d16d941735",
+              "name": "Café",
+              "short_name": "Café",
+              "plural_name": "Cafés",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "Starbucks"
+        },
+        {
+          "fsq_place_id": "68ff04ffaaf11e01b19be5de",
+          "categories": [
+            {
+              "fsq_category_id": "4d4b7105d754a06374d81259",
+              "name": "Restaurant",
+              "short_name": "Restaurant",
+              "plural_name": "Restaurants",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/food/default_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "NHÀ HÀNG ĐỖ QUYÊN"
+        },
+        {
+          "fsq_place_id": "65168e5b84bc3d6de054382c",
+          "categories": [
+            {
+              "fsq_category_id": "4bf58dd8d48988d131941735",
+              "name": "Spiritual Center",
+              "short_name": "Spiritual",
+              "plural_name": "Spiritual Centers",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/building/religious_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "The Stupa"
+        },
+        {
+          "fsq_place_id": "65165a5edff47734ca401da4",
+          "categories": [
+            {
+              "fsq_category_id": "52f2ab2ebcbc57f1066b8b50",
+              "name": "Cable Car",
+              "short_name": "Cable Car",
+              "plural_name": "Cable Cars",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/travel/trainstation_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "Fansipan Station"
+        },
+        {
+          "fsq_place_id": "63fc30109bb1e117afd60237",
+          "categories": [
+            {
+              "fsq_category_id": "52f2ab2ebcbc57f1066b8b51",
+              "name": "Tram Station",
+              "short_name": "Tram",
+              "plural_name": "Tram Stations",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/travel/trainstation_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "Do Quyen Funicular Station"
+        },
+        {
+          "fsq_place_id": "5c3805f33e6741002c3cc5ac",
+          "categories": [
+            {
+              "fsq_category_id": "4bf58dd8d48988d16d941735",
+              "name": "Café",
+              "short_name": "Café",
+              "plural_name": "Cafés",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+                "suffix": ".png"
+              }
+            },
+            {
+              "fsq_category_id": "4bf58dd8d48988d186941735",
+              "name": "Liquor Store",
+              "short_name": "Liquor Store",
+              "plural_name": "Liquor Stores",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/shops/food_liquor_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "Café du Soleil"
+        },
+        {
+          "fsq_place_id": "6516917218d8b179f21abfa1",
+          "categories": [
+            {
+              "fsq_category_id": "52e81612bcbc57f1066b7a3e",
+              "name": "Buddhist Temple",
+              "short_name": "Buddhist Temple",
+              "plural_name": "Buddhist Temples",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/building/religious_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "Great Buddha Statue"
+        },
+        {
+          "fsq_place_id": "651661803fcba13da3322604",
+          "categories": [
+            {
+              "fsq_category_id": "52f2ab2ebcbc57f1066b8b1b",
+              "name": "Souvenir Store",
+              "short_name": "Souvenir Store",
+              "plural_name": "Souvenir Stores",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/shops/default_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "Souvenir Shop"
+        },
+        {
+          "fsq_place_id": "6516638d3489970ab8fc5990",
+          "categories": [
+            {
+              "fsq_category_id": "4bf58dd8d48988d16e941735",
+              "name": "Fast Food Restaurant",
+              "short_name": "Fast Food",
+              "plural_name": "Fast Food Restaurants",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/food/fastfood_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "Do Quyen Resturant"
+        },
+        {
+          "fsq_place_id": "65168cca245e437cac9f18db",
+          "categories": [
+            {
+              "fsq_category_id": "52e81612bcbc57f1066b7a3e",
+              "name": "Buddhist Temple",
+              "short_name": "Buddhist Temple",
+              "plural_name": "Buddhist Temples",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/building/religious_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "The Ancestral Altar"
+        }
+      ]
+    },
+    "social_media": {}
+  },
+  {
+    "fsq_place_id": "4ffa54f0e4b024f55b4baded",
+    "latitude": 22.352957794534756,
+    "longitude": 103.77486060285626,
+    "categories": [
+      {
+        "fsq_category_id": "56aa371be4b08b9a8d573560",
+        "name": "Waterfall",
+        "short_name": "Waterfall",
+        "plural_name": "Waterfalls",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/default_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-07-09",
+    "date_refreshed": "2026-04-07",
+    "distance": 5906,
+    "extended_location": {},
+    "link": "/places/4ffa54f0e4b024f55b4baded",
+    "location": {
+      "address": "Quốc Lộ 4D",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Quốc Lộ 4D, Sa Pá, Tỉnh Lào Cai"
+    },
+    "name": "Thác Tình Yêu (Love Waterfall)",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4ffa54f0e4b024f55b4baded",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "575bf248498e205c95c78f5d",
+    "latitude": 22.332642,
+    "longitude": 103.8385,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d16d941735",
+        "name": "Café",
+        "short_name": "Café",
+        "plural_name": "Cafés",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2016-06-11",
+    "date_refreshed": "2026-04-10",
+    "distance": 7921,
+    "extended_location": {},
+    "link": "/places/575bf248498e205c95c78f5d",
+    "location": {
+      "locality": "Sapa, Lào Cai",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Fansipan Street, Sapa, Lào Cai, Tỉnh Lào Cai"
+    },
+    "name": "Fansipan Terrace Café",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/575bf248498e205c95c78f5d",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "5655a676498ef5c43ecd762f",
+    "latitude": 22.33358152121346,
+    "longitude": 103.84072954593648,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2015-11-25",
+    "date_refreshed": "2026-04-03",
+    "distance": 8172,
+    "extended_location": {},
+    "link": "/places/5655a676498ef5c43ecd762f",
+    "location": {
+      "address": "24 Phanxipang",
+      "locality": "Sapa",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "24 Phanxipang, Sapa, Tỉnh Lào Cai"
+    },
+    "name": "24 Restaurant",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5655a676498ef5c43ecd762f",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    },
+    "tel": "0915 422 268"
+  },
+  {
+    "fsq_place_id": "5967609c4ce0667b7a884af5",
+    "latitude": 22.343883,
+    "longitude": 103.812567,
+    "categories": [
+      {
+        "fsq_category_id": "4eb1d4d54b900d56c88a45fc",
+        "name": "Mountain",
+        "short_name": "Mountain",
+        "plural_name": "Mountains",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/mountain_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2017-07-13",
+    "date_refreshed": "2026-04-13",
+    "distance": 6551,
+    "extended_location": {},
+    "link": "/places/5967609c4ce0667b7a884af5",
+    "location": {
+      "locality": "H. Sa Pa",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "H. Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Fansipan Peak 3143m",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5967609c4ce0667b7a884af5",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4da94667cda1652a2b6fdd76",
+    "latitude": 22.33489890471805,
+    "longitude": 103.84247807881833,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d165941735",
+        "name": "Scenic Lookout",
+        "short_name": "Scenic Lookout",
+        "plural_name": "Scenic Lookouts",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/sceniclookout_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4eb1d4d54b900d56c88a45fc",
+        "name": "Mountain",
+        "short_name": "Mountain",
+        "plural_name": "Mountains",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/mountain_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d159941735",
+        "name": "Hiking Trail",
+        "short_name": "Trail",
+        "plural_name": "Hiking Trails",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/hikingtrail_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-04-16",
+    "date_refreshed": "2025-09-29",
+    "distance": 8399,
+    "extended_location": {},
+    "link": "/places/4da94667cda1652a2b6fdd76",
+    "location": {
+      "address": "Hàm Rồng",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "Hàm Rồng, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Dragon's Jaw Mountain (Núi Hàm Rồng)",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4da94667cda1652a2b6fdd76",
+    "related_places": {},
+    "social_media": {}
+  },
+  {
+    "fsq_place_id": "57e76320498e1db1bf51984a",
+    "latitude": 22.306375593159224,
+    "longitude": 103.77484561274647,
+    "categories": [
+      {
+        "fsq_category_id": "4eb1d4d54b900d56c88a45fc",
+        "name": "Mountain",
+        "short_name": "Mountain",
+        "plural_name": "Mountains",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/mountain_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2016-09-25",
+    "date_refreshed": "2026-04-26",
+    "distance": 866,
+    "extended_location": {},
+    "link": "/places/57e76320498e1db1bf51984a",
+    "location": {
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Fansipan Top Viewpoint",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/57e76320498e1db1bf51984a",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4f362a21e4b0a8273d7ce9f3",
+    "latitude": 22.333084,
+    "longitude": 103.843216,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d146941735",
+        "name": "Deli",
+        "short_name": "Deli",
+        "plural_name": "Delis",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/deli_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d16d941735",
+        "name": "Café",
+        "short_name": "Café",
+        "plural_name": "Cafés",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d104951735",
+        "name": "Boutique",
+        "short_name": "Boutique",
+        "plural_name": "Boutiques",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/shops/apparel_boutique_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-02-11",
+    "date_refreshed": "2025-11-13",
+    "distance": 8376,
+    "email": "post@thehillstation.com",
+    "extended_location": {},
+    "link": "/places/4f362a21e4b0a8273d7ce9f3",
+    "location": {
+      "address": "7 Mường Hoa",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "7 Mường Hoa, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "The Hill Station Deli & Boutique",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4f362a21e4b0a8273d7ce9f3",
+    "related_places": {},
+    "social_media": {
+      "facebook_id": "1409591602593261",
+      "twitter": "hillstationsapa"
+    },
+    "tel": "203887111",
+    "website": "http://www.thehillstation.com"
+  },
+  {
+    "fsq_place_id": "5683817b498eb0dd50932d2d",
+    "latitude": 22.332666,
+    "longitude": 103.842346,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2015-12-30",
+    "date_refreshed": "2026-03-31",
+    "distance": 8275,
+    "extended_location": {},
+    "link": "/places/5683817b498eb0dd50932d2d",
+    "location": {
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Indigo Restaurant and Bar",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5683817b498eb0dd50932d2d",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "5736b9c8498ef5d24016257b",
+    "latitude": 22.332546845541994,
+    "longitude": 103.83952466003043,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2016-05-14",
+    "date_refreshed": "2026-03-05",
+    "distance": 8010,
+    "extended_location": {},
+    "link": "/places/5736b9c8498ef5d24016257b",
+    "location": {
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Sa Pá, Tỉnh Lào Cai"
+    },
+    "name": "Good Morning Vietnam Restaurant",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5736b9c8498ef5d24016257b",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    },
+    "tel": "0912 135 909"
+  },
+  {
+    "fsq_place_id": "4df3451de4cda09e6da27d25",
+    "latitude": 22.33615899780897,
+    "longitude": 103.84244852370102,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d16d941735",
+        "name": "Café",
+        "short_name": "Café",
+        "plural_name": "Cafés",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-06-11",
+    "date_refreshed": "2026-04-04",
+    "distance": 8462,
+    "email": "duonggecko@gmail.com",
+    "extended_location": {},
+    "link": "/places/4df3451de4cda09e6da27d25",
+    "location": {
+      "address": "15 Xuân Viên",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "15 Xuân Viên, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Le Petit Gecko",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4df3451de4cda09e6da27d25",
+    "related_places": {},
+    "social_media": {},
+    "tel": "203871504",
+    "website": "http://www.lepetitgecko.com"
+  },
+  {
+    "fsq_place_id": "4f9bc9a4e4b0ad3855558d69",
+    "latitude": 22.332467258564705,
+    "longitude": 103.83902674272578,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1e0931735",
+        "name": "Coffee Shop",
+        "short_name": "Coffee Shop",
+        "plural_name": "Coffee Shops",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/coffeeshop_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d112941735",
+        "name": "Juice Bar",
+        "short_name": "Juice Bar",
+        "plural_name": "Juice Bars",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/juicebar_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-04-28",
+    "date_refreshed": "2024-11-15",
+    "distance": 7960,
+    "extended_location": {},
+    "link": "/places/4f9bc9a4e4b0ad3855558d69",
+    "location": {
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Tao Ngộ Viên Quán (Cafe in the Clouds)",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4f9bc9a4e4b0ad3855558d69",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4f4b3831e4b0a34d3a6ba147",
+    "latitude": 22.335241375668026,
+    "longitude": 103.84135347473492,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d164941735",
+        "name": "Plaza",
+        "short_name": "Plaza",
+        "plural_name": "Plazas",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/plaza_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-02-27",
+    "date_refreshed": "2026-04-21",
+    "distance": 8315,
+    "extended_location": {},
+    "link": "/places/4f4b3831e4b0a34d3a6ba147",
+    "location": {
+      "address": "Hàm Rồng",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "Hàm Rồng (Cầu Mây), Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Quảng Trường Sa Pa (Sapa Square)",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4f4b3831e4b0a34d3a6ba147",
+    "related_places": {
+      "children": [
+        {
+          "fsq_place_id": "68da8b3907a57865110c7fce",
+          "categories": [
+            {
+              "fsq_category_id": "53e510b7498ebcb1801b55d4",
+              "name": "Night Market",
+              "short_name": "Night Market",
+              "plural_name": "Night Markets",
+              "icon": {
+                "prefix": "https://ss3.4sqi.net/img/categories_v2/shops/fleamarket_",
+                "suffix": ".png"
+              }
+            }
+          ],
+          "name": "Sa Pa Night Market"
+        }
+      ]
+    },
+    "social_media": {}
+  },
+  {
+    "fsq_place_id": "5364f7b2498e53ff3216e1fc",
+    "latitude": 22.33268484356343,
+    "longitude": 103.84354669749219,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2014-05-03",
+    "date_refreshed": "2026-04-26",
+    "distance": 8387,
+    "email": "littlevietnamsapa@gmail.com",
+    "extended_location": {},
+    "link": "/places/5364f7b2498e53ff3216e1fc",
+    "location": {
+      "address": "033 Muong Hoa",
+      "locality": "Sapa",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "033 Muong Hoa, Sapa, Tỉnh Lào Cai"
+    },
+    "name": "Little Vietnam",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5364f7b2498e53ff3216e1fc",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    },
+    "tel": "0974 839 873"
+  },
+  {
+    "fsq_place_id": "4f17a360e4b0bb143e4b8cbc",
+    "latitude": 22.330932324761015,
+    "longitude": 103.8348264952217,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1e2931735",
+        "name": "Art Gallery",
+        "short_name": "Art Gallery",
+        "plural_name": "Art Galleries",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/arts_entertainment/artgallery_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-01-19",
+    "date_refreshed": "2026-04-11",
+    "distance": 7498,
+    "extended_location": {},
+    "link": "/places/4f17a360e4b0bb143e4b8cbc",
+    "location": {
+      "address": "Cat Cat Village",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Cat Cat Village"
+    },
+    "name": "Gem Valley",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4f17a360e4b0bb143e4b8cbc",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    },
+    "tel": ""
+  },
+  {
+    "fsq_place_id": "4ffe82bee4b0a8a273449522",
+    "latitude": 22.300203719369804,
+    "longitude": 103.89372498631414,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1e0931735",
+        "name": "Coffee Shop",
+        "short_name": "Coffee Shop",
+        "plural_name": "Coffee Shops",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/coffeeshop_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d11e941735",
+        "name": "Cocktail Bar",
+        "short_name": "Cocktail",
+        "plural_name": "Cocktail Bars",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/nightlife/cocktails_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d121941735",
+        "name": "Lounge",
+        "short_name": "Lounge",
+        "plural_name": "Lounges",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/nightlife/default_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-07-12",
+    "date_refreshed": "2026-04-20",
+    "distance": 12720,
+    "extended_location": {},
+    "link": "/places/4ffe82bee4b0a8a273449522",
+    "location": {
+      "address": "Tả Vân",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Tả Vân, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Bamboo Bar",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4ffe82bee4b0a8a273449522",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    },
+    "tel": "1296 191831"
+  },
+  {
+    "fsq_place_id": "4f9b6e8be4b0d8e622054f32",
+    "latitude": 22.332848800282097,
+    "longitude": 103.83979462512029,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d116941735",
+        "name": "Bar",
+        "short_name": "Bar",
+        "plural_name": "Bars",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/nightlife/pub_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-04-28",
+    "date_refreshed": "2025-12-30",
+    "distance": 8050,
+    "extended_location": {},
+    "link": "/places/4f9b6e8be4b0d8e622054f32",
+    "location": {
+      "address": "56 Phan Xi Păng",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "56 Phan Xi Păng, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Color Bar",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4f9b6e8be4b0d8e622054f32",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4caee820aef16dcbc601a454",
+    "latitude": 22.332383483019985,
+    "longitude": 103.84377817380728,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d118941735",
+        "name": "Dive Bar",
+        "short_name": "Dive Bar",
+        "plural_name": "Dive Bars",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/nightlife/divebar_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d1e3931735",
+        "name": "Pool Hall",
+        "short_name": "Billiards",
+        "plural_name": "Pool Halls",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/arts_entertainment/billiards_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2010-10-08",
+    "date_refreshed": "2025-11-13",
+    "distance": 8394,
+    "extended_location": {},
+    "link": "/places/4caee820aef16dcbc601a454",
+    "location": {
+      "address": "31 Mường Hoa",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "31 Mường Hoa, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "The Hmong Sisters",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4caee820aef16dcbc601a454",
+    "related_places": {},
+    "social_media": {},
+    "tel": "203873370"
+  },
+  {
+    "fsq_place_id": "573aa1b4498e09c29115937b",
+    "latitude": 22.336038951650732,
+    "longitude": 103.84303375771691,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1e0931735",
+        "name": "Coffee Shop",
+        "short_name": "Coffee Shop",
+        "plural_name": "Coffee Shops",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/coffeeshop_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2016-05-17",
+    "date_refreshed": "2024-02-25",
+    "distance": 8509,
+    "extended_location": {},
+    "link": "/places/573aa1b4498e09c29115937b",
+    "location": {
+      "address": "06 Thạch sơn",
+      "locality": "Sapa",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "06 Thạch sơn, Sapa, Tỉnh Lào Cai"
+    },
+    "name": "Dao Coffee&Herbal Tea",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/573aa1b4498e09c29115937b",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4e1bd39d483bf2b0dbb43638",
+    "latitude": 22.33276275705603,
+    "longitude": 103.83987130566146,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-07-12",
+    "date_refreshed": "2026-04-04",
+    "distance": 8052,
+    "extended_location": {},
+    "link": "/places/4e1bd39d483bf2b0dbb43638",
+    "location": {
+      "address": "Đường Cát Cát",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "Đường Cát Cát, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Natureview Restaurant",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4e1bd39d483bf2b0dbb43638",
+    "related_places": {},
+    "social_media": {}
+  },
+  {
+    "fsq_place_id": "6757b6e146fa5c2a84aaf6af",
+    "latitude": 22.334857,
+    "longitude": 103.840845,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1e0931735",
+        "name": "Coffee Shop",
+        "short_name": "Coffee Shop",
+        "plural_name": "Coffee Shops",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/coffeeshop_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "chains": [
+      {
+        "fsq_chain_id": "556f676fbd6a75a99038d8ec",
+        "name": "Starbucks"
+      }
+    ],
+    "date_created": "2024-12-10",
+    "date_refreshed": "2026-04-26",
+    "distance": 8248,
+    "extended_location": {},
+    "link": "/places/6757b6e146fa5c2a84aaf6af",
+    "location": {
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Starbucks",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/6757b6e146fa5c2a84aaf6af",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "6772ab9945927d0d0a4c798e",
+    "latitude": 22.334899,
+    "longitude": 103.840797,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1e0931735",
+        "name": "Coffee Shop",
+        "short_name": "Coffee Shop",
+        "plural_name": "Coffee Shops",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/coffeeshop_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "chains": [
+      {
+        "fsq_chain_id": "556f676fbd6a75a99038d8ec",
+        "name": "Starbucks"
+      }
+    ],
+    "date_created": "2024-12-30",
+    "date_refreshed": "2026-04-19",
+    "distance": 8246,
+    "extended_location": {},
+    "link": "/places/6772ab9945927d0d0a4c798e",
+    "location": {
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Starbucks",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/6772ab9945927d0d0a4c798e",
+    "related_places": {
+      "parent": {
+        "fsq_place_id": "5b35a30631ac6c0039752940",
+        "categories": [
+          {
+            "fsq_category_id": "4bf58dd8d48988d129951735",
+            "name": "Rail Station",
+            "short_name": "Rail Station",
+            "plural_name": "Rail Stations",
+            "icon": {
+              "prefix": "https://ss3.4sqi.net/img/categories_v2/travel/trainstation_",
+              "suffix": ".png"
+            }
+          }
+        ],
+        "name": "Sapa Station"
+      }
+    },
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4dc53348d164eb9c9fe7ee9f",
+    "latitude": 22.336185,
+    "longitude": 103.8398,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-05-07",
+    "date_refreshed": "2026-02-27",
+    "distance": 8225,
+    "extended_location": {},
+    "link": "/places/4dc53348d164eb9c9fe7ee9f",
+    "location": {
+      "address": "4B Thác Bạc",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "4B Thác Bạc, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Red Dao House",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4dc53348d164eb9c9fe7ee9f",
+    "related_places": {},
+    "social_media": {},
+    "tel": "203872927"
+  },
+  {
+    "fsq_place_id": "4b95e00df964a52061b634e3",
+    "latitude": 22.333025682513394,
+    "longitude": 103.84309217951665,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d116941735",
+        "name": "Bar",
+        "short_name": "Bar",
+        "plural_name": "Bars",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/nightlife/pub_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2010-03-09",
+    "date_refreshed": "2024-12-24",
+    "distance": 8362,
+    "extended_location": {},
+    "link": "/places/4b95e00df964a52061b634e3",
+    "location": {
+      "address": "2 Mường Hoa",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "2 Mường Hoa, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Mountain Bar & Pub",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4b95e00df964a52061b634e3",
+    "related_places": {},
+    "social_media": {},
+    "tel": "0983 889 798"
+  },
+  {
+    "fsq_place_id": "4ec79987e5fa232a7545518b",
+    "latitude": 22.336512329039223,
+    "longitude": 103.84390474668336,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-11-19",
+    "date_refreshed": "2024-10-03",
+    "distance": 8613,
+    "extended_location": {},
+    "link": "/places/4ec79987e5fa232a7545518b",
+    "location": {
+      "address": "Xuân Viên",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Xuân Viên (Ngũ Chỉ Sơn), Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Anh Dũng",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4ec79987e5fa232a7545518b",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4dc6463d887717c880395691",
+    "latitude": 22.36157827982436,
+    "longitude": 103.77812382081555,
+    "categories": [
+      {
+        "fsq_category_id": "56aa371be4b08b9a8d573560",
+        "name": "Waterfall",
+        "short_name": "Waterfall",
+        "plural_name": "Waterfalls",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/default_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-05-08",
+    "date_refreshed": "2026-03-03",
+    "distance": 6893,
+    "extended_location": {},
+    "link": "/places/4dc6463d887717c880395691",
+    "location": {
+      "address": "Quốc Lộ 4D",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Quốc Lộ 4D, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Thác Bạc (Silver Waterfall)",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4dc6463d887717c880395691",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4d06e702a2685481643fc4bd",
+    "latitude": 22.33097278619735,
+    "longitude": 103.83453543623172,
+    "categories": [
+      {
+        "fsq_category_id": "530e33ccbcbc57f1066bbff9",
+        "name": "Village",
+        "short_name": "Village",
+        "plural_name": "Villages",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/neighborhood_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d159941735",
+        "name": "Hiking Trail",
+        "short_name": "Trail",
+        "plural_name": "Hiking Trails",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/hikingtrail_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4eb1d4d54b900d56c88a45fc",
+        "name": "Mountain",
+        "short_name": "Mountain",
+        "plural_name": "Mountains",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/mountain_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2010-12-14",
+    "date_refreshed": "2026-04-26",
+    "distance": 7474,
+    "extended_location": {},
+    "link": "/places/4d06e702a2685481643fc4bd",
+    "location": {
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "Sa Pá, Tỉnh Lào Cai"
+    },
+    "name": "Cat Cat (Cát Cát)",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4d06e702a2685481643fc4bd",
+    "related_places": {},
+    "social_media": {}
+  },
+  {
+    "fsq_place_id": "4e9cfdaa46904f8f935ba654",
+    "latitude": 22.403093482448362,
+    "longitude": 103.83676528930664,
+    "categories": [
+      {
+        "fsq_category_id": "56aa371be4b08b9a8d573511",
+        "name": "Cave",
+        "short_name": "Cave",
+        "plural_name": "Caves",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/default_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-10-18",
+    "date_refreshed": "2025-12-27",
+    "distance": 13354,
+    "extended_location": {},
+    "link": "/places/4e9cfdaa46904f8f935ba654",
+    "location": {
+      "address": "Đường vào Tả Phìn",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Đường vào Tả Phìn, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Hang Tả Phìn (Ta Phin Cave)",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4e9cfdaa46904f8f935ba654",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "5ad445e62347241391a36bb5",
+    "latitude": 22.339197,
+    "longitude": 103.852621,
+    "categories": [
+      {
+        "fsq_category_id": "50be8ee891d4fa8dcc7199a7",
+        "name": "Market",
+        "short_name": "Market",
+        "plural_name": "Markets",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/shops/market_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2018-04-16",
+    "date_refreshed": "2026-04-22",
+    "distance": 9545,
+    "extended_location": {},
+    "link": "/places/5ad445e62347241391a36bb5",
+    "location": {
+      "address": "Sapa",
+      "locality": "H. Sa Pa",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Sapa, H. Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Sapa New Market (Chợ Sapa)",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5ad445e62347241391a36bb5",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4e900250f5b9f8967c849146",
+    "latitude": 22.334241,
+    "longitude": 103.841999,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-10-08",
+    "date_refreshed": "2026-03-12",
+    "distance": 8322,
+    "extended_location": {},
+    "link": "/places/4e900250f5b9f8967c849146",
+    "location": {
+      "address": "18 Cầu Mây",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "18 Cầu Mây, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Little Sapa",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4e900250f5b9f8967c849146",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4e5100438877402b06d91a63",
+    "latitude": 22.333858353660066,
+    "longitude": 103.84227460290128,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1db931735",
+        "name": "Tapas Restaurant",
+        "short_name": "Tapas",
+        "plural_name": "Tapas Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/tapas_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d116941735",
+        "name": "Bar",
+        "short_name": "Bar",
+        "plural_name": "Bars",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/nightlife/pub_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d16d941735",
+        "name": "Café",
+        "short_name": "Café",
+        "plural_name": "Cafés",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-08-21",
+    "date_refreshed": "2025-04-08",
+    "distance": 8328,
+    "email": "vietemotionsapa@gmail.com",
+    "extended_location": {},
+    "link": "/places/4e5100438877402b06d91a63",
+    "location": {
+      "address": "27 Cầu Mây",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "27 Cầu Mây, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Viet Emotion Restaurant & Tapas Café",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4e5100438877402b06d91a63",
+    "related_places": {},
+    "social_media": {},
+    "tel": "203872559"
+  },
+  {
+    "fsq_place_id": "54ffeef0498e5da965560c1c",
+    "latitude": 22.309694142961245,
+    "longitude": 103.87613331162657,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2015-03-11",
+    "date_refreshed": "2026-04-04",
+    "distance": 10964,
+    "extended_location": {},
+    "link": "/places/54ffeef0498e5da965560c1c",
+    "location": {
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Ngoc Lien Restaurant",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/54ffeef0498e5da965560c1c",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4cb01c5c75ebb60c7f01c2ad",
+    "latitude": 22.3340363061067,
+    "longitude": 103.84212812070885,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2010-10-09",
+    "date_refreshed": "2020-01-08",
+    "distance": 8323,
+    "extended_location": {},
+    "link": "/places/4cb01c5c75ebb60c7f01c2ad",
+    "location": {
+      "address": "24 Cầu Mây",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "24 Cầu Mây, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Nature Restaurant Grill & Bar",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4cb01c5c75ebb60c7f01c2ad",
+    "related_places": {},
+    "social_media": {},
+    "tel": "203872094"
+  },
+  {
+    "fsq_place_id": "4d5e16fc865a224b5b4d8e85",
+    "latitude": 22.334007117622093,
+    "longitude": 103.8421610435507,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1cc941735",
+        "name": "Steakhouse",
+        "short_name": "Steakhouse",
+        "plural_name": "Steakhouses",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/steakhouse_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d16d941735",
+        "name": "Café",
+        "short_name": "Café",
+        "plural_name": "Cafés",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-02-18",
+    "date_refreshed": "2023-12-17",
+    "distance": 8325,
+    "extended_location": {},
+    "link": "/places/4d5e16fc865a224b5b4d8e85",
+    "location": {
+      "address": "31 Cầu Mây",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "31 Cầu Mây, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "T-Bone Steak House",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4d5e16fc865a224b5b4d8e85",
+    "related_places": {},
+    "social_media": {},
+    "tel": "203873208"
+  },
+  {
+    "fsq_place_id": "5b690af32be425002c7b296d",
+    "latitude": 22.336116,
+    "longitude": 103.84372,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d16d941735",
+        "name": "Café",
+        "short_name": "Café",
+        "plural_name": "Cafés",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d143941735",
+        "name": "Breakfast Spot",
+        "short_name": "Breakfast",
+        "plural_name": "Breakfast Spots",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/breakfast_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d1e0931735",
+        "name": "Coffee Shop",
+        "short_name": "Coffee Shop",
+        "plural_name": "Coffee Shops",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/coffeeshop_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2018-08-07",
+    "date_refreshed": "2026-02-27",
+    "distance": 8575,
+    "extended_location": {},
+    "link": "/places/5b690af32be425002c7b296d",
+    "location": {
+      "locality": "H. Sa Pa",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "H. Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Kafa Cafe",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5b690af32be425002c7b296d",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "59bf1a022955130fbf78626a",
+    "latitude": 22.335003,
+    "longitude": 103.841296,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1e0931735",
+        "name": "Coffee Shop",
+        "short_name": "Coffee Shop",
+        "plural_name": "Coffee Shops",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/coffeeshop_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2017-09-18",
+    "date_refreshed": "2025-11-12",
+    "distance": 8297,
+    "extended_location": {},
+    "link": "/places/59bf1a022955130fbf78626a",
+    "location": {
+      "address": "37 Xuan Vien",
+      "locality": "H. Sa Pa",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "37 Xuan Vien, H. Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "cộng cà phê",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/59bf1a022955130fbf78626a",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4cbd7f66c7228cfae1052ace",
+    "latitude": 22.333146831733213,
+    "longitude": 103.84271585575488,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d110941735",
+        "name": "Italian Restaurant",
+        "short_name": "Italian",
+        "plural_name": "Italian Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/italian_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d123941735",
+        "name": "Wine Bar",
+        "short_name": "Wine Bar",
+        "plural_name": "Wine Bars",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/winery_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d1ca941735",
+        "name": "Pizzeria",
+        "short_name": "Pizza",
+        "plural_name": "Pizzerias",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/pizza_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2010-10-19",
+    "date_refreshed": "2026-01-21",
+    "distance": 8333,
+    "email": "deltasapa.restaurant@gmail.com",
+    "extended_location": {},
+    "link": "/places/4cbd7f66c7228cfae1052ace",
+    "location": {
+      "address": "33 Cầu Mây",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "33 Cầu Mây, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Delta Italian Restaurant",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4cbd7f66c7228cfae1052ace",
+    "related_places": {},
+    "social_media": {
+      "facebook_id": "967337983289351"
+    },
+    "tel": "203871799"
+  },
+  {
+    "fsq_place_id": "4da534b20cb6d75e29f3c851",
+    "latitude": 22.333352258204762,
+    "longitude": 103.84257798889706,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-04-13",
+    "date_refreshed": "2020-07-10",
+    "distance": 8330,
+    "extended_location": {},
+    "link": "/places/4da534b20cb6d75e29f3c851",
+    "location": {
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Sapa Lotus Restaurant",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4da534b20cb6d75e29f3c851",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4dc60d45d22dafda2fb5a635",
+    "latitude": 22.334019691544874,
+    "longitude": 103.8419473171234,
+    "categories": [
+      {
+        "fsq_category_id": "50be8ee891d4fa8dcc7199a7",
+        "name": "Market",
+        "short_name": "Market",
+        "plural_name": "Markets",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/shops/market_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d1fa941735",
+        "name": "Farmers Market",
+        "short_name": "Farmers Market",
+        "plural_name": "Farmers Markets",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/shops/food_farmersmarket_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-05-08",
+    "date_refreshed": "2025-11-28",
+    "distance": 8306,
+    "extended_location": {},
+    "link": "/places/4dc60d45d22dafda2fb5a635",
+    "location": {
+      "address": "Cầu Mây",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "Cầu Mây (Tuệ Tĩnh), Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Chợ Sa Pa (Sapa Market)",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4dc60d45d22dafda2fb5a635",
+    "related_places": {},
+    "social_media": {}
+  },
+  {
+    "fsq_place_id": "4d95ab320caaa143bab462b3",
+    "latitude": 22.333022614701836,
+    "longitude": 103.84286218023918,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d16a941735",
+        "name": "Bakery",
+        "short_name": "Bakery",
+        "plural_name": "Bakeries",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/bakery_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d16d941735",
+        "name": "Café",
+        "short_name": "Café",
+        "plural_name": "Cafés",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-04-01",
+    "date_refreshed": "2023-10-17",
+    "distance": 8340,
+    "extended_location": {},
+    "link": "/places/4d95ab320caaa143bab462b3",
+    "location": {
+      "address": "Cầu Mây",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Cầu Mây, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Highland Bakery",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4d95ab320caaa143bab462b3",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4c6d509e65eda0937c314ed0",
+    "latitude": 22.33340375207339,
+    "longitude": 103.84246633678559,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2010-08-19",
+    "date_refreshed": "2025-07-07",
+    "distance": 8323,
+    "email": "michellsapa@gmail.com",
+    "extended_location": {},
+    "link": "/places/4c6d509e65eda0937c314ed0",
+    "location": {
+      "address": "34 Cầu Mây",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "34 Cầu Mây, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Michell Restaurant",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4c6d509e65eda0937c314ed0",
+    "related_places": {},
+    "social_media": {},
+    "tel": "203872518"
+  },
+  {
+    "fsq_place_id": "51cf9f63498eb13e2f673a33",
+    "latitude": 22.327547528932374,
+    "longitude": 103.83420187440841,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1df941735",
+        "name": "Bridge",
+        "short_name": "Bridge",
+        "plural_name": "Bridges",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/bridge_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2013-06-30",
+    "date_refreshed": "2026-04-23",
+    "distance": 7275,
+    "extended_location": {},
+    "link": "/places/51cf9f63498eb13e2f673a33",
+    "location": {
+      "address": "Cát Cát",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Cát Cát, Sa Pá, Tỉnh Lào Cai"
+    },
+    "name": "Cầu Si",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/51cf9f63498eb13e2f673a33",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "56875078498e112e5ffb9a20",
+    "latitude": 22.332364,
+    "longitude": 103.83532,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d16d941735",
+        "name": "Café",
+        "short_name": "Café",
+        "plural_name": "Cafés",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2016-01-02",
+    "date_refreshed": "2023-03-06",
+    "distance": 7617,
+    "extended_location": {},
+    "link": "/places/56875078498e112e5ffb9a20",
+    "location": {
+      "address": "Cát Cát Village",
+      "locality": "Láo Cái",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Cát Cát Village, Láo Cái"
+    },
+    "name": "Sapa HL Studio",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/56875078498e112e5ffb9a20",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "66d70db29b5b594dd930fdac",
+    "latitude": 22.333483,
+    "longitude": 103.83808,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2024-09-03",
+    "date_refreshed": "2026-03-04",
+    "distance": 7926,
+    "extended_location": {},
+    "link": "/places/66d70db29b5b594dd930fdac",
+    "location": {
+      "address": "27 Hoàng Liên, TT. Sa Pa, Sa Pa, Lào Cai 31100",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "27 Hoàng Liên, TT. Sa Pa, Sa Pa, Lào Cai 31100, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Mam Restaurant & Coffee",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/66d70db29b5b594dd930fdac",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "64ddc95bac751e7d537151a0",
+    "latitude": 22.332458,
+    "longitude": 103.83908,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d16d941735",
+        "name": "Café",
+        "short_name": "Café",
+        "plural_name": "Cafés",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2023-08-17",
+    "date_refreshed": "2026-04-21",
+    "distance": 7965,
+    "extended_location": {},
+    "link": "/places/64ddc95bac751e7d537151a0",
+    "location": {
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Tỉnh Lào Cai"
+    },
+    "name": "White Cloud Coffee And Restaurant",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/64ddc95bac751e7d537151a0",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "511a3b3ce4b0e64d40114785",
+    "latitude": 22.333013471968243,
+    "longitude": 103.84050794307879,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2013-02-12",
+    "date_refreshed": "2018-06-23",
+    "distance": 8123,
+    "extended_location": {},
+    "link": "/places/511a3b3ce4b0e64d40114785",
+    "location": {
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Panorama Restaurant",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/511a3b3ce4b0e64d40114785",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    },
+    "tel": "0333 845 845"
+  },
+  {
+    "fsq_place_id": "50323d87e4b06888b84107c8",
+    "latitude": 22.335351649774328,
+    "longitude": 103.8399588011437,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1df931735",
+        "name": "BBQ Joint",
+        "short_name": "BBQ",
+        "plural_name": "BBQ Joints",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/bbqalt_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-08-20",
+    "date_refreshed": "2026-04-18",
+    "distance": 8194,
+    "extended_location": {},
+    "link": "/places/50323d87e4b06888b84107c8",
+    "location": {
+      "address": "Chợ trung tâm Sa Pa",
+      "locality": "Sa Pa",
+      "region": "Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Chợ trung tâm Sa Pa, Sa Pa, Lào Cai"
+    },
+    "name": "Quán nướng trong chợ Sa Pa",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/50323d87e4b06888b84107c8",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "51b3072d498edca47f310f54",
+    "latitude": 22.334257931283336,
+    "longitude": 103.84151565261489,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2013-06-08",
+    "date_refreshed": "2026-03-17",
+    "distance": 8279,
+    "extended_location": {},
+    "link": "/places/51b3072d498edca47f310f54",
+    "location": {
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Cơm Phở Binh Dân",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/51b3072d498edca47f310f54",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4cb0272f1463a143e0a19aa9",
+    "latitude": 22.334103,
+    "longitude": 103.841948,
+    "categories": [],
+    "date_created": "2010-10-09",
+    "date_refreshed": "2016-01-16",
+    "distance": 8310,
+    "extended_location": {},
+    "link": "/places/4cb0272f1463a143e0a19aa9",
+    "location": {
+      "address": "",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Bebop Bar",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4cb0272f1463a143e0a19aa9",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4e9bfa894690c21335a6d184",
+    "latitude": 22.335658,
+    "longitude": 103.841085,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d142941735",
+        "name": "Asian Restaurant",
+        "short_name": "Asian",
+        "plural_name": "Asian Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/asian_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-10-17",
+    "date_refreshed": "2017-04-03",
+    "distance": 8312,
+    "extended_location": {},
+    "link": "/places/4e9bfa894690c21335a6d184",
+    "location": {
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Tỉnh Lào Cai"
+    },
+    "name": "Xua&Nay",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4e9bfa894690c21335a6d184",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "53745a4b498e646dbe6eff1c",
+    "latitude": 22.332137106309514,
+    "longitude": 103.844125541859,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2014-05-15",
+    "date_refreshed": "2015-05-11",
+    "distance": 8415,
+    "extended_location": {},
+    "link": "/places/53745a4b498e646dbe6eff1c",
+    "location": {
+      "address": "33 Mường Hoa",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "33 Mường Hoa, Sa Pa, Tỉnh Lào Cai, Tỉnh Lào Cai"
+    },
+    "name": "Sapa Essence",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/53745a4b498e646dbe6eff1c",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4d722ee3f7c38cfa9936a23d",
+    "latitude": 22.33633737458659,
+    "longitude": 103.84272717847654,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4bf58dd8d48988d14e941735",
+        "name": "American Restaurant",
+        "short_name": "American",
+        "plural_name": "American Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/default_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-03-05",
+    "date_refreshed": "2026-02-18",
+    "distance": 8497,
+    "extended_location": {},
+    "link": "/places/4d722ee3f7c38cfa9936a23d",
+    "location": {
+      "address": "17 Xuân Viên",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "country": "VN",
+      "formatted_address": "17 Xuân Viên, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Sapa Cuisine",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4d722ee3f7c38cfa9936a23d",
+    "related_places": {},
+    "social_media": {},
+    "tel": "0988 911 777"
+  },
+  {
+    "fsq_place_id": "5bf4c2f4780eee002c624a54",
+    "latitude": 22.33625377379818,
+    "longitude": 103.84295091034346,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1e0931735",
+        "name": "Coffee Shop",
+        "short_name": "Coffee Shop",
+        "plural_name": "Coffee Shops",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/coffeeshop_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2018-11-21",
+    "date_refreshed": "2026-04-21",
+    "distance": 8513,
+    "extended_location": {},
+    "link": "/places/5bf4c2f4780eee002c624a54",
+    "location": {
+      "address": "037 Xuân Viên",
+      "locality": "Sapa",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "037 Xuân Viên, Sapa, Tỉnh Lào Cai"
+    },
+    "name": "Cộng Cà Phê",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5bf4c2f4780eee002c624a54",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    },
+    "tel": "0911 811 154"
+  },
+  {
+    "fsq_place_id": "5d37ffe523f68a00087b3402",
+    "latitude": 22.332621,
+    "longitude": 103.844978,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d110941735",
+        "name": "Italian Restaurant",
+        "short_name": "Italian",
+        "plural_name": "Italian Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/italian_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2019-07-24",
+    "date_refreshed": "2024-05-31",
+    "distance": 8517,
+    "extended_location": {},
+    "link": "/places/5d37ffe523f68a00087b3402",
+    "location": {
+      "locality": "H. Sa Pa",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "H. Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Italian Corner Restaurant",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5d37ffe523f68a00087b3402",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "5c10dab664c8e1002cd28713",
+    "latitude": 22.336273,
+    "longitude": 103.84302,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d16d941735",
+        "name": "Café",
+        "short_name": "Café",
+        "plural_name": "Cafés",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2018-12-12",
+    "date_refreshed": "2026-04-21",
+    "distance": 8520,
+    "extended_location": {},
+    "link": "/places/5c10dab664c8e1002cd28713",
+    "location": {
+      "locality": "TT. Sa Pa",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "TT. Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "1991 Sapa",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5c10dab664c8e1002cd28713",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "53688e98498e2d56e7c01332",
+    "latitude": 22.336776,
+    "longitude": 103.844063,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d16d941735",
+        "name": "Café",
+        "short_name": "Café",
+        "plural_name": "Cafés",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2014-05-06",
+    "date_refreshed": "2025-04-13",
+    "distance": 8641,
+    "extended_location": {},
+    "link": "/places/53688e98498e2d56e7c01332",
+    "location": {
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Memory Coffee",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/53688e98498e2d56e7c01332",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4f434c4ee4b05efae814494b",
+    "latitude": 22.33683183827806,
+    "longitude": 103.8444878731815,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d161941735",
+        "name": "Lake",
+        "short_name": "Lake",
+        "plural_name": "Lakes",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/lake_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-02-21",
+    "date_refreshed": "2026-04-22",
+    "distance": 8682,
+    "extended_location": {},
+    "link": "/places/4f434c4ee4b05efae814494b",
+    "location": {
+      "address": "Xuân Viên",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Xuân Viên (Ngũ Chỉ Sơn), Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Sapa Lake (Hồ Sa Pa)",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4f434c4ee4b05efae814494b",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4e990e399a52ceeb880895ae",
+    "latitude": 22.33632595871406,
+    "longitude": 103.84693929642732,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d172941735",
+        "name": "Post Office",
+        "short_name": "Post Office",
+        "plural_name": "Post Offices",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/building/postoffice_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2011-10-15",
+    "date_refreshed": "2023-12-27",
+    "distance": 8879,
+    "extended_location": {},
+    "link": "/places/4e990e399a52ceeb880895ae",
+    "location": {
+      "address": "6 Thạch Sơn",
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "6 Thạch Sơn, Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Bưu Điện Sa Pa (Sapa Post Office)",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4e990e399a52ceeb880895ae",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "513963a0e4b0811e717074d9",
+    "latitude": 22.317402,
+    "longitude": 103.855374,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d15f941735",
+        "name": "Field",
+        "short_name": "Field",
+        "plural_name": "Fields",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/field_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2013-03-08",
+    "date_refreshed": "2026-04-19",
+    "distance": 8987,
+    "extended_location": {},
+    "link": "/places/513963a0e4b0811e717074d9",
+    "location": {
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Middle Earth",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/513963a0e4b0811e717074d9",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "5314c2f8498e70b9be954b78",
+    "latitude": 22.320553305044317,
+    "longitude": 103.85822886930865,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d162941735",
+        "name": "Other Great Outdoors",
+        "short_name": "Other Outdoors",
+        "plural_name": "Other Great Outdoors",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/outdoors_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2014-03-03",
+    "date_refreshed": "2026-04-19",
+    "distance": 9353,
+    "extended_location": {},
+    "link": "/places/5314c2f8498e70b9be954b78",
+    "location": {
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Black Hmong Village",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5314c2f8498e70b9be954b78",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "5146fb22e4b087df8a93cfd3",
+    "latitude": 22.283198,
+    "longitude": 103.675533,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d126941735",
+        "name": "Government Building",
+        "short_name": "Government",
+        "plural_name": "Government Buildings",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/building/government_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2013-03-18",
+    "date_refreshed": "2024-09-30",
+    "distance": 9890,
+    "extended_location": {},
+    "link": "/places/5146fb22e4b087df8a93cfd3",
+    "location": {
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Uỷ Ban Nhân Dân Bản Bo - Lai Châu",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5146fb22e4b087df8a93cfd3",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "58c648855e78962f920e8516",
+    "latitude": 22.30936,
+    "longitude": 103.87614,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1d1941735",
+        "name": "Noodle Restaurant",
+        "short_name": "Noodles",
+        "plural_name": "Noodle Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/ramen_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2017-03-13",
+    "date_refreshed": "2026-03-08",
+    "distance": 10961,
+    "extended_location": {},
+    "link": "/places/58c648855e78962f920e8516",
+    "location": {
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Bà Hảo",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/58c648855e78962f920e8516",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "5de201075a30d0000850c561",
+    "latitude": 22.407436,
+    "longitude": 103.78862,
+    "categories": [
+      {
+        "fsq_category_id": "530e33ccbcbc57f1066bbff9",
+        "name": "Village",
+        "short_name": "Village",
+        "plural_name": "Villages",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/neighborhood_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2019-11-30",
+    "date_refreshed": "2019-11-30",
+    "distance": 12091,
+    "extended_location": {},
+    "link": "/places/5de201075a30d0000850c561",
+    "location": {
+      "locality": "H. Sa Pa",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "H. Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Ban Khoang",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5de201075a30d0000850c561",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "591c2f7378782c128191f602",
+    "latitude": 22.406634,
+    "longitude": 103.846059,
+    "categories": [
+      {
+        "fsq_category_id": "530e33ccbcbc57f1066bbff9",
+        "name": "Village",
+        "short_name": "Village",
+        "plural_name": "Villages",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/neighborhood_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2017-05-17",
+    "date_refreshed": "2025-12-27",
+    "distance": 14195,
+    "extended_location": {},
+    "link": "/places/591c2f7378782c128191f602",
+    "location": {
+      "locality": "Sapa",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Sapa, Tỉnh Lào Cai"
+    },
+    "name": "Xã Tả Phìn",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/591c2f7378782c128191f602",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "643789b0046f0e0b35f9aa6f",
+    "latitude": 22.171259,
+    "longitude": 103.755967,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d16d941735",
+        "name": "Café",
+        "short_name": "Café",
+        "plural_name": "Cafés",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/cafe_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2023-04-13",
+    "date_refreshed": "2025-06-17",
+    "distance": 14378,
+    "extended_location": {},
+    "link": "/places/643789b0046f0e0b35f9aa6f",
+    "location": {
+      "locality": "Tan Uyen",
+      "region": "Tỉnh Lai Châu",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Tan Uyen, Tỉnh Lai Châu"
+    },
+    "name": "Mía coffee",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/643789b0046f0e0b35f9aa6f",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "69293e8887592c4d410f9c02",
+    "latitude": 22.168663,
+    "longitude": 103.7576,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2025-11-28",
+    "date_refreshed": "2025-11-28",
+    "distance": 14650,
+    "extended_location": {},
+    "link": "/places/69293e8887592c4d410f9c02",
+    "location": {
+      "region": "Tỉnh Lai Châu",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Tỉnh Lai Châu"
+    },
+    "name": "Nhà Hàng Thành Râu",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/69293e8887592c4d410f9c02",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "5715d476498e450205093471",
+    "latitude": 22.294051,
+    "longitude": 103.915305,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d14a941735",
+        "name": "Vietnamese Restaurant",
+        "short_name": "Vietnamese",
+        "plural_name": "Vietnamese Restaurants",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/vietnamese_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2016-04-19",
+    "date_refreshed": "2023-04-13",
+    "distance": 14954,
+    "extended_location": {},
+    "link": "/places/5715d476498e450205093471",
+    "location": {
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Nhà Hàng Anh Hai",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5715d476498e450205093471",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "50336d06e4b068ac48b6c342",
+    "latitude": 22.437702606545603,
+    "longitude": 103.7712939964256,
+    "categories": [
+      {
+        "fsq_category_id": "4f2a25ac4b909258e854f55f",
+        "name": "Neighborhood",
+        "short_name": "Neighborhood",
+        "plural_name": "Neighborhoods",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/neighborhood_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4eb1d4d54b900d56c88a45fc",
+        "name": "Mountain",
+        "short_name": "Mountain",
+        "plural_name": "Mountains",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/mountain_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-08-21",
+    "date_refreshed": "2024-03-19",
+    "distance": 15302,
+    "extended_location": {},
+    "link": "/places/50336d06e4b068ac48b6c342",
+    "location": {
+      "locality": "Bát Xát",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Bát Xát, Tỉnh Lào Cai"
+    },
+    "name": "Tả Giàng Phình",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/50336d06e4b068ac48b6c342",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "556fcf61498edb3cb9270ffa",
+    "latitude": 22.323536712474976,
+    "longitude": 103.62259567105959,
+    "categories": [
+      {
+        "fsq_category_id": "530e33ccbcbc57f1066bbff3",
+        "name": "Town",
+        "short_name": "Town",
+        "plural_name": "Towns",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/neighborhood_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2015-06-04",
+    "date_refreshed": "2024-10-20",
+    "distance": 15378,
+    "extended_location": {},
+    "link": "/places/556fcf61498edb3cb9270ffa",
+    "location": {
+      "locality": "Tam Đường",
+      "region": "Tỉnh Lai Châu",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Tam Đường, Tỉnh Lai Châu"
+    },
+    "name": "Tam Đường",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/556fcf61498edb3cb9270ffa",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "51274f81e4b01d957848b658",
+    "latitude": 22.16026157721056,
+    "longitude": 103.75303745269774,
+    "categories": [
+      {
+        "fsq_category_id": "530e33ccbcbc57f1066bbff3",
+        "name": "Town",
+        "short_name": "Town",
+        "plural_name": "Towns",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/neighborhood_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2013-02-22",
+    "date_refreshed": "2018-03-05",
+    "distance": 15626,
+    "extended_location": {},
+    "link": "/places/51274f81e4b01d957848b658",
+    "location": {
+      "locality": "Lai Châu",
+      "region": "Tỉnh Lai Châu",
+      "country": "VN",
+      "formatted_address": "Lai Châu, Tỉnh Lai Châu"
+    },
+    "name": "Tân Uyên",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/51274f81e4b01d957848b658",
+    "related_places": {},
+    "social_media": {}
+  },
+  {
+    "fsq_place_id": "5d5f3611fa5d410008a11ae4",
+    "latitude": 22.44187,
+    "longitude": 103.76367,
+    "categories": [
+      {
+        "fsq_category_id": "530e33ccbcbc57f1066bbff9",
+        "name": "Village",
+        "short_name": "Village",
+        "plural_name": "Villages",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/neighborhood_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2019-08-23",
+    "date_refreshed": "2026-03-27",
+    "distance": 15778,
+    "extended_location": {},
+    "link": "/places/5d5f3611fa5d410008a11ae4",
+    "location": {
+      "locality": "Tả Giàng Phình",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Tả Giàng Phình, Tỉnh Lào Cai"
+    },
+    "name": "Tả Giàng Phình",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/5d5f3611fa5d410008a11ae4",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4ffd2d3ce4b05064a147db51",
+    "latitude": 22.396407142932937,
+    "longitude": 103.88887509591267,
+    "categories": [
+      {
+        "fsq_category_id": "4f4533804b9074f6e4fb0105",
+        "name": "Elementary School",
+        "short_name": "Elementary School",
+        "plural_name": "Elementary Schools",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/building/school_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-07-11",
+    "date_refreshed": "2025-05-01",
+    "distance": 16249,
+    "extended_location": {},
+    "link": "/places/4ffd2d3ce4b05064a147db51",
+    "location": {
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": ""
+    },
+    "name": "Truong Tieu Hoc Trung Trai",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4ffd2d3ce4b05064a147db51",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "517e8c84e4b02beba6e6d432",
+    "latitude": 22.39733785652066,
+    "longitude": 103.88898269826412,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1cb941735",
+        "name": "Food Truck",
+        "short_name": "Food Truck",
+        "plural_name": "Food Trucks",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/food/streetfood_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2013-04-29",
+    "date_refreshed": "2019-05-07",
+    "distance": 16326,
+    "extended_location": {},
+    "link": "/places/517e8c84e4b02beba6e6d432",
+    "location": {
+      "address": "Ngã 4 Hoàng Liên",
+      "locality": "Sapa",
+      "region": "Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Ngã 4 Hoàng Liên (Đối diện nhà nghỉ Kho bạc), Sapa, Lào Cai"
+    },
+    "name": "Quán nướng, lẩu cô Hương",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/517e8c84e4b02beba6e6d432",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "50324ba2e4b0c65b4c339b0a",
+    "latitude": 22.31831903309799,
+    "longitude": 103.59832763671875,
+    "categories": [
+      {
+        "fsq_category_id": "530e33ccbcbc57f1066bbff9",
+        "name": "Village",
+        "short_name": "Village",
+        "plural_name": "Villages",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/neighborhood_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-08-20",
+    "date_refreshed": "2022-12-30",
+    "distance": 17766,
+    "extended_location": {},
+    "link": "/places/50324ba2e4b0c65b4c339b0a",
+    "location": {
+      "locality": "Tam Duong",
+      "region": "Tỉnh Lai Châu",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Tam Duong, Tỉnh Lai Châu"
+    },
+    "name": "Nùng Nàng",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/50324ba2e4b0c65b4c339b0a",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "4ff94303e4b05ae524ed817a",
+    "latitude": 22.278724917396637,
+    "longitude": 103.94246019814285,
+    "categories": [
+      {
+        "fsq_category_id": "4f2a25ac4b909258e854f55f",
+        "name": "Neighborhood",
+        "short_name": "Neighborhood",
+        "plural_name": "Neighborhoods",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/neighborhood_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2012-07-08",
+    "date_refreshed": "2019-03-18",
+    "distance": 17889,
+    "extended_location": {},
+    "link": "/places/4ff94303e4b05ae524ed817a",
+    "location": {
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Sử Pán",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/4ff94303e4b05ae524ed817a",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "626dec7fd0a6f63c23191ebe",
+    "latitude": 22.41274,
+    "longitude": 103.8999,
+    "categories": [
+      {
+        "fsq_category_id": "4bf58dd8d48988d1df941735",
+        "name": "Bridge",
+        "short_name": "Bridge",
+        "plural_name": "Bridges",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/bridge_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2022-05-01",
+    "date_refreshed": "2026-04-14",
+    "distance": 18308,
+    "extended_location": {},
+    "link": "/places/626dec7fd0a6f63c23191ebe",
+    "location": {
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Tỉnh Lào Cai"
+    },
+    "name": "Cầu Móng Sến",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/626dec7fd0a6f63c23191ebe",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  },
+  {
+    "fsq_place_id": "50f61ae3e4b0f4799f9e98dc",
+    "latitude": 22.414225223991625,
+    "longitude": 103.90204851842631,
+    "categories": [
+      {
+        "fsq_category_id": "4f2a25ac4b909258e854f55f",
+        "name": "Neighborhood",
+        "short_name": "Neighborhood",
+        "plural_name": "Neighborhoods",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/neighborhood_",
+          "suffix": ".png"
+        }
+      },
+      {
+        "fsq_category_id": "4eb1d4d54b900d56c88a45fc",
+        "name": "Mountain",
+        "short_name": "Mountain",
+        "plural_name": "Mountains",
+        "icon": {
+          "prefix": "https://ss3.4sqi.net/img/categories_v2/parks_outdoors/mountain_",
+          "suffix": ".png"
+        }
+      }
+    ],
+    "date_created": "2013-01-16",
+    "date_refreshed": "2017-09-20",
+    "distance": 18581,
+    "extended_location": {},
+    "link": "/places/50f61ae3e4b0f4799f9e98dc",
+    "location": {
+      "locality": "Sa Pá",
+      "region": "Tỉnh Lào Cai",
+      "postcode": "",
+      "country": "VN",
+      "formatted_address": "Sa Pa, Tỉnh Lào Cai"
+    },
+    "name": "Trung Chải",
+    "placemaker_url": "https://foursquare.com/placemakers/review-place/50f61ae3e4b0f4799f9e98dc",
+    "related_places": {},
+    "social_media": {
+      "twitter": ""
+    }
+  }
+]

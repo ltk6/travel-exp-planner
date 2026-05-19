@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Compass, List, Moon, Sun, User, Lock } from "lucide-react";
+import { Compass, List, Moon, Sun, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type ItemProps = {
@@ -85,11 +85,6 @@ export function AppSidebar() {
         label={isDark ? "Chuyển sang sáng" : "Chuyển sang tối"}
         onClick={() => setTheme(isDark ? "light" : "dark")}
       />
-
-      <div className="flex-1" />
-
-      {/* Account — placeholder */}
-      <RailItem Icon={User} label="Tài khoản" disabled />
     </aside>
   );
 }

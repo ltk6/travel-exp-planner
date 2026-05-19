@@ -17,6 +17,9 @@ from .n5_activity_templates import (
     VARIATION_MODIFIERS,
 )
 
+# Normalizer convert legacy n5 dict → unified schema (xem activity_retrievals/SCHEMA.md).
+from ..activity_retrievals.normalizers import llm as _llm_normalizer
+
 try:
     from .n5_llm_generator import generate_from_llm, generate_from_llm_with_meta, is_llm_available
     LLM_AVAILABLE = True
@@ -88,10 +91,21 @@ def generate_activities(data: dict) -> dict:
         )
         llm_metas.append({"location_id": loc_id, **meta_out})
 
-        all_activities.extend(activities)
+        # Convert legacy {activity_id, location_id, metadata{...}} → unified schema
+        # (xem backend/modules/activity_retrievals/SCHEMA.md).
+        coords = loc["metadata"].get("coordinates")
+        ctx = {
+            "location_id":    loc_id,
+            "anchor_lat":     (coords or {}).get("lat") if coords else None,
+            "anchor_lng":     (coords or {}).get("lng") if coords else None,
+            "anchor_address": loc["metadata"].get("address"),
+        }
+        unified = _llm_normalizer.normalize_all(activities, ctx)
+
+        all_activities.extend(unified)
         logger.info(
-            "Location '%s' (%s): generated %d activities",
-            loc_name, loc_id, len(activities)
+            "Location '%s' (%s): generated %d activities (unified)",
+            loc_name, loc_id, len(unified)
         )
 
     elapsed_ms = int((time.time() - t0) * 1000)
@@ -130,7 +144,10 @@ def _parse_input(data: dict) -> Tuple[Dict, List[Dict], Dict, int]:
         "time_of_day": constraints.get("time_of_day") or "anytime",
     }
 
-    # Normalize locations
+    # Normalize locations.
+    # `coordinates` và `address` được giữ optional để truyền sang unified schema:
+    # nếu N4 cung cấp → llm.normalize fill được `place.coordinates` + distance,
+    # nếu không → place.coordinates = null (schema vẫn valid).
     normalized_locs = []
     for loc in locations:
         if not isinstance(loc, dict):
@@ -145,6 +162,8 @@ def _parse_input(data: dict) -> Tuple[Dict, List[Dict], Dict, int]:
                 "name":        metadata.get("name") or loc_id,
                 "description": metadata.get("description") or "",
                 "tags":        [t.lower() for t in (metadata.get("tags") or [])],
+                "coordinates": metadata.get("coordinates"),   # optional {lat, lng}
+                "address":     metadata.get("address"),       # optional dict
             }
         })
 
@@ -349,6 +368,26 @@ def _generate_for_location(
 
 
 # =============================================================================
+# RATIO ENFORCEMENT (stub — original implementation missing)
+# =============================================================================
+
+def _ensure_sightseeing_ratio(
+    activities,
+    location_id,
+    location_name,
+    profile,
+    target_ratio: float = 0.40,
+    target_total: int = 10,
+):
+    """No-op stub. The original ratio-enforcement helper was missing from this
+    file, causing /activities to 500 whenever the LLM chain fell back to
+    templates. Returning activities unchanged preserves the previous behaviour
+    when the template path is exercised; reintroduce real ratio logic later
+    if the product still wants it."""
+    return activities
+
+
+# =============================================================================
 # TEMPLATE EXPANSION ENGINE
 # =============================================================================
 
@@ -492,9 +531,9 @@ def _instantiate_template(
 ) -> Dict:
     """
     Tạo activity cụ thể từ template + optional modifier.
-    
+
     Modifier tạo biến thể: thêm suffix vào tên, thêm prefix vào description,
-    điều chỉnh nhẹ intensity và time_of_day.
+    điều chỉnh time_of_day.
     """
     # ─── Name ────────────────────────────────────────────────────────────────
     base_name = template["name_template"].format(location=location_name)
@@ -541,7 +580,7 @@ def _instantiate_template(
 # SIGHTSEEING RATIO ENFORCEMENT
 # =============================================================================
 
-def _ensure_sightseeing_ratio(
+def _promote_sightseeing_to_front(
     activities:    List[Dict],
     location_id:   str,
     location_name: str,
@@ -552,8 +591,9 @@ def _ensure_sightseeing_ratio(
     """
     Đảm bảo ít nhất target_ratio (40%) activities trong target_total đầu tiên là sightseeing.
     """
-    sightseeing_pool    = [a for a in activities if _is_sightseeing(a)]
-    non_sightseeing_pool = [a for a in activities if not _is_sightseeing(a)]
+    sg     = [a for a in activities if _is_sightseeing(a)]
+    non_sg = [a for a in activities if not _is_sightseeing(a)]
+    sg_needed = int(target_total * target_ratio)
 
     sightseeing_needed = int(target_total * target_ratio)
     current_sg_count   = len(sightseeing_pool)

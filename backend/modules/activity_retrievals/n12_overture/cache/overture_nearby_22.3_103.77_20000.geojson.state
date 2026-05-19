@@ -1,0 +1,14 @@
+{
+  "last_release": "2026-04-15.0",
+  "last_run": "2026-04-30T06:09:25.796490+00:00",
+  "theme": "places",
+  "type": "place",
+  "bbox": {
+    "xmin": 103.57581458297729,
+    "ymin": 22.120337765001796,
+    "xmax": 103.9641854170227,
+    "ymax": 22.479662234998205
+  },
+  "backend": "geojson",
+  "output": "c:\\Users\\Khanh\\OneDrive\\Documents\\School\\travel-exp-planner\\backend\\modules\\activitiy_retrievals\\n12_overture\\cache\\overture_nearby_22.3_103.77_20000.geojson"
+}

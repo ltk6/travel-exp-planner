@@ -98,6 +98,15 @@ export type ActivityMetadata = {
   intensity?: number;
   physical_level?: number | null;
   social_level?: number | null;
+  // v2 (N9-N14 processor) extras — undefined on v1 (LLM) responses.
+  source?: string;
+  coordinates?: { lat: number; lng: number } | null;
+  distance_m?: number | null;
+  rating?: number | null;
+  image_url?: string | null;
+  website?: string | null;
+  opening_hours?: string | null;
+  indoor_outdoor?: "indoor" | "outdoor" | string | null;
   [k: string]: unknown;
 };
 
@@ -113,7 +122,12 @@ export type ActivitiesResponse = {
   status?: string;
   location_id?: string;
   activities: ActivityResult[];
-  meta?: { provider_used?: string; model_used?: string };
+  meta?: {
+    provider_used?: string;
+    model_used?: string;
+    fallback_used?: boolean;
+    fallback_n5_count?: number;
+  };
   refined?: RefinedFeedback;
 };
 
@@ -124,7 +138,9 @@ export type ActivitiesPayload = {
   text_k: number;
   tags_k: number;
   user_vectors: UserVectors;
-  location: { location_id: string; metadata: LocationMetadata };
+  location: { location_id: string; metadata: LocationMetadata; geo?: LocationGeo };
+  /** UI chip selection — boost các activity_type này trong N9-N14 processor. */
+  preferred_types?: string[];
   provider?: string | null;
   top_k_activities?: number;
 };
@@ -134,4 +150,25 @@ export type FeedbackEndpoint = "recommend" | "activities";
 export type FeedbackPayload = {
   feedback: string;
   [k: string]: unknown;
+};
+
+export type AuthPayload = { username: string; password: string };
+
+export type AuthResponse = {
+  status: "success" | "error";
+  message: string;
+  user_id?: number;
+};
+
+export type HistoryItem = {
+  history_id: number;
+  input_data: RecommendPayload;
+  output_data: RecommendResponse;
+  created_at: string;
+};
+
+export type HistoryResponse = {
+  status: "success" | "error";
+  data: HistoryItem[];
+  message?: string;
 };

@@ -4,19 +4,17 @@ import { Compass } from "lucide-react";
 export function TitleBlock() {
   return (
     <div className="relative space-y-6 pt-6 pb-10">
-      {/* Hero image slot — replace with <img src="/hero.jpg" .../> */}
-      <div className="image-slot border-border/60 relative h-48 w-full overflow-hidden rounded-3xl border shadow-sm sm:h-64">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="bg-background/80 text-muted-foreground rounded-2xl px-4 py-3 text-center text-xs font-medium backdrop-blur">
-            📸 Chèn ảnh hero (banner du lịch) tại đây
-            <div className="mt-0.5 font-mono text-[10px] opacity-70">
-              ~ 1600×600 · /public/hero.jpg
-            </div>
-          </div>
-        </div>
-        {/* Decorative blobs */}
-        <div className="bg-brand-soft absolute -top-10 -right-10 size-40 rounded-full blur-3xl" />
-        <div className="bg-teal-soft absolute -bottom-12 -left-12 size-48 rounded-full blur-3xl" />
+      <div className="border-border/60 relative h-48 w-full overflow-hidden rounded-3xl border shadow-sm sm:h-64">
+        <img
+          src="/hero-light.jpg"
+          alt="Banner du lịch"
+          className="block h-full w-full object-cover dark:hidden"
+        />
+        <img
+          src="/hero-dark.png"
+          alt="Banner du lịch"
+          className="hidden h-full w-full object-cover dark:block"
+        />
       </div>
 
       <div className="space-y-3 text-center">

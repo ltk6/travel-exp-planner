@@ -1,7 +1,7 @@
 import os
 import json
 import logging
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from pgvector.psycopg2 import register_vector
@@ -190,11 +190,247 @@ def get_all_locations(include_images: bool = True) -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"Lỗi truy vấn DB: {e}")
         return {
-            "status": "error", 
-            "message": str(e), 
+            "status": "error",
+            "message": str(e),
             "data": [],
             "metadata": {"source": "postgresql", "latency_ms": 0}
         }
+
+
+# =============================================================================
+# ACTIVITIES (N9-N14 multi-source) — 6 bảng + tracker
+# =============================================================================
+
+ACTIVITY_PROVIDERS = ("osm", "goong", "foursquare", "overture", "wikidata", "geoapify")
+
+
+def _activity_table(provider: str) -> str:
+    """Return safe table name for a provider. Raises if provider unknown."""
+    if provider not in ACTIVITY_PROVIDERS:
+        raise ValueError(f"Unknown activity provider: {provider!r}")
+    return f"activities_{provider}"
+
+
+def init_activities_db(drop_existing: bool = False) -> None:
+    """Create 6 activities_<provider> tables + activity_fetch_status tracker.
+
+    drop_existing=True wipes tables first — only use when reseeding from scratch.
+    """
+    conn = _get_connection()
+    cur = conn.cursor()
+    cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+
+    for provider in ACTIVITY_PROVIDERS:
+        table = _activity_table(provider)
+        if drop_existing:
+            cur.execute(f"DROP TABLE IF EXISTS {table} CASCADE;")
+        cur.execute(f"""
+            CREATE TABLE IF NOT EXISTS {table} (
+                activity_id    VARCHAR(255) PRIMARY KEY,
+                location_id    VARCHAR(255) NOT NULL,
+                metadata       JSONB,
+                place          JSONB,
+                signals        JSONB,
+                vec_text       vector(1024),
+                vec_tag        vector(1024),
+                quality_score  REAL,
+                source         VARCHAR(32) NOT NULL,
+                retrieved_at   TIMESTAMP,
+                embedded_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                enriched       BOOLEAN DEFAULT FALSE
+            );
+        """)
+        cur.execute(f"""
+            CREATE INDEX IF NOT EXISTS idx_{table}_loc
+            ON {table} (location_id);
+        """)
+
+    if drop_existing:
+        cur.execute("DROP TABLE IF EXISTS activity_fetch_status CASCADE;")
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS activity_fetch_status (
+            location_id   VARCHAR(255) NOT NULL,
+            provider      VARCHAR(32)  NOT NULL,
+            status        VARCHAR(16),
+            item_count    INT DEFAULT 0,
+            fetched_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            error_msg     TEXT,
+            PRIMARY KEY (location_id, provider)
+        );
+    """)
+    cur.close()
+    conn.close()
+    logger.info("activities_<provider> + activity_fetch_status ready (drop_existing=%s).", drop_existing)
+
+
+def save_activities_batch(provider: str, activities: List[Dict[str, Any]]) -> int:
+    """Bulk upsert activities cho 1 provider. Trả về số rows ghi thành công.
+
+    Mỗi activity expect các key: activity_id, location_id, metadata, place, signals,
+    vectors{text, tag}, quality_score (optional), source, retrieved_at (optional).
+    """
+    if not activities:
+        return 0
+    table = _activity_table(provider)
+    conn = _get_connection()
+    cur = conn.cursor()
+    ok = 0
+    try:
+        for a in activities:
+            vecs = a.get("vectors") or {}
+            cur.execute(f"""
+                INSERT INTO {table} (
+                    activity_id, location_id, metadata, place, signals,
+                    vec_text, vec_tag, quality_score, source, retrieved_at, enriched
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (activity_id) DO UPDATE SET
+                    location_id   = EXCLUDED.location_id,
+                    metadata      = EXCLUDED.metadata,
+                    place         = EXCLUDED.place,
+                    signals       = EXCLUDED.signals,
+                    vec_text      = EXCLUDED.vec_text,
+                    vec_tag       = EXCLUDED.vec_tag,
+                    quality_score = EXCLUDED.quality_score,
+                    retrieved_at  = EXCLUDED.retrieved_at,
+                    embedded_at   = CURRENT_TIMESTAMP,
+                    enriched      = EXCLUDED.enriched;
+            """, (
+                a["activity_id"],
+                a["location_id"],
+                json.dumps(a.get("metadata", {}), ensure_ascii=False),
+                json.dumps(a.get("place", {}), ensure_ascii=False),
+                json.dumps(a.get("signals", {}), ensure_ascii=False),
+                vecs.get("text"),
+                vecs.get("tag"),
+                a.get("quality_score"),
+                a.get("source", provider),
+                a.get("retrieved_at"),
+                bool(a.get("enriched", False)),
+            ))
+            ok += 1
+    finally:
+        cur.close()
+        conn.close()
+    return ok
+
+
+def _format_act_vectors(row: Dict[str, Any]) -> Dict[str, Any]:
+    def to_list(v):
+        if v is None:
+            return None
+        return v.tolist() if hasattr(v, "tolist") else list(v)
+    return {"text": to_list(row.get("vec_text")), "tag": to_list(row.get("vec_tag"))}
+
+
+def get_activities_for_location(
+    location_id: str,
+    providers: Optional[List[str]] = None,
+    include_vectors: bool = True,
+) -> List[Dict[str, Any]]:
+    """Đọc tất cả activities của 1 loc, gộp từ N provider. Trả list dict
+    shape giống schema thông thường: {activity_id, location_id, source,
+    metadata, place, signals, vectors, quality_score}."""
+    providers = providers or list(ACTIVITY_PROVIDERS)
+    conn = _get_connection()
+    cur = conn.cursor()
+    out: List[Dict[str, Any]] = []
+    vec_cols = ", vec_text, vec_tag" if include_vectors else ""
+    try:
+        for p in providers:
+            table = _activity_table(p)
+            cur.execute(f"""
+                SELECT activity_id, location_id, metadata, place, signals,
+                       quality_score, source, retrieved_at, embedded_at, enriched
+                       {vec_cols}
+                FROM {table}
+                WHERE location_id = %s;
+            """, (location_id,))
+            for row in cur.fetchall():
+                d = dict(row)
+                act = {
+                    "activity_id":   d["activity_id"],
+                    "location_id":   d["location_id"],
+                    "source":        d["source"],
+                    "metadata":      d.get("metadata") or {},
+                    "place":         d.get("place") or {},
+                    "signals":       d.get("signals") or {},
+                    "quality_score": d.get("quality_score"),
+                    "enriched":      d.get("enriched"),
+                }
+                if include_vectors:
+                    act["vectors"] = _format_act_vectors(d)
+                out.append(act)
+    finally:
+        cur.close()
+        conn.close()
+    return out
+
+
+def mark_fetch_status(
+    location_id: str,
+    provider: str,
+    status: str,
+    item_count: int = 0,
+    error_msg: Optional[str] = None,
+) -> None:
+    """Upsert vào activity_fetch_status. status ∈ {success, empty, error, rate_limited, no_key}."""
+    if provider not in ACTIVITY_PROVIDERS:
+        raise ValueError(f"Unknown provider: {provider!r}")
+    conn = _get_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            INSERT INTO activity_fetch_status
+                (location_id, provider, status, item_count, fetched_at, error_msg)
+            VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP, %s)
+            ON CONFLICT (location_id, provider) DO UPDATE SET
+                status     = EXCLUDED.status,
+                item_count = EXCLUDED.item_count,
+                fetched_at = CURRENT_TIMESTAMP,
+                error_msg  = EXCLUDED.error_msg;
+        """, (location_id, provider, status, item_count, error_msg))
+    finally:
+        cur.close()
+        conn.close()
+
+
+def get_fetch_status_map(location_id: str) -> Dict[str, Dict[str, Any]]:
+    """Trả {provider: {status, item_count, fetched_at, error_msg}} cho 1 loc.
+    Provider không có row → không xuất hiện trong dict (= chưa fetch)."""
+    conn = _get_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT provider, status, item_count, fetched_at, error_msg
+            FROM activity_fetch_status
+            WHERE location_id = %s;
+        """, (location_id,))
+        return {row["provider"]: dict(row) for row in cur.fetchall()}
+    finally:
+        cur.close()
+        conn.close()
+
+
+def count_activities_by_provider(location_id: Optional[str] = None) -> Dict[str, int]:
+    """Trả {provider: row_count}. Nếu location_id=None → đếm toàn bảng."""
+    conn = _get_connection()
+    cur = conn.cursor()
+    out: Dict[str, int] = {}
+    try:
+        for p in ACTIVITY_PROVIDERS:
+            table = _activity_table(p)
+            if location_id:
+                cur.execute(f"SELECT COUNT(*) AS n FROM {table} WHERE location_id = %s;", (location_id,))
+            else:
+                cur.execute(f"SELECT COUNT(*) AS n FROM {table};")
+            row = cur.fetchone()
+            out[p] = int(row["n"]) if row else 0
+    finally:
+        cur.close()
+        conn.close()
+    return out
+
 
 # ──────────────── USER PROFILE FEATURES ────────────────
 # AUTH AND RECOMMENDATION HISTORY FEATURES
