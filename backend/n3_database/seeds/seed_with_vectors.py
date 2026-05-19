@@ -14,9 +14,9 @@ PROJECT_ROOT = CURRENT_DIR.parent.parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from backend.n3_database.db_manager import init_db, save_location
+from backend.n3_database.db_manager import init_db, save_location, init_profile_db, init_activities_db
 
-def seed_database():
+def seed_database(reset_locations: bool = True, reset_activities: bool = False, reset_profiles: bool = False):
     json_path = CURRENT_DIR / "locations_with_vectors.json"
     image_dir = CURRENT_DIR / "images"
     
@@ -27,7 +27,11 @@ def seed_database():
     with open(json_path, "r", encoding="utf-8") as f:
         locations = json.load(f)
 
-    init_db()
+    # 1. Khởi tạo / reset các sub-schema
+    init_db(drop_existing=reset_locations)
+    init_profile_db(drop_existing=reset_profiles)
+    init_activities_db(drop_existing=reset_activities)
+    
     print(f"🚀 Seeding {len(locations)} locations with images into Postgres...")
     
     for i, loc in enumerate(locations, 1):
@@ -53,4 +57,14 @@ def seed_database():
     print("\n✨ Database seeding complete with Binary Image Persistence.")
 
 if __name__ == "__main__":
-    seed_database()
+    import argparse
+    parser = argparse.ArgumentParser(description="Seed the database with locations, vectors, and initialize schemas.")
+    parser.add_argument("--reset-activities", action="store_true", help="Drop and recreate all activity tables")
+    parser.add_argument("--reset-profiles", action="store_true", help="Drop and recreate user and rec_history tables (DANGEROUS)")
+    parser.add_argument("--reset-all", action="store_true", help="Drop and recreate EVERYTHING (locations, activities, profiles)")
+    args = parser.parse_args()
+    
+    r_act = args.reset_activities or args.reset_all
+    r_prof = args.reset_profiles or args.reset_all
+    
+    seed_database(reset_locations=True, reset_activities=r_act, reset_profiles=r_prof)

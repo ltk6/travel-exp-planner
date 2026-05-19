@@ -321,7 +321,19 @@ def activities_service(body):
     }
 
     n5_result = generate_activities(n5_input)
-    activities = n5_result.get("activities", [])
+    raw_activities = n5_result.get("activities", [])
+    
+    # Decoupled Normalization: Call the normalizer here in N8 Orchestrator
+    from modules.activity_retrievals.normalizers import llm as _llm_normalizer
+    coords = location.get("geo") or location.get("metadata", {}).get("coordinates")
+    ctx = {
+        "location_id":    location["location_id"],
+        "anchor_lat":     (coords or {}).get("lat") if coords else None,
+        "anchor_lng":     (coords or {}).get("lng") if coords else None,
+        "anchor_address": location.get("metadata", {}).get("address"),
+    }
+    activities = _llm_normalizer.normalize_all(raw_activities, ctx)
+    
     n5_metadata = n5_result.get("metadata", {})
     per_loc_meta = n5_metadata.get("per_location", [])
 
@@ -441,10 +453,20 @@ def _n5_fallback_generate(location: dict, preferred_types: list, top_k: int) -> 
     }
     try:
         n5_result = generate_activities(n5_input)
+        raw_activities = n5_result.get("activities", [])
+        from modules.activity_retrievals.normalizers import llm as _llm_normalizer
+        coords = location.get("geo") or location.get("metadata", {}).get("coordinates")
+        ctx = {
+            "location_id":    location["location_id"],
+            "anchor_lat":     (coords or {}).get("lat") if coords else None,
+            "anchor_lng":     (coords or {}).get("lng") if coords else None,
+            "anchor_address": location.get("metadata", {}).get("address"),
+        }
+        normalized_activities = _llm_normalizer.normalize_all(raw_activities, ctx)
     except Exception as e:
         logger.warning("N5 fallback raised: %s", e)
         return []
-    return n5_result.get("activities", []) or []
+    return normalized_activities or []
 
 
 def _name_key(name: str) -> str:

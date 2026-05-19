@@ -69,7 +69,7 @@ def _get_connection():
                 _DB_CIRCUIT_BREAKER.record_failure()
                 raise e
 
-def init_db():
+def init_db(drop_existing: bool = False):
     """Khởi tạo cấu trúc Database và ép ngắt các kết nối đang treo để tránh Lock."""
     conn = _get_connection()
     cur = conn.cursor()
@@ -87,10 +87,11 @@ def init_db():
         logger.warning(f"Không thể ngắt các kết nối khác: {e}")
 
     cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
-    cur.execute("DROP TABLE IF EXISTS locations CASCADE;")
+    if drop_existing:
+        cur.execute("DROP TABLE IF EXISTS locations CASCADE;")
     
     cur.execute("""
-        CREATE TABLE locations (
+        CREATE TABLE IF NOT EXISTS locations (
             location_id VARCHAR(255) PRIMARY KEY,
             text vector(1024),
             aug_text vector(1024),
@@ -105,7 +106,7 @@ def init_db():
 
     cur.close()
     conn.close()
-    logger.info("✨ Khởi tạo DB thành công (Đã giải phóng các kết nối cũ).")
+    logger.info(f"✨ Khởi tạo DB thành công (drop_existing={drop_existing}).")
 
 def get_db_fingerprint() -> str:
     """Tạo dấu vân tay duy nhất cho trạng thái hiện tại của DB."""
@@ -487,10 +488,14 @@ def count_activities_by_provider(location_id: Optional[str] = None) -> Dict[str,
 # AUTH AND RECOMMENDATION HISTORY FEATURES
 from werkzeug.security import generate_password_hash, check_password_hash
 
-def init_profile_db():
+def init_profile_db(drop_existing: bool = False):
     """Khoi tao bang nguoi dung va bang luu lich su goi y"""
     conn = _get_connection()
     cur = conn.cursor()
+    
+    if drop_existing:
+        cur.execute("DROP TABLE IF EXISTS rec_history CASCADE;")
+        cur.execute("DROP TABLE IF EXISTS users CASCADE;")
     
     # 1. Bang luu tai khoan de dang nhap
     cur.execute("""
@@ -515,7 +520,7 @@ def init_profile_db():
     conn.commit()
     cur.close()
     conn.close()
-    logger.info("Khoi tao bang users va rec_history thanh cong!")
+    logger.info(f"Khoi tao bang users va rec_history thanh cong! (drop_existing={drop_existing})")
 
 # PHAN 1: AUTHENTICATION (DANG KY DANG NHAP)
 

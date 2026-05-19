@@ -101,11 +101,11 @@ N3 creates a single `locations` table with these fields:
 
 ## Persistence Behavior
 
-`init_db()` is intentionally destructive for the `locations` table:
+`init_db(drop_existing: bool = False)` is non-destructive by default:
 
 - it ensures the `vector` extension exists
-- it drops `locations` if present
-- it recreates the table from scratch
+- it creates the `locations` table if it does not exist
+- it only drops and recreates the table if `drop_existing=True` is explicitly passed (e.g. during controlled seeding or initialization)
 
 This is appropriate for controlled initialization and reseeding, but it should not be treated as a migration system.
 
