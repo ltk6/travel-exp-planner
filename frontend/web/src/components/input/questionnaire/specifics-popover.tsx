@@ -3,7 +3,6 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronDown, Settings2 } from "lucide-react";
 import { OptionCard } from "./option-card";
 import { optionKey, specificKeysForSection } from "@/lib/questionnaire-helpers";
@@ -50,14 +49,14 @@ export function SpecificsPopover({ qId, specifics }: Props) {
           </Button>
         )}
       />
-      <PopoverContent className="w-[min(560px,calc(100vw-2rem))] p-0">
-        <ScrollArea className="max-h-[60vh] p-4">
+      <PopoverContent className="w-[min(560px,calc(100vw-2rem))] overflow-hidden p-0">
+        <div className="max-h-[60vh] overflow-y-auto p-4">
           <div className="space-y-5">
             {Object.entries(specifics).map(([section, opts]) => (
               <SpecificsSection key={section} qId={qId} section={section} opts={opts} />
             ))}
           </div>
-        </ScrollArea>
+        </div>
       </PopoverContent>
     </Popover>
   );

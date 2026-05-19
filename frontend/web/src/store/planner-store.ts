@@ -46,6 +46,10 @@ type PlannerState = {
   setActivityResult: (locId: string, data: ActivitiesResponse) => void;
   clearActivityResults: () => void;
 
+  /** ID of the current history session (set after /recommend save, used to update with activities). */
+  currentSessionId: number | null;
+  setCurrentSessionId: (id: number | null) => void;
+
   /**
    * Map focus signal — bumped each time the user asks the map to fly to a
    * specific location (e.g. by clicking a result card). `focusedAt` is a tick
@@ -105,6 +109,9 @@ export const usePlannerStore = create<PlannerState>()(
         set((s) => ({ activityResults: { ...s.activityResults, [locId]: data } })),
       clearActivityResults: () => set({ activityResults: {} }),
 
+      currentSessionId: null,
+      setCurrentSessionId: (currentSessionId) => set({ currentSessionId }),
+
       focusedLocationId: null,
       focusedAt: 0,
       setFocusedLocation: (id) => set({ focusedLocationId: id, focusedAt: Date.now() }),
@@ -118,6 +125,7 @@ export const usePlannerStore = create<PlannerState>()(
           payload: null,
           results: null,
           activityResults: {},
+          currentSessionId: null,
           focusedLocationId: null,
           focusedAt: 0,
         }),

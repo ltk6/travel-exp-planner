@@ -1,4 +1,6 @@
 @echo off
+:: Ensure standard Windows directories are in PATH
+set PATH=%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SystemRoot%\System32\WindowsPowerShell\v1.0\;%PATH%
 chcp 65001 >nul
 setlocal EnableDelayedExpansion
 echo =======================================
@@ -20,8 +22,8 @@ echo =======================================
 set REQ_MARKER=venv\.requirements-installed
 set NEED_PIP=1
 if exist "%REQ_MARKER%" (
-    for /f %%i in ('powershell -NoProfile -Command "if ((Get-Item '%REQ_MARKER%').LastWriteTime -ge (Get-Item 'requirements.txt').LastWriteTime) { 'skip' } else { 'install' }"') do set PIP_STATE=%%i
-    if "!PIP_STATE!"=="skip" set NEED_PIP=0
+    for /f %%i in ('python -c "import os; print(1 if os.path.exists(\"venv/.requirements-installed\") and os.path.getmtime(\"venv/.requirements-installed\") >= os.path.getmtime(\"requirements.txt\") else 0)"') do set PIP_STATE=%%i
+    if "!PIP_STATE!"=="1" set NEED_PIP=0
 )
 
 if "%NEED_PIP%"=="1" (
@@ -68,8 +70,8 @@ echo =======================================
 
 set BACKEND_RUNNING=0
 set FRONTEND_RUNNING=0
-netstat -ano | findstr "LISTENING" | findstr ":5000 " >nul && set BACKEND_RUNNING=1
-netstat -ano | findstr "LISTENING" | findstr ":3000 " >nul && set FRONTEND_RUNNING=1
+python -c "import socket; s = socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.settimeout(0.5); s.connect(('127.0.0.1', 5000))" >nul 2>&1 && set BACKEND_RUNNING=1
+python -c "import socket; s = socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.settimeout(0.5); s.connect(('127.0.0.1', 3000))" >nul 2>&1 && set FRONTEND_RUNNING=1
 
 if "%BACKEND_RUNNING%"=="1" (
     echo [OK] Backend already on :5000 - skip launching
@@ -94,7 +96,7 @@ if !WAIT! gtr 30 (
     echo [WARN] Frontend slow to start - opening browser anyway
     goto OPEN_BROWSER
 )
-powershell -NoProfile -Command "try { $r = Invoke-WebRequest -Uri 'http://localhost:3000' -UseBasicParsing -TimeoutSec 1; if ($r.StatusCode -lt 500) { exit 0 } else { exit 1 } } catch { exit 1 }" >nul 2>&1
+python -c "import urllib.request; urllib.request.urlopen('http://localhost:3000', timeout=1)" >nul 2>&1
 if errorlevel 1 (
     timeout /t 2 /nobreak >nul
     goto WAIT_LOOP

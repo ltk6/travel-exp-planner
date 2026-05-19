@@ -61,16 +61,36 @@ def _score_location(
     loc_tag  = loc_vectors.get("aug_tags")
 
     # ── similarities ─────────────────────────────
+    # Graceful Fallback: if location has no tag vector, compare user's tag against location text!
+    safe_loc_tag = loc_tag if loc_tag else loc_text
+    
     sim_text     = _cosine(u_text,     loc_text)
     sim_aug_text = _cosine(u_aug_text, loc_text)
-    sim_aug_tags = _cosine(u_aug_tags, loc_tag)
+    sim_aug_tags = _cosine(u_aug_tags, safe_loc_tag)
     sim_img_desc = _cosine(u_img_desc, loc_text)
 
+    # ── Normalize weights based on active channels ───────────────────
+    active_weights = {}
+    sum_w = 0.0
+    for key, vec in [("text", u_text), ("aug_text", u_aug_text), ("aug_tags", u_aug_tags), ("img_desc", u_img_desc)]:
+        if vec:
+            w = weights.get(key, 0.0)
+            active_weights[key] = w
+            sum_w += w
+        else:
+            active_weights[key] = 0.0
+
+    if sum_w > 0:
+        for k in active_weights:
+            active_weights[k] /= sum_w
+    else:
+        active_weights = {"text": 1.0, "aug_text": 0.0, "aug_tags": 0.0, "img_desc": 0.0}
+
     score = (
-        weights["text"]     * sim_text
-        + weights["aug_text"] * sim_aug_text
-        + weights["aug_tags"] * sim_aug_tags
-        + weights["img_desc"] * sim_img_desc
+        active_weights["text"]     * sim_text
+        + active_weights["aug_text"] * sim_aug_text
+        + active_weights["aug_tags"] * sim_aug_tags
+        + active_weights["img_desc"] * sim_img_desc
     )
     score = max(0.0, score)
 
@@ -142,11 +162,13 @@ def rank_locations(data: dict) -> dict:
     scored.sort(key=lambda x: x["score"], reverse=True)
     result = scored[:top_k]
 
-    # ── normalize scores to 1.0 based on the top result ──
-    if result and result[0]["score"] > 0:
-        max_s = result[0]["score"]
+    # ── Absolute Smoothstep Dead-Zone Scaling ──
+    if result:
         for r in result:
-            r["score"] = round(r["score"] / max_s, 4)
+            norm = float(r["score"])  # Absolute score in [0, 1]
+            # Smoothstep (3x^2 - 2x^3) adds dead-zones at 0.0 and 1.0, stretching the middle
+            shaped = 3 * (norm ** 2) - 2 * (norm ** 3)
+            r["score"] = round(0.65 + shaped * 0.30, 4)
 
     elapsed_ms = int((time.time() - t0) * 1000)
     logger.info("[N4] Đã xếp hạng %d địa điểm → top %d (normalized) in %dms", len(locations), len(result), elapsed_ms)

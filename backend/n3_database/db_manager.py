@@ -10,13 +10,64 @@ import base64
 from config import setup_logging
 logger = setup_logging("N3")
 
+import time
+
+class CircuitBreaker:
+    def __init__(self, failure_threshold=3, recovery_timeout=30):
+        self.failure_threshold = failure_threshold
+        self.recovery_timeout = recovery_timeout
+        self.failure_count = 0
+        self.state = "CLOSED"  # CLOSED, OPEN, HALF-OPEN
+        self.last_state_change = time.time()
+
+    def record_failure(self):
+        self.failure_count += 1
+        if self.failure_count >= self.failure_threshold:
+            self.state = "OPEN"
+            self.last_state_change = time.time()
+            logger.warning(f"🚨 Circuit Breaker OPENED: DB connections will fail-fast for {self.recovery_timeout}s.")
+
+    def record_success(self):
+        self.failure_count = 0
+        self.state = "CLOSED"
+        logger.info("✅ Circuit Breaker CLOSED: DB connection restored.")
+
+    def can_attempt(self) -> bool:
+        if self.state == "CLOSED":
+            return True
+        if self.state == "OPEN":
+            if time.time() - self.last_state_change > self.recovery_timeout:
+                self.state = "HALF-OPEN"
+                logger.info("🔄 Circuit Breaker HALF-OPEN: testing DB connection...")
+                return True
+            return False
+        return True
+
+_DB_CIRCUIT_BREAKER = CircuitBreaker()
+
 from config import PG_URI
 def _get_connection():
-    """Tạo kết nối DB và đăng ký kiểu vector."""
-    conn = psycopg2.connect(PG_URI, cursor_factory=RealDictCursor)
-    conn.autocommit = True
-    register_vector(conn)
-    return conn
+    """Tạo kết nối DB với retry + circuit-breaker."""
+    if not _DB_CIRCUIT_BREAKER.can_attempt():
+        raise psycopg2.OperationalError("Circuit Breaker is OPEN: database is temporarily unreachable.")
+
+    max_retries = 3
+    delay = 0.5
+    for attempt in range(1, max_retries + 1):
+        try:
+            conn = psycopg2.connect(PG_URI, cursor_factory=RealDictCursor)
+            conn.autocommit = True
+            register_vector(conn)
+            _DB_CIRCUIT_BREAKER.record_success()
+            return conn
+        except Exception as e:
+            logger.warning(f"⚠️ Kết nối DB thất bại (Lần {attempt}/{max_retries}): {e}")
+            if attempt < max_retries:
+                time.sleep(delay)
+                delay *= 2
+            else:
+                _DB_CIRCUIT_BREAKER.record_failure()
+                raise e
 
 def init_db():
     """Khởi tạo cấu trúc Database và ép ngắt các kết nối đang treo để tránh Lock."""
@@ -510,12 +561,14 @@ def save_rec_turn(user_id: int, input_data: Dict[str, Any], output_data: Dict[st
         cur = conn.cursor()
         cur.execute("""
             INSERT INTO rec_history (user_id, input_data, output_data)
-            VALUES (%s, %s, %s);
+            VALUES (%s, %s, %s) RETURNING history_id;
         """, (user_id, json.dumps(input_data), json.dumps(output_data)))
+        row = cur.fetchone()
+        history_id = row["history_id"] if row else None
         conn.commit()
         cur.close()
         conn.close()
-        return {"status": "success", "message": "Da luu lich su goi y thanh cong"}
+        return {"status": "success", "message": "Da luu lich su goi y thanh cong", "history_id": history_id}
     except Exception as e:
         logger.error(f"Loi luu lich su rec: {e}")
         return {"status": "error", "message": str(e)}
@@ -544,3 +597,22 @@ def get_user_history(user_id: int) -> Dict[str, Any]:
         return {"status": "success", "data": history_list}
     except Exception as e:
         return {"status": "error", "message": str(e)}
+
+def get_location_image_by_index(location_id: str, idx: int) -> Optional[bytes]:
+    """Retrieve raw image bytes directly from PostgreSQL for lazy-load."""
+    try:
+        conn = _get_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT images FROM locations WHERE location_id = %s;", (location_id,))
+        row = cur.fetchone()
+        conn.close()
+        if row and row.get("images"):
+            images = row["images"]
+            if 0 <= idx < len(images):
+                img_data = images[idx]
+                if img_data:
+                    return bytes(img_data)
+        return None
+    except Exception as e:
+        logger.error(f"Lỗi lấy ảnh lazy từ DB: {e}")
+        return None

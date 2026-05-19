@@ -41,7 +41,7 @@ export function ActivityList({ loc }: { loc: LocationResult }) {
 
       <ActivityFilterChips selected={preferredTypes} onChange={setPreferredTypes} />
 
-      {query.isPending || query.isFetching ? (
+      {query.isPending ? (
         <ActivitySkeleton />
       ) : query.isError ? (
         <div className="border-destructive/40 bg-destructive/5 text-destructive flex items-start gap-2 rounded-lg border p-3 text-xs">

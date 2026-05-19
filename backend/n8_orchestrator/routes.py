@@ -1,4 +1,4 @@
-from flask import request, jsonify, abort, Blueprint, g, send_from_directory
+from flask import request, jsonify, abort, Blueprint, g, send_from_directory, Response
 import time
 from config import INTERNAL_API_KEY, PROTECTED_ROUTES, setup_logging
 from .utils import _err, _get_json
@@ -14,11 +14,36 @@ from .services import (
 
 logger = setup_logging("N8.routes")
 
+import hashlib
+import json
+from threading import Lock
+
+_active_requests = set()
+_active_requests_lock = Lock()
+
 bp = Blueprint("n8_routes", __name__)
 
 @bp.before_request
 def _before():
     g.start_time = time.time()
+    
+    # Idempotency / Request Deduplication for POST methods (skip cache reset etc.)
+    if request.method == "POST" and request.path not in ["/cache/reset", "/feedback/recommend", "/feedback/activities"]:
+        try:
+            body = request.get_json(silent=True) or {}
+            # Ignore volatile or very large fields if needed, but standard payload works perfectly
+            serialized = json.dumps(body, sort_keys=True)
+            val = f"{request.path}:{serialized}".encode("utf-8")
+            fp = hashlib.sha256(val).hexdigest()
+            g.request_fingerprint = fp
+            
+            with _active_requests_lock:
+                if fp in _active_requests:
+                    logger.warning(f"⚠️ Duplicate request detected! Path: {request.path} (Fingerprint: {fp[:12]})")
+                    return jsonify({"error": "Duplicate request in progress"}), 409
+                _active_requests.add(fp)
+        except Exception as e:
+            logger.warning(f"Failed to calculate request fingerprint: {e}")
 
 @bp.after_request
 def _after(response):
@@ -27,10 +52,19 @@ def _after(response):
         logger.info(f"[{request.method}] {request.path} took {duration:.4f}s")
     return response
 
+@bp.teardown_request
+def _teardown(exception=None):
+    fp = getattr(g, "request_fingerprint", None)
+    if fp:
+        with _active_requests_lock:
+            _active_requests.discard(fp)
+
 @bp.before_app_request
 def _check_internal_key():
+    import hmac
     if request.path in PROTECTED_ROUTES:
-        if request.headers.get("X-Internal-Key") != INTERNAL_API_KEY:
+        provided = request.headers.get("X-Internal-Key") or ""
+        if not hmac.compare_digest(provided, INTERNAL_API_KEY):
             abort(401)
 
 @bp.get("/health")
@@ -124,12 +158,29 @@ def list_locations():
 
 @bp.get("/api/images/<path:filename>")
 def serve_image(filename):
-    """Serve location images directly from disk cache.
+    """Serve location images directly from PostgreSQL on demand (lazy-fetch).
     Public (not in PROTECTED_ROUTES) so <img src=...> works without auth header.
-    Browser caches via max_age."""
+    Browser caches via max_age. Returns transparent pixel fallback if not found."""
     if ".." in filename or filename.startswith("/") or filename.startswith("\\"):
         abort(400)
-    return send_from_directory(IMG_CACHE_DIR, filename, max_age=86400)
+    try:
+        base = filename.rsplit(".", 1)[0]
+        if "_" not in base:
+            abort(404)
+        location_id, idx_str = base.rsplit("_", 1)
+        idx = int(idx_str)
+        
+        from backend.n3_database import get_location_image_by_index
+        img_bytes = get_location_image_by_index(location_id, idx)
+        if not img_bytes:
+            # 1x1 transparent PNG fallback
+            transparent_1x1 = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15c4\x00\x00\x00\rIDATx\x9cc`\x00\x00\x00\x02\x00\x01H\xaf\xa4q\x00\x00\x00\x00IEND\xaeB`\x82'
+            return Response(transparent_1x1, mimetype="image/png")
+            
+        return Response(img_bytes, mimetype="image/jpeg", headers={"Cache-Control": "public, max-age=86400"})
+    except Exception as e:
+        logger.error(f"Lỗi serve ảnh lazy: {e}")
+        abort(500)
 
 
 @bp.post("/cache/reset")

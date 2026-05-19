@@ -149,7 +149,6 @@ CULTURE = {
     "temple"            : "Hindu Buddhist temple worship incense spiritual ritual",
     "pagoda"            : "Vietnamese Buddhist pagoda lotus pond bell tower monk",
     "church"            : "colonial church Catholic cathedral religious architecture",
-    "spiritual"         : "spiritual pilgrimage sacred mountain prayer offering",
     "meditation"        : "meditation retreat mindfulness silent practice inner peace",
 
     # Ethnic & indigenous

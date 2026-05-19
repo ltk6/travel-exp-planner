@@ -55,5 +55,14 @@ export const apiClient = {
 
   profile: {
     getHistory: (userId: number) => getJson<HistoryResponse>(`/api/profile/history/${userId}`),
+    saveHistory: (body: {
+      user_id: number;
+      input_data: RecommendPayload;
+      output_data: RecommendResponse;
+    }) =>
+      postJson<{ status: string; message: string; history_id?: number }>(
+        "/api/profile/history",
+        body,
+      ),
   },
 };
