@@ -78,12 +78,13 @@ def _save_images_to_local_cache(location_id, images_b64):
 
 def _get_image_urls(location_id):
     """Trả về list URL trỏ tới /api/images/{filename}. Frontend lazy-load."""
-    urls = []
-    for i in range(10):  # Giả định tối đa 10 ảnh
-        file_path = os.path.join(IMG_CACHE_DIR, f"{location_id}_{i}.jpg")
-        if os.path.exists(file_path):
-            urls.append(f"/api/images/{location_id}_{i}.jpg")
-    return urls
+    # Pure lazy loading: return up to 3 image URLs. If any index does not exist in DB,
+    # the server will return a 1x1 transparent PNG fallback to avoid broken images.
+    return [
+        f"/api/images/{location_id}_0.jpg",
+        f"/api/images/{location_id}_1.jpg",
+        f"/api/images/{location_id}_2.jpg"
+    ]
 
 # ── Core Services ──
 
@@ -116,20 +117,16 @@ def get_all_locations_cached(force_refresh=False):
                 logger.warning(f"Lỗi đọc Disk Cache: {e}")
 
     # Miss: Fetch from N3
-    logger.info("Cache Miss: Fetching fresh data from N3...")
-    raw_data = get_all_locations(include_images=True)
+    logger.info("Cache Miss: Fetching fresh data from N3 (lazy images)...")
+    raw_data = get_all_locations(include_images=False)
     if raw_data.get("status") != "success":
         return []
 
     locations = raw_data.get("data", [])
     
-    # Process images (Save to local files)
+    # Ensure images list is empty to save memory/disk footprint
     for loc in locations:
-        loc_id = loc.get("location_id")
-        imgs = loc.get("images", [])
-        if imgs:
-            _save_images_to_local_cache(loc_id, imgs)
-            loc["images"] = [] # Don't store large images in JSON/RAM
+        loc["images"] = []
 
     # Update RAM
     _CACHED_LOCATIONS_DATA = locations
@@ -295,26 +292,24 @@ def activities_service(body):
     location = body.get("location", {})
     top_k_activities = int(body.get("top_k_activities", TOP_K_ACTIVITIES))
 
-    # ── alt_n1 — Build User Vectors ────────────
-    # Because we are using alt_n1 (multilingual-e5-small) for activities,
-    # we must also use alt_n1 to embed the user query to align vector spaces.
-    logger.info("N8 — Embedding user query via alt_n1...")
-    from modules.alt_n1_embedding import embed as alt_embed
-    alt_n1_result = alt_embed({
+    # ── BGE-M3 — Build User Vectors ────────────
+    # Use primary BGE-M3 model for activities user embedding
+    logger.info("N8 — Embedding user query via BGE-M3...")
+    bge_result = embed({
         "text": text,
         "tags": tags,
         "img_desc": img_desc
-    }, is_query=True)
+    })
 
-    text_k = alt_n1_result.get("text_k", 0)
-    tags_k = alt_n1_result.get("tags_k", 0)
-    alt_vectors = alt_n1_result.get("vectors", {})
+    text_k = bge_result.get("text_k", 0)
+    tags_k = bge_result.get("tags_k", 0)
+    bge_vectors = bge_result.get("vectors", {})
 
     user_vectors = {
-        "text":     _safe_vec(alt_vectors.get("text")),
-        "aug_text": _safe_vec(alt_vectors.get("aug_text")),
-        "aug_tags": _safe_vec(alt_vectors.get("aug_tags")),
-        "img_desc": _safe_vec(alt_vectors.get("img_desc")),
+        "text":     _safe_vec(bge_vectors.get("text")),
+        "aug_text": _safe_vec(bge_vectors.get("aug_text")),
+        "aug_tags": _safe_vec(bge_vectors.get("aug_tags")),
+        "img_desc": _safe_vec(bge_vectors.get("img_desc")),
     }
 
     # ── N5 — Generate Activities ───────────────
@@ -330,25 +325,23 @@ def activities_service(body):
     n5_metadata = n5_result.get("metadata", {})
     per_loc_meta = n5_metadata.get("per_location", [])
 
-    # ── alt_n1 — Embed Generated Activities ────
+    # ── BGE-M3 — Embed Generated Activities ────
     # Map N5 activities to N1 contract (text, tags, img_desc)
-    # We use 'name' as 'text' and 'description' as 'img_desc' for N1 preprocessing
     n1_batch_input = []
     for act in activities:
-        meta = act.get("metadata", {})
+        meta = act.get("metadata", {}) or {}
         n1_batch_input.append({
-            "text": meta.get("name", ""),
-            "tags": meta.get("tags", []),
-            "img_desc": meta.get("description", "")
+            "text":     (meta.get("name") or "") + ". " + (meta.get("description") or ""),
+            "tags":     meta.get("tags") or [],
+            "img_desc": "",
         })
 
-    logger.info(f"N8 — Embedding {len(activities)} activities via alt_n1...")
-    from modules.alt_n1_embedding import embed_batch as alt_embed_batch
-    alt_n1_results = alt_embed_batch(n1_batch_input, is_query=False)
+    logger.info(f"N8 — Embedding {len(activities)} activities via BGE-M3...")
+    bge_results = embed_batch(n1_batch_input)
     
     # Merge vectors back into activities for N6
     for i, act in enumerate(activities):
-        act["vectors"] = alt_n1_results[i].get("vectors")
+        act["vectors"] = bge_results[i].get("vectors")
 
     # ── N6 — Rank Activities ───────────────────
     n6_input = {
@@ -369,13 +362,30 @@ def activities_service(body):
     for ra in ranked_acts:
         aid = ra.get("activity_id")
         original_act = act_map.get(aid, {})
+        md = original_act.get("metadata", {}) or {}
+        plc = original_act.get("place", {}) or {}
+        sg = original_act.get("signals", {}) or {}
+        dist = plc.get("distance_from_anchor_m")
         
         enriched_ranked_activities.append({
             "activity_id": aid,
-            "location_id": ra.get("location_id"),
+            "location_id": original_act.get("location_id") or ra.get("location_id") or location.get("location_id"),
             "score": ra.get("score", 0),
             "reason": ra.get("reason", ""),
-            "metadata": original_act.get("metadata", {})
+            "metadata": {
+                "name":           md.get("name") or original_act.get("name") or "Trải nghiệm",
+                "description":    md.get("description") or original_act.get("description") or "",
+                "activity_type":  md.get("activity_type") or original_act.get("activity_type") or "nature",
+                "indoor_outdoor": md.get("indoor_outdoor") or original_act.get("indoor_outdoor"),
+                "tags":           md.get("tags", []) or original_act.get("tags", []),
+                "source":         original_act.get("source") or "n5_generation",
+                "coordinates":    plc.get("coordinates") or original_act.get("coordinates"),
+                "distance_m":     dist,
+                "rating":         sg.get("rating") or original_act.get("rating"),
+                "image_url":      sg.get("image_url") or original_act.get("image_url"),
+                "website":        sg.get("website") or original_act.get("website"),
+                "opening_hours":  sg.get("opening_hours") or original_act.get("opening_hours"),
+            }
         })
 
     return {
@@ -543,6 +553,12 @@ def activities_v2_service(body):
     # ── 1. Đọc activities từ DB (UNION 6 bảng cho 1 loc) ────────────────────
     db_acts = get_activities_for_location(loc_id, include_vectors=True)
     logger.info("activities_v2: loc=%s db_acts=%d", loc_id, len(db_acts))
+    
+    # Remap legacy database vector keys to align with the N6 aug_tags contract
+    for a in db_acts:
+        vecs = a.get("vectors") or {}
+        if "tag" in vecs:
+            vecs["aug_tags"] = vecs.pop("tag")
 
     # ── 2. Fallback N5 khi DB sparse (chưa seed hoặc seed lỗi) ─────────────
     fallback_used = False
@@ -565,7 +581,7 @@ def activities_v2_service(body):
             n1_results = embed_batch(n1_inputs)
             for a, r in zip(n5_acts, n1_results):
                 v = r.get("vectors") or {}
-                a["vectors"] = {"text": v.get("text"), "tag": v.get("aug_tags")}
+                a["vectors"] = {"text": v.get("text"), "aug_tags": v.get("aug_tags")}
             db_acts = db_acts + n5_acts
             fallback_used = True
             fallback_n5_count = len(n5_acts)
@@ -587,8 +603,40 @@ def activities_v2_service(body):
             "ranking_meta": {},
         }
 
-    # ── 3. Embed user_input nếu chưa có user_vectors ────────────────────────
-    if not user_vectors and (text or tags or img_desc):
+    # ── 2.1. Embed any activities missing vectors (1024-dim BGE-M3) ────────
+    missing_indices = []
+    missing_inputs = []
+    for idx, a in enumerate(db_acts):
+        vecs = a.get("vectors") or {}
+        if not vecs or not vecs.get("text"):
+            missing_indices.append(idx)
+            md = a.get("metadata", {}) or {}
+            name_str = md.get("name") or "activity"
+            desc_str = md.get("description") or ""
+            full_text = name_str + ". " + desc_str
+            act_tags = md.get("tags") or md.get("categories_raw") or []
+            missing_inputs.append({
+                "text": full_text,
+                "tags": act_tags,
+                "img_desc": ""
+            })
+
+    if missing_inputs:
+        logger.info("activities_v2: found %d activities missing vectors — embedding them using BGE-M3...", len(missing_inputs))
+        from modules.n1_embedding import embed_batch as bge_embed_batch
+        embedded_results = bge_embed_batch(missing_inputs)
+        for idx, res in zip(missing_indices, embedded_results):
+            v = res.get("vectors") or {}
+            db_acts[idx]["vectors"] = {
+                "text": v.get("text"),
+                "aug_tags": v.get("aug_tags") or v.get("tags"),
+                "aug_text": v.get("aug_text"),
+                "img_desc": v.get("img_desc")
+            }
+
+    # ── 3. Embed user_input nếu chưa có hoặc thiếu user_vectors (BGE-M3) ──
+    if not user_vectors or not user_vectors.get("text") or len(user_vectors.get("text", [])) != 1024:
+        logger.info("activities_v2: embedding user input using BGE-M3...")
         user_emb = embed({"text": text, "tags": tags, "img_desc": img_desc})
         user_vectors = user_emb.get("vectors") or {}
 

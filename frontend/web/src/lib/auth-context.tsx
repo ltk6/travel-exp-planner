@@ -13,15 +13,21 @@ type AuthContextValue = {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState(() => {
+  const [user, setUser] = useState<AuthUser>(null);
+
+  useEffect(() => {
     try {
       const stored = localStorage.getItem("auth_user");
-      return stored ? JSON.parse(stored) : null;
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setTimeout(() => {
+          setUser(parsed);
+        }, 0);
+      }
     } catch {
       localStorage.removeItem("auth_user");
-      return null;
     }
-  });
+  }, []);
 
   function login(userId: number, username: string) {
     const u = { userId, username };

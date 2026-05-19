@@ -81,7 +81,7 @@ export default function AboutPage() {
               <li>Next.js 16 (App Router) · React 19 · TypeScript</li>
               <li>Tailwind CSS 4 · shadcn/ui · framer-motion</li>
               <li>Zustand (state) · TanStack Query (data) · Zod (schema)</li>
-              <li>MapLibre GL + Goong tiles (chủ quyền VN trên biển Đông)</li>
+              <li>MapLibre GL + Carto Positron (tích hợp bộ lọc chủ quyền biển đảo Việt Nam)</li>
               <li>Serwist (PWA)</li>
             </ul>
           </div>
@@ -105,22 +105,26 @@ export default function AboutPage() {
             </div>
             <div>
               <CardTitle>Chủ quyền biển đảo Việt Nam</CardTitle>
-              <CardDescription>Vì sao chọn Goong thay vì Google/OpenStreetMap?</CardDescription>
+              <CardDescription>Cơ chế định vị và hiển thị chủ quyền tự phát triển</CardDescription>
             </div>
           </div>
         </CardHeader>
         <CardContent className="text-muted-foreground text-sm leading-relaxed">
-          Goong là nhà cung cấp bản đồ Việt Nam có hiển thị đúng chủ quyền của Việt Nam đối với{" "}
+          Hệ thống tích hợp bộ lọc địa giới{" "}
+          <span className="text-foreground">applyVnLocalization</span> kết hợp lớp phủ{" "}
+          <span className="text-foreground">VnSovereigntyOverlay</span> tự phát triển trên nền bản
+          đồ mở. Cơ chế này tự động ẩn các tên gọi quốc tế sai lệch trong khu vực tranh chấp, hiển
+          thị đúng chủ quyền của Việt Nam đối với{" "}
           <span className="text-foreground">quần đảo Hoàng Sa</span> và{" "}
-          <span className="text-foreground">quần đảo Trường Sa</span> trên Biển Đông. Đây là tiêu
-          chuẩn được Bộ TN&MT khuyến nghị cho các sản phẩm số dùng tại VN.
+          <span className="text-foreground">quần đảo Trường Sa</span> theo đúng quy chuẩn địa giới
+          quốc gia.
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
           <CardTitle>Thành viên</CardTitle>
-          <CardDescription>Nhóm sinh viên K24 CNTT — HCMUS</CardDescription>
+          <CardDescription>Nhóm sinh viên Khóa 2024 CNTT — HCMUS</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
           {[

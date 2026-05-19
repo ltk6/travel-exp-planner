@@ -3,13 +3,19 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { LogOut, User, Clock, MapPin, Tag } from "lucide-react";
+import { LogOut, User, Clock, MapPin, Tag, Play } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth-context";
 import { apiClient } from "@/lib/api-client";
-import type { HistoryItem } from "@/lib/types";
+import type {
+  HistoryItem,
+  RecommendPayload,
+  RecommendResponse,
+  ActivitiesResponse,
+} from "@/lib/types";
+import { usePlannerStore } from "@/store/planner-store";
 
 export default function ProfilePage() {
   const { user, logout } = useAuth();
@@ -27,6 +33,7 @@ export default function ProfilePage() {
 
   function handleLogout() {
     logout();
+    usePlannerStore.getState().reset();
     toast.success("Đã đăng xuất");
     router.push("/");
   }
@@ -85,14 +92,42 @@ function HistoryCard({ item }: { item: HistoryItem }) {
   const input = item.input_data;
   const locations = item.output_data?.locations ?? [];
   const tags = input?.tags ?? [];
+  const router = useRouter();
+
+  const handleLoad = () => {
+    const store = usePlannerStore.getState();
+    store.reset();
+
+    // Restore payload
+    store.setPayload(item.input_data as RecommendPayload);
+
+    // Extract activities and restore results
+    const outputData = item.output_data as Record<string, unknown>;
+    const { activities, ...results } = outputData;
+    store.setResults(results as RecommendResponse);
+
+    // Restore activities
+    store.clearActivityResults();
+    if (activities && typeof activities === "object") {
+      Object.entries(activities).forEach(([locId, data]) => {
+        store.setActivityResult(locId, data as ActivitiesResponse);
+      });
+    }
+
+    // Restore session ID to continue the session
+    store.setCurrentSessionId(item.history_id);
+
+    toast.success("Đã tải phiên gợi ý");
+    router.push("/results");
+  };
 
   return (
-    <div className="bg-card rounded-xl border p-4">
-      <div className="mb-2 flex items-start justify-between gap-2">
+    <div className="bg-card group hover:border-primary/50 relative rounded-xl border p-4 transition-colors">
+      <div className="mb-2 flex items-start justify-between gap-2 pr-20">
         <p className="text-foreground line-clamp-2 text-sm font-medium">
           {input?.text?.trim() || "Không có mô tả"}
         </p>
-        <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
+        <span className="text-muted-foreground absolute top-4 right-4 shrink-0 text-xs tabular-nums">
           {item.created_at.slice(0, 10)}
         </span>
       </div>
@@ -111,19 +146,33 @@ function HistoryCard({ item }: { item: HistoryItem }) {
         </div>
       )}
 
-      {locations.length > 0 && (
-        <div className="flex flex-wrap items-center gap-1.5">
-          <MapPin className="text-primary size-3 shrink-0" />
-          {locations.slice(0, 4).map((loc) => (
-            <span key={loc.location_id} className="text-muted-foreground text-xs">
-              {loc.metadata?.name ?? loc.location_id}
-            </span>
-          ))}
-          {locations.length > 4 && (
-            <span className="text-muted-foreground text-xs">+{locations.length - 4} địa điểm</span>
-          )}
-        </div>
-      )}
+      <div className="mt-2 flex items-end justify-between">
+        {locations.length > 0 && (
+          <div className="flex flex-1 flex-wrap items-center gap-1.5 pr-4">
+            <MapPin className="text-primary size-3 shrink-0" />
+            {locations.slice(0, 4).map((loc) => (
+              <span key={loc.location_id} className="text-muted-foreground text-xs">
+                {loc.metadata?.name ?? loc.location_id}
+              </span>
+            ))}
+            {locations.length > 4 && (
+              <span className="text-muted-foreground text-xs">
+                +{locations.length - 4} địa điểm
+              </span>
+            )}
+          </div>
+        )}
+
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={handleLoad}
+          className="shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
+        >
+          <Play className="mr-1.5 size-3" />
+          Tải phiên
+        </Button>
+      </div>
     </div>
   );
 }

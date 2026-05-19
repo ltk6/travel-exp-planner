@@ -13,6 +13,7 @@ from .db_manager import (
     login_user,
     save_rec_turn,
     get_user_history,
+    get_location_image_by_index,
 )
 
 __all__ = [
@@ -26,4 +27,5 @@ __all__ = [
     "login_user",
     "save_rec_turn",
     "get_user_history",
+    "get_location_image_by_index",
 ]

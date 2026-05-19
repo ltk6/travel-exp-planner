@@ -29,9 +29,10 @@ def cosine_similarity(v1: List[float], v2: List[float]) -> float:
         return 0.0
     return dot / (n1 * n2)
 
-def _semantic_score(user_vectors: Dict, act_vectors: Dict, weights: Dict[str, float]) -> float:
+def _semantic_score(user_vectors: Dict, act_vectors: Dict, weights: Dict[str, float]) -> Tuple[float, bool]:
     sum_score, total_weight = 0.0, 0.0
-    for ch_user, ch_act, w_key in [("aug_tags", "tag", "aug_tags"),
+    
+    for ch_user, ch_act, w_key in [("aug_tags", "aug_tags", "aug_tags"),
                                    ("aug_text", "text", "aug_text"),
                                    ("text",     "text", "text")]:
         w = weights.get(w_key, 0.0)
@@ -39,11 +40,19 @@ def _semantic_score(user_vectors: Dict, act_vectors: Dict, weights: Dict[str, fl
             continue
         v_user = user_vectors.get(ch_user)
         v_act  = act_vectors.get(ch_act)
+        
+        # ── Graceful Fallback: if activity has no tag vector, compare user's tag against activity text! ──
+        if not v_act and ch_act == "aug_tags":
+            v_act = act_vectors.get("text")
+            
         if v_user and v_act:
             sim = cosine_similarity(v_user, v_act)
             sum_score    += ((sim + 1.0) / 2.0) * w
             total_weight += w
-    return sum_score / total_weight if total_weight > 0 else 0.5
+            
+    if total_weight > 0:
+        return sum_score / total_weight, True
+    return 0.5, False
 
 # =============================================================================
 # TAG OVERLAP SCORE
@@ -61,13 +70,20 @@ def _tag_overlap_score(user_tags: List[str], act_tags: List[str]) -> float:
 # ATTRIBUTE SCORE
 # =============================================================================
 
-def _attribute_score(metadata: Dict, user_prefs: Dict[str, Optional[float]]) -> float:
+def _attribute_score(activity: Dict, user_prefs: Dict[str, Optional[float]]) -> float:
+    metadata = activity.get("metadata", {}) or {}
+    signals  = activity.get("signals", {}) or {}
     axis_fits = []
     
-    # Truy xuất trực tiếp, giảm thiểu các hàm gọi lồng nhau (function call overhead)
+    # Check signals (DB cached), then metadata (N5 LLM dynamic), then root activity
     for axis, meta_key in [("intensity", "intensity"), ("physical", "physical_level"), ("social", "social_level")]:
         u_pref = user_prefs.get(axis)
-        m_val = metadata.get(meta_key)
+        
+        m_val = signals.get(meta_key)
+        if m_val is None:
+            m_val = metadata.get(meta_key)
+        if m_val is None:
+            m_val = activity.get(meta_key)
         
         if u_pref is not None and m_val is not None:
             axis_fits.append(max(0.0, 1.0 - abs(float(u_pref) - float(m_val))))
@@ -94,10 +110,19 @@ _REASON_BY_TYPE = {
 _REASON_DEFAULT = ["Lựa chọn tuyệt vời cho hành trình của bạn", "Trải nghiệm thú vị không nên bỏ lỡ"]
 _INTENSITY_LABELS = [(0.7, "mạnh mẽ"), (0.4, "vừa sức"), (0.0, "nhẹ nhàng")]
 
-def _build_reason(metadata: Dict, sem_score: float, tag_score: float, attr_score: float) -> str:
-    activity_type = metadata.get("activity_type", "nature")
-    name_act = metadata.get("name", "Trải nghiệm")
-    intensity = float(metadata.get("intensity") or 0.5)
+def _build_reason(activity: Dict, sem_score: float, tag_score: float, attr_score: float) -> str:
+    metadata = activity.get("metadata", {}) or {}
+    signals  = activity.get("signals", {}) or {}
+    
+    activity_type = metadata.get("activity_type") or activity.get("activity_type") or "nature"
+    name_act = metadata.get("name") or activity.get("name") or "Trải nghiệm"
+    
+    intensity_val = signals.get("intensity")
+    if intensity_val is None:
+        intensity_val = metadata.get("intensity")
+    if intensity_val is None:
+        intensity_val = activity.get("intensity")
+    intensity = float(intensity_val or 0.5)
 
     intensity_hint = next((label for threshold, label in _INTENSITY_LABELS if intensity >= threshold), "nhẹ nhàng") + " "
 
@@ -139,15 +164,26 @@ def rank_activities(data: Dict) -> Dict:
     for activity in activities:
         metadata = activity.get("metadata", {}) or {}
         vectors  = activity.get("vectors", {}) or {}
-        act_tags = metadata.get("tags") or []
+        act_tags = metadata.get("tags") or activity.get("tags") or []
 
-        sem_score  = _semantic_score(user_vectors, vectors, weights)
-        sem_scaled = max(0.0, min(1.0, (sem_score - 0.5) * 2.0))
+        sem_score, sem_matched = _semantic_score(user_vectors, vectors, weights)
+        sem_scaled = max(0.0, min(1.0, (sem_score - 0.5) * 2.0)) if sem_matched else 0.5
         tag_score  = _tag_overlap_score(user_tags, act_tags)
-        attr_score = _attribute_score(metadata, user_prefs)
-        total      = max(0.0, min(1.0, W_SEMANTIC * sem_scaled + W_TAG * tag_score + W_ATTRIBUTE * attr_score))
+        attr_score = _attribute_score(activity, user_prefs)
+        
+        # ── Dynamic category weighting ──
+        has_attr_pref = any(v is not None for v in user_prefs.values())
+        w_sem  = W_SEMANTIC if sem_matched else 0.0
+        w_tag  = W_TAG if user_tags else 0.0
+        w_attr = W_ATTRIBUTE if has_attr_pref else 0.0
+        
+        sum_cat_w = w_sem + w_tag + w_attr
+        if sum_cat_w > 0:
+            total = (w_sem * sem_scaled + w_tag * tag_score + w_attr * attr_score) / sum_cat_w
+        else:
+            total = 0.5
 
-        heap_item = (total, activity.get("activity_id"), activity.get("location_id"), metadata, sem_scaled, tag_score, attr_score)
+        heap_item = (total, activity.get("activity_id"), activity.get("location_id"), activity, sem_scaled, tag_score, attr_score)
 
         if len(scored_heap) < top_k:
             heapq.heappush(scored_heap, heap_item)
@@ -158,25 +194,16 @@ def rank_activities(data: Dict) -> Dict:
 
     final_results = []
     if top_activities:
-        max_s  = top_activities[0][0]
-        min_s  = top_activities[-1][0]
-        spread = max_s - min_s
-        LOW, HIGH = 0.40, 1.0
-
-        n    = len(top_activities)
-        step = (HIGH - LOW) / (n - 1) if n > 1 else 0.0
-
-        for i, (score, act_id, loc_id, meta, sem_s, tag_s, attr) in enumerate(top_activities):
-            if spread > 0.01:
-                norm_score = LOW + (score - min_s) / spread * (HIGH - LOW)
-            else:
-                norm_score = HIGH - i * step
-
+        for score, act_id, loc_id, act_item, sem_s, tag_s, attr in top_activities:
+            # Absolute Smoothstep Dead-Zone Scaling
+            norm = max(0.0, min(1.0, score))
+            shaped = 3 * (norm ** 2) - 2 * (norm ** 3)
+            scaled_score = round(0.65 + shaped * 0.30, 4)
             final_results.append({
                 "activity_id": act_id,
                 "location_id": loc_id,
-                "score":       round(max(0.0, min(1.0, norm_score)), 4),
-                "reason":      _build_reason(meta, sem_s, tag_s, attr),
+                "score":       scaled_score,
+                "reason":      _build_reason(act_item, sem_s, tag_s, attr),
             })
 
     elapsed_ms = int((time.time() - t0) * 1000)
