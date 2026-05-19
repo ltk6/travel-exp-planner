@@ -430,3 +430,117 @@ def count_activities_by_provider(location_id: Optional[str] = None) -> Dict[str,
         cur.close()
         conn.close()
     return out
+
+
+# ──────────────── USER PROFILE FEATURES ────────────────
+# AUTH AND RECOMMENDATION HISTORY FEATURES
+from werkzeug.security import generate_password_hash, check_password_hash
+
+def init_profile_db():
+    """Khoi tao bang nguoi dung va bang luu lich su goi y"""
+    conn = _get_connection()
+    cur = conn.cursor()
+    
+    # 1. Bang luu tai khoan de dang nhap
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            user_id SERIAL PRIMARY KEY,
+            username VARCHAR(255) UNIQUE NOT NULL,
+            password_hash VARCHAR(255) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+    
+    # 2. Bang luu toan bo Input va Output cua moi lan Recommendation
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS rec_history (
+            history_id SERIAL PRIMARY KEY,
+            user_id INT NOT NULL,
+            input_data JSONB,
+            output_data JSONB,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+    conn.commit()
+    cur.close()
+    conn.close()
+    logger.info("Khoi tao bang users va rec_history thanh cong!")
+
+# PHAN 1: AUTHENTICATION (DANG KY DANG NHAP)
+
+def register_user(username, password) -> Dict[str, Any]:
+    try:
+        conn = _get_connection()
+        cur = conn.cursor()
+        hashed_pw = generate_password_hash(password)
+        cur.execute("""
+            INSERT INTO users (username, password_hash) 
+            VALUES (%s, %s) RETURNING user_id;
+        """, (username, hashed_pw))
+        user_id = cur.fetchone()["user_id"]
+        conn.commit()
+        cur.close()
+        conn.close()
+        return {"status": "success", "message": "Dang ky thanh cong", "user_id": user_id}
+    except psycopg2.errors.UniqueViolation:
+        return {"status": "error", "message": "Ten dang nhap da ton tai"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+def login_user(username, password) -> Dict[str, Any]:
+    try:
+        conn = _get_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT user_id, password_hash FROM users WHERE username = %s;", (username,))
+        user = cur.fetchone()
+        cur.close()
+        conn.close()
+        if user and check_password_hash(user["password_hash"], password):
+            return {"status": "success", "message": "Dang nhap thanh cong", "user_id": user["user_id"]}
+        return {"status": "error", "message": "Sai tai khoan va mat khau"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+# PHAN 2: REC HISTORY (LUU TOAN BO DATA KHI REC)
+
+def save_rec_turn(user_id: int, input_data: Dict[str, Any], output_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Sau moi lan rec, frontend goi den day de luu vao database"""
+    try:
+        conn = _get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO rec_history (user_id, input_data, output_data)
+            VALUES (%s, %s, %s);
+        """, (user_id, json.dumps(input_data), json.dumps(output_data)))
+        conn.commit()
+        cur.close()
+        conn.close()
+        return {"status": "success", "message": "Da luu lich su goi y thanh cong"}
+    except Exception as e:
+        logger.error(f"Loi luu lich su rec: {e}")
+        return {"status": "error", "message": str(e)}
+
+def get_user_history(user_id: int) -> Dict[str, Any]:
+    """Lay toan bo du lieu tat ca cac lan rec cua user sau khi dang nhap thanh cong"""
+    try:
+        conn = _get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT history_id, input_data, output_data, created_at 
+            FROM rec_history WHERE user_id = %s ORDER BY created_at DESC;
+        """, (user_id,))
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+        
+        history_list = []
+        for row in rows:
+            history_list.append({
+                "history_id": row["history_id"],
+                "input_data": json.loads(row["input_data"]) if isinstance(row["input_data"], str) else row["input_data"],
+                "output_data": json.loads(row["output_data"]) if isinstance(row["output_data"], str) else row["output_data"],
+                "created_at": row["created_at"].strftime("%Y-%m-%d %H:%M:%S")
+            })
+        return {"status": "success", "data": history_list}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}

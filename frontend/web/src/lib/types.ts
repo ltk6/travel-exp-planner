@@ -151,3 +151,24 @@ export type FeedbackPayload = {
   feedback: string;
   [k: string]: unknown;
 };
+
+export type AuthPayload = { username: string; password: string };
+
+export type AuthResponse = {
+  status: "success" | "error";
+  message: string;
+  user_id?: number;
+};
+
+export type HistoryItem = {
+  history_id: number;
+  input_data: RecommendPayload;
+  output_data: RecommendResponse;
+  created_at: string;
+};
+
+export type HistoryResponse = {
+  status: "success" | "error";
+  data: HistoryItem[];
+  message?: string;
+};

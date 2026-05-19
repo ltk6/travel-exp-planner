@@ -1,9 +1,12 @@
 import type {
   ActivitiesPayload,
   ActivitiesResponse,
+  AuthPayload,
+  AuthResponse,
   ExploreLocationsResponse,
   FeedbackEndpoint,
   FeedbackPayload,
+  HistoryResponse,
   RecommendPayload,
   RecommendResponse,
 } from "./types";
@@ -44,4 +47,13 @@ export const apiClient = {
     postJson<T>(`/api/feedback/${endpoint}`, body),
 
   locations: () => getJson<ExploreLocationsResponse>("/api/locations"),
+
+  auth: {
+    register: (payload: AuthPayload) => postJson<AuthResponse>("/api/auth/register", payload),
+    login: (payload: AuthPayload) => postJson<AuthResponse>("/api/auth/login", payload),
+  },
+
+  profile: {
+    getHistory: (userId: number) => getJson<HistoryResponse>(`/api/profile/history/${userId}`),
+  },
 };
