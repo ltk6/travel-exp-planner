@@ -64,7 +64,7 @@ Trong quy mô bài toán hiện tại, việc tập trung mọi thứ vào Postg
 ## 3. Giao diện công khai
 
 ```python
-init_db() -> None
+init_db(drop_existing: bool = False) -> None
 save_location(location_data: dict[str, Any]) -> dict[str, Any]
 get_all_locations(include_images: bool = True) -> dict[str, Any]
 get_db_fingerprint() -> str
@@ -73,7 +73,7 @@ attach_image_to_location(location_dict: dict[str, Any]) -> dict[str, Any]
 
 Ý nghĩa từng hàm:
 
-- `init_db()`: khởi tạo lại schema lưu trữ
+- `init_db(drop_existing: bool = False)`: khởi tạo lại hoặc tạo mới cấu trúc schema lưu trữ (chỉ xóa bảng cũ nếu `drop_existing=True`)
 - `save_location()`: ghi hoặc cập nhật một địa điểm
 - `get_all_locations()`: đọc toàn bộ dữ liệu theo cấu trúc API-ready
 - `get_db_fingerprint()`: tạo dấu vân tay trạng thái dữ liệu
@@ -183,21 +183,20 @@ Trong đó, `images` được trả về dưới dạng Base64 data URI. Đây l
 
 ## 6. Các quyết định hành vi quan trọng
 
-### 6.1. `init_db()` có tính destructive
+### 6.1. `init_db(drop_existing: bool = False)` có chế độ bảo vệ dữ liệu
 
-`init_db()` hiện không phải migration tool, mà là reset-schema tool:
+`init_db()` hiện tại an toàn và không phá hủy dữ liệu theo mặc định:
 
 1. đảm bảo extension `vector` tồn tại
-2. xóa bảng `locations`
-3. tạo lại từ đầu
+2. tạo bảng `locations` nếu chưa tồn tại
+3. chỉ thực hiện xóa bảng `locations` và tạo lại từ đầu khi tham số `drop_existing=True` được truyền vào.
 
 Điều này phù hợp với các giai đoạn:
 
-- seed dữ liệu
+- seed dữ liệu (cần truyền `drop_existing=True`)
 - benchmark
 - reset môi trường thí nghiệm
-
-Nó đơn giản nhưng rất rõ ràng về mặt hành vi.
+- Bảo vệ dữ liệu trong database khi vận hành thực tế.
 
 ### 6.2. Upsert thay vì insert cứng
 

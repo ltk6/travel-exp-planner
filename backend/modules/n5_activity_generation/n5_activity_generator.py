@@ -17,8 +17,7 @@ from .n5_activity_templates import (
     VARIATION_MODIFIERS,
 )
 
-# Normalizer convert legacy n5 dict → unified schema (xem activity_retrievals/SCHEMA.md).
-from ..activity_retrievals.normalizers import llm as _llm_normalizer
+
 
 try:
     from .n5_llm_generator import generate_from_llm, generate_from_llm_with_meta, is_llm_available
@@ -91,21 +90,12 @@ def generate_activities(data: dict) -> dict:
         )
         llm_metas.append({"location_id": loc_id, **meta_out})
 
-        # Convert legacy {activity_id, location_id, metadata{...}} → unified schema
-        # (xem backend/modules/activity_retrievals/SCHEMA.md).
-        coords = loc["metadata"].get("coordinates")
-        ctx = {
-            "location_id":    loc_id,
-            "anchor_lat":     (coords or {}).get("lat") if coords else None,
-            "anchor_lng":     (coords or {}).get("lng") if coords else None,
-            "anchor_address": loc["metadata"].get("address"),
-        }
-        unified = _llm_normalizer.normalize_all(activities, ctx)
-
-        all_activities.extend(unified)
+        # Legacy {activity_id, location_id, metadata{...}} format is returned directly.
+        # Decoupled: Normalization into the unified schema is handled by the orchestrator (N8).
+        all_activities.extend(activities)
         logger.info(
-            "Location '%s' (%s): generated %d activities (unified)",
-            loc_name, loc_id, len(unified)
+            "Location '%s' (%s): generated %d activities (raw format)",
+            loc_name, loc_id, len(activities)
         )
 
     elapsed_ms = int((time.time() - t0) * 1000)
@@ -593,10 +583,9 @@ def _promote_sightseeing_to_front(
     """
     sg     = [a for a in activities if _is_sightseeing(a)]
     non_sg = [a for a in activities if not _is_sightseeing(a)]
-    sg_needed = int(target_total * target_ratio)
 
     sightseeing_needed = int(target_total * target_ratio)
-    current_sg_count   = len(sightseeing_pool)
+    current_sg_count   = len(sg)
 
     if current_sg_count < sightseeing_needed:
         extra_count = sightseeing_needed - current_sg_count
@@ -627,9 +616,9 @@ def _promote_sightseeing_to_front(
             )
             extra.append(act)
 
-        sightseeing_pool = sightseeing_pool + extra
+        sg = sg + extra
 
-    return sightseeing_pool + non_sightseeing_pool
+    return sg + non_sg
 
 
 def _is_sightseeing(activity: Dict) -> bool:
