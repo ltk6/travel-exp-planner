@@ -43,7 +43,7 @@ export function useActivitiesQuery(
   return useQuery({
     queryKey: ["activities", loc.location_id, [...preferredTypes].sort().join(",")],
     queryFn: async () => {
-      const data = await apiClient.activitiesV2(payload);
+      const data = await apiClient.activities(payload);
       if (preferredTypes.length === 0) setActivityResult(loc.location_id, data);
       return data;
     },
