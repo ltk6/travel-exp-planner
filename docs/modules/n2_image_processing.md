@@ -150,20 +150,20 @@ Chiến lược này đem lại ba lợi ích:
 ## 6. Luồng xử lý kỹ thuật
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph TD
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
-    A["Ảnh thô (binary)"] --> B["Giải mã bằng Pillow"]
-    B --> C["Chuyển hệ màu RGB"]
-    C --> D["Thu nhỏ kích thước (Resize)"]
-    D --> E["Nén JPEG"]
-    E --> F["Gửi yêu cầu tới Vision API"]
-    F --> G["Mô tả ảnh ngắn (img_desc)"]
-    G --> H["Trả về metadata và usage"]
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef op fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
+    classDef api fill:#fdf2ff,stroke:#c084fc,stroke-width:2.5px,color:#000000;
+    classDef out fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
+    
+    A["Ảnh thô (binary)"]:::client --> B["Giải mã bằng Pillow"]:::op
+    B --> C["Chuyển hệ màu RGB"]:::op
+    C --> D["Thu nhỏ kích thước (Resize)"]:::op
+    D --> E["Nén JPEG"]:::op
+    E --> F["Gửi yêu cầu tới Vision API"]:::api
+    F --> G["Mô tả ảnh ngắn (img_desc)"]:::out
+    G --> H["Trả về metadata và usage"]:::out
 ```
 
 Chuỗi xử lý hiện tại gồm:

@@ -228,25 +228,25 @@ Như vậy, `text_k` và `tags_k` không phải metadata thừa, mà là tín hi
 ## 7. Luồng xử lý nội bộ
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph TD
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
-    A["Đầu vào: text, tags, img_desc"] --> B["Tiền xử lý"]
-    B --> C["text ban đầu"]
-    B --> D["aug_text"]
-    B --> E["aug_tags"]
-    B --> F["img_desc ban đầu"]
-    C --> G["Gom nhóm toàn bộ kênh"]
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef op fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
+    classDef channel fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
+    classDef out fill:#f5f3ff,stroke:#818cf8,stroke-width:2.5px,color:#000000;
+    
+    A["Đầu vào: text, tags, img_desc"]:::client --> B["Tiền xử lý"]:::op
+    B --> C["text ban đầu"]:::channel
+    B --> D["aug_text"]:::channel
+    B --> E["aug_tags"]:::channel
+    B --> F["img_desc ban đầu"]:::channel
+    C --> G["Gom nhóm toàn bộ kênh"]:::op
     D --> G
     E --> G
     F --> G
-    G --> H["Mã hóa hàng loạt"]
-    H --> I["Tách kết quả theo từng mục"]
-    I --> J["Kết quả vector + metadata"]
+    G --> H["Mã hóa hàng loạt"]:::op
+    H --> I["Tách kết quả theo từng mục"]:::op
+    I --> J["Kết quả vector + metadata"]:::out
 ```
 
 Các bước thực thi ở mức code:

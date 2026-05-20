@@ -13,39 +13,52 @@ N5 generates candidate activities for each location in a result set. It uses an 
 ## Public API
 
 ```python
-generate_activities(data: dict[str, Any]) -> dict[str, Any]
+from backend.shared.contracts.n5_contracts import N5GenerateInput
+
+generate_activities(data: Union[N5GenerateInput, dict]) -> dict
 ```
+
+`generate_activities()` strictly validates input schemas at the boundary using **Pydantic V2**.
 
 ## Input Shape
 
+The module accepts raw dictionaries matching the schema below or a pre-instantiated `N5GenerateInput` Pydantic model:
+
 ```python
-{
-    "user": {
-        "text": str | None,
-        "img_desc": str | None,
-        "tags": list[str] | str | None,
-    },
-    "locations": [
-        {
-            "location_id": str,
-            "metadata": {
-                "name": str | None,
-                "description": str | None,
-                "tags": list[str] | None,
-            },
-        }
-    ],
-    "constraints": {
-        "time_of_day": str | None,
-    },
-}
+class N5UserInput(BaseModel):
+    text: Optional[str] = ""
+    tags: List[str] = Field(default_factory=list)
+    img_desc: Optional[str] = ""
+
+class N5LocationMetadata(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    tags: List[str] = Field(default_factory=list)
+    coordinates: Optional[Dict[str, Optional[float]]] = None
+    address: Optional[str] = None
+
+class N5LocationItem(BaseModel):
+    location_id: str
+    metadata: Optional[N5LocationMetadata] = None
+
+class N5Constraints(BaseModel):
+    time_of_day: Optional[str] = "anytime"
+
+class N5GenerateInput(BaseModel):
+    user: N5UserInput = Field(default_factory=N5UserInput)
+    locations: List[N5LocationItem] = Field(default_factory=list)
+    constraints: Optional[N5Constraints] = Field(default_factory=N5Constraints)
+    provider_override: Optional[str] = None
 ```
 
-- `user.tags` may be provided as a list or comma-separated string
-- missing fields are normalized to safe defaults
-- location metadata is optional, but better metadata improves generation quality
+- `user`: user preferences (Optional, defaults to empty preferences)
+- `locations`: candidate locations to generate activities for (Optional, defaults to empty list `[]`)
+- `constraints`: activity timing constraints (Optional, defaults to `time_of_day: "anytime"`)
+- `provider_override`: override default LLM provider (Optional, defaults to None)
 
 ## Output Shape
+
+N5 has no formal output contract. Malformed LLM results are dropped internally. The raw activity structure returned is:
 
 ```python
 {
@@ -80,7 +93,8 @@ generate_activities(data: dict[str, Any]) -> dict[str, Any]
 ```
 
 - `activities` is a flat list across all input locations
-- `per_location` contains generation metadata for each processed location
+- Malformed or incomplete activities are silently dropped by N5's internal parser
+- In N8, N5-generated activities are validated against `N3ActivityItem` before entering the shared activity pipeline alongside DB-backed activities
 - if generation is disabled by configuration, the module returns an empty `activities` list
 
 ## Generation Behavior

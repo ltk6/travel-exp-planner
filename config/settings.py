@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 # ── Project Paths & Environment ────────────────────────────────────
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-load_dotenv(encoding="utf-8-sig", override=True)
+load_dotenv(os.path.join(PROJECT_ROOT, ".env"), encoding="utf-8-sig", override=True)
 
 # ── API Keys ──────────────────────────────────────────────────────
 GROQ_API_KEY     = os.getenv("GROQ_API_KEY")

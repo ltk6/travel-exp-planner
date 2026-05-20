@@ -177,21 +177,22 @@ thì module trả similarity `0.0` cho kênh đó thay vì làm hỏng toàn b�
 ## 6. Luồng xếp hạng
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph TD
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
-    A["Vector người dùng + text_k + tags_k"] --> B["Tính trọng số động"]
-    B --> C["Tính toán tương đồng (Cosine Similarity)"]
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef weight fill:#fdf2ff,stroke:#c084fc,stroke-width:2.5px,color:#000000;
+    classDef op fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
+    classDef channel fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
+    classDef out fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
+    
+    A["Vector người dùng + text_k + tags_k"]:::client --> B["Tính trọng số động"]:::weight
+    B --> C["Tính toán tương đồng (Cosine Similarity)"]:::op
     
     subgraph "4 Kênh so khớp độc lập"
-        C1["Kênh text"]
-        C2["Kênh aug_text"]
-        C3["Kênh aug_tags"]
-        C4["Kênh img_desc"]
+        C1["Kênh text"]:::channel
+        C2["Kênh aug_text"]:::channel
+        C3["Kênh aug_tags"]:::channel
+        C4["Kênh img_desc"]:::channel
     end
     
     C --> C1
@@ -199,15 +200,15 @@ graph TD
     C --> C3
     C --> C4
     
-    C1 --> D["Cộng gộp có trọng số"]
+    C1 --> D["Cộng gộp có trọng số"]:::op
     C2 --> D
     C3 --> D
     C4 --> D
     
-    D --> E["Chặn điểm âm về 0"]
-    E --> F["Sắp xếp giảm dần"]
-    F --> G["Lấy Top-K địa điểm"]
-    G --> H["Chuẩn hóa theo phần tử dẫn đầu"]
+    D --> E["Chặn điểm âm về 0"]:::op
+    E --> F["Sắp xếp giảm dần"]:::op
+    F --> G["Lấy Top-K địa điểm"]:::out
+    G --> H["Chuẩn hóa theo phần tử dẫn đầu"]:::out
 ```
 
 Quy trình thực thi:

@@ -13,92 +13,61 @@ N6 ranks candidate activities by combining semantic similarity with attribute fi
 ## Public API
 
 ```python
-rank_activities(data: dict[str, Any]) -> dict[str, Any]
-infer_user_preferences(user_input: dict[str, Any]) -> dict[str, float | None]
+from backend.shared.contracts.n6_contracts import N6RankInput
+
+rank_activities(data: Union[N6RankInput, dict]) -> dict
 ```
+
+`rank_activities()` strictly validates input schemas at the boundary using **Pydantic V2**.
 
 ## Input Shape
 
+The module accepts raw dictionaries matching the schema below or a pre-instantiated `N6RankInput` Pydantic model:
+
 ```python
-{
-    "user_input": {
-        "text": str | None,
-        "img_desc": str | None,
-        "tags": list[str] | None,
-    },
-    "user_vectors": {
-        "text": list[float] | None,
-        "aug_text": list[float] | None,
-        "aug_tags": list[float] | None,
-        "img_desc": list[float] | None,
-    },
-    "activities": [
-        {
-            "activity_id": str,
-            "location_id": str,
-            "metadata": {
-                "name": str,
-                "description": str,
-                "tags": list[str],
-                "activity_type": str,
-                "intensity": float,
-                "physical_level": float | None,
-                "social_level": float | None,
-            },
-            "vectors": {
-                "text": list[float] | None,
-                "tag": list[float] | None,
-            },
-        }
-    ],
-    "context": {
-        "time_of_day": str | None,
-    },
-    "text_k": int,
-    "tags_k": int,
-    "top_k": int,
-}
+class UserInput(BaseModel):
+    text: Optional[str] = ""
+    tags: List[str] = Field(default_factory=list)
+    img_desc: Optional[str] = ""
+
+class N6RankInput(BaseModel):
+    user_input: UserInput = Field(default_factory=UserInput)
+    user_vectors: UserVectors = Field(default_factory=UserVectors)
+    activities: List[Dict[str, Any]] = Field(default_factory=list)
+    top_k: int = Field(default=5)
+    text_k: int = Field(default=0)
+    tags_k: int = Field(default=0)
 ```
 
-- `user_input` is used to infer attribute preferences
-- `user_vectors` is used for semantic scoring
-- `activities` must provide both metadata and vector payloads for best results
-- `top_k` defaults to `5` in code when omitted
+- `user_input`: raw query parameters to infer attribute preferences (Optional, defaults to empty UserInput)
+- `user_vectors`: query-side vectors used for semantic scoring (Optional, defaults to empty UserVectors)
+- `activities`: candidate activities to rank (Optional, defaults to empty list `[]`)
+- `top_k`: maximum number of ranked activities to return (Optional, defaults to 5)
+- `text_k`: count of text-side semantic signals (Optional, defaults to 0)
+- `tags_k`: count of tag-side semantic signals (Optional, defaults to 0)
 
 ## Output Shape
 
+The output of the N6 module strictly adheres to the `N6RankOutput` contract:
+
 ```python
-{
-    "activities": [
-        {
-            "activity_id": str,
-            "location_id": str,
-            "score": float,
-            "reason": str,
-        }
-    ],
-    "metadata": {
-        "user_prefs": {
-            "intensity": float | None,
-            "physical": float | None,
-            "social": float | None,
-        },
-        "weights": {
-            "text": float,
-            "aug_text": float,
-            "aug_tags": float,
-            "img_desc": float,
-        },
-        "text_k": int,
-        "tags_k": int,
-        "latency_ms": int,
-    },
-}
+class RankedActivityItem(BaseModel):
+    activity_id: Optional[str] = None
+    location_id: Optional[str] = None
+    score: float = Field(default=0.0)
+    reason: Optional[str] = ""
+
+class N6RankOutput(BaseModel):
+    activities: List[RankedActivityItem] = Field(default_factory=list)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 ```
 
-- `score` is normalized into a readable range after sorting
-- `reason` is derived from activity metadata plus the strongest matched signals
-- if no activities are provided, the module returns an empty list with zero latency
+- `activity_id`: identifier of the ranked activity (Optional, defaults to None)
+- `location_id`: source location for this activity (Optional, defaults to None)
+- `score`: normalized relevance score (Optional, defaults to `0.0`)
+- `reason`: short explanation of the score (Optional, defaults to `""`)
+- If the input `activities` list is empty, the output `activities` list is also empty — fully valid.
+
 
 ## Scoring Behavior
 

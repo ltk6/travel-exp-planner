@@ -78,19 +78,20 @@ process_feedback(
 ## 4. Cách module hoạt động
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph TD
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
-    A["Trạng thái truy vấn hiện tại"] --> B["Dựng prompt tinh chỉnh"]
-    C["Phản hồi người dùng"] --> B
-    B --> D["Gọi LLM"]
-    D --> E["Giải mã JSON"]
-    E --> F["Lọc tag hợp lệ"]
-    F --> G["Trả về kết quả tinh chỉnh"]
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef op fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
+    classDef llm fill:#fdf2ff,stroke:#c084fc,stroke-width:2.5px,color:#000000;
+    classDef parse fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
+    classDef out fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
+    
+    A["Trạng thái truy vấn hiện tại"]:::client --> B["Dựng prompt tinh chỉnh"]:::op
+    C["Phản hồi người dùng"]:::client --> B
+    B --> D["Gọi LLM"]:::llm
+    D --> E["Giải mã JSON"]:::parse
+    E --> F["Lọc tag hợp lệ"]:::parse
+    F --> G["Trả về kết quả tinh chỉnh"]:::out
 ```
 
 Các bước chính:

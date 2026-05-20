@@ -122,33 +122,35 @@ Output này có hai lớp giá trị:
 ## 4. Quy trình sinh hoạt động
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph TD
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
-    A["Người dùng + Địa điểm"] --> B["Chuẩn hóa đầu vào"]
-    B --> C["Tạo hồ sơ địa điểm"]
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef op fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
+    classDef llm fill:#fdf2ff,stroke:#c084fc,stroke-width:2.5px,color:#000000;
+    classDef check fill:#fff1f2,stroke:#ef4444,stroke-width:2px,color:#000000;
+    classDef fallback fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
+    classDef out fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
+    
+    A["Người dùng + Địa điểm"]:::client --> B["Chuẩn hóa đầu vào"]:::op
+    B --> C["Tạo hồ sơ địa điểm"]:::op
     
     subgraph "Cơ chế Cascading Model Chain"
-        D1["Thử lần lượt các model trong chain"] --> D2{"Có model thành công?"}
-        D2 -- "Không" --> D3["Chờ (Backoff) và Thử lại pass mới"]
+        D1["Thử lần lượt các model trong chain"]:::llm --> D2{"Có model thành công?"}:::check
+        D2 -- "Không" --> D3["Chờ (Backoff) và Thử lại pass mới"]:::llm
         D3 --> D1
-        D4["Trả về kết quả model"]
+        D4["Trả về kết quả model"]:::llm
         D2 -- "Có" --> D4
     end
 
     C --> D1
-    D4 --> D{"LLM phản hồi tốt?"}
+    D4 --> D{"LLM phản hồi tốt?"}:::check
     
-    D -- "Có" --> E["Sử dụng kết quả từ LLM"]
-    D -- "Không" --> F["Mở rộng bằng mẫu (Template)"]
-    E --> G["Loại bỏ trùng lặp (Deduplicate)"]
+    D -- "Có" --> E["Sử dụng kết quả từ LLM"]:::fallback
+    D -- "Không" --> F["Mở rộng bằng mẫu (Template)"]:::fallback
+    E --> G["Loại bỏ trùng lặp (Deduplicate)"]:::op
     F --> G
-    G --> H["Bổ sung tính đa dạng nếu thiếu"]
-    H --> I["Danh sách hoạt động cuối cùng"]
+    G --> H["Bổ sung tính đa dạng nếu thiếu"]:::op
+    H --> I["Danh sách hoạt động cuối cùng"]:::out
 ```
 
 Các bước thực thi cho mỗi địa điểm:
