@@ -75,9 +75,17 @@ def _build_n1_input(activity: Dict[str, Any]) -> Dict[str, Any]:
     name = (md.get("name") or "").strip()
     desc = (md.get("description") or "").strip()
     text = f"{name}. {desc}".strip(". ").strip()
-    tags = md.get("categories_raw") or md.get("tags") or []
-    if not isinstance(tags, list):
-        tags = []
+    raw_tags = md.get("categories_raw") or md.get("tags") or []
+    if not isinstance(raw_tags, list):
+        raw_tags = []
+    tags: List[str] = []
+    for t in raw_tags:
+        if not isinstance(t, str):
+            continue
+        cleaned = t.split("=", 1)[-1]
+        cleaned = cleaned.replace(".", " ").replace("_", " ").replace("-", " ").strip()
+        if cleaned:
+            tags.append(cleaned)
     return {"text": text, "tags": tags, "img_desc": ""}
 
 

@@ -74,10 +74,18 @@ def fetch_overture_nearby(lat: float, lng: float, radius: int = 20000) -> list:
         # Don't format, just dump raw features
         activities.extend(geojson_data.get("features", []))
             
-        # Save parsed JSON to cache
+        # Save parsed JSON to cache (no indent — overture features dày, indent tốn 40%)
         with open(json_cache_file, "w", encoding="utf-8") as f:
-            json.dump(activities, f, indent=2, ensure_ascii=False)
-            
+            json.dump(activities, f, ensure_ascii=False)
+
+        # Raw geojson đã parse xong → xóa để tiết kiệm disk (cache parsed.json đủ rerun).
+        try:
+            cache_file.unlink(missing_ok=True)
+            state_file = cache_file.with_suffix(cache_file.suffix + ".state")
+            state_file.unlink(missing_ok=True)
+        except OSError as e:
+            logger.warning(f"Failed to delete raw geojson cache {cache_file.name}: {e}")
+
         logger.info(f"Successfully parsed and cached {len(activities)} activities from Overture.")
         
     except Exception as e:
