@@ -1,6 +1,6 @@
 # N3 — Module Database Layer: Báo Cáo Bench Test
 
-**Ngày:** 2026-05-19 17:20:44
+**Ngày:** 2026-05-20 13:10:31
 **Database:** PostgreSQL + pgvector + BYTEA[]
 **Host:** `aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres`
 
@@ -19,16 +19,16 @@ N3 là lớp lưu trữ dữ liệu tập trung, chịu trách nhiệm persisten
 ## 2. Kết Quả Smart Sync
 | Chỉ số      | Phương thức                    | Độ trễ (ms) | Ghi chú |
 |-------------|--------------------------------|-------------|---------|
-| Light Load  | `get_all(images=False)`        |  7526 ms    |       |
+| Light Load  | `get_all(images=False)`        | 63213 ms    |       |
 
 ---
 
 ## 3. Kiểm Tra Kết Nối & Write
-- **Kết nối:** PASS (1454 ms)
+- **Kết nối:** PASS (1032 ms)
 
 | Địa điểm              | Location ID       | Độ trễ (ms) | Kết quả |
 |-----------------------|-------------------|-------------|---------|
-| Bãi Sao Phú Quốc      | `bench_loc_001` |  1302 ms    | PASS |
+| Bãi Sao Phú Quốc      | `bench_loc_001` |  1226 ms    | PASS |
 
 ---
 

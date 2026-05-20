@@ -9,36 +9,90 @@ from .utils import _safe_vec
 
 logger = setup_logging("N8.services")
 
-logger.info("N8 — Loading heavy modules...")
-logger.info("N8 — Loading Database (N3)...")
-from n3_database import get_all_locations
-from n3_database.db_manager import get_db_fingerprint
+import threading
 
-logger.info("N8 — Loading Embedding Model (N1)...")
-from modules.n1_embedding import embed, embed_batch
+logger.info("N8 — Spawning background thread for heavy modules...")
 
-logger.info("N8 — Loading Image Processor (N2)...")
-from modules.n2_image_processing import process_image
+def _warmup_modules():
+    try:
+        from n3_database import get_all_locations
+        from n3_database.db_manager import get_db_fingerprint, get_activities_for_location
+        from modules.n1_embedding import embed, embed_batch
+        from modules.n2_image_processing import process_image
+        from modules.n4_location_ranking import rank_locations
+        from modules.n6_activity_ranking.rank_activities import rank_activities
+        from modules.n5_activity_generation.n5_activity_generator import generate_activities
+        from modules.n17_feedback_processing import process_feedback
+        from shared.weights import get_weights
+        
+        globals()["get_all_locations"] = get_all_locations
+        globals()["get_db_fingerprint"] = get_db_fingerprint
+        globals()["get_activities_for_location"] = get_activities_for_location
+        globals()["embed"] = embed
+        globals()["embed_batch"] = embed_batch
+        globals()["process_image"] = process_image
+        globals()["rank_locations"] = rank_locations
+        globals()["rank_activities"] = rank_activities
+        globals()["generate_activities"] = generate_activities
+        globals()["process_feedback"] = process_feedback
+        globals()["get_weights"] = get_weights
+        logger.info("N8 — All heavy modules warmed up successfully in background.")
+    except Exception as e:
+        logger.error(f"N8 — Background warmup failed: {e}")
 
-logger.info("N8 — Loading Ranking Engines (N4, N6)...")
-from modules.n4_location_ranking import rank_locations
-from modules.n6_activity_ranking.rank_activities import rank_activities
+threading.Thread(target=_warmup_modules, daemon=True).start()
 
-logger.info("N8 — Loading Activity Generator (N5)...")
-from modules.n5_activity_generation.n5_activity_generator import generate_activities
-
-logger.info("N8 — Loading Feedback Processor (N17)...")
-from modules.n17_feedback_processing import process_feedback
-
-logger.info("N8 — Loading Shared Weights & Utils...")
-from shared.weights import get_weights
-logger.info("N8 — All modules loaded successfully.")
+def __getattr__(name):
+    if name == "get_all_locations":
+        from n3_database import get_all_locations
+        globals()[name] = get_all_locations
+        return get_all_locations
+    if name == "get_db_fingerprint":
+        from n3_database.db_manager import get_db_fingerprint
+        globals()[name] = get_db_fingerprint
+        return get_db_fingerprint
+    if name == "get_activities_for_location":
+        from n3_database.db_manager import get_activities_for_location
+        globals()[name] = get_activities_for_location
+        return get_activities_for_location
+    if name == "embed":
+        from modules.n1_embedding import embed
+        globals()[name] = embed
+        return embed
+    if name == "embed_batch":
+        from modules.n1_embedding import embed_batch
+        globals()[name] = embed_batch
+        return embed_batch
+    if name == "process_image":
+        from modules.n2_image_processing import process_image
+        globals()[name] = process_image
+        return process_image
+    if name == "rank_locations":
+        from modules.n4_location_ranking import rank_locations
+        globals()[name] = rank_locations
+        return rank_locations
+    if name == "rank_activities":
+        from modules.n6_activity_ranking.rank_activities import rank_activities
+        globals()[name] = rank_activities
+        return rank_activities
+    if name == "generate_activities":
+        from modules.n5_activity_generation.n5_activity_generator import generate_activities
+        globals()[name] = generate_activities
+        return generate_activities
+    if name == "process_feedback":
+        from modules.n17_feedback_processing import process_feedback
+        globals()[name] = process_feedback
+        return process_feedback
+    if name == "get_weights":
+        from shared.weights import get_weights
+        globals()[name] = get_weights
+        return get_weights
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
 
 # ── Centralized Pydantic Contracts ──
 from backend.shared.contracts.n1_contracts import N1EmbedInput
 from backend.shared.contracts.n2_contracts import N2ImageInput
 from backend.shared.contracts.n3_contracts import N3RegisterInput, N3LoginInput, N3SaveHistoryInput, N3ActivityItem
-from n3_database.db_manager import get_activities_for_location
 from backend.shared.contracts.n4_contracts import N4RankInput, UserVectors
 from backend.shared.contracts.n5_contracts import N5GenerateInput, N5UserInput, N5LocationItem, N5LocationMetadata
 from backend.shared.contracts.n6_contracts import N6RankInput, UserInput
@@ -685,7 +739,18 @@ def activities_v2_service(body):
             img_desc=img_desc
         )
         user_emb = embed(n1_input)
-        user_vectors = user_emb.get("vectors") or {}
+        
+        # Must update text_k and tags_k from the embed result for N6 ranker!
+        text_k = user_emb.get("text_k", 0)
+        tags_k = user_emb.get("tags_k", 0)
+        
+        raw_vecs = user_emb.get("vectors") or {}
+        user_vectors = {
+            "text":     _safe_vec(raw_vecs.get("text")),
+            "aug_text": _safe_vec(raw_vecs.get("aug_text")),
+            "aug_tags": _safe_vec(raw_vecs.get("aug_tags")),
+            "img_desc": _safe_vec(raw_vecs.get("img_desc")),
+        }
 
     # ── 4. N6 rank (cosine + attribute) ─────────────────────────────────────
     n6_input = N6RankInput(
@@ -716,18 +781,18 @@ def activities_v2_service(body):
             "score":       ra.get("score", 0),
             "reason":      ra.get("reason", ""),
             "metadata": {
-                "name":           md.get("name"),
-                "description":    md.get("description"),
-                "activity_type":  md.get("activity_type"),
-                "indoor_outdoor": md.get("indoor_outdoor"),
-                "tags":           md.get("categories_raw", []) or md.get("tags", []),
-                "source":         orig.get("source"),
-                "coordinates":    plc.get("coordinates"),
+                "name":           md.get("name") or orig.get("name") or "Trải nghiệm",
+                "description":    md.get("description") or orig.get("description") or "",
+                "activity_type":  md.get("activity_type") or orig.get("activity_type") or "nature",
+                "indoor_outdoor": md.get("indoor_outdoor") or orig.get("indoor_outdoor"),
+                "tags":           md.get("tags", []) or md.get("categories_raw", []) or orig.get("tags", []),
+                "source":         orig.get("source") or "n9-n14_db",
+                "coordinates":    plc.get("coordinates") or orig.get("coordinates"),
                 "distance_m":     dist,
-                "rating":         sg.get("rating"),
-                "image_url":      sg.get("image_url"),
-                "website":        sg.get("website"),
-                "opening_hours":  sg.get("opening_hours"),
+                "rating":         sg.get("rating") or orig.get("rating"),
+                "image_url":      sg.get("image_url") or orig.get("image_url"),
+                "website":        sg.get("website") or orig.get("website"),
+                "opening_hours":  sg.get("opening_hours") or orig.get("opening_hours"),
             },
         })
 
@@ -738,7 +803,7 @@ def activities_v2_service(body):
         "activities":  enriched,
         "meta": {
             "provider_used":     "n9-n14_db" + ("+n5_fallback" if fallback_used else ""),
-            "model_used":        "bge-m3+n6-cosine" + (" + qwen/llama" if fallback_used else ""),
+            "model_used":        "bge-m3+n6-cosine" + (" + groq_compound_chain" if fallback_used else ""),
             "latency_ms":        elapsed_ms,
             "fallback_used":     fallback_used,
             "fallback_n5_count": fallback_n5_count,

@@ -10,11 +10,11 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # ====================== PROJECT SETUP ======================
-PROJECT_ROOT = Path(__file__).resolve().parents[1]  # Trỏ đến thư mục gốc dự án
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 # Load .env file
 load_dotenv(
-    dotenv_path=PROJECT_ROOT / ".env",
+    dotenv_path=os.path.join(PROJECT_ROOT, ".env"),
     encoding="utf-8-sig",
     override=True
 )
@@ -86,7 +86,7 @@ PROTECTED_ROUTES = {"/recommend", "/activities", "/locations"}
 
 ALLOWED_ORIGINS = os.getenv(
     "ALLOWED_ORIGINS",
-    "http://localhost:8501,http://localhost:8502,http://127.0.0.1:8501,http://127.0.0.1:8502"
+    "http://localhost:3000,http://127.0.0.1:3000,http://localhost:8501,http://localhost:8502,http://127.0.0.1:8501,http://127.0.0.1:8502"
 ).split(",")
 
 USER_AGENT = os.getenv("USER_AGENT", "travel-exp-planner/1.0")
