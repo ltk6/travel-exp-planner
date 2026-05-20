@@ -224,47 +224,91 @@ Về mặt kiến trúc, đây là một lựa chọn cân bằng rất tốt gi
 
 ---
 
-## 7. Luồng truy xuất dữ liệu
+## 7. Cấu trúc Schema và Các Luồng truy xuất dữ liệu
+
+### 7.1. Cấu trúc cơ sở dữ liệu phân rã an toàn (Decoupled Database Schemas)
+Dưới đây là sơ đồ kiến trúc 3 tầng lưu trữ an toàn của N3, được cô lập hóa độc lập để đảm bảo an toàn dữ liệu người dùng và các thông tin hoạt động:
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph TD
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
+    classDef layerLoc fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
+    classDef layerUser fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef layerAct fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
+    classDef initBtn fill:#f1f5f9,stroke:#475569,stroke-width:2px,stroke-dasharray:5 5,color:#000000;
+    classDef initSafe fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#000000;
+    classDef initForce fill:#ffe4e6,stroke:#e11d48,stroke-width:2px,color:#000000;
     
-    A["Yêu cầu đọc dữ liệu"] --> B["Kết nối PostgreSQL"]
-    B --> C["Truy vấn bảng địa điểm (locations)"]
-    C --> D["Chuyển đổi pgvector sang danh sách"]
-    D --> E{"Có dữ liệu ảnh?"}
-    E -- "Có" --> F["Giải mã BYTEA sang Base64"]
-    E -- "Không" --> G["Trả về danh sách rỗng"]
-    F --> H["Đóng gói phản hồi JSON"]
-    G --> H
+    subgraph "1. Phân khu Địa điểm (Locations Layer)"
+        LOC["locations table (location_id, vectors, metadata, geo, images BYTEA[])"]:::layerLoc
+    end
+    
+    subgraph "2. Phân khu Người dùng & Auth (User Profile Layer)"
+        USERS["users table (user_id, username, password_hash)"]:::layerUser
+        HIST["rec_history table (history_id, user_id, input_data, output_data)"]:::layerUser
+        USERS -->|1:N| HIST
+    end
+    
+    subgraph "3. Phân khu Hoạt động (Activities Layer)"
+        ACT["6x activities_provider tables (activity_id, location_id, vec_text, vec_tag, place, metadata)"]:::layerAct
+        STATUS["activity_fetch_status table (location_id, provider, status, item_count)"]:::layerAct
+    end
+    
+    DB_INIT["Khởi động Database (init_db / init_profile_db / init_activities_db)"]:::initBtn -->|drop_existing = False (Mặc định)| SAFE_INIT["CREATE TABLE IF NOT EXISTS (Bảo vệ dữ liệu, không phá hủy)"]:::initSafe
+    DB_INIT -->|drop_existing = True (Chỉ định)| FORCE_INIT["DROP TABLE IF EXISTS & Khởi tạo lại (Reset / Reseed)"]:::initForce
 ```
 
+---
+
+### 7.2. Luồng truy xuất tối ưu: Hybrid Caching + Lazy Image Loading
+Hệ thống loại bỏ hoàn toàn việc nạp ảnh nhị phân dung lượng lớn vào cache hoặc trong luồng trả dữ liệu chính. Thay vào đó, ảnh được tải động theo yêu cầu (Lazy Loading):
+
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph TD
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef orchestrator fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
+    classDef db fill:#f5f3ff,stroke:#818cf8,stroke-width:2.5px,color:#000000;
+    classDef cache fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
+
+    UI["Client UI (Giao diện)"]:::client
+
+    %% Luồng Dữ liệu Slim
+    UI -->|"1. Yêu cầu địa điểm"| N8_SLIM["N8 Orchestrator"]:::orchestrator
+    N8_SLIM -->|"2. Lấy dữ liệu slim (không ảnh)"| N3_SLIM["N3 Database (PostgreSQL)"]:::db
+    N3_SLIM -->|"3. Trả về metadata & vectors"| N8_SLIM
+    N8_SLIM -.->|"4. Đọc/Ghi cache"| CACHE["RAM / Disk Cache"]:::cache
+    N8_SLIM -->|"5. Trả JSON slim + lazy-url"| UI
+
+    %% Luồng Lazy Load Ảnh
+    UI -->|"6. Cuộn tới vùng hiển thị"| N8_IMG["N8: GET /api/images/:id_idx"]:::orchestrator
+    N8_IMG -->|"7. Truy vấn BYTEA ảnh"| N3_IMG["N3 Database (PostgreSQL)"]:::db
+    N3_IMG -->|"8. Trả nhị phân ảnh"| N8_IMG
+    N8_IMG -->|"9. Giải mã & trả JPEG thô"| UI
+```
+
+---
+
+### 7.3. Luồng lưu trữ địa điểm an toàn (Upsert Location Flow)
+Hành vi lưu trữ sử dụng cơ chế PostgreSQL `ON CONFLICT` để upsert thông minh, không ghi đè mất ảnh cũ nếu payload mới chỉ cập nhật metadata hoặc vector:
+
+```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
+graph TD
+    classDef db fill:#f5f3ff,stroke:#818cf8,stroke-width:3px,color:#000000;
+    classDef flow fill:#f1f5f9,stroke:#475569,stroke-width:1px,color:#000000;
+    classDef check fill:#fff1f2,stroke:#ef4444,stroke-width:2px,color:#000000;
     
-    A["Yêu cầu lưu địa điểm"] --> B{"Đã tồn tại ID?"}
-    B -- "Chưa" --> C["Thêm bản ghi mới"]
-    B -- "Rồi" --> D["Cập nhật bản ghi hiện có"]
-    D --> E{"Có ảnh mới?"}
-    E -- "Không" --> F["Giữ lại ảnh cũ (Fallback)"]
-    E -- "Có" --> G["Ghi đè bằng ảnh mới"]
+    A["Yêu cầu lưu địa điểm"]:::flow --> B{"Đã tồn tại ID?"}:::check
+    B -- "Chưa" --> C["Thêm bản ghi locations mới"]:::flow
+    B -- "Rồi" --> D["Cập nhật bản ghi hiện có"]:::flow
+    D --> E{"Có mảng ảnh mới?"}:::check
+    E -- "Không" --> F["Giữ nguyên mảng ảnh cũ (Postgres Fallback)"]:::flow
+    E -- "Có" --> G["Ghi đè mảng BYTEA[] mới"]:::flow
     
-    C --> H[("(PostgreSQL + pgvector)")]
+    C --> H[("PostgreSQL Database")]:::db
     F --> H
     G --> H
-```
 
 Luồng này cho thấy rõ vai trò “adapter” của N3:
 

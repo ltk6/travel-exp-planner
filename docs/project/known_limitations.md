@@ -130,15 +130,13 @@ Nếu các tầng này kém:
 
 ---
 
-## 6. Hạn chế của frontend hiện tại
+## 6. Hạn chế của frontend hiện tại (N16 Next.js Web App)
 
-N7 hiện đã được tổ chức khá tốt cho đồ án, nhưng vẫn còn một số giới hạn:
+Dù việc nâng cấp sang Next.js 15 (N16) đã khắc phục triệt để các hạn chế về đơ giao diện của Streamlit, N16 vẫn có một số giới hạn thực tiễn cần lưu ý:
 
-- phụ thuộc vào rerun model của Streamlit
-- trạng thái giao diện vẫn gắn chặt với session state nội bộ
-- khả năng mở rộng thành giao diện web production còn hạn chế
-
-Điều này không làm hệ thống sai, nhưng giới hạn khả năng mở rộng nếu sau này muốn chuyển sang web app production-grade.
+- **Áp lực lên PostgreSQL Connection Pool khi lazy-load ảnh:** Vì hình ảnh nhị phân được tải bất đồng bộ trực tiếp từ cột BYTEA trong DB qua endpoint `/api/images/{location_id}_{idx}.jpg`, khi người dùng cuộn xem hàng loạt địa điểm cùng lúc sẽ kích hoạt hàng chục request song song, gây áp lực tức thì lên kết nối cơ sở dữ liệu.
+- **Trạng thái Zustand Store bị xóa khi hard-refresh:** Do lưu trữ trạng thái Questionnaire Wizard và kết quả gợi ý trong RAM (Zustand Store), nếu người dùng vô tình bấm F5 (refresh trình duyệt), toàn bộ trạng thái phiên hiện tại sẽ bị mất trừ khi tích hợp thêm Middleware lưu trữ vào LocalStorage.
+- **Độ phức tạp khi deploy:** Đòi hỏi chạy một máy chủ NodeJS NodeJS-run độc lập ở frontend thay vì chỉ chạy script Python đơn giản như prototype trước đây.
 
 ---
 
@@ -166,7 +164,7 @@ Các hạn chế hiện tại của hệ thống tập trung ở ba vùng chính
 
 1. **hạ tầng AI bên ngoài**: rate limit, variability của LLM
 2. **chi phí semantic runtime**: đặc biệt ở nhánh activity embedding
-3. **giới hạn kiến trúc mở rộng**: frontend Streamlit và orchestration đồng bộ
+3. **giới hạn kiến trúc mở rộng**: tải kết nối song song khi lazy loading ảnh ở N16 và orchestration đồng bộ ở N8
 
 Điểm tích cực là phần lớn các giới hạn này đã được:
 

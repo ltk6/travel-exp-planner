@@ -1,34 +1,29 @@
 {
   "metadata": {
-    "date": "2026-05-15"
+    "date": "2026-05-19"
   },
   "connectivity": {
-    "status": "PASS",
-    "latency_ms": 247,
-    "error": null
+    "status": "FAIL",
+    "latency_ms": 4092,
+    "error": "connection to server at \"localhost\" (::1), port 5432 failed: Connection refused (0x0000274D/10061)\n\tIs the server running on that host and accepting TCP/IP connections?\nconnection to server at \"localhost\" (127.0.0.1), port 5432 failed: Connection refused (0x0000274D/10061)\n\tIs the server running on that host and accepting TCP/IP connections?\n"
   },
   "fingerprint": {
     "status": "PASS",
-    "latency_ms": 250,
-    "fingerprint": "25:2026-05-14 11:08:27.189066"
+    "latency_ms": 13725,
+    "fingerprint": "fallback_v1"
   },
   "save_tests": [
     {
       "name": "loc_beach",
       "label": "Bãi Sao Phú Quốc",
       "location_id": "bench_loc_001",
-      "latency_ms": 341,
-      "status": "PASS"
+      "latency_ms": 0,
+      "status": "FAIL"
     }
   ],
-  "get_all_full": {
-    "latency_ms": 3274,
-    "status": "PASS",
-    "total": 26
-  },
   "get_all_light": {
-    "latency_ms": 511,
-    "status": "PASS",
-    "total": 26
+    "latency_ms": 0,
+    "status": "FAIL",
+    "total": 0
   }
 }

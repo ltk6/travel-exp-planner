@@ -30,19 +30,20 @@ Dynamic weighting không phải một module độc lập, mà là một lớp l
 - các bước xếp hạng ở N4 và N6
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph TD
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
-    A[Yêu cầu người dùng] --> B[N1: Tiền xử lý + Embedding]
-    B --> C[Tín hiệu: text_k, tags_k]
-    C --> D[Logic Trọng số Động]
-    D --> E[Trọng số các kênh]
-    E --> F[N4: Xếp hạng Địa điểm]
-    E --> G[N6: Xếp hạng Hoạt động]
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef ml fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
+    classDef signal fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
+    classDef logic fill:#fdf2ff,stroke:#c084fc,stroke-width:2.5px,color:#000000;
+    classDef ranking fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
+    
+    A["Yêu cầu người dùng"]:::client --> B["N1: Tiền xử lý + Embedding"]:::ml
+    B --> C["Tín hiệu: text_k, tags_k"]:::signal
+    C --> D["Logic Trọng số Động"]:::logic
+    D --> E["Trọng số các kênh"]:::signal
+    E --> F["N4: Xếp hạng Địa điểm"]:::ranking
+    E --> G["N6: Xếp hạng Hoạt động"]:::ranking
 ```
 
 Ý nghĩa kiến trúc của nó rất rõ:

@@ -80,9 +80,9 @@ Phần này rất quan trọng vì nó giải thích nền tảng học thuật 
     Dùng:
     - `docs/modules/n6_activity_ranking.md`
 
-15. **N7 - Giao diện người dùng**  
+15. **N16 - Giao diện người dùng**  
     Dùng:
-    - `docs/modules/n7_streamlit_ui.md`
+    - `docs/modules/n16_nextjs_ui.md`
 
 16. **N8 - Điều phối API**  
     Dùng:

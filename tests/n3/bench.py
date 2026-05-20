@@ -87,7 +87,6 @@ def _build_markdown(output: dict, date_str: str) -> str:
     conn      = output["connectivity"]
     fp_test   = output["fingerprint"]
     saves     = output["save_tests"]
-    get_full  = output["get_all_full"]
     get_light = output["get_all_light"]
     
     pg_uri_masked = (PG_URI or "").split("@")[-1] if PG_URI else "not set"
@@ -111,9 +110,7 @@ def _build_markdown(output: dict, date_str: str) -> str:
     line("## 2. Kết Quả Smart Sync\n")
     line("| Chỉ số | Phương thức | Độ trễ (ms) | Speedup |")
     line("|--------|-------------|:-----------:|:-------:|")
-    line(f"| Fingerprint | `get_db_fingerprint()` | {fp_test['latency_ms']} ms | {round(get_full['latency_ms']/max(1, fp_test['latency_ms']), 1)}x |")
-    line(f"| Light Load | `get_all(images=False)` | {get_light['latency_ms']} ms | {round(get_full['latency_ms']/max(1, get_light['latency_ms']), 1)}x |")
-    line(f"| Full Load | `get_all(images=True)` | {get_full['latency_ms']} ms | 1.0x |")
+    line(f"| Light Load | `get_all(images=False)` | {get_light['latency_ms']} ms | {round(get_light['latency_ms']/max(1, get_light['latency_ms']), 1)}x |")
     line()
     line("---")
     line()
@@ -160,7 +157,6 @@ def main():
     conn_res = bench_connectivity()
     fp_res = bench_fingerprint()
     save_results = [bench_save(t) for t in SAVE_TESTS]
-    get_full = bench_get_all(include_images=True)
     get_light = bench_get_all(include_images=False)
 
     output = {
@@ -168,7 +164,6 @@ def main():
         "connectivity": conn_res,
         "fingerprint": fp_res,
         "save_tests": save_results,
-        "get_all_full": get_full,
         "get_all_light": get_light,
     }
 

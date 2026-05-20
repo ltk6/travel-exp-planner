@@ -34,6 +34,16 @@ logger.info("N8 — Loading Shared Weights & Utils...")
 from shared.weights import get_weights
 logger.info("N8 — All modules loaded successfully.")
 
+# ── Centralized Pydantic Contracts ──
+from backend.shared.contracts.n1_contracts import N1EmbedInput
+from backend.shared.contracts.n2_contracts import N2ImageInput
+from backend.shared.contracts.n3_contracts import N3RegisterInput, N3LoginInput, N3SaveHistoryInput, N3ActivityItem
+from n3_database.db_manager import get_activities_for_location
+from backend.shared.contracts.n4_contracts import N4RankInput, UserVectors
+from backend.shared.contracts.n5_contracts import N5GenerateInput, N5UserInput, N5LocationItem, N5LocationMetadata
+from backend.shared.contracts.n6_contracts import N6RankInput, UserInput
+from backend.shared.contracts.n17_contracts import N17FeedbackInput
+
 # ── Location Caching ──
 _CACHED_LOCATIONS_DATA = None
 _CACHED_FINGERPRINT = None
@@ -189,17 +199,19 @@ def recommend_service(body):
             try:
                 b64_data = image_b64.split(",")[1] if "," in image_b64 else image_b64
                 img_bytes = base64.b64decode(b64_data)
-                n2_result = process_image({"image": img_bytes})
+                n2_input = N2ImageInput(image=img_bytes)
+                n2_result = process_image(n2_input)
                 img_desc = n2_result.get("img_desc", "")
             except Exception as e:
                 logger.warning(f"N2 processing failed: {e}")
 
     # ── N1 — Build User Vectors ────────────────
-    n1_result = embed({
-        "text": text,
-        "tags": tags,
-        "img_desc": img_desc
-    })
+    n1_input = N1EmbedInput(
+        text=text,
+        tags=tags,
+        img_desc=img_desc
+    )
+    n1_result = embed(n1_input)
 
     text_k = n1_result.get("text_k", 0)
     tags_k = n1_result.get("tags_k", 0)
@@ -220,13 +232,13 @@ def recommend_service(body):
     for loc in locations:
         loc["location_vectors"] = loc.get("vectors")
 
-    n4_input = {
-        "text_k": text_k,
-        "tags_k": tags_k,
-        "user_vectors": user_vectors,
-        "locations": locations,
-        "top_k": top_k,
-    }
+    n4_input = N4RankInput(
+        text_k=text_k,
+        tags_k=tags_k,
+        user_vectors=UserVectors(**user_vectors),
+        locations=locations,
+        top_k=top_k,
+    )
     n4_result = rank_locations(n4_input)
     ranked = n4_result.get("locations", [])
     
@@ -295,11 +307,12 @@ def activities_service(body):
     # ── BGE-M3 — Build User Vectors ────────────
     # Use primary BGE-M3 model for activities user embedding
     logger.info("N8 — Embedding user query via BGE-M3...")
-    bge_result = embed({
-        "text": text,
-        "tags": tags,
-        "img_desc": img_desc
-    })
+    n1_input = N1EmbedInput(
+        text=text,
+        tags=tags,
+        img_desc=img_desc
+    )
+    bge_result = embed(n1_input)
 
     text_k = bge_result.get("text_k", 0)
     tags_k = bge_result.get("tags_k", 0)
@@ -313,12 +326,18 @@ def activities_service(body):
     }
 
     # ── N5 — Generate Activities ───────────────
-    n5_input = {
-        "user": {"text": text, "img_desc": img_desc, "tags": tags},
-        "locations": [location],
-        "config": {"target_count": LLM_N5_TARGET_COUNT},
-        "provider_override": provider,
-    }
+    n5_loc_meta = N5LocationMetadata(
+        name=location.get("metadata", {}).get("name") or location.get("location_id"),
+        description=location.get("metadata", {}).get("description"),
+        tags=location.get("metadata", {}).get("tags") or [],
+        coordinates=location.get("metadata", {}).get("coordinates") or location.get("geo"),
+        address=location.get("metadata", {}).get("address")
+    )
+    n5_input = N5GenerateInput(
+        user=N5UserInput(text=text, tags=tags, img_desc=img_desc),
+        locations=[N5LocationItem(location_id=location["location_id"], metadata=n5_loc_meta)],
+        provider_override=provider
+    )
 
     n5_result = generate_activities(n5_input)
     raw_activities = n5_result.get("activities", [])
@@ -342,11 +361,11 @@ def activities_service(body):
     n1_batch_input = []
     for act in activities:
         meta = act.get("metadata", {}) or {}
-        n1_batch_input.append({
-            "text":     (meta.get("name") or "") + ". " + (meta.get("description") or ""),
-            "tags":     meta.get("tags") or [],
-            "img_desc": "",
-        })
+        n1_batch_input.append(N1EmbedInput(
+            text=(meta.get("name") or "") + ". " + (meta.get("description") or ""),
+            tags=meta.get("tags") or [],
+            img_desc="",
+        ))
 
     logger.info(f"N8 — Embedding {len(activities)} activities via BGE-M3...")
     bge_results = embed_batch(n1_batch_input)
@@ -356,14 +375,14 @@ def activities_service(body):
         act["vectors"] = bge_results[i].get("vectors")
 
     # ── N6 — Rank Activities ───────────────────
-    n6_input = {
-        "text_k": text_k,
-        "tags_k": tags_k,
-        "user_input": {"text": text, "tags": tags, "img_desc": img_desc},
-        "user_vectors": user_vectors,
-        "activities": activities,
-        "top_k": top_k_activities,
-    }
+    n6_input = N6RankInput(
+        text_k=text_k,
+        tags_k=tags_k,
+        user_input=UserInput(text=text, tags=tags, img_desc=img_desc),
+        user_vectors=UserVectors(**user_vectors),
+        activities=activities,
+        top_k=top_k_activities,
+    )
     n6_result = rank_activities(n6_input)
     ranked_acts = n6_result.get("activities", [])
 
@@ -546,7 +565,6 @@ def activities_v2_service(body):
     khi chạy seed_activities.py.
     """
     import time
-    from n3_database.db_manager import get_activities_for_location
 
     t0 = time.time()
     text     = body.get("text", "").strip()
@@ -604,7 +622,9 @@ def activities_v2_service(body):
             for a, r in zip(n5_acts, n1_results):
                 v = r.get("vectors") or {}
                 a["vectors"] = {"text": v.get("text"), "aug_tags": v.get("aug_tags")}
-            db_acts = db_acts + n5_acts
+            # Validate N5 activities against N3ActivityItem before merging
+            validated_n5 = [N3ActivityItem.model_validate(a).model_dump() for a in n5_acts]
+            db_acts = db_acts + validated_n5
             fallback_used = True
             fallback_n5_count = len(n5_acts)
 
@@ -637,11 +657,11 @@ def activities_v2_service(body):
             desc_str = md.get("description") or ""
             full_text = name_str + ". " + desc_str
             act_tags = md.get("tags") or md.get("categories_raw") or []
-            missing_inputs.append({
-                "text": full_text,
-                "tags": act_tags,
-                "img_desc": ""
-            })
+            missing_inputs.append(N1EmbedInput(
+                text=full_text,
+                tags=act_tags,
+                img_desc=""
+            ))
 
     if missing_inputs:
         logger.info("activities_v2: found %d activities missing vectors — embedding them using BGE-M3...", len(missing_inputs))
@@ -659,18 +679,23 @@ def activities_v2_service(body):
     # ── 3. Embed user_input nếu chưa có hoặc thiếu user_vectors (BGE-M3) ──
     if not user_vectors or not user_vectors.get("text") or len(user_vectors.get("text", [])) != 1024:
         logger.info("activities_v2: embedding user input using BGE-M3...")
-        user_emb = embed({"text": text, "tags": tags, "img_desc": img_desc})
+        n1_input = N1EmbedInput(
+            text=text,
+            tags=tags,
+            img_desc=img_desc
+        )
+        user_emb = embed(n1_input)
         user_vectors = user_emb.get("vectors") or {}
 
     # ── 4. N6 rank (cosine + attribute) ─────────────────────────────────────
-    n6_input = {
-        "text_k":       text_k,
-        "tags_k":       tags_k,
-        "user_input":   {"text": text, "tags": tags, "img_desc": img_desc},
-        "user_vectors": user_vectors,
-        "activities":   db_acts,
-        "top_k":        top_k,
-    }
+    n6_input = N6RankInput(
+        text_k=text_k,
+        tags_k=tags_k,
+        user_input=UserInput(text=text, tags=tags, img_desc=img_desc),
+        user_vectors=UserVectors(**user_vectors),
+        activities=db_acts,
+        top_k=top_k,
+    )
     n6_result = rank_activities(n6_input)
     ranked = n6_result.get("activities", []) or []
 
@@ -738,7 +763,13 @@ def feedback_recommend_service(body):
 
     # 1. N17 — Phân tích phản hồi
     logger.info(f"N17 — Processing recommend feedback: '{feedback}'")
-    refined = process_feedback(old_text, old_tags, old_img_desc, feedback)
+    feedback_input = N17FeedbackInput(
+        user_input=old_text,
+        user_tags=old_tags,
+        img_desc=old_img_desc,
+        feedback_text=feedback
+    )
+    refined = process_feedback(feedback_input)
     
     # 2. Cập nhật body
     new_body = body.copy()
@@ -774,7 +805,13 @@ def feedback_activities_service(body):
 
     # 1. N17 — Phân tích phản hồi
     logger.info(f"N17 — Processing activity feedback: '{feedback}'")
-    refined = process_feedback(old_text, old_tags, old_img_desc, feedback)
+    feedback_input = N17FeedbackInput(
+        user_input=old_text,
+        user_tags=old_tags,
+        img_desc=old_img_desc,
+        feedback_text=feedback
+    )
+    refined = process_feedback(feedback_input)
     
     # 2. Cập nhật body
     new_body = body.copy()

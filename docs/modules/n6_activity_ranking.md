@@ -234,15 +234,19 @@ config:
     useMaxWidth: false
 ---
 graph TD
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
-    A["Đầu vào: user_input + vector + hoạt động"] --> B["Suy luận sở thích người dùng"]
-    A --> C["Tính điểm ngữ nghĩa"]
-    B --> D["Tính điểm thuộc tính"]
-    C --> E["Kết hợp 50/50"]
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef op fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
+    classDef combine fill:#fdf2ff,stroke:#c084fc,stroke-width:2.5px,color:#000000;
+    classDef out fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
+    
+    A["Đầu vào: user_input + vector + hoạt động"]:::client --> B["Suy luận sở thích người dùng"]:::op
+    A --> C["Tính điểm ngữ nghĩa"]:::op
+    B --> D["Tính điểm thuộc tính"]:::op
+    C --> E["Kết hợp 50/50"]:::combine
     D --> E
-    E --> F["Sắp xếp"]
-    F --> G["Chuẩn hóa lại điểm số"]
-    G --> H["Top-K + lý do"]
+    E --> F["Sắp xếp"]:::op
+    F --> G["Chuẩn hóa lại điểm số"]:::op
+    G --> H["Top-K + lý do"]:::out
 ```
 
 Quy trình thực thi:

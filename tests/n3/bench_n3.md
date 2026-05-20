@@ -1,8 +1,8 @@
 # N3 — Module Database Layer: Báo Cáo Bench Test
 
-**Ngày:** 2026-05-15  
+**Ngày:** 2026-05-19  
 **Database:** PostgreSQL + pgvector + BYTEA[]  
-**Host:** `aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres`  
+**Host:** `not set`  
 
 ---
 
@@ -21,19 +21,17 @@ N3 là lớp lưu trữ dữ liệu tập trung của toàn bộ hệ thống. M
 
 | Chỉ số | Phương thức | Độ trễ (ms) | Speedup |
 |--------|-------------|:-----------:|:-------:|
-| Fingerprint | `get_db_fingerprint()` | 250 ms | 13.1x |
-| Light Load | `get_all(images=False)` | 511 ms | 6.4x |
-| Full Load | `get_all(images=True)` | 3274 ms | 1.0x |
+| Light Load | `get_all(images=False)` | 0 ms | 0.0x |
 
 ---
 
 ## 3. Kiểm Tra Kết Nối & Write
 
-- **Kết nối:** PASS (247 ms)
+- **Kết nối:** FAIL (4092 ms)
 
 | Địa điểm | Location ID | Độ trễ (ms) | Kết quả |
 |----------|-------------|:-----------:|:-------:|
-| Bãi Sao Phú Quốc | `bench_loc_001` | 341 | PASS |
+| Bãi Sao Phú Quốc | `bench_loc_001` | 0 | FAIL |
 
 ---
 

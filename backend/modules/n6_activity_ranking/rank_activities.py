@@ -6,7 +6,8 @@ from __future__ import annotations
 import hashlib
 import math
 import heapq
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
+from backend.shared.contracts.n6_contracts import N6RankInput
 
 from backend.shared.weights import get_weights
 from .preferences import infer_user_preferences
@@ -141,16 +142,18 @@ def _build_reason(activity: Dict, sem_score: float, tag_score: float, attr_score
 # ENTRY POINT
 # =============================================================================
 
-def rank_activities(data: Dict) -> Dict:
+def rank_activities(data: Union[N6RankInput, Dict[str, Any]]) -> Dict[str, Any]:
     import time
     t0 = time.time()
 
-    user_input   = data.get("user_input", {}) or {}
-    user_vectors = data.get("user_vectors", {}) or {}
-    activities   = data.get("activities", []) or []
-    top_k        = int(data.get("top_k", 5))
-    text_k       = int(data.get("text_k", 0))
-    tags_k       = int(data.get("tags_k", 0))
+    validated = N6RankInput.model_validate(data) if isinstance(data, dict) else data
+
+    user_input   = validated.user_input.model_dump()
+    user_vectors = validated.user_vectors.model_dump()
+    activities   = validated.activities
+    top_k        = max(1, validated.top_k)
+    text_k       = validated.text_k
+    tags_k       = validated.tags_k
 
     if not activities or top_k <= 0:
         return {"activities": [], "metadata": {"latency_ms": 0}}

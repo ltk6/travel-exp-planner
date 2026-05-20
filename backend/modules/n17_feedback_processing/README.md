@@ -13,52 +13,50 @@ N17 refines a travel query after the user provides feedback. It builds a structu
 ## Public API
 
 ```python
-process_feedback(
-    user_input: str,
-    user_tags: list[str],
-    img_desc: str,
-    feedback_text: str,
-    llm_chain: str | None = None,
-) -> dict[str, Any]
+from backend.shared.contracts.n17_contracts import N17FeedbackInput
+
+process_feedback(data: Union[N17FeedbackInput, dict]) -> dict
 ```
+
+`process_feedback()` strictly validates input schemas at the boundary using **Pydantic V2**.
 
 ## Input Shape
 
+The module accepts raw dictionaries matching the schema below or a pre-instantiated `N17FeedbackInput` Pydantic model:
+
 ```python
-{
-    "user_input": str,
-    "user_tags": list[str],
-    "img_desc": str,
-    "feedback_text": str,
-    "llm_chain": str | None,
-}
+class N17FeedbackInput(BaseModel):
+    user_input: Optional[str] = Field(default="", description="Original text prompt.")
+    user_tags: List[str] = Field(default_factory=list, description="Original list of tags.")
+    img_desc: Optional[str] = Field(default="", description="Original image description.")
+    feedback_text: Optional[str] = Field(default="", description="The user feedback/correction text.")
+    llm_chain: Optional[str] = Field(default=None, description="Model or chain override.")
 ```
 
-- `user_input`: current free-form query text
-- `user_tags`: current normalized tag list
-- `img_desc`: current image description, if any
-- `feedback_text`: the user's refinement request
-- `llm_chain`: optional model-chain override
+- `user_input`: current free-form query text (Optional, defaults to `""`)
+- `user_tags`: current normalized tag list (Optional, defaults to empty list `[]`)
+- `img_desc`: current image description, if any (Optional, defaults to `""`)
+- `feedback_text`: the user's refinement request (Optional, defaults to `""`)
+- `llm_chain`: optional model-chain override (Optional, defaults to None)
 
 ## Output Shape
 
+The output strictly adheres to the `N17FeedbackOutput` contract:
+
 ```python
-{
-    "refined_text": str,
-    "refined_tags": list[str],
-    "refined_img_desc": str,
-    "explanation": str,
-    "metadata": {
-        "model": str | None,
-        "provider": str | None,
-        "usage": dict | None,
-    },
-}
+class N17FeedbackOutput(BaseModel):
+    refined_text: Optional[str] = ""
+    refined_tags: List[str] = Field(default_factory=list)
+    refined_img_desc: Optional[str] = ""
+    explanation: Optional[str] = ""
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 ```
 
-- `refined_tags` is filtered to valid normalized tag keys
-- `refined_img_desc` may be an empty string when the user wants to ignore the image
-- `explanation` is intended to be shown directly in the UI
+- `refined_text`: rewritten query text (Optional, defaults to `""`)
+- `refined_tags`: filtered and normalized updated tag list (Optional, defaults to `[]`)
+- `refined_img_desc`: updated image description (Optional, defaults to `""`)
+- `explanation`: human-readable explanation shown in the UI (Optional, defaults to `""`)
+- `metadata`: model/provider/usage info (Optional, defaults to `{}`)
 
 ## Processing Flow
 
