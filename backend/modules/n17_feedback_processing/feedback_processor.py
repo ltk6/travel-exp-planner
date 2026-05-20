@@ -3,7 +3,8 @@ import time
 import random
 import urllib.request
 import urllib.error
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Union
+from backend.shared.contracts.n17_contracts import N17FeedbackInput
 
 from config import (
     setup_logging, 
@@ -154,15 +155,29 @@ def call_llm(
     return None, None, None, None
 
 def process_feedback(
-    user_input: str, 
-    user_tags: List[str], 
-    img_desc: str,
-    feedback_text: str,
+    user_input: Union[N17FeedbackInput, dict, str], 
+    user_tags: Optional[List[str]] = None, 
+    img_desc: str = "",
+    feedback_text: str = "",
     llm_chain: Optional[str] = None
 ) -> Dict:
     """Xử lý feedback và trả về input đã tinh chỉnh kèm metadata."""
-    prompt = _build_feedback_prompt(user_input, user_tags, img_desc, feedback_text)
-    res_text, provider, model, usage = call_llm(prompt, chain_override=llm_chain)
+    if isinstance(user_input, (N17FeedbackInput, dict)):
+        validated = N17FeedbackInput.model_validate(user_input) if isinstance(user_input, dict) else user_input
+        u_input = validated.user_input
+        u_tags = validated.user_tags
+        u_img_desc = validated.img_desc
+        f_text = validated.feedback_text
+        chain = validated.llm_chain
+    else:
+        u_input = user_input
+        u_tags = user_tags if user_tags is not None else []
+        u_img_desc = img_desc
+        f_text = feedback_text
+        chain = llm_chain
+
+    prompt = _build_feedback_prompt(u_input, u_tags, u_img_desc, f_text)
+    res_text, provider, model, usage = call_llm(prompt, chain_override=chain)
     
     metadata = {
         "model": model,
@@ -177,15 +192,15 @@ def process_feedback(
             if isinstance(tags, list):
                 parsed["refined_tags"] = [t.lower().strip() for t in tags if isinstance(t, str) and t.lower().strip() in VALID_TAGS_SET][:8]
             if "refined_img_desc" not in parsed:
-                parsed["refined_img_desc"] = img_desc
+                parsed["refined_img_desc"] = u_img_desc
             
             parsed["metadata"] = metadata
             return parsed
 
     return {
-        "refined_text": f"{user_input}. {feedback_text}",
-        "refined_tags": user_tags,
-        "refined_img_desc": img_desc,
+        "refined_text": f"{u_input}. {f_text}",
+        "refined_tags": u_tags,
+        "refined_img_desc": u_img_desc,
         "explanation": "Sử dụng fallback do lỗi LLM hoặc parse.",
         "metadata": metadata
     }

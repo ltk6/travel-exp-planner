@@ -12,50 +12,52 @@ N1 is the semantic entry point for the retrieval pipeline. It takes raw user or 
 ## Public API
 
 ```python
-embed(data: dict[str, Any]) -> dict[str, Any]
-embed_batch(data_list: list[dict[str, Any]]) -> list[dict[str, Any]]
+from backend.shared.contracts.n1_contracts import N1EmbedInput
+
+embed(data: Union[N1EmbedInput, dict[str, Any]]) -> dict[str, Any]
+embed_batch(data_list: list[Union[N1EmbedInput, dict[str, Any]]]) -> list[dict[str, Any]]
 ```
 
-`embed()` is a thin wrapper over `embed_batch([data])`.
+`embed()` is a thin wrapper over `embed_batch([data])`. Both endpoints strictly enforce programmatic type safety and validation at runtime using **Pydantic V2**.
 
 ## Input Shape
 
+The module accepts raw dictionaries matching the schema below or a pre-instantiated `N1EmbedInput` Pydantic model:
+
 ```python
-{
-    "text": str,
-    "tags": list[str],
-    "img_desc": str,
-}
+class N1EmbedInput(BaseModel):
+    text: str = ""             # The main text string to embed (Optional, defaults to "")
+    tags: List[str]            # Associated categories/tags (Optional, defaults to [])
+    img_desc: str              # Image description (Optional, defaults to "")
 ```
 
-- `text`: free-form user or location text
-- `tags`: controlled or semi-controlled travel tags
-- `img_desc`: optional image description for multi-modal signal enrichment
+- `text`: free-form user or location text (Optional, defaults to an empty string `""`)
+- `tags`: controlled or semi-controlled travel tags (Optional, defaults to an empty list `[]`)
+- `img_desc`: optional image description for multi-modal signal enrichment (Optional, defaults to an empty string `""`)
 
 ## Output Shape
 
+The output of the N1 module strictly adheres to the `N1EmbedOutput` contract:
+
 ```python
-{
-    "text_k": int,
-    "tags_k": int,
-    "preprocessed": {
-        "text": str,
-        "aug_text": str,
-        "aug_tags": str,
-        "img_desc": str,
-    },
-    "vectors": {
-        "text": list[float] | None,
-        "aug_text": list[float] | None,
-        "aug_tags": list[float] | None,
-        "img_desc": list[float] | None,
-    },
-    "metadata": {
-        "model": str,
-        "device": str,
-        "latency_ms": float,
-    },
-}
+class PreprocessedText(BaseModel):
+    text: Optional[str] = ""
+    aug_text: Optional[str] = ""
+    aug_tags: Optional[str] = ""
+    img_desc: Optional[str] = ""
+
+class EmbedVectors(BaseModel):
+    text: Optional[List[float]] = None
+    aug_text: Optional[List[float]] = None
+    aug_tags: Optional[List[float]] = None
+    img_desc: Optional[List[float]] = None
+
+class N1EmbedOutput(BaseModel):
+    text_k: int = Field(default=0)
+    tags_k: int = Field(default=0)
+    preprocessed: PreprocessedText = Field(default_factory=PreprocessedText)
+    vectors: EmbedVectors = Field(default_factory=EmbedVectors)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 ```
 
 - `text_k`: number of matched text-side expansions added into `aug_text`

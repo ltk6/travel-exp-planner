@@ -8,7 +8,8 @@
 
 import random
 import hashlib
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
+from backend.shared.contracts.n5_contracts import N5GenerateInput
 
 from .n5_activity_templates import (
     LOCATION_PROFILES,
@@ -42,10 +43,10 @@ LLM_MIN_VALID = 5
 # PUBLIC ENTRY POINT
 # =============================================================================
 
-def generate_activities(data: dict) -> dict:
+def generate_activities(data: Union[N5GenerateInput, dict]) -> dict:
     """
     N5 — Entry point chính.
-
+ 
     Input/output schema: see __init__.py
     """
     import time
@@ -112,52 +113,36 @@ def generate_activities(data: dict) -> dict:
 # INPUT PARSING
 # =============================================================================
 
-def _parse_input(data: dict) -> Tuple[Dict, List[Dict], Dict, int]:
+def _parse_input(data: Union[N5GenerateInput, dict]) -> Tuple[Dict, List[Dict], Dict, int]:
     """Validate và extract user, locations, constraints từ input dict."""
     from config.settings import LLM_N5_TARGET_COUNT
     
-    user        = data.get("user", {}) or {}
-    locations   = data.get("locations", []) or []
-    constraints = data.get("constraints", {}) or {}
+    validated = N5GenerateInput.model_validate(data) if isinstance(data, dict) else data
     
-    # Target count strictly from config source of truth
-    target_count = LLM_N5_TARGET_COUNT
-
-    # Normalize user tags
+    user = validated.user.model_dump()
     user_tags = user.get("tags") or []
-    if isinstance(user_tags, str):
-        user_tags = [t.strip() for t in user_tags.split(",") if t.strip()]
     user["tags"] = [str(t).lower() for t in user_tags]
-
-    # Normalize constraints với defaults
-    constraints = {
-        "time_of_day": constraints.get("time_of_day") or "anytime",
-    }
-
-    # Normalize locations.
-    # `coordinates` và `address` được giữ optional để truyền sang unified schema:
-    # nếu N4 cung cấp → llm.normalize fill được `place.coordinates` + distance,
-    # nếu không → place.coordinates = null (schema vẫn valid).
+    
+    constraints = validated.constraints.model_dump() if validated.constraints else {"time_of_day": "anytime"}
+    if not constraints.get("time_of_day"):
+        constraints["time_of_day"] = "anytime"
+        
     normalized_locs = []
-    for loc in locations:
-        if not isinstance(loc, dict):
-            continue
-        loc_id   = str(loc.get("location_id", ""))
-        metadata = loc.get("metadata", {}) or {}
-        if not isinstance(metadata, dict):
-            metadata = {}
+    for loc in validated.locations:
+        loc_id = loc.location_id
+        meta = loc.metadata.model_dump() if loc.metadata else {}
         normalized_locs.append({
             "location_id": loc_id,
             "metadata": {
-                "name":        metadata.get("name") or loc_id,
-                "description": metadata.get("description") or "",
-                "tags":        [t.lower() for t in (metadata.get("tags") or [])],
-                "coordinates": metadata.get("coordinates"),   # optional {lat, lng}
-                "address":     metadata.get("address"),       # optional dict
+                "name":        meta.get("name") or loc_id,
+                "description": meta.get("description") or "",
+                "tags":        [t.lower() for t in (meta.get("tags") or [])],
+                "coordinates": meta.get("coordinates"),
+                "address":     meta.get("address"),
             }
         })
-
-    return user, normalized_locs, constraints, target_count
+        
+    return user, normalized_locs, constraints, LLM_N5_TARGET_COUNT
 
 
 # =============================================================================

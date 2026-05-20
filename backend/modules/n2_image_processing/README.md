@@ -13,47 +13,62 @@ N2 is the vision-to-text bridge in the pipeline. It accepts raw image bytes, opt
 ## Public API
 
 ```python
-process_image(data: dict) -> dict
+from backend.shared.contracts.n2_contracts import N2ImageInput
+
+process_image(data: Union[N2ImageInput, dict]) -> dict
 ```
+
+`process_image()` strictly enforces type-safety and structural checking at the runtime boundary using **Pydantic V2**.
 
 ## Input Shape
 
+The module accepts raw dictionaries matching the schema below or a pre-instantiated `N2ImageInput` Pydantic model:
+
 ```python
-{
-    "image": bytes,
-}
+class N2ImageInput(BaseModel):
+    image: Optional[bytes] = Field(default=None, description="Raw bytes of the image to be processed.")
 ```
 
-- `image`: raw image bytes
+- `image`: raw binary image bytes (Optional, defaults to None)
 
 ## Output Shape
 
-Successful response:
+The output adheres to the `N2ImageOutput` contract:
 
 ```python
+class N2ImageOutput(BaseModel):
+    img_desc: Optional[str] = ""          # Concise Vietnamese visual description (Optional, defaults to "")
+    metadata: Optional[Dict[str, Any]] = None # Model metadata (model used, tokens, usage)
+    error: Optional[str] = None          # Error string if processing failed
+```
+
+### Successful Response Example:
+
+```json
 {
-    "img_desc": str,
+    "img_desc": "Bãi biển cát trắng mịn màng hoang sơ dưới nắng chiều vàng rực rỡ...",
     "metadata": {
-        "model": str,
+        "model": "llama-3.2-11b-vision-preview",
         "usage": {
-            "prompt_tokens": int,
-            "completion_tokens": int,
-            "total_tokens": int,
-        },
+            "prompt_tokens": 128,
+            "completion_tokens": 45,
+            "total_tokens": 173
+        }
     },
+    "error": null
 }
 ```
 
-Error response:
+### Error Response Example:
 
-```python
+```json
 {
     "img_desc": "",
-    "error": str,
     "metadata": {
-        "model": str,
-        "usage": dict,
+        "model": "llama-3.2-11b-vision-preview",
+        "usage": {}
     },
+    "error": "HTTPError: 401 - Unauthorized access to Groq vision model"
 }
 ```
 

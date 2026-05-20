@@ -6,6 +6,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from pgvector.psycopg2 import register_vector
 import base64
+from backend.shared.contracts.n3_contracts import N3GetLocationsOutput
 
 from config import setup_logging
 logger = setup_logging("N3")
@@ -232,12 +233,14 @@ def get_all_locations(include_images: bool = True) -> Dict[str, Any]:
             results.append(formatted)
 
         elapsed_ms = int((time.time() - t0) * 1000)
-        return {
+        raw_response = {
             "status": "success", 
             "total": len(results), 
             "data": results,
             "metadata": {"source": "postgresql", "latency_ms": elapsed_ms}
         }
+        validated = N3GetLocationsOutput.model_validate(raw_response)
+        return validated.model_dump()
 
     except Exception as e:
         logger.error(f"Lỗi truy vấn DB: {e}")
@@ -382,7 +385,9 @@ def get_activities_for_location(
 ) -> List[Dict[str, Any]]:
     """Đọc tất cả activities của 1 loc, gộp từ N provider. Trả list dict
     shape giống schema thông thường: {activity_id, location_id, source,
-    metadata, place, signals, vectors, quality_score}."""
+    metadata, place, signals, vectors, quality_score}.
+    Exit boundary is validated against N3ActivityItem."""
+    from backend.shared.contracts.n3_contracts import N3ActivityItem
     providers = providers or list(ACTIVITY_PROVIDERS)
     conn = _get_connection()
     cur = conn.cursor()
@@ -412,7 +417,7 @@ def get_activities_for_location(
                 }
                 if include_vectors:
                     act["vectors"] = _format_act_vectors(d)
-                out.append(act)
+                out.append(N3ActivityItem.model_validate(act).model_dump())
     finally:
         cur.close()
         conn.close()

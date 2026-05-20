@@ -45,6 +45,43 @@ N8 giải quyết các vấn đề đó bằng cách gom toàn bộ orchestratio
 - các module chuyên môn có thể tiến hóa độc lập hơn
 - các concern hệ thống được tập trung hóa
 
+### 3.1. Sơ đồ tương tác hệ thống (Orchestrator Coordination Flow)
+
+Dưới đây là sơ đồ thể hiện vai trò trung tâm của **N8: Orchestrator**, đóng vai trò làm cổng kết nối duy nhất và điều phối dòng dữ liệu giữa **N16: Next.js UI** với tất cả các module xử lý nghiệp vụ chuyên biệt (không bao gồm N7):
+
+```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
+graph TD
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef orchestrator fill:#ecfdf5,stroke:#10b981,stroke-width:2.5px,color:#000000;
+    classDef core fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
+    classDef ml fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
+    classDef feedback fill:#fafaf9,stroke:#78716c,stroke-width:2px,color:#000000;
+
+    UI["N16 Next.js UI (Giao diện)"]:::client
+    N8["N8 Orchestrator (Flask Backend)"]:::orchestrator
+
+    %% Modules bên dưới
+    N2["N2 Vision (Mô tả ảnh)"]:::ml
+    N1["N1 Embedding (Vector hóa)"]:::ml
+    N4["N4 Location Ranking (Xếp hạng địa điểm)"]:::core
+    N3["N3 Database (Lưu trữ Postgres + Cache)"]:::core
+    N5["N5 Activity Generation (Sinh hoạt động LLM)"]:::core
+    N6["N6 Activity Ranking (Xếp hạng hoạt động)"]:::core
+    N17["N17 Feedback (Xử lý phản hồi)"]:::feedback
+
+    %% Luồng giao tiếp và vai trò điều phối của N8
+    UI <-->|"Gửi request & nhận response"| N8
+
+    N8 <-->|"Gửi ảnh -> Nhận mô tả"| N2
+    N8 <-->|"Gửi text/tags -> Nhận vectors"| N1
+    N8 <-->|"Gửi vectors -> Nhận danh sách xếp hạng"| N4
+    N8 <-->|"Đọc/Ghi dữ liệu địa điểm & hoạt động"| N3
+    N8 <-->|"Yêu cầu sinh hoạt động (LLM Fallback)"| N5
+    N8 <-->|"Gửi hoạt động -> Nhận điểm xếp hạng"| N6
+    N8 <-->|"Gửi feedback -> Nhận tham số tinh chỉnh"| N17
+```
+
 ---
 
 ## 4. Điểm vào và cấu trúc module
@@ -134,32 +171,40 @@ Workflow `recommend_service()` hiện gồm các bước lớn:
 7. enrich thêm ảnh, metadata và geo cho response cuối
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: { 'theme': 'neutral', 'themeVariables': { 'actorTextColor': '#000000', 'signalTextColor': '#000000', 'noteTextColor': '#000000' } }}%%
 sequenceDiagram
     autonumber
-    participant "Client" as "Người dùng (UI)"
-    participant "N8" as "N8: Orchestrator"
-    participant "N2" as "N2: Vision"
-    participant "N1" as "N1: Embedding"
-    participant "Cache" as "Cache / N3 (DB)"
-    participant "N4" as "N4: Xếp hạng"
+    participant N16 as N16: Next.js Web App
+    participant N8 as N8: Orchestrator
+    participant N2 as N2: Vision
+    participant N1 as N1: Embedding
+    participant Cache as RAM / File Cache (N3 slim)
+    participant N4 as N4: Xếp hạng
+    participant N3 as PostgreSQL (N3 DB)
 
-    "Client"->>"N8": "POST /recommend (payload + img?)"
-    alt "Nếu có ảnh và chưa có mô tả"
-        "N8"->>"N2": "Giải mã và phân tích ảnh"
-        "N2"-->>"N8": "img_desc"
+    N16->>N8: POST /recommend (payload + img?)
+    alt Nếu có ảnh và chưa có mô tả
+        N8->>N2: Giải mã và phân tích ảnh
+        N2-->>N8: img_desc
     end
-    "N8"->>"N1": "Tạo user vector từ text/tags/img_desc"
-    "N1"-->>"N8": "user_vector"
-    "N8"->>"Cache": "Truy xuất địa điểm (Kiểm tra Fingerprint)"
-    "Cache"-->>"N8": "Danh sách địa điểm"
-    "N8"->>"N4": "Xếp hạng địa điểm theo độ tương đồng"
-    "N4"-->>"N8": "Danh sách đã xếp hạng (Ranked)"
-    "N8"-->>"Client": "Trả về JSON (Địa điểm + Metadata + Ảnh)"
+    N8->>N1: Tạo user vector từ text/tags/img_desc
+    N1-->>N8: user_vector
+    N8->>Cache: Truy xuất danh sách địa điểm slim (không kèm BYTEA images)
+    alt Nếu Cache Stale / Miss
+        Cache->>N3: get_all_locations(include_images=False)
+        N3-->>Cache: locations data (slim)
+    end
+    Cache-->>N8: Danh sách địa điểm
+    N8->>N4: Xếp hạng địa điểm theo độ tương đồng
+    N4-->>N8: Danh sách đã xếp hạng (Ranked)
+    N8->>N8: Tạo URL ảnh lazy (/api/images/{location_id}_{index}.jpg)
+    N8-->>N16: Trả về JSON (Slim locations + Lazy Image URLs)
+
+    Note over N16, N3: Luồng hiển thị và Lazy Load ảnh sau đó
+    N16->>N8: GET /api/images/{location_id}_{index}.jpg (khi cuộn đến hình ảnh)
+    N8->>N3: get_location_image_by_index(location_id, index)
+    N3-->>N8: Raw BYTEA binary bytes
+    N8-->>N16: Trả về ảnh JPEG thô (hỗ trợ Browser Cache)
 ```
 
 ### 6.1. Điểm mạnh của workflow này
@@ -178,49 +223,44 @@ Workflow được tổ chức theo đúng tinh thần “semantic first, enrichm
 Workflow `activities_service()` thực hiện:
 
 1. nhận bối cảnh người dùng và một địa điểm cụ thể
-2. sinh hoạt động cho địa điểm đó
-3. nhúng lại các hoạt động vừa sinh
-4. gắn vector vào từng activity
-5. xếp hạng hoạt động
-6. enrich metadata trước khi trả về UI
+2. truy vấn danh sách hoạt động ứng viên và vector từ Database (N3)
+3. nếu không tồn tại hoặc lỗi, fallback sang gọi N5 để sinh mới qua LLM, nhúng vector bằng N1 và lưu trữ kết quả vào N3
+4. xếp hạng danh sách hoạt động dựa trên sở thích bằng N6
+5. enrich metadata và trả về kết quả cho UI
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: { 'theme': 'neutral', 'themeVariables': { 'actorTextColor': '#000000', 'signalTextColor': '#000000', 'noteTextColor': '#000000' } }}%%
 sequenceDiagram
     autonumber
-    participant "Client" as "Người dùng (UI)"
-    participant "N8" as "N8: Orchestrator"
-    participant "N5" as "N5: Sinh hoạt động"
-    participant "N1" as "N1: Embedding"
-    participant "N6" as "N6: Xếp hạng"
+    participant N16 as N16: Next.js Web App
+    participant N8 as N8: Orchestrator
+    participant N3 as N3: Database
+    participant N5 as N5: Sinh hoạt động
+    participant N1 as N1: Embedding
+    participant N6 as N6: Xếp hạng
 
-    "Client"->>"N8": "POST /activities (location_id + context)"
-    "N8"->>"N5": "Sinh danh sách hoạt động ứng viên (LLM)"
-    "N5"-->>"N8": "Danh sách hoạt động thô"
-    "N8"->>"N1": "Nhúng (Embed) các hoạt động mới sinh"
-    "N1"-->>"N8": "Vector của các hoạt động"
-    "N8"->>"N6": "Xếp hạng hoạt động theo sở thích"
-    "N6"-->>"N8": "Danh sách hoạt động đã xếp hạng"
-    "N8"-->>"Client": "Trả về JSON (Hoạt động + Metadata)"
+    N16->>N8: POST /activities (location_id + context)
+    N8->>N3: Truy vấn danh sách hoạt động đã lưu
+    alt Nếu tìm thấy trong Database
+        N3-->>N8: Danh sách hoạt động (đã kèm vector & metadata)
+    else Nếu không có hoạt động hoặc truy vấn lỗi (Fallback)
+        N8->>N5: Sinh danh sách hoạt động ứng viên mới (LLM)
+        N5-->>N8: Danh sách hoạt động thô
+        N8->>N1: Nhúng (Embed) các hoạt động mới sinh
+        N1-->>N8: Vector của các hoạt động
+        N8->>N3: Lưu các hoạt động & vector mới vào Database
+        N3-->>N8: Xác nhận lưu trữ
+    end
+    N8->>N6: Xếp hạng hoạt động theo sở thích
+    N6-->>N8: Danh sách hoạt động đã xếp hạng
+    N8-->>N16: Trả về JSON (Hoạt động + Metadata)
 ```
-### 7.1. Vì sao phải nhúng lại activity ở giữa pipeline?
+### 7.1. Vai trò của N8 trong việc tối ưu hóa và fallback sinh hoạt động
 
-Đây là một điểm rất đáng phân tích:
+Đây là một điểm thiết kế quan trọng:
 
-- N5 sinh hoạt động chủ yếu dưới dạng text + metadata
-- N6 lại cần vector để chấm semantic score
-
-Do đó, N8 đóng vai trò “bắc cầu” giữa generation và ranking bằng cách:
-
-- map output của N5 sang contract embedding
-- gọi batch embedding
-- merge vector ngược trở lại vào từng activity
-
-Nói cách khác, N8 là nơi giải quyết việc “dịch hợp đồng dữ liệu” giữa các module.
+- **Tối ưu hóa tài nguyên:** N8 luôn ưu tiên lấy dữ liệu hoạt động đã lưu kèm vector sẵn từ Database (N3). Điều này giảm thiểu thời gian chờ đợi (latency) và chi phí API đáng kể so với việc liên tục sinh mới.
+- **Cơ chế Fallback & Nhúng động:** Chỉ khi không tìm thấy dữ liệu trong Database, N8 mới gọi N5 để sinh hoạt động qua LLM. Lúc này, do hoạt động mới sinh chưa có vector, N8 đóng vai trò "bắc cầu" gọi N1 để nhúng các hoạt động này, sau đó lưu toàn bộ vào N3 để phục vụ cho các yêu cầu sau.
 
 ---
 
@@ -247,24 +287,20 @@ Thay vì bắt frontend tự tự chỉnh input rồi gửi lại từ đầu, N
 - hệ thống có thể giải thích được cụ thể điều gì đã được thay đổi
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: { 'theme': 'neutral', 'themeVariables': { 'actorTextColor': '#000000', 'signalTextColor': '#000000', 'noteTextColor': '#000000' } }}%%
 sequenceDiagram
     autonumber
-    participant "Client" as "Người dùng (UI)"
-    participant "N8" as "N8: Orchestrator"
-    participant "N17" as "N17: Xử lý phản hồi"
-    participant "Workflow" as "Workflow chính (Gợi ý)"
+    participant N16 as N16: Next.js Web App
+    participant N8 as N8: Orchestrator
+    participant N17 as N17: Xử lý phản hồi
+    participant Workflow as Workflow chính (Gợi ý)
 
-    "Client"->>"N8": "Gửi phản hồi văn bản (Feedback)"
-    "N8"->>"N17": "Yêu cầu tinh chỉnh tham số (Refine)"
-    "N17"-->>"N8": "Payload đã tinh chỉnh (Refined)"
-    "N8"->>"Workflow": "Thực thi lại luồng chính với tham số mới"
-    "Workflow"-->>"N8": "Kết quả gợi ý đã cập nhật"
-    "N8"-->>"Client": "Trả về JSON (Kèm thông tin 'refined')"
+    N16->>N8: Gửi phản hồi văn bản (Feedback)
+    N8->>N17: Yêu cầu tinh chỉnh tham số (Refine)
+    N17-->>N8: Payload đã tinh chỉnh (Refined)
+    N8->>Workflow: Thực thi lại luồng chính với tham số mới
+    Workflow-->>N8: Kết quả gợi ý đã cập nhật
+    N8-->>N16: Trả về JSON (Kèm thông tin 'refined')
 ```
 ---
 
@@ -277,41 +313,39 @@ Một trong những điểm đáng giá nhất của N8 là hệ thống cache l
 3. **Image cache** qua thư mục `image_cache/`
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph TD
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
+    classDef flow fill:#f1f5f9,stroke:#475569,stroke-width:1px,color:#000000;
+    classDef ram fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef disk fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
+    classDef check fill:#fff1f2,stroke:#ef4444,stroke-width:2px,color:#000000;
+    classDef db fill:#f5f3ff,stroke:#818cf8,stroke-width:2.5px,color:#000000;
     
-    START["Yêu cầu dữ liệu địa điểm"] --> DB_CHECK["Lấy Fingerprint từ DB"]
+    START["Yêu cầu dữ liệu địa điểm"]:::flow --> DB_CHECK["Lấy Fingerprint từ DB"]:::flow
     
     subgraph "N8: Bộ nhớ RAM"
-        M_F["_db_fingerprint"]
-        M_C["_locations_cache"]
+        M_F["_db_fingerprint (RAM)"]:::ram
+        M_C["_locations_cache (RAM slim)"]:::ram
     end
     
-    subgraph "N8: Lưu trữ Đĩa"
-        D_C["location_cache.json"]
-        D_I["image_cache/"]
+    subgraph "N8: Lưu trữ Đĩa (Disk Cache)"
+        D_C["location_cache.json (slim, không chứa ảnh Base64)"]:::disk
     end
     
-    DB_CHECK --> MATCH{"Khớp Fingerprint?"}
-    MATCH -- "Không khớp" --> N3["Truy vấn mới (N3 Database)"]
-    MATCH -- "Khớp" --> RAM_CHECK{"Có trong RAM?"}
+    DB_CHECK --> MATCH{"Khớp Fingerprint?"}:::check
+    MATCH -- "Không khớp" --> N3["Truy vấn mới: get_all_locations(include_images=False)"]:::db
+    MATCH -- "Khớp" --> RAM_CHECK{"Có trong RAM?"}:::check
     
-    RAM_CHECK -- "Có" --> DONE["Trả kết quả"]
-    RAM_CHECK -- "Không" --> DISK_CHECK{"Có trên đĩa?"}
+    RAM_CHECK -- "Có" --> DONE["Trả kết quả slim"]:::flow
+    RAM_CHECK -- "Không" --> DISK_CHECK{"Có trên đĩa?"}:::check
     
-    DISK_CHECK -- "Có" --> LOAD["Nạp vào RAM"]
+    DISK_CHECK -- "Có" --> LOAD["Nạp vào RAM"]:::flow
     LOAD --> M_C
     M_C --> DONE
     
     DISK_CHECK -- "Không" --> N3
-    N3 --> SAVE["Lưu vào đĩa + RAM"]
+    N3 --> SAVE["Lưu vào đĩa + RAM"]:::flow
     SAVE --> D_C
-    SAVE --> D_I
     SAVE --> M_C
     SAVE --> M_F
     SAVE --> DONE
@@ -376,6 +410,44 @@ Nó giúp người phát triển quan sát được:
 - routes được đăng ký bằng blueprint
 - module ghi log ở mức service loading, cache hit/miss và runtime execution
 - host, port, debug mode và internal key đều lấy từ cấu hình dự án
+
+---
+
+## 12. Luồng Authentication và Lưu Lịch sử (Auth & Rec History)
+
+N8 bổ sung phân khu routes người dùng chuyên biệt để bảo vệ tài khoản và ghi nhận lịch sử khuyến nghị:
+
+```mermaid
+%%{init: { 'theme': 'neutral', 'themeVariables': { 'actorTextColor': '#000000', 'signalTextColor': '#000000', 'noteTextColor': '#000000' } }}%%
+sequenceDiagram
+    autonumber
+    participant N16 as N16: Next.js Web App
+    participant N8 as N8: Orchestrator
+    participant N3 as N3: Database
+
+    Note over N16, N3: Đăng ký & Đăng nhập
+    N16->>N8: POST /api/auth/register (username, password)
+    N8->>N3: register_user() -> Băm mật khẩu (generate_password_hash) & lưu
+    N3-->>N8: user_id / status
+    N8-->>N16: Phản hồi Đăng ký thành công / thất bại
+
+    N16->>N8: POST /api/auth/login (username, password)
+    N8->>N3: login_user() -> Truy vấn hash & check_password_hash()
+    N3-->>N8: success, user_id
+    N8-->>N16: Phản hồi Đăng nhập (Lưu Session user_id ở Client)
+
+    Note over N16, N3: Lưu Lịch sử Gợi ý (Rec History)
+    N16->>N8: POST /api/profile/history (user_id, input_data, output_data)
+    N8->>N3: save_rec_turn() -> Lưu JSONB lịch sử
+    N3-->>N8: history_id
+    N8-->>N16: Lưu lịch sử thành công
+
+    Note over N16, N3: Đọc Lịch sử Gợi ý
+    N16->>N8: GET /api/profile/history/{user_id}
+    N8->>N3: get_user_history()
+    N3-->>N8: Danh sách lịch sử gợi ý (sắp xếp mới nhất trước)
+    N8-->>N16: Trả về mảng lịch sử gợi ý
+```
 
 ---
 

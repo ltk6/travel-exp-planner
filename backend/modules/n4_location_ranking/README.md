@@ -13,63 +13,51 @@ N4 ranks candidate locations with weighted multi-channel cosine similarity. It a
 ## Public API
 
 ```python
-rank_locations(data: dict[str, Any]) -> dict[str, Any]
+from backend.shared.contracts.n4_contracts import N4RankInput
+
+rank_locations(data: Union[N4RankInput, dict]) -> dict
 ```
+
+`rank_locations()` strictly validates its input payload at the entrypoint boundary using **Pydantic V2**.
 
 ## Input Shape
 
+The module accepts raw dictionaries matching the schema below or a pre-instantiated `N4RankInput` Pydantic model:
+
 ```python
-{
-    "text_k": int,
-    "tags_k": int,
-    "user_vectors": {
-        "text": list[float] | None,
-        "aug_text": list[float] | None,
-        "aug_tags": list[float] | None,
-        "img_desc": list[float] | None,
-    },
-    "locations": [
-        {
-            "location_id": str,
-            "location_vectors": {
-                "text": list[float] | None,
-                "aug_tags": list[float] | None,
-            },
-        }
-    ],
-    "top_k": int,
-}
+class UserVectors(BaseModel):
+    text: Optional[List[float]] = None
+    aug_text: Optional[List[float]] = None
+    aug_tags: Optional[List[float]] = None
+    img_desc: Optional[List[float]] = None
+
+class N4RankInput(BaseModel):
+    text_k: int = Field(default=0)
+    tags_k: int = Field(default=0)
+    user_vectors: UserVectors = Field(default_factory=UserVectors)
+    locations: List[Dict[str, Any]] = Field(default_factory=list)
+    top_k: int = Field(default=5)
 ```
 
-- `text_k`: count of text-side semantic signals
-- `tags_k`: count of tag-side semantic signals
-- `user_vectors`: query-side vectors used for scoring
-- `locations`: candidate locations to rank
-- `top_k`: maximum number of ranked locations to return
+- `text_k`: count of text-side semantic signals (Optional, defaults to 0)
+- `tags_k`: count of tag-side semantic signals (Optional, defaults to 0)
+- `user_vectors`: query-side vectors used for scoring (Optional, defaults to an empty UserVectors)
+- `locations`: candidate locations to rank (Optional, defaults to an empty list `[]`)
+- `top_k`: maximum number of ranked locations to return (Optional, defaults to 5)
 
 ## Output Shape
 
+The output of the N4 module strictly adheres to the `N4RankOutput` contract:
+
 ```python
-{
-    "locations": [
-        {
-            "location_id": str,
-            "score": float,
-            "reason": str,
-        }
-    ],
-    "metadata": {
-        "text_k": int,
-        "tags_k": int,
-        "weights": {
-            "text": float,
-            "aug_text": float,
-            "aug_tags": float,
-            "img_desc": float,
-        },
-        "latency_ms": int,
-    },
-}
+class RankedLocationItem(BaseModel):
+    location_id: Optional[str] = None
+    score: float = Field(default=0.0)
+    reason: Optional[str] = ""
+
+class N4RankOutput(BaseModel):
+    locations: List[RankedLocationItem] = Field(default_factory=list)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 ```
 
 - `score` is normalized relative to the top result when at least one score is positive

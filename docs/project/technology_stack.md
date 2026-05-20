@@ -26,33 +26,34 @@ Vì vậy, mỗi lựa chọn công nghệ trong hệ thống đều là kết q
 ## 2. Tổng quan hệ sinh thái công nghệ
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph TD
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef app fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
+    classDef db fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
+    classDef ai fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
+    classDef groq fill:#fdf2ff,stroke:#c084fc,stroke-width:2px,color:#000000;
+
     subgraph "Tầng Giao diện"
-        N7["Giao diện Streamlit"]
-        CSS["CSS Tùy biến"]
+        N16["Next.js Web App (React 19)"]:::client
+        CSS["Tailwind CSS + shadcn/ui"]:::client
     end
 
     subgraph "Tầng Ứng dụng"
-        N8["Bộ điều phối Flask"]
-        CORE["Các Module Python N1-N17"]
+        N8["Bộ điều phối Flask (Python)"]:::app
+        CORE["Các Module Python N1-N17"]:::app
     end
 
     subgraph "Tầng Lưu trữ"
-        N3[("(PostgreSQL + pgvector)")]
+        N3[("PostgreSQL + pgvector (Multi-Schema DB)")]:::db
     end
 
     subgraph "Tầng Trí tuệ Nhân tạo"
-        GROQ{"Groq: LLM + Thị giác"}
-        BGE["BGE-M3 Embedding Cục bộ"]
+        GROQ{"Groq: LLM + Thị giác"}:::groq
+        BGE["BGE-M3 Embedding Cục bộ"]:::ai
     end
 
-    N7 <--> N8
+    N16 <--> N8
     N8 <--> CORE
     CORE <--> N3
     CORE <--> GROQ
@@ -267,28 +268,19 @@ Flask đủ gọn để làm lớp orchestration mà không kéo thêm độ ph�
 
 ---
 
-## 8. Vì sao chọn Streamlit cho frontend
+## 8. Vì sao chọn Next.js cho frontend (Thay thế Streamlit)
 
-### 8.1. Mục tiêu của frontend trong dự án
+### 8.1. Hạn chế của Streamlit và sự cần thiết phải nâng cấp
+Streamlit rất tốt cho việc dựng nhanh một prototype trong vài giờ, nhưng khi hệ thống phát triển, cơ chế script-rerun tuần tự của nó bộc lộ các điểm yếu chí mạng:
+- Gây đơ/giật lag giao diện nghiêm trọng khi truyền tải và render các ảnh nhị phân Base64 dung lượng lớn.
+- Bị hạn chế về khả năng tùy biến giao diện cao cấp, khó làm mượt các micro-interactions (chuyển động nhỏ).
+- Khó quản lý session phức tạp như hệ thống Đăng nhập/Đăng ký và lưu trữ lịch sử gợi ý.
 
-Frontend cần:
-
-- nhanh để dựng
-- dễ kết nối với Python backend
-- thuận tiện cho demo AI workflow
-
-Streamlit phù hợp với tất cả các tiêu chí đó.
-
-### 8.2. Điểm yếu và cách hệ thống khắc phục
-
-Streamlit mặc định dễ tạo cảm giác “demo notebook hóa”. Hệ thống đã giảm nhược điểm đó bằng:
-
-- CSS tùy biến
-- state management rõ ràng
-- tách views và styles
-- result flow nhiều bước
-
-Như vậy, lựa chọn Streamlit vừa thực dụng vừa phù hợp với thời gian và nguồn lực của đồ án.
+### 8.2. Ưu thế vượt trội của Next.js 15 Web App
+Quyết định chuyển đổi sang Next.js (React 19 + App Router) mang lại các cải tiến mang tính bước ngoặt:
+- **Tương tác bất đồng bộ (Non-blocking Asynchronous UI):** Client render danh sách địa điểm trước, sau đó tự động tải ảnh song song qua endpoint lazy-load `/api/images`, giúp perceived performance (tốc độ cảm nhận) nhanh hơn gấp nhiều lần.
+- **Quản lý State tập trung với Zustand:** Ngăn ngừa hiện tượng mất dữ liệu khi chuyển tab/trang, duy trì trôi chảy trạng thái Form Wizard và các drawers hoạt động.
+- **Sản phẩm Web ứng dụng thực tế:** Phù hợp hoàn toàn cho một bài báo cáo khoa học/đồ án hoàn chỉnh có tính thực tiễn cao, không còn bị bó hẹp trong mác "prototype khoa học dữ liệu".
 
 ---
 

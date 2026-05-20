@@ -29,8 +29,8 @@ const VN_OVERLAY_GEOJSON: FeatureCollection<
     f("Biển Đông", null, "sea", 113.0, 14.5),
 
     // Archipelagos
-    f("Quần đảo Hoàng Sa", null, "archipelago", 112.0, 16.5),
-    f("Quần đảo Trường Sa", null, "archipelago", 114.0, 10.0),
+    f("Đặc khu Hoàng Sa", null, "archipelago", 112.0, 16.5),
+    f("Đặc khu Trường Sa", null, "archipelago", 114.0, 10.0),
 
     // Đảo nổi
     f("Đảo Trường Sa", "Spratly Island", "island", 111.921, 8.6447),
@@ -83,7 +83,7 @@ export function VnSovereigntyOverlay() {
         }}
       />
 
-      {/* Tên quần đảo (Hoàng Sa, Trường Sa) — đỏ, bold */}
+      {/* Tên đặc khu (Hoàng Sa, Trường Sa) — xám, regular giống admin labels */}
       <Layer
         id="vn-archipelago-label"
         type="symbol"
@@ -91,13 +91,13 @@ export function VnSovereigntyOverlay() {
         filter={["==", ["get", "kind"], "archipelago"]}
         layout={{
           "text-field": ["get", "name"],
-          "text-font": ["Open Sans Bold"],
+          "text-font": ["Open Sans Regular"],
           "text-size": ["interpolate", ["linear"], ["zoom"], 3, 11, 5, 14, 7, 18, 10, 24],
           "text-letter-spacing": 0.1,
           "text-max-width": 8,
         }}
         paint={{
-          "text-color": "#b91c1c",
+          "text-color": "#6b7280",
           "text-halo-color": "rgba(255,255,255,0.95)",
           "text-halo-width": 1.6,
         }}

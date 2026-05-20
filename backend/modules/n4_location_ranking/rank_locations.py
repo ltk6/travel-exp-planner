@@ -19,7 +19,8 @@ from __future__ import annotations
 
 import logging
 import math
-from typing import Any
+from typing import Any, Union
+from backend.shared.contracts.n4_contracts import N4RankInput
 
 from config import setup_logging
 logger = setup_logging("N4")
@@ -119,15 +120,17 @@ def _score_location(
 
 # ── Public API ────────────────────────────────────────────────
 
-def rank_locations(data: dict) -> dict:
+def rank_locations(data: Union[N4RankInput, dict[str, Any]]) -> dict[str, Any]:
     import time
     t0 = time.time()
     
-    text_k       = int(data.get("text_k", 0))
-    tags_k       = int(data.get("tags_k", 0))
-    user_vectors = data.get("user_vectors", {})
-    locations    = data.get("locations", [])
-    top_k        = max(1, int(data.get("top_k", 5)))
+    validated = N4RankInput.model_validate(data) if isinstance(data, dict) else data
+    
+    text_k       = validated.text_k
+    tags_k       = validated.tags_k
+    user_vectors = validated.user_vectors.model_dump()
+    locations    = validated.locations
+    top_k        = max(1, validated.top_k)
 
     if not locations:
         logger.warning("[N4] Không có địa điểm nào để xếp hạng")

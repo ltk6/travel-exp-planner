@@ -131,6 +131,8 @@ def preprocess(
         tag_scan = _scan_tags(tags)
         expanded_tags = _dedupe(_expansions(tag_scan["tag"]))
         tags_k = len(expanded_tags)
+        if not expanded_tags:
+            expanded_tags = _dedupe(t.strip() for t in tags if isinstance(t, str) and t.strip())
         aug_tags = " ".join(expanded_tags)
     else:
         aug_tags = ""

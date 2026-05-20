@@ -60,34 +60,36 @@ Tuy hệ thống module hóa, dữ liệu không được phép đi tự do gi�
 ## 3. Sơ đồ tổng thể kiến trúc
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph LR
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,padding-left:10px,padding-right:10px,white-space:nowrap;
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef orchestrator fill:#ecfdf5,stroke:#10b981,stroke-width:2.5px,color:#000000;
+    classDef storage fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
+    classDef ml fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
+    classDef gen fill:#fdf2ff,stroke:#c084fc,stroke-width:2px,color:#000000;
+    classDef feedback fill:#fafaf9,stroke:#78716c,stroke-width:2px,color:#000000;
+    
     subgraph "Phía người dùng"
-        N7["N7: Giao diện người dùng"]
-        N7C[("(Trạng thái phiên)")]
+        N16["N16: Next.js Web App"]:::client
+        N16C["N16C: Trạng thái phiên & Auth"]:::client
     end
 
     subgraph "Bộ điều phối trung tâm"
-        N8(("(N8: Bộ điều phối)"))
-        N8C[("(Bộ nhớ đệm hỗn hợp)")]
+        N8(("N8: Bộ điều phối (Orchestrator)")):::orchestrator
+        N8C["N8C: Bộ nhớ đệm (RAM & Disk Cache)"]:::orchestrator
     end
 
     subgraph "Các module chuyên biệt"
-        N1["N1: Embedding"]
-        N2["N2: Vision"]
-        N3[("(N3: Cơ sở dữ liệu)")]
-        N4["N4: Xếp hạng Địa điểm"]
-        N5["N5: Sinh Hoạt động"]
-        N6["N6: Xếp hạng Hoạt động"]
-        N17["N17: Xử lý Phản hồi"]
+        N1["N1: Embedding (BGE-M3)"]:::ml
+        N2["N2: Vision (LLM Image Analyser)"]:::gen
+        N3[("N3: PostgreSQL (Multi-Schema DB)")]:::storage
+        N4["N4: Xếp hạng Địa điểm"]:::ml
+        N5["N5: Sinh Hoạt động (LLM-first)"]:::gen
+        N6["N6: Xếp hạng Hoạt động"]:::ml
+        N17["N17: Xử lý Phản hồi"]:::feedback
     end
 
-    N7 <--> N8
+    N16 <--> N8
     N8 <--> N1
     N8 <--> N2
     N8 <--> N3
@@ -95,7 +97,7 @@ graph LR
     N8 <--> N5
     N8 <--> N6
     N8 <--> N17
-    N7C -.-> N7
+    N16C -.-> N16
     N8C -.-> N8
 ```
 
@@ -119,23 +121,27 @@ Sơ đồ cho thấy ba lớp lớn:
 Hệ thống vận hành theo cơ chế hai giai đoạn (two-pass) để đảm bảo tốc độ phản hồi tối ưu cho người dùng.
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
+%%{init: { 'theme': 'neutral', 'themeVariables': { 'actorTextColor': '#000000', 'signalTextColor': '#000000', 'noteTextColor': '#000000' } }}%%
 sequenceDiagram
     autonumber
-    participant "User" as "Người dùng"
-    participant "UI" as "Giao diện (N7)"
-    participant "Backend" as "Hệ thống Backend (N8 + Modules)"
+    participant User as Người dùng
+    participant UI as Giao diện (N16)
+    participant Backend as Hệ thống Backend (N8 + Modules)
 
-    "User"->>"UI": "Nhập sở thích / Tải ảnh"
-    "UI"->>"Backend": "Yêu cầu gợi ý địa điểm (Giai đoạn 1)"
-    "Backend"-->>"UI": "Danh sách địa điểm & metadata sơ bộ"
-    "UI"->>"Backend": "Yêu cầu sinh hoạt động chi tiết (Giai đoạn 2)"
-    "Backend"-->>"UI": "Chi tiết hoạt động, vector & lý do gợi ý"
-    "UI"-->>"User": "Hiển thị trải nghiệm du lịch hoàn thiện"
+    User->>UI: Nhập sở thích / Tải ảnh
+    UI->>Backend: Yêu cầu gợi ý địa điểm (Giai đoạn 1)
+    Backend-->>UI: Danh sách địa điểm & metadata sơ bộ
+    UI->>Backend: Yêu cầu sinh hoạt động chi tiết (Giai đoạn 2)
+    Backend-->>UI: Chi tiết hoạt động, vector & lý do gợi ý
+    UI-->>User: Hiển thị trải nghiệm du lịch hoàn thiện
+
+    Note over User, Backend: Vòng phản hồi thích nghi (Adaptive Feedback Loop)
+    User->>UI: Nhập câu phản hồi tự nhiên để tinh chỉnh
+    UI->>Backend: Gửi phản hồi tinh chỉnh ý định (POST /feedback)
+    Note over Backend: Backend (N17) phân tích phản hồi & cập nhật truy vấn
+    Backend->>Backend: Chạy lại luồng gợi ý & xếp hạng (Giai đoạn 1 & 2)
+    Backend-->>UI: Kết quả đã cập nhật & lý do tinh chỉnh
+    UI-->>User: Hiển thị trải nghiệm du lịch đã tinh chỉnh
 ```
 
 Chi tiết luồng thực thi kỹ thuật bên trong Backend được mô tả cụ thể tại tài liệu của [Module N8: Orchestrator](../modules/n8_orchestrator.md).
@@ -181,7 +187,7 @@ Sinh hoạt động ứng viên cho từng địa điểm bằng chiến lược
 
 Xếp hạng hoạt động dựa trên hybrid scoring: semantic fit + attribute fit.
 
-### N7: Frontend UI
+### N16: Frontend UI
 
 Thu thập input đa phương thức, hiển thị kết quả, lưu session state và hỗ trợ feedback loop.
 

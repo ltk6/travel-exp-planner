@@ -28,7 +28,7 @@ Nếu mục tiêu là hiểu hệ thống như một báo cáo hoàn chỉnh, n�
    - [N4: Xếp hạng địa điểm](modules/n4_location_ranking.md)
    - [N5: Sinh hoạt động](modules/n5_activity_generation.md)
    - [N6: Xếp hạng hoạt động](modules/n6_activity_ranking.md)
-   - [N7: Giao diện Streamlit](modules/n7_streamlit_ui.md)
+   - [N16: Giao diện Next.js Web App](modules/n16_nextjs_ui.md)
    - [N8: Điều phối API](modules/n8_orchestrator.md)
    - [N17: Xử lý phản hồi](modules/n17_feedback_processing.md)
 4. **Các tài liệu tổng hợp ở mức dự án**
@@ -59,7 +59,7 @@ Nhóm tài liệu này đi sâu vào từng thành phần triển khai:
 - [modules/n4_location_ranking.md](modules/n4_location_ranking.md): semantic ranking cho địa điểm
 - [modules/n5_activity_generation.md](modules/n5_activity_generation.md): sinh ứng viên hoạt động theo chiến lược LLM-first
 - [modules/n6_activity_ranking.md](modules/n6_activity_ranking.md): hybrid scoring và suy luận preference
-- [modules/n7_streamlit_ui.md](modules/n7_streamlit_ui.md): trạng thái giao diện, luồng hiển thị và feedback
+- [modules/n16_nextjs_ui.md](modules/n16_nextjs_ui.md): giao diện Next.js, trạng thái phiên bất đồng bộ, Zustand store, lazy loading ảnh và Auth/Profiles.
 - [modules/n8_orchestrator.md](modules/n8_orchestrator.md): orchestration, cache và điều phối endpoint
 - [modules/n17_feedback_processing.md](modules/n17_feedback_processing.md): query refinement từ phản hồi người dùng
 
