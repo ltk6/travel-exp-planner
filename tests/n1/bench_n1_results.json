@@ -56,10 +56,10 @@
             "metadata": {
               "model": "BAAI/bge-m3",
               "device": "cpu",
-              "latency_ms": 1750.0
+              "latency_ms": 3530.0
             }
           },
-          "latency_ms": 1750.0
+          "latency_ms": 3530.0
         },
         {
           "name": "user_2",
@@ -78,36 +78,35 @@
             "preprocessed": {
               "text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress",
               "aug_text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress deliberate intention to heal emotionally through restorative peaceful and therapeutic experience",
-              "aug_tags": "",
+              "aug_tags": "healing relax nature",
               "img_desc": "A person sitting quietly by a misty lake at sunrise, surrounded by mountains and soft fog, conveying calmness, healing, and emotional reset"
             },
             "vector_dims": {
               "text": 1024,
               "aug_text": 1024,
-              "aug_tags": null,
+              "aug_tags": 1024,
               "img_desc": 1024
             },
             "vector_norms": {
               "text": 1.0,
               "aug_text": 1.0,
-              "aug_tags": null,
+              "aug_tags": 1.0,
               "img_desc": 1.0
             },
             "channels_present": [
               "text",
               "aug_text",
+              "aug_tags",
               "img_desc"
             ],
-            "channels_null": [
-              "aug_tags"
-            ],
+            "channels_null": [],
             "metadata": {
               "model": "BAAI/bge-m3",
               "device": "cpu",
-              "latency_ms": 511.0
+              "latency_ms": 348.0
             }
           },
-          "latency_ms": 511.0
+          "latency_ms": 348.0
         },
         {
           "name": "user_3",
@@ -152,13 +151,13 @@
             "metadata": {
               "model": "BAAI/bge-m3",
               "device": "cpu",
-              "latency_ms": 605.0
+              "latency_ms": 341.0
             }
           },
-          "latency_ms": 605.0
+          "latency_ms": 341.0
         }
       ],
-      "avg_latency_ms": 955.33
+      "avg_latency_ms": 1406.33
     },
     "location": {
       "records": [
@@ -205,10 +204,10 @@
             "metadata": {
               "model": "BAAI/bge-m3",
               "device": "cpu",
-              "latency_ms": 656.0
+              "latency_ms": 395.0
             }
           },
-          "latency_ms": 656.0
+          "latency_ms": 395.0
         },
         {
           "name": "loc_2",
@@ -253,10 +252,10 @@
             "metadata": {
               "model": "BAAI/bge-m3",
               "device": "cpu",
-              "latency_ms": 1027.0
+              "latency_ms": 643.0
             }
           },
-          "latency_ms": 1027.0
+          "latency_ms": 643.0
         },
         {
           "name": "loc_3",
@@ -301,21 +300,21 @@
             "metadata": {
               "model": "BAAI/bge-m3",
               "device": "cpu",
-              "latency_ms": 688.0
+              "latency_ms": 335.0
             }
           },
-          "latency_ms": 688.0
+          "latency_ms": 335.0
         }
       ],
-      "avg_latency_ms": 790.33
+      "avg_latency_ms": 457.67
     }
   },
   "batch_tests": {
     "user": {
       "label": "user",
       "n_items": 3,
-      "latency_ms": 2491.22,
-      "latency_per_item_ms": 830.41,
+      "latency_ms": 1471.04,
+      "latency_per_item_ms": 490.35,
       "items": [
         {
           "name": "user_1",
@@ -350,7 +349,7 @@
             "metadata": {
               "model": "BAAI/bge-m3",
               "device": "cpu",
-              "latency_ms": 830.0
+              "latency_ms": 490.0
             }
           }
         },
@@ -362,33 +361,32 @@
             "preprocessed": {
               "text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress",
               "aug_text": "Muốn đi du lịch chữa lành tâm trí sau thời gian stress deliberate intention to heal emotionally through restorative peaceful and therapeutic experience",
-              "aug_tags": "",
+              "aug_tags": "healing relax nature",
               "img_desc": "A person sitting quietly by a misty lake at sunrise, surrounded by mountains and soft fog, conveying calmness, healing, and emotional reset"
             },
             "vector_dims": {
               "text": 1024,
               "aug_text": 1024,
-              "aug_tags": null,
+              "aug_tags": 1024,
               "img_desc": 1024
             },
             "vector_norms": {
               "text": 1.0,
               "aug_text": 1.0,
-              "aug_tags": null,
+              "aug_tags": 1.0,
               "img_desc": 1.0
             },
             "channels_present": [
               "text",
               "aug_text",
+              "aug_tags",
               "img_desc"
             ],
-            "channels_null": [
-              "aug_tags"
-            ],
+            "channels_null": [],
             "metadata": {
               "model": "BAAI/bge-m3",
               "device": "cpu",
-              "latency_ms": 830.0
+              "latency_ms": 490.0
             }
           }
         },
@@ -426,7 +424,7 @@
             "metadata": {
               "model": "BAAI/bge-m3",
               "device": "cpu",
-              "latency_ms": 830.0
+              "latency_ms": 490.0
             }
           }
         }
@@ -435,8 +433,8 @@
     "location": {
       "label": "location",
       "n_items": 3,
-      "latency_ms": 2526.48,
-      "latency_per_item_ms": 842.16,
+      "latency_ms": 1336.62,
+      "latency_per_item_ms": 445.54,
       "items": [
         {
           "name": "loc_1",
@@ -472,7 +470,7 @@
             "metadata": {
               "model": "BAAI/bge-m3",
               "device": "cpu",
-              "latency_ms": 841.6666666666666
+              "latency_ms": 445.3333333333333
             }
           }
         },
@@ -510,7 +508,7 @@
             "metadata": {
               "model": "BAAI/bge-m3",
               "device": "cpu",
-              "latency_ms": 841.6666666666666
+              "latency_ms": 445.3333333333333
             }
           }
         },
@@ -548,7 +546,7 @@
             "metadata": {
               "model": "BAAI/bge-m3",
               "device": "cpu",
-              "latency_ms": 841.6666666666666
+              "latency_ms": 445.3333333333333
             }
           }
         }
@@ -571,11 +569,11 @@
   },
   "summary": {
     "total_single_tests": 6,
-    "user_avg_latency_ms": 955.33,
-    "location_avg_latency_ms": 790.33,
-    "overall_avg_latency_ms": 872.83,
-    "batch_user_latency_ms": 2491.22,
-    "batch_location_latency_ms": 2526.48,
+    "user_avg_latency_ms": 1406.33,
+    "location_avg_latency_ms": 457.67,
+    "overall_avg_latency_ms": 932.0,
+    "batch_user_latency_ms": 1471.04,
+    "batch_location_latency_ms": 1336.62,
     "text_k_range": [
       1,
       3

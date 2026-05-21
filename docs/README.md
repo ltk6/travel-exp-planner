@@ -22,15 +22,16 @@ Nếu mục tiêu là hiểu hệ thống như một báo cáo hoàn chỉnh, n�
    - [Cơ chế trọng số động](architecture/dynamic_weighting.md)
 3. **Các module triển khai cụ thể**
    - [N0: Module mẫu khởi tạo](modules/n0_sample.md)
-   - [N1: Nhúng vector và tiền xử lý ngữ nghĩa](modules/n1_embedding.md)
-   - [N2: Xử lý hình ảnh](modules/n2_image_processing.md)
+   - [N1: Nhúng vector đa kênh](modules/n1_embedding.md)
+   - [N2: Xử lý hình ảnh (vision-to-text)](modules/n2_image_processing.md)
    - [N3: Tầng dữ liệu và lưu trữ](modules/n3_database.md)
    - [N4: Xếp hạng địa điểm](modules/n4_location_ranking.md)
-   - [N5: Sinh hoạt động](modules/n5_activity_generation.md)
+   - [N5: Sinh hoạt động (LLM-first)](modules/n5_activity_generation.md)
    - [N6: Xếp hạng hoạt động](modules/n6_activity_ranking.md)
+   - [N9–N14: Thu thập hoạt động đa nguồn](modules/n9_n14_activity_retrievals.md)
    - [N16: Giao diện Next.js Web App](modules/n16_nextjs_ui.md)
-   - [N8: Điều phối API](modules/n8_orchestrator.md)
-   - [N17: Xử lý phản hồi](modules/n17_feedback_processing.md)
+   - [N8: Điều phối API (Orchestrator)](modules/n8_orchestrator.md)
+   - [N17: Xử lý phản hồi và tinh chỉnh truy vấn](modules/n17_feedback_processing.md)
 4. **Các tài liệu tổng hợp ở mức dự án**
    - [Lý do lựa chọn công nghệ](project/technology_stack.md)
    - [Các hạn chế đã biết](project/known_limitations.md)
@@ -54,12 +55,13 @@ Nhóm tài liệu này đi sâu vào từng thành phần triển khai:
 
 - [modules/n0_sample.md](modules/n0_sample.md): module mẫu dùng làm khuôn chuẩn
 - [modules/n1_embedding.md](modules/n1_embedding.md): tiền xử lý, augmentation và multi-channel embedding
-- [modules/n2_image_processing.md](modules/n2_image_processing.md): chuyển hình ảnh thành mô tả ngữ nghĩa
+- [modules/n2_image_processing.md](modules/n2_image_processing.md): chuyển hình ảnh thành mô tả ngữ nghĩa (vision-to-text)
 - [modules/n3_database.md](modules/n3_database.md): persistence layer với PostgreSQL và pgvector
 - [modules/n4_location_ranking.md](modules/n4_location_ranking.md): semantic ranking cho địa điểm
 - [modules/n5_activity_generation.md](modules/n5_activity_generation.md): sinh ứng viên hoạt động theo chiến lược LLM-first
 - [modules/n6_activity_ranking.md](modules/n6_activity_ranking.md): hybrid scoring và suy luận preference
-- [modules/n16_nextjs_ui.md](modules/n16_nextjs_ui.md): giao diện Next.js, trạng thái phiên bất đồng bộ, Zustand store, lazy loading ảnh và Auth/Profiles.
+- [modules/n9_n14_activity_retrievals.md](modules/n9_n14_activity_retrievals.md): thu thập hoạt động đa nguồn (OSM, Goong, Foursquare, Overture, Wikidata, Geoapify)
+- [modules/n16_nextjs_ui.md](modules/n16_nextjs_ui.md): giao diện Next.js, trạng thái phiên bất đồng bộ, Zustand store, lazy loading ảnh và Auth/Profiles
 - [modules/n8_orchestrator.md](modules/n8_orchestrator.md): orchestration, cache và điều phối endpoint
 - [modules/n17_feedback_processing.md](modules/n17_feedback_processing.md): query refinement từ phản hồi người dùng
 

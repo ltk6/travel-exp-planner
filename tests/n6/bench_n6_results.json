@@ -1,14 +1,14 @@
 {
   "metadata": {
     "module": "N6 — Activity Ranking",
-    "date": "2026-05-15",
+    "date": "2026-05-21",
     "top_k": 5
   },
   "results": [
     {
       "name": "semantic_beach_user_ranks_beach_activity_first",
       "desc": "User vector beach → activity về biển phải đứng #1",
-      "latency_ms": 1,
+      "latency_ms": 0,
       "status": "PASS",
       "checks": {
         "top1_correct": true
@@ -20,15 +20,15 @@
       },
       "top1_id": "act_snorkel",
       "scores": [
-        1.0,
-        0.4,
-        0.4
+        0.95,
+        0.65,
+        0.65
       ]
     },
     {
       "name": "attribute_relaxed_user_avoids_high_intensity",
       "desc": "User 'yên bình' → activity intensity thấp phải lên trên",
-      "latency_ms": 0,
+      "latency_ms": 14,
       "status": "PASS",
       "checks": {
         "top1_correct": true
@@ -40,8 +40,8 @@
       },
       "top1_id": "act_relax",
       "scores": [
-        1.0,
-        0.4
+        0.8869,
+        0.8575
       ]
     },
     {
@@ -81,7 +81,7 @@
     {
       "name": "normalization_spread",
       "desc": "Sau normalize: top score trong [0.8, 1.0], bottom score trong [0.4, 0.6]",
-      "latency_ms": 3,
+      "latency_ms": 1,
       "status": "PASS",
       "checks": {
         "top_score_ok": true,
@@ -94,11 +94,11 @@
       },
       "top1_id": "act_1",
       "scores": [
-        1.0,
-        1.0,
-        0.4,
-        0.4,
-        0.4
+        0.95,
+        0.95,
+        0.65,
+        0.65,
+        0.65
       ]
     },
     {
@@ -117,14 +117,14 @@
       },
       "top1_id": "act_b",
       "scores": [
-        1.0,
-        0.4
+        0.95,
+        0.8
       ]
     },
     {
       "name": "top_k_truncation",
       "desc": "top_k=3 với 10 activities → chỉ trả về 3",
-      "latency_ms": 4,
+      "latency_ms": 3,
       "status": "PASS",
       "checks": {
         "count_correct": true
@@ -134,17 +134,17 @@
         "physical": null,
         "social": null
       },
-      "top1_id": "act_0",
+      "top1_id": "act_7",
       "scores": [
-        1.0,
-        0.9333,
-        0.8667
+        0.95,
+        0.95,
+        0.95
       ]
     },
     {
       "name": "performance_50_activities",
       "desc": "50 activities (realistic) — kiểm tra tốc độ",
-      "latency_ms": 21,
+      "latency_ms": 13,
       "status": "PASS",
       "checks": {
         "count_correct": true,
@@ -157,11 +157,11 @@
       },
       "top1_id": "act_000",
       "scores": [
-        1.0,
-        0.7974,
-        0.7875,
-        0.7689,
-        0.7689
+        0.8323,
+        0.7893,
+        0.7893,
+        0.782,
+        0.7681
       ]
     }
   ]

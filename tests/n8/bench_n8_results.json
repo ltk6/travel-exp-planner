@@ -1,7 +1,7 @@
 {
   "metadata": {
     "module": "N8 - Orchestrator",
-    "date": "2026-05-17",
+    "date": "2026-05-21",
     "mode": "mocked_downstream_modules"
   },
   "cache": {
@@ -9,7 +9,7 @@
     "stages": [
       {
         "name": "cold_fetch",
-        "latency_ms": 1,
+        "latency_ms": 0,
         "db_fetches_before": 0,
         "db_fetches_after": 1,
         "count": 3,
@@ -25,7 +25,7 @@
       },
       {
         "name": "warm_disk",
-        "latency_ms": 6,
+        "latency_ms": 1,
         "db_fetches_before": 1,
         "db_fetches_after": 1,
         "count": 3,
@@ -41,7 +41,7 @@
       }
     ],
     "cache_file_exists": true,
-    "image_cache_files": 3
+    "image_cache_files": 0
   },
   "endpoints": [
     {
@@ -88,13 +88,13 @@
       "name": "recommend_cold",
       "method": "POST",
       "path": "/recommend",
-      "latency_ms": 19,
+      "latency_ms": 1,
       "status_code": 200,
       "status": "PASS",
       "note": "cold cache recommend",
       "module_deltas": {
         "db_fetches": 1,
-        "fingerprint_calls": 1,
+        "fingerprint_calls": 0,
         "embed_calls": 1,
         "embed_batch_calls": 0,
         "n2_calls": 0,
@@ -108,13 +108,13 @@
       "name": "recommend_warm",
       "method": "POST",
       "path": "/recommend",
-      "latency_ms": 1,
+      "latency_ms": 0,
       "status_code": 200,
       "status": "PASS",
       "note": "warm cache recommend",
       "module_deltas": {
         "db_fetches": 0,
-        "fingerprint_calls": 1,
+        "fingerprint_calls": 0,
         "embed_calls": 1,
         "embed_batch_calls": 0,
         "n2_calls": 0,
@@ -128,7 +128,7 @@
       "name": "activities",
       "method": "POST",
       "path": "/activities",
-      "latency_ms": 1,
+      "latency_ms": 0,
       "status_code": 200,
       "status": "PASS",
       "note": "activities pipeline",
@@ -154,7 +154,7 @@
       "note": "recommend feedback loop",
       "module_deltas": {
         "db_fetches": 0,
-        "fingerprint_calls": 1,
+        "fingerprint_calls": 0,
         "embed_calls": 1,
         "embed_batch_calls": 0,
         "n2_calls": 0,
@@ -194,7 +194,7 @@
       "note": "manual cache refresh",
       "module_deltas": {
         "db_fetches": 1,
-        "fingerprint_calls": 1,
+        "fingerprint_calls": 0,
         "embed_calls": 0,
         "embed_batch_calls": 0,
         "n2_calls": 0,

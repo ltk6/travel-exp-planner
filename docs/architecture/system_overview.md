@@ -68,15 +68,16 @@ graph LR
     classDef ml fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
     classDef gen fill:#fdf2ff,stroke:#c084fc,stroke-width:2px,color:#000000;
     classDef feedback fill:#fafaf9,stroke:#78716c,stroke-width:2px,color:#000000;
+    classDef external fill:#f1f5f9,stroke:#64748b,stroke-width:2px,stroke-dasharray:5 5,color:#000000;
     
     subgraph "Phía người dùng"
         N16["N16: Next.js Web App"]:::client
-        N16C["N16C: Trạng thái phiên & Auth"]:::client
+        N16C["Trạng thái phiên & Auth"]:::client
     end
 
     subgraph "Bộ điều phối trung tâm"
         N8(("N8: Bộ điều phối (Orchestrator)")):::orchestrator
-        N8C["N8C: Bộ nhớ đệm (RAM & Disk Cache)"]:::orchestrator
+        N8C["Bộ nhớ đệm (RAM & Disk Cache)"]:::orchestrator
     end
 
     subgraph "Các module chuyên biệt"
@@ -84,7 +85,8 @@ graph LR
         N2["N2: Vision (LLM Image Analyser)"]:::gen
         N3[("N3: PostgreSQL (Multi-Schema DB)")]:::storage
         N4["N4: Xếp hạng Địa điểm"]:::ml
-        N5["N5: Sinh Hoạt động (LLM-first)"]:::gen
+        N9_14["N9-N14: Thu thập Đa nguồn"]:::external
+        N5["N5: Sinh Hoạt động (LLM Fallback)"]:::gen
         N6["N6: Xếp hạng Hoạt động"]:::ml
         N17["N17: Xử lý Phản hồi"]:::feedback
     end
@@ -94,6 +96,7 @@ graph LR
     N8 <--> N2
     N8 <--> N3
     N8 <--> N4
+    N8 <--> N9_14
     N8 <--> N5
     N8 <--> N6
     N8 <--> N17

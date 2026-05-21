@@ -1,235 +1,157 @@
 # Module N2: Xử lý Hình ảnh
 
 **Dự án:** Travel Experience Planner  
-**Ngày:** 2026-05-15
+**Ngày:** 2026-05-21
 
 ---
 
 ## 1. Vai trò của Module N2
 
-N2 là lớp chuyển đổi dữ liệu thị giác thành tín hiệu ngữ nghĩa có thể dùng cho retrieval. Trong ngữ cảnh của hệ thống, người dùng không phải lúc nào cũng mô tả chính xác điều họ muốn bằng chữ. Nhiều khi họ chỉ có một hình ảnh gợi cảm hứng, ví dụ như ảnh bãi biển hoang sơ, quán cà phê nhìn ra thung lũng, hay một con đường núi có sương sớm. N2 được xây để biến loại tín hiệu cảm tính này thành một đoạn mô tả ngắn nhưng giàu ngữ nghĩa.
+N2 là cầu nối từ tín hiệu hình ảnh sang không gian văn bản trong pipeline ngữ nghĩa. Hệ thống hỗ trợ ba kênh đầu vào: văn bản tự do, tag lựa chọn, và hình ảnh cảm hứng. Hai kênh đầu có thể đi thẳng vào pipeline nhúng vector — nhưng hình ảnh thì không.
 
-Điểm quan trọng là N2 không theo đuổi mục tiêu captioning đầy đủ. Module này không cần mô tả mọi vật thể trong ảnh. Thay vào đó, nó tập trung vào:
+Hình ảnh cần được "dịch" sang ngôn ngữ mà N1 có thể xử lý. Đây chính là nhiệm vụ của N2.
 
-- loại địa điểm
-- đặc điểm thị giác nổi bật nhất
-- bầu không khí tổng thể
-- sắc thái du lịch mà ảnh gợi ra
-
-Nói cách khác, N2 không hỏi “trong ảnh có gì?”, mà hỏi “ảnh này gợi ra loại trải nghiệm du lịch nào?”.
+Kết quả của N2 — một đoạn mô tả `img_desc` ngắn bằng tiếng Việt — được N1 nhúng vào kênh `img_desc` riêng biệt, cho phép ảnh tham gia vào quá trình semantic matching cùng với text và tag.
 
 ---
 
-## 2. Tư tưởng thiết kế: Vision-to-Text for Retrieval
+## 2. Tư tưởng thiết kế: Vision-to-Text Bridge
 
-Nếu trực tiếp dùng hình ảnh như một input riêng biệt trong toàn pipeline, hệ thống sẽ phải duy trì thêm một nhánh xử lý đa phương thức phức tạp ở nhiều module phía sau. Điều đó làm tăng độ khó triển khai và khó giữ giao diện dữ liệu thống nhất.
+### 2.1. Vì sao không nhúng ảnh trực tiếp?
 
-N2 giải quyết vấn đề này bằng một quyết định kiến trúc rất thực dụng:
+Một cách tiếp cận thay thế là dùng một model vision-language (VLM) có khả năng tạo embedding trực tiếp từ ảnh, bỏ qua bước chuyển đổi sang text. Tuy nhiên, hướng đó có những nhược điểm:
 
-- chuyển ảnh thành **một chuỗi văn bản ngắn**
-- đưa chuỗi này vào cùng hệ sinh thái semantic embedding với `text` và `tags`
+- các model VLM embedding (như CLIP) không cùng không gian vector với BGE-M3 — không thể so sánh trực tiếp
+- cần hạ tầng inference riêng, tốn tài nguyên hơn
+- kết quả khó giải thích và debug hơn
 
-Thiết kế này có ba lợi ích lớn:
+### 2.2. Lý do chọn vision → text → embed
 
-1. **Đơn giản hóa pipeline:** các bước phía sau chỉ cần làm việc với text và vector.
-2. **Tận dụng toàn bộ hạ tầng ngữ nghĩa sẵn có:** mô tả ảnh có thể được nhúng, so khớp và xếp hạng như các kênh semantic khác.
-3. **Dễ debug và dễ giải thích:** thay vì giữ một tensor hình ảnh mơ hồ, hệ thống có một `img_desc` đọc được bằng mắt người.
+Khi đưa ảnh qua bước mô tả văn bản trước:
 
----
+- `img_desc` rơi vào cùng không gian ngôn ngữ với `text` và `aug_tags`
+- có thể so sánh vector `img_desc` với vector `text` của địa điểm một cách tự nhiên
+- kết quả mô tả có thể được đọc và kiểm tra bởi con người
+- không cần thêm model riêng cho embedding ảnh
 
-## 3. Công nghệ và lý do lựa chọn
+### 2.3. Yêu cầu về nội dung mô tả
 
-N2 hiện sử dụng hạ tầng Groq Vision. Việc lựa chọn này dựa trên hai yếu tố:
+N2 không chỉ cần trả về bất kỳ mô tả nào về ảnh. Mô tả phải:
 
-- tốc độ phản hồi nhanh
-- khả năng tạo mô tả ngữ nghĩa đủ tốt cho bài toán du lịch
+- tập trung vào **cảnh quan và bầu không khí du lịch** — không phải mọi vật thể trong ảnh
+- tối đa 50 từ — đủ ngắn để nhúng hiệu quả, đủ dài để chứa ngữ nghĩa
+- tránh khuôn mẫu chung chung ("Trong ảnh có...", "Tôi thấy...")
+- bằng tiếng Việt — nhất quán với ngôn ngữ chính của hệ thống
 
-Trong bài toán này, tốc độ là yếu tố quan trọng vì phân tích ảnh chỉ là một bước phụ trợ. Nếu bước này quá chậm, toàn bộ trải nghiệm của người dùng sẽ bị kéo dài dù phần còn lại của pipeline hoạt động tốt.
-
-Ngoài ra, N2 không cần một model chuyên “phân tích vật thể cực sâu”, mà cần một model có thể hiểu được:
-
-- vibe của cảnh
-- phong cách du lịch
-- cảm xúc tổng quát
-
-Điều này phù hợp hơn với vision-language models có năng lực mô tả ngữ cảnh thay vì chỉ nhận diện đối tượng.
+Đây là một ví dụ của **prompt engineering có mục đích**, không phải chỉ gọi API.
 
 ---
 
-## 4. Giao diện công khai
+## 3. Cấu trúc module
 
-```python
-process_image(data: dict) -> dict
+```
+backend/modules/n2_image_processing/
+├── __init__.py    # Re-export process_image
+├── processor.py   # Resize, nén JPEG, gọi Groq vision API, parse kết quả
+└── requirements.txt
 ```
 
-### 4.1. Cấu trúc đầu vào
+---
+
+## 4. API công khai
 
 ```python
-{
-    "image": bytes,
-}
+from modules.n2_image_processing import process_image
+from backend.shared.contracts.n2_contracts import N2ImageInput
+
+process_image(data: Union[N2ImageInput, dict]) -> dict
 ```
 
-Trong đó:
-
-- `image` là dữ liệu ảnh thô ở dạng nhị phân
-
-### 4.2. Cấu trúc đầu ra
-
-Trường hợp thành công:
-
-```python
-{
-    "img_desc": str,
-    "metadata": {
-        "model": str,
-        "usage": {
-            "prompt_tokens": int,
-            "completion_tokens": int,
-            "total_tokens": int,
-        },
-    },
-}
-```
-
-Trường hợp lỗi:
-
-```python
-{
-    "img_desc": "",
-    "error": str,
-    "metadata": {
-        "model": str,
-        "usage": dict,
-    },
-}
-```
-
-Điều cần lưu ý là đầu ra của N2 được thiết kế để:
-
-- đủ ngắn để không gây nhiễu cho embedding
-- đủ giàu nghĩa để đóng góp vào retrieval
-- đủ rõ ràng để có thể hiển thị hoặc debug trực tiếp
+Áp dụng xác thực **Pydantic V2** tại biên module.
 
 ---
 
-## 5. Chiến lược prompting: Concise Semantic Captioning
+## 5. Contract đầu vào và đầu ra
 
-Một quyết định quan trọng trong N2 là **ép mô tả ngắn** thay vì để model mô tả tự do.
+### 5.1. Đầu vào
 
-### 5.1. Vì sao mô tả phải ngắn?
+```python
+class N2ImageInput(BaseModel):
+    image: Optional[bytes] = None  # Bytes ảnh nhị phân thô
+```
 
-Nếu cho model tự do diễn đạt, nó thường:
+Nếu `image` là `None`, N2 trả về `{"img_desc": "", "error": "No image provided"}` ngay lập tức mà không gọi API.
 
-- thêm câu mở đầu dư thừa
-- mô tả quá chi tiết các vật thể không quan trọng
-- dùng nhiều token cho những nội dung ít giá trị đối với retrieval
+### 5.2. Đầu ra
 
-Ví dụ, với bài toán recommendation du lịch, việc mô tả “bầu trời xanh”, “có vài người đứng xa”, hay “một chiếc bàn gỗ ở góc trái” thường không hữu ích bằng việc nêu:
+```python
+class N2ImageOutput(BaseModel):
+    img_desc: Optional[str] = ""           # Mô tả cảnh quan tiếng Việt
+    metadata: Optional[Dict[str, Any]] = None  # Tên model, token usage
+    error: Optional[str] = None            # Chuỗi lỗi nếu xử lý thất bại
+```
 
-- đây là quán cà phê trên cao
-- khung cảnh yên tĩnh
-- phù hợp nghỉ dưỡng hoặc ngắm cảnh
-
-Do đó, N2 dùng chiến lược prompting buộc model phải:
-
-- trả lời ngắn
-- tập trung vào đặc trưng du lịch
-- tránh các chi tiết kỹ thuật ít giá trị
-
-### 5.2. Lợi ích của concise prompting
-
-Chiến lược này đem lại ba lợi ích:
-
-1. **Tăng semantic density:** mỗi từ trong `img_desc` mang nhiều giá trị ngữ nghĩa hơn.
-2. **Giảm chi phí và độ trễ:** ít token hơn.
-3. **Làm sạch kênh ảnh cho bước embedding:** mô tả ngắn có xu hướng nhúng ổn định hơn mô tả dài và lan man.
+Phản hồi lỗi **không phá vỡ pipeline** — N8 xử lý `img_desc` rỗng một cách an toàn bằng cách bỏ qua kênh `img_desc` trong phần nhúng vector.
 
 ---
 
-## 6. Luồng xử lý kỹ thuật
+## 6. Luồng xử lý
 
 ```mermaid
 %%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph TD
-    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef in fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
     classDef op fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
     classDef api fill:#fdf2ff,stroke:#c084fc,stroke-width:2.5px,color:#000000;
     classDef out fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
-    
-    A["Ảnh thô (binary)"]:::client --> B["Giải mã bằng Pillow"]:::op
-    B --> C["Chuyển hệ màu RGB"]:::op
-    C --> D["Thu nhỏ kích thước (Resize)"]:::op
-    D --> E["Nén JPEG"]:::op
-    E --> F["Gửi yêu cầu tới Vision API"]:::api
-    F --> G["Mô tả ảnh ngắn (img_desc)"]:::out
-    G --> H["Trả về metadata và usage"]:::out
+    classDef err fill:#fff1f2,stroke:#ef4444,stroke-width:2px,color:#000000;
+
+    A["Bytes ảnh thô"]:::in --> B["Giải mã Pillow"]:::op
+    B --> C["Chuyển sang RGB nếu cần"]:::op
+    C --> D["Thu nhỏ về ≤ 1560×1560"]:::op
+    D --> E["Mã hóa lại JPEG"]:::op
+    E --> F["Gọi Groq vision API (timeout 60s)"]:::api
+    F --> G{Thành công?}
+    G -- "Có" --> H["Parse img_desc + metadata"]:::out
+    G -- "Không" --> I["Trả error payload (img_desc rỗng)"]:::err
 ```
 
-Chuỗi xử lý hiện tại gồm:
+Bước tối ưu hóa ảnh cục bộ (resize + nén JPEG) được thực hiện trước khi gọi API để:
 
-1. đọc bytes ảnh
-2. giải mã bằng Pillow
-3. chuẩn hóa về RGB
-4. downscale nếu ảnh quá lớn
-5. nén về JPEG
-6. gửi request đến Groq Vision
-7. lấy mô tả đầu ra và metadata sử dụng token
-
-### 6.1. Vì sao phải resize và re-encode?
-
-Đây không chỉ là thao tác kỹ thuật phụ. Việc tối ưu ảnh trước khi gửi đi giúp:
-
-- giảm payload size
-- tránh lỗi vượt giới hạn request
-- ổn định chất lượng phản hồi giữa các ảnh có định dạng khác nhau
-
-Nó làm cho hành vi của module nhất quán hơn trong môi trường production.
+- tránh lỗi payload quá lớn
+- giảm latency mạng
+- đảm bảo ảnh luôn ở định dạng model có thể xử lý
 
 ---
 
-## 7. Ý nghĩa của `img_desc` trong toàn hệ thống
+## 7. Vị trí trong pipeline tổng thể
 
-Đầu ra của N2 là `img_desc`. Đây là một tín hiệu rất đặc biệt:
+N2 chỉ được gọi khi người dùng tải ảnh lên qua N16. N8 kiểm tra điều kiện này trước khi gọi N2:
 
-- không phải text do người dùng gõ trực tiếp
-- cũng không phải tag có cấu trúc
-- mà là một “diễn giải ngữ nghĩa” từ dữ liệu thị giác
+```
+N16 → N8 (nhận body có image base64)
+       ↓ (nếu có ảnh và chưa có img_desc)
+      N2 → trả về img_desc
+       ↓
+      N1 (nhúng bốn kênh, kể cả img_desc)
+```
 
-Kênh này hữu ích nhất trong các tình huống:
-
-- người dùng không diễn đạt rõ bằng chữ
-- người dùng chỉ có cảm hứng hình ảnh
-- text và tags quá ngắn hoặc mơ hồ
-
-Trong những trường hợp đó, `img_desc` có thể bổ sung một lớp semantic rất khác với text thông thường, đặc biệt ở các thuộc tính như:
-
-- không khí
-- phong cách
-- cảm xúc
-- loại hình không gian
+Nếu người dùng không tải ảnh, N2 hoàn toàn không được gọi và kênh `img_desc` của N1 sẽ là chuỗi rỗng.
 
 ---
 
 ## 8. Ghi chú vận hành
 
-- provider hiện tại là Groq Vision
-- timeout request hiện tại là `60` giây
-- đầu ra được ưu tiên bằng tiếng Việt
-- ảnh trống hoặc lỗi decode sẽ dẫn đến payload lỗi có cấu trúc
+- Vision provider: Groq API (`config.GROQ_VISION_MODEL`, `config.GROQ_API_URL`)
+- Timeout request: 60 giây
+- Tối ưu hóa ảnh thực hiện cục bộ trước khi gọi API
+- `metadata` có mặt ở cả phản hồi thành công lẫn hầu hết đường lỗi
 
 ---
 
 ## 9. Kết luận
 
-N2 là một module nhỏ về mặt API nhưng có vai trò quan trọng trong trải nghiệm recommendation đa phương thức. Giá trị của N2 không nằm ở việc “phân tích ảnh cho đẹp”, mà ở việc tạo ra một kênh semantic phụ trợ cực kỳ thực dụng:
-
-- nhẹ
-- ngắn
-- dễ nhúng
-- có giá trị cho so khớp du lịch
-
-Đây là ví dụ điển hình của một thiết kế vision module được tối ưu cho retrieval chứ không phải cho computer vision thuần túy.
+N2 là một module nhỏ nhưng đóng vai trò quan trọng trong việc mở rộng hệ thống sang đầu vào đa phương thức. Thiết kế vision-to-text thay vì vision-embedding trực tiếp là một lựa chọn thực dụng: giữ nguyên tính nhất quán của không gian vector, dễ debug, và không đòi hỏi thêm hạ tầng inference riêng biệt.
 
 ---
 
@@ -237,6 +159,6 @@ N2 là một module nhỏ về mặt API nhưng có vai trò quan trọng trong 
 
 | # | Chủ đề | Nguồn tham khảo |
 |---|---|---|
-| 1 | Groq Vision Documentation | [console.groq.com/docs/vision](https://console.groq.com/docs/vision) |
-| 2 | Groq Models | [console.groq.com/docs/models](https://console.groq.com/docs/models) |
-| 3 | Pillow Documentation | [pillow.readthedocs.io](https://pillow.readthedocs.io/) |
+| 1 | Groq Vision API | [console.groq.com/docs](https://console.groq.com/docs) |
+| 2 | Pillow (PIL) | [pillow.readthedocs.io](https://pillow.readthedocs.io/) |
+| 3 | Llama Vision Preview | [groq.com/blog/llama-3-2-vision](https://groq.com/blog/llama-3-2-vision) |

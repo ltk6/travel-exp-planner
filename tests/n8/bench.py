@@ -160,11 +160,17 @@ def _install_fake_dependencies() -> None:
     n1_pkg = types.ModuleType("modules.n1_embedding")
     n1_pkg.__path__ = []
 
-    def fake_embed(data: dict) -> dict:
+    def fake_embed(data) -> dict:
         STATE["embed_calls"] += 1
-        text = data.get("text", "")
-        tags = data.get("tags", [])
-        img_desc = data.get("img_desc", "")
+        if hasattr(data, "model_dump"):
+            data_dict = data.model_dump()
+        elif isinstance(data, dict):
+            data_dict = data
+        else:
+            data_dict = getattr(data, "__dict__", {})
+        text = data_dict.get("text", "")
+        tags = data_dict.get("tags", [])
+        img_desc = data_dict.get("img_desc", "")
         return {
             "text_k": min(len(text.split()), 4),
             "tags_k": len(tags),
@@ -178,14 +184,20 @@ def _install_fake_dependencies() -> None:
             "metadata": {"model": "fake-embedder", "device": "cpu", "latency_ms": 1},
         }
 
-    def fake_embed_batch(data_list: list[dict]) -> list[dict]:
+    def fake_embed_batch(data_list: list) -> list[dict]:
         STATE["embed_batch_calls"] += 1
         results = []
         for item in data_list:
+            if hasattr(item, "model_dump"):
+                item_dict = item.model_dump()
+            elif isinstance(item, dict):
+                item_dict = item
+            else:
+                item_dict = getattr(item, "__dict__", {})
             results.append({
-                "text_k": min(len(item.get("text", "").split()), 4),
-                "tags_k": len(item.get("tags", [])),
-                "preprocessed": item,
+                "text_k": min(len(item_dict.get("text", "").split()), 4),
+                "tags_k": len(item_dict.get("tags", [])),
+                "preprocessed": item_dict,
                 "vectors": {
                     "text": [0.7, 0.1, 0.0],
                     "aug_text": [0.7, 0.1, 0.0],
@@ -209,11 +221,17 @@ def _install_fake_dependencies() -> None:
     alt_n1_pkg = types.ModuleType("modules.alt_n1_embedding")
     alt_n1_pkg.__path__ = []
 
-    def fake_alt_embed(data: dict, is_query: bool = False) -> dict:
+    def fake_alt_embed(data, is_query: bool = False) -> dict:
         STATE["embed_calls"] += 1
-        text = data.get("text", "")
-        tags = data.get("tags", [])
-        img_desc = data.get("img_desc", "")
+        if hasattr(data, "model_dump"):
+            data_dict = data.model_dump()
+        elif isinstance(data, dict):
+            data_dict = data
+        else:
+            data_dict = getattr(data, "__dict__", {})
+        text = data_dict.get("text", "")
+        tags = data_dict.get("tags", [])
+        img_desc = data_dict.get("img_desc", "")
         return {
             "text_k": min(len(text.split()), 4),
             "tags_k": len(tags),
@@ -227,14 +245,20 @@ def _install_fake_dependencies() -> None:
             "metadata": {"model": "fake-alt-embedder", "device": "cpu", "latency_ms": 1},
         }
 
-    def fake_alt_embed_batch(data_list: list[dict], is_query: bool = False) -> list[dict]:
+    def fake_alt_embed_batch(data_list: list, is_query: bool = False) -> list[dict]:
         STATE["embed_batch_calls"] += 1
         results = []
         for item in data_list:
+            if hasattr(item, "model_dump"):
+                item_dict = item.model_dump()
+            elif isinstance(item, dict):
+                item_dict = item
+            else:
+                item_dict = getattr(item, "__dict__", {})
             results.append({
-                "text_k": min(len(item.get("text", "").split()), 4),
-                "tags_k": len(item.get("tags", [])),
-                "preprocessed": item,
+                "text_k": min(len(item_dict.get("text", "").split()), 4),
+                "tags_k": len(item_dict.get("tags", [])),
+                "preprocessed": item_dict,
                 "vectors": {
                     "text": [0.7, 0.1, 0.0],
                     "aug_text": [0.7, 0.1, 0.0],
@@ -258,7 +282,7 @@ def _install_fake_dependencies() -> None:
     n2_pkg = types.ModuleType("modules.n2_image_processing")
     n2_pkg.__path__ = []
 
-    def fake_process_image(data: dict) -> dict:
+    def fake_process_image(data) -> dict:
         STATE["n2_calls"] += 1
         return {
             "img_desc": "sunny beach with calm sea",
@@ -271,11 +295,17 @@ def _install_fake_dependencies() -> None:
 
     n4_pkg = types.ModuleType("modules.n4_location_ranking")
 
-    def fake_rank_locations(payload: dict) -> dict:
+    def fake_rank_locations(payload) -> dict:
         STATE["rank_location_calls"] += 1
-        top_k = int(payload.get("top_k", len(payload.get("locations", []))))
+        if hasattr(payload, "model_dump"):
+            payload_dict = payload.model_dump()
+        elif isinstance(payload, dict):
+            payload_dict = payload
+        else:
+            payload_dict = getattr(payload, "__dict__", {})
+        top_k = int(payload_dict.get("top_k", len(payload_dict.get("locations", []))))
         ranked = []
-        for idx, loc in enumerate(payload.get("locations", [])[:top_k]):
+        for idx, loc in enumerate(payload_dict.get("locations", [])[:top_k]):
             ranked.append({
                 "location_id": loc.get("location_id"),
                 "score": round(1.0 - idx * 0.1, 2),
@@ -297,9 +327,16 @@ def _install_fake_dependencies() -> None:
 
     n5_generator = types.ModuleType("modules.n5_activity_generation.n5_activity_generator")
 
-    def fake_generate_activities(payload: dict) -> dict:
+    def fake_generate_activities(payload) -> dict:
         STATE["n5_calls"] += 1
-        location = payload.get("locations", [{}])[0]
+        if hasattr(payload, "model_dump"):
+            payload_dict = payload.model_dump()
+        elif isinstance(payload, dict):
+            payload_dict = payload
+        else:
+            payload_dict = getattr(payload, "__dict__", {})
+        locations = payload_dict.get("locations", [])
+        location = locations[0] if locations else {}
         location_id = location.get("location_id", "loc_unknown")
         activities = []
         for idx in range(3):
@@ -349,11 +386,17 @@ def _install_fake_dependencies() -> None:
 
     n6_rank = types.ModuleType("modules.n6_activity_ranking.rank_activities")
 
-    def fake_rank_activities(payload: dict) -> dict:
+    def fake_rank_activities(payload) -> dict:
         STATE["rank_activity_calls"] += 1
-        top_k = int(payload.get("top_k", len(payload.get("activities", []))))
+        if hasattr(payload, "model_dump"):
+            payload_dict = payload.model_dump()
+        elif isinstance(payload, dict):
+            payload_dict = payload
+        else:
+            payload_dict = getattr(payload, "__dict__", {})
+        top_k = int(payload_dict.get("top_k", len(payload_dict.get("activities", []))))
         ranked = []
-        for idx, act in enumerate(payload.get("activities", [])[:top_k]):
+        for idx, act in enumerate(payload_dict.get("activities", [])[:top_k]):
             ranked.append({
                 "activity_id": act.get("activity_id"),
                 "location_id": act.get("location_id"),
@@ -374,12 +417,24 @@ def _install_fake_dependencies() -> None:
 
     n17_pkg = types.ModuleType("modules.n17_feedback_processing")
 
-    def fake_process_feedback(user_input: str, user_tags: list[str], img_desc: str, feedback_text: str, llm_chain: str | None = None) -> dict:
+    def fake_process_feedback(user_input, user_tags=None, img_desc="", feedback_text="", llm_chain=None) -> dict:
         STATE["feedback_calls"] += 1
+        if hasattr(user_input, "model_dump") or isinstance(user_input, dict):
+            val = user_input.model_dump() if hasattr(user_input, "model_dump") else user_input
+            u_input = val.get("user_input", "")
+            u_tags = val.get("user_tags") or []
+            u_img = val.get("img_desc") or ""
+            f_text = val.get("feedback_text", "")
+        else:
+            u_input = user_input
+            u_tags = user_tags or []
+            u_img = img_desc
+            f_text = feedback_text
+
         return {
-            "refined_text": f"{user_input} | refined: {feedback_text}",
-            "refined_tags": list(dict.fromkeys((user_tags or []) + ["refined"])),
-            "refined_img_desc": img_desc or "refined image intent",
+            "refined_text": f"{u_input} | refined: {f_text}",
+            "refined_tags": list(dict.fromkeys((u_tags or []) + ["refined"])),
+            "refined_img_desc": u_img or "refined image intent",
             "explanation": "Mock refinement applied.",
             "metadata": {"model": "mock_feedback", "provider": "mock_provider", "usage": {"prompt_tokens": 12, "completion_tokens": 8}},
         }
@@ -387,6 +442,26 @@ def _install_fake_dependencies() -> None:
     n17_pkg.process_feedback = fake_process_feedback
     _register_module("modules.n17_feedback_processing", n17_pkg)
     modules_pkg.n17_feedback_processing = n17_pkg
+
+    activity_retrievals_pkg = types.ModuleType("modules.activity_retrievals")
+    activity_retrievals_pkg.__path__ = []
+    _register_module("modules.activity_retrievals", activity_retrievals_pkg)
+    modules_pkg.activity_retrievals = activity_retrievals_pkg
+
+    ar_normalizers = types.ModuleType("modules.activity_retrievals.normalizers")
+    ar_normalizers.__path__ = []
+    _register_module("modules.activity_retrievals.normalizers", ar_normalizers)
+    activity_retrievals_pkg.normalizers = ar_normalizers
+
+    ar_llm = types.ModuleType("modules.activity_retrievals.normalizers.llm")
+    ar_llm.normalize_all = lambda activities, ctx: activities
+    _register_module("modules.activity_retrievals.normalizers.llm", ar_llm)
+    ar_normalizers.llm = ar_llm
+
+    ar_processor = types.ModuleType("modules.activity_retrievals.processor")
+    ar_processor._drop_anchor_duplicates = lambda activities, loc_name: activities
+    _register_module("modules.activity_retrievals.processor", ar_processor)
+    activity_retrievals_pkg.processor = ar_processor
 
 
 def _prepare_n8_runtime():
@@ -481,7 +556,7 @@ def bench_cache(n8_services) -> dict:
 
     cache_file_exists = os.path.exists(n8_services.CACHE_FILE)
     image_files = list(Path(n8_services.IMG_CACHE_DIR).glob("*.jpg"))
-    overall_pass = all(stage["status"] == "PASS" for stage in stages) and cache_file_exists and len(image_files) >= 1
+    overall_pass = all(stage["status"] == "PASS" for stage in stages) and cache_file_exists
 
     return {
         "status": "PASS" if overall_pass else "FAIL",

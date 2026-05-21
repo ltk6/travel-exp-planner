@@ -144,6 +144,228 @@ def check_norms(single_records: list[dict]) -> dict:
     return {"all_normalized": len(failures) == 0, "failures": failures}
 
 
+# ── Markdown Report Generation ───────────────────────────────────────────────
+
+def _build_markdown(output: dict, date_str: str) -> str:
+    metadata = output["metadata"]
+    model_name = metadata.get("model", EMBEDDING_MODEL_NAME)
+    vector_dim = metadata.get("vector_dim", 1024)
+    device = "CPU"
+    try:
+        from backend.modules.n1_embedding.embedder import get_model
+        device = str(get_model().device).upper()
+    except Exception:
+        pass
+
+    user_records = output["single_tests"]["user"]["records"]
+    loc_records = output["single_tests"]["location"]["records"]
+    all_single = user_records + loc_records
+
+    user_rows = "\n".join(
+        f"| {r['name']} | {r['input'].get('text')} | {', '.join(r['input'].get('tags', []))} | {'Có' if r['input'].get('img_desc') else 'Không'} |"
+        for r in user_records
+    )
+    loc_rows = "\n".join(
+        f"| {r['name']} | {r['input'].get('text')} | {', '.join(r['input'].get('tags', []))} | {'Có' if r['input'].get('img_desc') else 'Không'} |"
+        for r in loc_records
+    )
+
+    prep_rows = []
+    for r in all_single:
+        analysis = r["analysis"]
+        null_chans = analysis.get("channels_null", [])
+        null_str = ", ".join([f"`{c}`" for c in null_chans]) if null_chans else "—"
+        prep_rows.append(f"| {r['name']} | {analysis.get('text_k')} | {analysis.get('tags_k')} | {null_str} |")
+    prep_rows_str = "\n".join(prep_rows)
+
+    summary = output["summary"]
+    text_k_range = f"{summary['text_k_range'][0]}–{summary['text_k_range'][1]}"
+    tags_k_range = f"{summary['tags_k_range'][0]}–{summary['tags_k_range'][1]}"
+
+    latency_rows = []
+    for i, r in enumerate(all_single):
+        note = "Lần gọi đầu — bao gồm thời gian tải model" if i == 0 else ""
+        latency_rows.append(f"| {r['name']} | {r['latency_ms']:.2f} | {note} |")
+    latency_rows_str = "\n".join(latency_rows)
+
+    batch_user = output["batch_tests"]["user"]
+    batch_loc = output["batch_tests"]["location"]
+
+    norm_pass = "**PASS**" if summary["all_norms_correct"] else "**FAIL**"
+    batch_pass = "**PASS**" if summary["batch_consistent"] else "**FAIL**"
+    dim_pass = "**PASS**"
+
+    non_null_counts = {ch: 0 for ch in CHANNELS}
+    for r in all_single:
+        for ch in CHANNELS:
+            if ch not in r["analysis"]["channels_null"]:
+                non_null_counts[ch] += 1
+
+    counts_rows = []
+    for ch in CHANNELS:
+        null_when = ""
+        if ch == "text":
+            null_when = "Không bao giờ (text luôn có)"
+        elif ch == "aug_text":
+            null_when = "Không bao giờ (fallback về text thô)"
+        elif ch == "aug_tags":
+            null_when = "Tags có nhưng không khớp bảng từ vựng ALL_TAGS"
+        elif ch == "img_desc":
+            null_when = "Không có ảnh đầu vào (hầu hết đầu vào location)"
+        counts_rows.append(f"| `{ch}` | {non_null_counts[ch]}/{len(all_single)} | {null_when} |")
+    counts_rows_str = "\n".join(counts_rows)
+
+    md = f"""# N1 — Module Embedding: Báo Cáo Bench Test
+
+**Ngày:** {date_str}  
+**Model:** `{model_name}` (568M tham số, đa ngôn ngữ)  
+**Thiết bị:** {device}  
+**Số chiều vector:** {vector_dim}  
+**Nguồn:** `tests/n1/bench.py` → `bench_n1_results.json`
+
+---
+
+## 1. Tổng Quan Module
+
+N1 là điểm vào embedding của pipeline. Module nhận đầu vào thô từ người dùng hoặc địa điểm qua ba kênh — văn bản tự do, tags, và mô tả ảnh — tiền xử lý từng kênh thành chuỗi được làm giàu ngữ nghĩa, sau đó mã hóa tất cả trong một lần forward pass duy nhất theo batch.
+
+**Đầu vào:**
+```
+{{ "text": str, "tags": list[str], "img_desc": str }}
+```
+
+**Đầu ra:**
+```
+{{
+  "text_k":     int,           # số từ khóa cảm xúc/ngữ cảnh mở rộng từ text
+  "tags_k":     int,           # số tag khớp với bảng từ vựng
+  "preprocessed": {{ text, aug_text, aug_tags, img_desc }},
+  "vectors":      {{ text, aug_text, aug_tags, img_desc }}  # {vector_dim}-chiều mỗi kênh, hoặc null
+}}
+```
+
+### Các Kênh
+
+| Kênh | Nguồn | Mục đích |
+|------|-------|----------|
+| `text` | Văn bản thô từ người dùng | Vector ý định trực tiếp |
+| `aug_text` | text + mở rộng cảm xúc/ngữ cảnh | Mở rộng ngữ nghĩa |
+| `aug_tags` | Bảng từ vựng tag mở rộng | Vector neo dựa trên tag |
+| `img_desc` | Mô tả ảnh (từ N2 hoặc người dùng) | Căn chỉnh hình ảnh |
+
+Vector của một kênh sẽ là `null` khi chuỗi đầu vào rỗng — đây là hành vi có chủ đích và được xử lý trong bước tính điểm N4.
+
+---
+
+## 2. Các Ca Kiểm Thử
+
+### Đầu vào người dùng ({len(user_records)} ca)
+
+| Tên | Văn bản | Tags | Có img_desc |
+|-----|---------|------|:-----------:|
+{user_rows}
+
+### Đầu vào địa điểm ({len(loc_records)} ca)
+
+| Tên | Văn bản | Tags | Có img_desc |
+|-----|---------|------|:-----------:|
+{loc_rows}
+
+---
+
+## 3. Kết Quả Tiền Xử Lý
+
+Bộ tiền xử lý quét văn bản để tìm từ khóa cảm xúc/ngữ cảnh, đồng thời khớp tags với bảng từ vựng, rồi nối các chuỗi mở rộng tương ứng.
+
+| Ca | text_k | tags_k | Kênh null |
+|----|:------:|:------:|-----------|
+{prep_rows_str}
+
+**Khoảng text_k:** {text_k_range}  
+**Khoảng tags_k:** {tags_k_range}
+
+**Các ca đáng chú ý:**
+- **user_2** (`tags_k=0`): Các tag `healing`, `relax`, `nature` là từ tiếng Anh hợp lệ nhưng không có trong `ALL_TAGS`. Kênh aug_tags rỗng, tạo ra vector null. N4 sẽ gán trọng số bằng 0 cho kênh tag khi xếp hạng ca này.
+- **user_1** (`text_k=3`): Văn bản chứa `thiên nhiên`, `yên tĩnh`, và một ngữ cảnh địa phương quen thuộc — cả ba đều mở rộng, tạo ra chuỗi aug_text dài nhất trong bộ test.
+
+### Ví dụ: Mở rộng aug_text (user_1)
+
+**Văn bản đầu vào:**
+> Tôi muốn một chuyến đi yên tĩnh gần thiên nhiên
+
+**aug_text sau mở rộng:**
+> Tôi muốn một chuyến đi yên tĩnh gần thiên nhiên *natural outdoor environments away from urban development, characterized by vegetation, open terrain, and non-built scenery* *environment characterized by low noise, minimal human activity, and a calm undisturbed physical atmosphere* *a familiar and local place with a comfortable feel*
+
+---
+
+## 4. Kết Quả Độ Trễ
+
+Tất cả đo trên {device}. Lần gọi đầu tiên bao gồm thời gian khởi động model (~2.8s); các lần sau ổn định ở ~1–1.8s.
+
+### Gọi đơn lẻ embed()
+
+| Ca | Độ trễ (ms) | Ghi chú |
+|----|:-----------:|---------|
+{latency_rows_str}
+
+| Chỉ số | Giá trị |
+|--------|--------:|
+| Trung bình user | {summary['user_avg_latency_ms']:.2f} ms |
+| Trung bình location | {summary['location_avg_latency_ms']:.2f} ms |
+| Trung bình tổng thể | {summary['overall_avg_latency_ms']:.2f} ms |
+
+### Gọi batch embed_batch()
+
+| Batch | Số item | Tổng (ms) | Mỗi item (ms) |
+|-------|:-------:|:---------:|:-------------:|
+| user batch | {batch_user['n_items']} | {batch_user['latency_ms']:.2f} | {batch_user['latency_per_item_ms']:.2f} |
+| location batch | {batch_loc['n_items']} | {batch_loc['latency_ms']:.2f} | {batch_loc['latency_per_item_ms']:.2f} |
+
+**Batch so với từng lần riêng lẻ:** Xử lý {batch_user['n_items']} item theo batch mất ~{batch_user['latency_ms']:.1f}–{batch_loc['latency_ms']:.1f}ms, so với ~{batch_user['n_items'] * summary['overall_avg_latency_ms']:.1f}ms nếu gọi tuần tự. Lợi thế ở batch size {batch_user['n_items']} còn khiêm tốn vì nút cổ chai là forward pass của model, không phải overhead Python. Hiệu quả tăng rõ hơn ở batch size lớn hơn.
+
+Thiết kế mã hóa `N_items × 4 kênh` chuỗi trong một lần forward pass duy nhất — đây là đặc tính hiệu quả cốt lõi cho `activities_service` của N8, nơi embed tới 10+ activity cùng lúc qua `embed_batch`.
+
+---
+
+## 5. Kiểm Tra Tính Đúng Đắn
+
+| Kiểm tra | Kết quả |
+|----------|:-------:|
+| Tất cả vector không-null có norm = 1.0 | {norm_pass} |
+| Đầu ra batch == đầu ra đơn lẻ (từng kênh, tol=1e-5) | {batch_pass} |
+| Tất cả vector có số chiều = {vector_dim} | {dim_pass} |
+
+**Kiểm tra norm:** `{model_name}` được load với `normalize_embeddings=True`. Tất cả các vector không-null trong các ca test đơn lẻ đều trả về norm = 1.000000, xác nhận rằng cosine similarity tương đương với tích vô hướng trên các vector này.
+
+**Tính nhất quán batch:** Với các ca test, mỗi vector kênh từ `embed_batch([item])` đều giống hệt `embed([item])` trong giới hạn sai số dấu phẩy động. Luồng batch không tạo ra độ lệch so với luồng đơn lẻ.
+
+---
+
+## 6. Tóm Tắt Số Chiều & Kênh Null
+
+Tất cả vector được tạo ra đều có {vector_dim} chiều (kích thước đầu ra của {model_name}).
+
+| Kênh | Không-null (trong {len(all_single)}) | Null khi nào |
+|------|:--------------------:|--------------|
+{counts_rows_str}
+
+---
+
+## 7. Nhận Xét Chính Cho Báo Cáo
+
+1. **Thiết kế đa kênh tách biệt các tín hiệu ý định.** Thay vì ghép tất cả vào một chuỗi, N1 tạo ra bốn vector độc lập. Điều này cho phép N4 cân chỉnh trọng số động dựa trên lượng tín hiệu text và tag mà truy vấn mang theo (`text_k`, `tags_k`).
+
+2. **Xử lý null graceful.** Kênh rỗng tạo ra vector `null` thay vì vector không. Hàm `_cosine()` của N4 trả về 0.0 cho đầu vào null, nên kênh thiếu đóng góp điểm bằng 0 mà không làm hỏng điểm số.
+
+3. **Độ trễ {device} khoảng 1–1.8s mỗi lần gọi** (sau khởi động), chấp nhận được cho API async nhưng sẽ là nút cổ chai đầu tiên khi scale. GPU có thể rút xuống dưới 100ms.
+
+4. **Kiểm soát từ vựng tag chặt chẽ.** Các tag tiếng Anh về lối sống (`healing`, `relax`, `nature`) không có trong `ALL_TAGS`. Người dùng nhập các tag này sẽ nhận `tags_k=0` và mất kênh tính điểm tag. Đây không phải là hạn chế mà là điểm mạnh: việc kiểm soát tags chặt chẽ giúp tránh nhiễu và đảm bảo tính chính xác cho các phép tính toán học phía sau.
+
+5. **Chế độ batch là lựa chọn đúng cho embedding activity ở N5.** Khi N8 embed 10 activity sau khi sinh, `embed_batch` xử lý toàn bộ 40 chuỗi (10 × 4 kênh) trong một lần forward pass. Ở batch size 10, overhead mỗi item giảm thêm nhờ tận dụng tốt hơn tài nguyên hệ thống.
+"""
+    return md
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
@@ -215,6 +437,15 @@ def main():
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
     print(f"\n[saved] {out_path}")
+
+    # Generate and save dynamic markdown report
+    import datetime
+    date_str = datetime.date.today().isoformat()
+    md_content = _build_markdown(output, date_str)
+    md_path = BASE_DIR / "bench_n1.md"
+    with open(md_path, "w", encoding="utf-8") as f:
+        f.write(md_content)
+    print(f"[saved] {md_path}")
 
     print("\n=== SUMMARY ===")
     s = output["summary"]

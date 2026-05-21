@@ -33,6 +33,7 @@ graph TD
     classDef db fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
     classDef ai fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
     classDef groq fill:#fdf2ff,stroke:#c084fc,stroke-width:2px,color:#000000;
+    classDef map fill:#f1f5f9,stroke:#64748b,stroke-width:2px,stroke-dasharray:5 5,color:#000000;
 
     subgraph "Tầng Giao diện"
         N16["Next.js Web App (React 19)"]:::client
@@ -42,6 +43,10 @@ graph TD
     subgraph "Tầng Ứng dụng"
         N8["Bộ điều phối Flask (Python)"]:::app
         CORE["Các Module Python N1-N17"]:::app
+    end
+
+    subgraph "Tầng Dữ liệu Nguồn"
+        MAPS["6 Map APIs (OSM, Foursquare, Overture...)"]:::map
     end
 
     subgraph "Tầng Lưu trữ"
@@ -55,6 +60,7 @@ graph TD
 
     N16 <--> N8
     N8 <--> CORE
+    MAPS -.->|Seed offline| N3
     CORE <--> N3
     CORE <--> GROQ
     CORE <--> BGE

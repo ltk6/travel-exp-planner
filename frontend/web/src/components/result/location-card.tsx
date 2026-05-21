@@ -96,9 +96,7 @@ export function LocationCard({ loc, rank }: { loc: LocationResult; rank: number 
                 </div>
               ) : null}
               {desc ? (
-                <p className="text-muted-foreground line-clamp-4 text-base leading-relaxed">
-                  {desc}
-                </p>
+                <p className="text-muted-foreground text-base leading-relaxed">{desc}</p>
               ) : null}
               {visibleTags.length > 0 ? (
                 <div className="flex flex-wrap gap-1.5 pt-1">

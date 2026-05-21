@@ -79,32 +79,23 @@ Tuy nhiên, cần thừa nhận rằng bản chất của LLM generation vẫn l
 
 ---
 
-## 4. Độ trễ embedding khi xử lý dữ liệu động
+## 4. Độ trễ và khó khăn của nguồn dữ liệu hoạt động
 
-### 4.1. Vấn đề
+### 4.1. Sự thiếu vắng API chuẩn từ các nguồn bản đồ
+Dữ liệu hoạt động (N9-N14) thu thập từ 6 nguồn khác nhau (OSM, Goong, Foursquare...) tồn tại vấn đề phân mảnh mạnh về Schema. Rất nhiều nguồn thiếu thông tin rating, hình ảnh, hoặc giờ mở cửa, dẫn đến việc xếp hạng bị nhiễu do khuyết tín hiệu (missing signals).
 
-Các địa điểm trong database đã có vector từ trước, nhưng các activities sinh ra ở runtime thì chưa. Vì vậy, mỗi lần sinh activities, hệ thống còn phải:
+### 4.2. Độ trễ do Fallback LLM (N5)
+Dù đã chuyển sang Database-first, đối với các điểm đến chưa được seed dữ liệu bản đồ, hệ thống sẽ gọi dự phòng LLM (N5) để sinh hoạt động theo thời gian thực (real-time). Khi đó, hệ thống phải:
+1. sinh text hoạt động qua API
+2. gọi model nhúng cục bộ (N1)
+3. xếp hạng
 
-1. sinh text hoạt động
-2. nhúng lại các hoạt động đó
-3. mới được xếp hạng
-
-### 4.2. Hệ quả
-
-Điều này tạo ra một bottleneck đặc biệt ở nhánh activities:
-
-- generation xong chưa đủ
-- còn phải chờ embedding batch
-- rồi mới tới bước ranking
-
-Trong môi trường tài nguyên thấp, đây là nguồn gây tăng latency rất rõ.
+Quá trình fallback này tốn khoảng 3-5 giây, tạo sự đứt gãy về trải nghiệm so với < 0.5s khi đọc dữ liệu có sẵn từ N9-N14 DB.
 
 ### 4.3. Giải pháp hiện tại
-
-- dùng `embed_batch()` để giảm số lần gọi model
-- giới hạn số lượng activities sinh ra
-
-Nhưng về bản chất, đây vẫn là một chi phí bắt buộc vì ranking semantic của activities cần vector thật, không thể bỏ qua.
+- Khuyến khích cào (seed) trước offline càng rộng càng tốt để giảm tỉ lệ chạy fallback.
+- Dùng `embed_batch()` để giảm overhead cục bộ.
+- Dùng Waterfall sequential loading ở N16 UI để che giấu độ trễ.
 
 ---
 

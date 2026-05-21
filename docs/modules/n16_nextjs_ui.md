@@ -1,67 +1,61 @@
 # Module N16: Giao diện Next.js Web App
 
 **Dự án:** Travel Experience Planner  
-**Ngày:** 2026-05-19
+**Ngày:** 2026-05-21
 
 ---
 
 ## 1. Vai trò của Module N16
 
-N16 là lớp tiếp xúc trực tiếp với người dùng. Với việc nâng cấp hệ thống từ Streamlit (dạng script-rerun tuần tự) sang **Next.js Web App** (Client-Server bất đồng bộ, React 19 + Next.js 15 App Router), N16 mang lại khả năng tương tác vượt trội, phản hồi thời gian thực và trải nghiệm mượt mà xứng tầm một ứng dụng thương mại cao cấp.
+N16 là lớp tiếp xúc trực tiếp với người dùng. Với việc nâng cấp hệ thống từ Streamlit (dạng script-rerun tuần tự) sang **Next.js Web App** (Client-Server bất đồng bộ), N16 mang lại khả năng tương tác vượt trội, phản hồi thời gian thực và trải nghiệm mượt mà xứng tầm một ứng dụng thương mại cao cấp.
 
-Trong bài toán gợi ý du lịch, Next.js Web App giải quyết triệt để 3 bài toán lớn:
-- **Tương tác bất đồng bộ (Non-blocking UI):** Khắc phục hoàn toàn hiện tượng lag/đơ giao diện khi chờ API hoặc tải hình ảnh nhị phân dung lượng lớn.
+Trong bài toán gợi ý du lịch, N16 Next.js giải quyết triệt để 3 bài toán lớn:
+- **Tương tác bất đồng bộ (Non-blocking UI):** Khắc phục hoàn toàn hiện tượng lag/đơ giao diện khi chờ API AI phân tích hoặc tải hình ảnh nhị phân dung lượng lớn.
 - **Trạng thái phiên linh hoạt (Dynamic Session Management):** Lưu trữ thông tin đăng nhập, token bảo mật, và lịch sử khuyến nghị của người dùng xuyên suốt các trang.
-- **Đa dạng hóa chế độ xem (Multi-mode Experience):** Cung cấp đồng thời chế độ Khám phá địa điểm (Explore Grid) và chế độ Lập kế hoạch chi tiết (Planner Page).
+- **Đa dạng hóa không gian trải nghiệm:** Cung cấp đồng thời chế độ Khám phá bản đồ 3D (Explore Map) và chế độ Lập kế hoạch chi tiết (Planner Page).
 
 ---
 
 ## 2. Tư duy Kiến trúc và Stack Công nghệ
 
-N16 được thiết kế theo mô hình Single Page Application (SPA) kết hợp Server-Side Rendering (SSR) tối ưu của Next.js:
+N16 được thiết kế theo mô hình Single Page Application (SPA) kết hợp Server-Side Rendering (SSR) tối ưu:
 
-- **Khung ứng dụng:** Next.js 15 (React 19) sử dụng **App Router** (`src/app`) để phân chia routes rõ ràng, tối ưu hóa bundle size và tốc độ tải trang ban đầu.
-- **Quản lý trạng thái:** **Zustand** (`src/store/planner-store.ts`) đóng vai trò quản lý state tập trung cho toàn bộ luồng nhập trắc nghiệm (Wizard Slider), kết quả gợi ý địa điểm, và danh sách hoạt động.
-- **Thiết kế giao diện:** **Tailwind CSS** kết hợp thư viện thành phần **shadcn/ui** mang lại giao diện tối giản, hiện đại, hỗ trợ hiệu ứng kính mờ (Glassmorphism), Dark Mode cao cấp và chuyển động mượt mà.
-- **Tương tác API:** Kết nối Flask Orchestrator (N8) thông qua các Fetch API Client bất đồng bộ kèm cơ chế xử lý lỗi/loading skeletons chuyên nghiệp.
-
----
-
-## 3. Cấu trúc thư mục của ứng dụng web
-
-Hạ tầng Next.js được tổ chức mô-đun hóa cao độ tại thư mục `frontend/web/src`:
-
-- `app/`: Định nghĩa các Router chính của ứng dụng:
-  - `(planner)/`: Luồng lập kế hoạch chính: `page.tsx` (Form/Wizard nhập liệu) và `results/page.tsx` (Bảng hiển thị kết quả và feedback).
-  - `explore/`: Trang khám phá toàn bộ địa điểm có sẵn trong cơ sở dữ liệu (`explore_locations_service`).
-  - `profile/`: Trang quản lý tài khoản người dùng, bao gồm Đăng ký/Đăng nhập và danh sách lịch sử gợi ý (`rec_history`).
-  - `api/`: Các endpoint trung gian (API Routes) phục vụ bảo mật hoặc proxy.
-- `components/`: Các React Components tái sử dụng (Bản đồ, Cards địa điểm, Activity Drawers, Skeletons loader).
-- `store/planner-store.ts`: Zustand Store duy trì trạng thái ứng dụng, tránh thất thoát dữ liệu khi chuyển trang.
+- **Khung ứng dụng:** **Next.js 15** (React 19) sử dụng **App Router** (`src/app`) để phân chia routes.
+- **Quản lý trạng thái:** **Zustand** (`src/store/planner-store.ts`) quản lý state tập trung cho toàn bộ luồng nhập liệu, lịch sử và hiển thị kết quả.
+- **Thiết kế giao diện:** **Tailwind CSS** kết hợp thư viện **shadcn/ui** mang lại giao diện tối giản, Dark Mode cao cấp và chuyển động vi mô (micro-animations) tinh tế.
+- **Đồng bộ hóa dữ liệu (Data Fetching):** Sử dụng **React Query** (TanStack Query) cho các luồng tải waterfall phức tạp.
 
 ---
 
-## 4. Các phương thức nhập liệu & Wizard Slider
+## 3. Bản đồ Tương tác 3D (Discovery Map)
 
-N16 hỗ trợ một Form nhập liệu dạng Wizard trượt cực kỳ ấn tượng, chia làm 3 kênh thu thập ý định của người dùng:
-1.  **Trắc nghiệm sở thích (Wizard Questionnaire):** Thu thập các preferences có cấu trúc (thời gian đi, ngân sách, phong cách du lịch ưa thích) thông qua các thẻ chọn đẹp mắt.
-2.  **Mô tả tự nhiên (Free-text Prompt):** Ô nhập văn bản hỗ trợ NLP giúp người dùng mô tả nhu cầu một cách chi tiết bằng ngôn ngữ tự nhiên.
-3.  **Tải ảnh cảm hứng (Visual Image Upload):** Cho phép tải lên hình ảnh đại diện cho không khí (vibe) chuyến đi muốn tìm kiếm (N2 phân tích mô tả ảnh).
+Đây là một tính năng trọng tâm của N16, cho phép người dùng hình dung chuyến đi theo không gian địa lý:
+
+- Bản đồ 3D tương tác với tọa độ địa điểm.
+- **Cụm hoạt động lan tỏa hình tròn (Radial Clustering):** Các điểm hoạt động được rải xung quanh anchor location với bán kính 350m để tránh đè marker lên nhau, giúp UI gọn gàng.
+- **Tuân thủ quy chuẩn:** Tích hợp lớp phủ bản đồ hiển thị rõ ràng và tuân thủ tuyệt đối chủ quyền **Hoàng Sa & Trường Sa** của Việt Nam.
 
 ---
 
-## 5. Chiến lược tối ưu hóa Hiệu năng & Trải nghiệm Người dùng (UX)
+## 4. Trải nghiệm Nhập liệu (Wizard Slider)
 
-Sự kết hợp giữa Next.js và kiến trúc API mới của N8 mang lại hiệu năng vượt trội nhờ hai chiến lược cốt lõi:
+N16 thu thập đầu vào đa phương thức thông qua ba kênh kết hợp trong một Wizard:
 
-### 5.1. Tải ảnh Lazy Loading cực hạn (Asynchronous Lazy Image Loading)
-Hệ thống loại bỏ hoàn toàn việc truyền tải ảnh Base64 nhị phân nặng nề trong API trả về của `/recommend`.
-- API `/recommend` chỉ trả về thông tin địa điểm (slim metadata) kèm danh sách URL ảnh dạng: `/api/images/{location_id}_{idx}.jpg`.
-- Frontend nhận JSON phản hồi siêu nhẹ, render cấu trúc thẻ (Card) địa điểm ngay lập tức.
-- Trình duyệt tự động kích hoạt lazy load tải các ảnh song song, độc lập khi thẻ đó xuất hiện trên khung hình (viewport). `/api/images` sẽ truy vấn trực tiếp cơ sở dữ liệu Postgres để lấy nhị phân ảnh thô.
+1. **Trắc nghiệm sở thích (Structured Preferences):** Chọn ngân sách, cường độ, phong cách qua UI card đẹp mắt.
+2. **Mô tả tự nhiên (Free-text):** NLP box để người dùng giải thích ý định sâu hơn.
+3. **Tải ảnh cảm hứng (Visual Upload):** Người dùng có thể upload ảnh (N2 sẽ tự động phân tích ở backend).
 
-### 5.2. Luồng gọi API bất đồng bộ theo từng tầng (Progressive Rendering)
-Giao diện không bắt người dùng chờ đợi cả hai quá trình tìm địa điểm và sinh hoạt động hoàn tất:
+---
+
+## 5. Các Kỹ thuật Tối ưu Hóa (Performance & UX)
+
+### 5.1. Tải ảnh Lazy Loading cực hạn
+Hệ thống loại bỏ hoàn toàn ảnh Base64 từ payload chính `/recommend`.
+Frontend nhận JSON siêu nhẹ, render cấu trúc thẻ ngay lập tức. Sau đó, trình duyệt tự động gọi API dạng `/api/images/{id}_{idx}.jpg` để tải độc lập từng JPEG khi thẻ cuộn vào màn hình.
+
+### 5.2. Tải tuần tự Waterfall (Sequential Rendering)
+Với hoạt động chi tiết (activities), Next.js không block màn hình chờ toàn bộ kết quả.
+N16 cấu hình React Query dependent chain để gọi `/activities` tuần tự từ kết quả Top 1 đến Top 5. Điều này giúp địa điểm số 1 hiển thị chi tiết ngay, tránh nghẽn luồng xử lý N8 Backend, và giữ cho UI mượt mà.
 
 ```mermaid
 %%{init: {'flowchart': {'useMaxWidth': false}}}%%
@@ -90,26 +84,32 @@ graph TD
     API_REFINE --> RENDER_LOC
 ```
 
----
+### 5.3. Phân tách Cache theo Sở thích
+Giao diện sinh ra mã hóa `preferenceSignature` từ các filter (ngân sách, style...). Mã này được đưa vào `queryKey` của React Query, đảm bảo mỗi khi đổi filter, UI tự động gọi API cập nhật hoạt động mới phù hợp nhất thay vì hiển thị dữ liệu stale.
 
-## 6. Vòng phản hồi hai cấp tại UI (Interactive Feedback Loop)
-
-Web App hiển thị các khung nhập phản hồi trực tiếp giúp người dùng tương tác tự nhiên:
-- **Phản hồi toàn cục (Global Feedback):** Khung chat chính nằm bên cạnh danh sách gợi ý. Khi gửi, hệ thống gọi `/feedback/recommend` để tinh chỉnh lại toàn bộ danh sách địa điểm phù hợp hơn.
-- **Phản hồi địa điểm (Local Activity Feedback):** Nút tinh chỉnh hoạt động ngay trong Drawer/Modal của từng địa điểm. Người dùng có thể yêu cầu thay đổi (ví dụ: "thêm hoạt động trong nhà", "bớt đi bộ leo núi") thông qua `/feedback/activities` để sinh lại tập hoạt động của riêng nơi đó.
+### 5.4. Việt hóa nhãn tối giản
+Các label kỹ thuật (`Canyoning`, `Fine dining`) được format và cắt ngắn tự động tối đa **3 từ** ("Vượt thác", "Fine Dining") để UI Cards không bị vỡ bố cục trên Mobile.
 
 ---
 
-## 7. Chế độ Khám phá (Explore Grid) và Quản lý Lịch sử (User Profiles)
+## 6. Vòng phản hồi hai cấp (Interactive Feedback Loop)
 
-- **Trang Khám phá (`/explore`):** Gọi endpoint `/locations` siêu nhẹ của N8 để lấy toàn bộ địa điểm. Next.js hiển thị dưới dạng lưới (Grid) thẻ ảnh tương tác. Người dùng nhấp vào địa điểm để xem nhanh mô tả mà không cần thực hiện luồng trắc nghiệm.
-- **Trang Cá nhân & Auth (`/profile`):** Tích hợp đầy đủ các form Đăng ký / Đăng nhập. Sau khi xác thực thành công, Next.js truy xuất lịch sử gợi ý (`/api/profile/history/{user_id}`) và hiển thị dạng danh sách các chuyến đi cũ. Người dùng có thể nhấp vào một chuyến đi cũ để nạp lại toàn bộ kết quả lên giao diện lập kế hoạch ngay lập tức.
+Web App hiển thị hai luồng N17 Feedback:
+- **Phản hồi toàn cục (Global Feedback):** Khung chat chính. Khi gửi "Tôi muốn chỗ nào yên tĩnh", nó gọi N17 cập nhật list địa điểm.
+- **Phản hồi cục bộ (Local Activity Feedback):** Trong Drawer của từng địa điểm. Yêu cầu "Thêm chỗ ăn ngon" chỉ tinh chỉnh hoạt động của riêng địa điểm đó.
+
+---
+
+## 7. Khôi phục Phiên Người dùng (JSONB Restore)
+
+Trang cá nhân `/profile` lưu trữ toàn bộ lịch sử (Input/Output). Dữ liệu này được N3 lưu dưới dạng `JSONB`. 
+Điểm mạnh kỹ thuật: Người dùng bấm **"Tải phiên"**, N16 đẩy trọn vẹn JSON đó ngược vào Zustand store. Trạng thái cũ được khôi phục 100% không tốn một token LLM nào.
 
 ---
 
 ## 8. Kết luận
 
-Việc chuyển đổi N16 sang **Next.js Web App** đã biến dự án từ một bản thử nghiệm dòng lệnh/notebook thành một sản phẩm Web ứng dụng thực thụ. Thiết kế bất đồng bộ, phân rã ảnh lazy loading, quản lý state tập trung bằng Zustand và giao diện Tailwind tinh tế là những điểm nhấn kiến trúc đắt giá, giúp hệ thống hoạt động ổn định, đạt hiệu năng tải trang tối đa và mang lại trải nghiệm người dùng hoàn hảo.
+N16 Next.js đã chuyển đổi dự án từ một bản thử nghiệm dòng lệnh sang một sản phẩm Web ứng dụng thực thụ. Thiết kế bất đồng bộ, tải tuần tự waterfall, lazy load, Zustand store và bản đồ 3D tương tác là minh chứng cho một lớp UI/UX được hoàn thiện tỉ mỉ và đồng bộ sâu với khả năng xử lý AI của backend.
 
 ---
 
@@ -118,6 +118,5 @@ Việc chuyển đổi N16 sang **Next.js Web App** đã biến dự án từ m�
 | # | Chủ đề | Nguồn tham khảo |
 |---|---|---|
 | 1 | Next.js 15 App Router | [nextjs.org/docs](https://nextjs.org/docs) |
-| 2 | React 19 Features | [react.dev](https://react.dev/) |
-| 3 | Zustand State Management | [github.com/pmndrs/zustand](https://github.com/pmndrs/zustand) |
-| 4 | Tailwind CSS & shadcn/ui | [tailwindcss.com](https://tailwindcss.com/) / [ui.shadcn.com](https://ui.shadcn.com/) |
+| 2 | Zustand State Management | [github.com/pmndrs/zustand](https://github.com/pmndrs/zustand) |
+| 3 | React Query (TanStack) | [tanstack.com/query/latest](https://tanstack.com/query/latest) |

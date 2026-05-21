@@ -1,53 +1,22 @@
-# Module N8: Điều phối API
+# Module N8: Điều phối API (Orchestrator)
 
 **Dự án:** Travel Experience Planner  
-**Ngày:** 2026-05-15
+**Ngày:** 2026-05-21
 
 ---
 
 ## 1. Vai trò của Module N8
 
-N8 là trung tâm điều phối của hệ thống. Đây là nơi mọi request từ frontend đi vào, nơi các workflow được lắp ghép đúng thứ tự, và cũng là nơi xử lý các concern vận hành như bảo vệ route, cache, enrich response và debug trace.
+N8 là trung tâm điều phối của hệ thống. Đây là nơi mọi request từ frontend đi vào, nơi các workflow được lắp ghép đúng thứ tự, và cũng là nơi xử lý các concern vận hành như bảo vệ route, cache, enrich response, phòng chống lỗi sập (anti-crash) và debug trace.
 
-Nếu mô tả hệ thống theo ngôn ngữ kiến trúc, N8 đóng vai trò **application coordinator**. Nó không thay thế các module chuyên môn, mà giữ cho:
+N8 đóng vai trò **application coordinator**. Nó không thay thế các module chuyên môn (nhúng, xếp hạng, sinh nội dung), mà giữ cho:
 
-- dữ liệu đi đúng đường
+- dữ liệu đi đúng đường, kết nối N16 UI với các module xử lý AI và Database
 - output của module này phù hợp với input của module kia
-- phản hồi cuối cùng phù hợp với nhu cầu của UI
+- kiểm soát rate limit của LLM và bảo vệ kết nối Database
+- phản hồi cuối cùng được định dạng phù hợp với nhu cầu của UI
 
-Đây là lớp làm cho toàn bộ hệ thống module hóa có thể hoạt động trơn tru như một ứng dụng thống nhất.
-
----
-
-## 2. Chiến lược kiến trúc: Tại sao chọn Flask & Synchronous?
-
-Một câu hỏi kiến trúc thường gặp là tại sao không dùng FastAPI để tận dụng tính bất đồng bộ (async). Tuy nhiên, với đặc thù dự án này, Flask và cơ chế Synchronous là lựa chọn tối ưu hơn vì:
-
-1.  **Kiểm soát Rate Limit (Tránh lỗi 429)**: Vì hệ thống sử dụng các mô hình AI ở tầng miễn phí (Free Tier như Groq), việc xử lý đồng thời (async/parallel) sẽ cực kỳ dễ dẫn đến nghẽn cổ chai và lỗi 429 (Too Many Requests). Cơ chế synchronous đóng vai trò như một "bộ điều tiết tự nhiên", đảm bảo các yêu cầu được gửi đi theo hàng đợi tuần tự, tối đa hóa tỷ lệ thành công của các module như N5.
-2.  **Bản chất tuần tự của AI Pipeline**: Các bước xử lý (Vision → Embedding → Ranking) bắt buộc phải chạy tuần tự vì bước sau cần kết quả của bước trước. Việc dùng `async` không mang lại lợi ích về tốc độ trong luồng tính toán đơn lẻ này.
-3.  **Đơn giản hóa Debug**: Debug các module AI (như Groq API calls hoặc vector operations) trong môi trường synchronous dễ dàng và tin cậy hơn nhiều so với việc quản lý loop của `asyncio`.
-4.  **Tương thích Deployment**: Flask có cộng đồng hỗ trợ cực lớn và tương thích hoàn hảo với các môi trường deployment đơn giản (như Hugging Face Spaces hoặc các server CPU-bound) mà không cần cấu hình worker phức tạp.
-5.  **Tối ưu cho Streamlit**: Frontend Streamlit vốn dĩ vận hành theo cơ chế script-rerun (tuần tự). Việc giữ backend đồng nhất về tư duy synchronous giúp toàn bộ hệ thống dễ bảo trì hơn.
-
----
-
-## 3. Vì sao cần một lớp điều phối riêng?
-
-Về lý thuyết, frontend có thể gọi trực tiếp từng module backend hoặc tự gắn pipeline bằng nhiều request nhỏ. Tuy nhiên, cách đó gây ra nhiều vấn đề:
-
-- frontend phải biết chi tiết nội bộ của từng module
-- contract giữa các module trở nên rò rỉ ra ngoài
-- khó kiểm soát cache, logging và bảo mật
-
-N8 giải quyết các vấn đề đó bằng cách gom toàn bộ orchestration vào một nơi duy nhất. Nhờ vậy:
-
-- frontend chỉ cần biết một số endpoint ổn định
-- các module chuyên môn có thể tiến hóa độc lập hơn
-- các concern hệ thống được tập trung hóa
-
-### 3.1. Sơ đồ tương tác hệ thống (Orchestrator Coordination Flow)
-
-Dưới đây là sơ đồ thể hiện vai trò trung tâm của **N8: Orchestrator**, đóng vai trò làm cổng kết nối duy nhất và điều phối dòng dữ liệu giữa **N16: Next.js UI** với tất cả các module xử lý nghiệp vụ chuyên biệt (không bao gồm N7):
+### Sơ đồ tương tác hệ thống (Orchestrator Coordination Flow)
 
 ```mermaid
 %%{init: {'flowchart': {'useMaxWidth': false}}}%%
@@ -58,117 +27,43 @@ graph TD
     classDef ml fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
     classDef feedback fill:#fafaf9,stroke:#78716c,stroke-width:2px,color:#000000;
 
-    UI["N16 Next.js UI (Giao diện)"]:::client
-    N8["N8 Orchestrator (Flask Backend)"]:::orchestrator
-
-    %% Modules bên dưới
-    N2["N2 Vision (Mô tả ảnh)"]:::ml
-    N1["N1 Embedding (Vector hóa)"]:::ml
-    N4["N4 Location Ranking (Xếp hạng địa điểm)"]:::core
-    N3["N3 Database (Lưu trữ Postgres + Cache)"]:::core
-    N5["N5 Activity Generation (Sinh hoạt động LLM)"]:::core
-    N6["N6 Activity Ranking (Xếp hạng hoạt động)"]:::core
-    N17["N17 Feedback (Xử lý phản hồi)"]:::feedback
-
-    %% Luồng giao tiếp và vai trò điều phối của N8
-    UI <-->|"Gửi request & nhận response"| N8
-
-    N8 <-->|"Gửi ảnh -> Nhận mô tả"| N2
-    N8 <-->|"Gửi text/tags -> Nhận vectors"| N1
-    N8 <-->|"Gửi vectors -> Nhận danh sách xếp hạng"| N4
-    N8 <-->|"Đọc/Ghi dữ liệu địa điểm & hoạt động"| N3
-    N8 <-->|"Yêu cầu sinh hoạt động (LLM Fallback)"| N5
-    N8 <-->|"Gửi hoạt động -> Nhận điểm xếp hạng"| N6
-    N8 <-->|"Gửi feedback -> Nhận tham số tinh chỉnh"| N17
+    N16["N16: Next.js UI"]:::client <--> N8
+    
+    subgraph "N8 Orchestrator Layer"
+        N8(("N8: Điều phối trung tâm")):::orchestrator
+    end
+    
+    N8 <--> N1["N1: Embedding"]:::ml
+    N8 <--> N2["N2: Vision"]:::ml
+    N8 <--> N4["N4: Location Ranking"]:::core
+    N8 <--> N6["N6: Activity Ranking"]:::core
+    N8 <--> N5["N5: Activity Gen (LLM)"]:::core
+    N8 <--> N3[("N3: PostgreSQL + Cache")]:::core
+    N8 <--> N17["N17: Feedback"]:::feedback
 ```
 
 ---
 
-## 4. Điểm vào và cấu trúc module
+## 2. Chiến lược kiến trúc: Tại sao chọn Flask & Synchronous?
 
-Điểm vào của N8 là:
+Một câu hỏi kiến trúc thường gặp là tại sao không dùng FastAPI để tận dụng tính bất đồng bộ (async). Tuy nhiên, với đặc thù dự án này, Flask và cơ chế Synchronous là lựa chọn tối ưu hơn vì:
 
-```python
-app.py
-```
-
-Các thành phần chính:
-
-- `app.py`: khởi tạo Flask app và CORS
-- `routes.py`: định nghĩa endpoint và request guard
-- `services.py`: orchestration logic
-- `utils.py`: helper parse JSON và error response
-
-Thiết kế này cho thấy N8 không chỉ là một file Flask đơn lẻ, mà là một module backend hoàn chỉnh với phân tách trách nhiệm rõ ràng.
+1. **Kiểm soát Rate Limit (Tránh lỗi 429)**: Hệ thống sử dụng các LLM ở tầng miễn phí (Free Tier như Groq), việc xử lý async/parallel sẽ lập tức dẫn đến nghẽn cổ chai và lỗi HTTP 429. Synchronous đóng vai trò "bộ điều tiết tự nhiên", đảm bảo các yêu cầu được gửi đi theo hàng đợi tuần tự.
+2. **Bản chất tuần tự của AI Pipeline**: Các bước xử lý (Vision → Embedding → Ranking) bắt buộc phải chạy tuần tự vì bước sau cần kết quả của bước trước. Việc dùng `async` không mang lại lợi ích tốc độ ở luồng chính.
+3. **Đơn giản hóa Debug**: Debug module AI synchronous dễ dàng và tin cậy hơn nhiều so với việc quản lý event loop phức tạp.
 
 ---
 
-## 5. Các endpoint công khai
+## 3. Workflow Gợi ý Địa điểm (Location Service)
 
-| Endpoint | Method | Chức năng |
-|---|---|---|
-| `/health` | GET | Kiểm tra trạng thái runtime |
-| `/recommend` | POST | Chạy workflow gợi ý địa điểm |
-| `/activities` | POST | Sinh và xếp hạng hoạt động cho một địa điểm |
-| `/cache/reset` | POST | Ép làm mới cache địa điểm |
-| `/cache/fingerprint` | GET | Lấy fingerprint dữ liệu hiện tại |
-| `/feedback/recommend` | POST | Tinh chỉnh lại workflow gợi ý địa điểm |
-| `/feedback/activities` | POST | Tinh chỉnh lại workflow hoạt động |
+Luồng `recommend_service()` thực hiện:
 
-### 4.1. Ý nghĩa của bộ endpoint này
-
-Điều đáng chú ý là N8 không expose toàn bộ module thành endpoint riêng lẻ. Thay vào đó, nó expose các **use-case cấp sản phẩm**:
-
-- recommend
-- activities
-- feedback
-- health
-- cache management
-
-Đây là cách thiết kế API đúng hướng application-level thay vì module-level.
-
----
-
-## 6. Bảo vệ request và kiểm tra input
-
-Các route nội bộ yêu cầu:
-
-```text
-X-Internal-Key
-```
-
-Nếu thiếu hoặc sai key, request bị từ chối với mã `401`.
-
-Ngoài ra, từng endpoint còn có rule kiểm tra riêng:
-
-- `/recommend`: cần ít nhất `text` hoặc `tags`
-- `/activities`: cần `location`
-- hai endpoint feedback: cần `feedback`
-
-### 6.1. Vì sao điều này quan trọng?
-
-N8 là biên giới giữa UI và logic nghiệp vụ. Nếu lớp này không kiểm tra request cẩn thận:
-
-- **Bảo mật**: Ngăn chặn các truy cập trái phép không đến từ frontend được chỉ định (thông qua `X-Internal-Key`).
-- **Tính ổn định**: Tránh việc các tham số rác hoặc thiếu hụt gây lỗi lan truyền sâu vào pipeline AI.
-- **Khả năng quan sát**: Giúp debug đúng điểm hỏng và giảm nhiễu log ở các lớp dưới.
-- **Bảo vệ tài nguyên**: Rủi ro lộ các route nội bộ hoặc lãng phí token LLM vào các request không hợp lệ được giảm thiểu tối đa.
-
-Việc chặn sớm ở N8 giúp toàn hệ thống ổn định và bảo mật hơn.
-
----
-
-## 7. Workflow gợi ý địa điểm
-
-Workflow `recommend_service()` hiện gồm các bước lớn:
-
-1. đọc `text`, `tags`, `image`, `constraints`, `context`
-2. nếu cần thì chuyển ảnh Base64 sang `img_desc`
-3. nhúng phía người dùng
-4. lấy dữ liệu địa điểm từ cache hoặc từ tầng dữ liệu
-5. ánh xạ dữ liệu sang contract ranking
-6. chạy xếp hạng địa điểm
-7. enrich thêm ảnh, metadata và geo cho response cuối
+1. Tiếp nhận input (text, tags, ảnh tải lên)
+2. Gọi N2 để chuyển ảnh sang mô tả văn bản (nếu có)
+3. Gọi N1 để nhúng vector đa kênh
+4. Nạp dữ liệu địa điểm slim từ cache (hoặc N3 DB)
+5. Gọi N4 để xếp hạng địa điểm
+6. Đính kèm URL ảnh lazy-loading và trả về N16
 
 ```mermaid
 %%{init: { 'theme': 'neutral', 'themeVariables': { 'actorTextColor': '#000000', 'signalTextColor': '#000000', 'noteTextColor': '#000000' } }}%%
@@ -207,84 +102,78 @@ sequenceDiagram
     N8-->>N16: Trả về ảnh JPEG thô (hỗ trợ Browser Cache)
 ```
 
-### 6.1. Điểm mạnh của workflow này
+N8 không đẩy trực tiếp ảnh Base64 dung lượng lớn vào API response. Thay vào đó, N8 áp dụng cơ chế **Lazy Image Loading**:
+- Chỉ trả về URL dạng `/api/images/{location_id}_{idx}.jpg`
+- Khi người dùng cuộn UI đến ảnh nào, ảnh đó mới được load từ PostgreSQL
 
-Workflow được tổ chức theo đúng tinh thần “semantic first, enrichment later”:
-
-- trước hết lấy ranking score
-- sau đó mới gắn dữ liệu trình bày như ảnh và metadata
-
-Điều này giúp logic xếp hạng giữ được sự sạch sẽ, còn UI vẫn nhận được response giàu thông tin.
+Điều này giúp giảm thời gian tải ban đầu xuống vài chục milliseconds, tối ưu hóa triệt để bộ nhớ đệm RAM.
 
 ---
 
-## 8. Workflow sinh hoạt động
+## 4. Workflow Sinh Hoạt động (Activities V2 Service)
 
-Workflow `activities_service()` thực hiện:
-
-1. nhận bối cảnh người dùng và một địa điểm cụ thể
-2. truy vấn danh sách hoạt động ứng viên và vector từ Database (N3)
-3. nếu không tồn tại hoặc lỗi, fallback sang gọi N5 để sinh mới qua LLM, nhúng vector bằng N1 và lưu trữ kết quả vào N3
-4. xếp hạng danh sách hoạt động dựa trên sở thích bằng N6
-5. enrich metadata và trả về kết quả cho UI
+Trong phiên bản hệ thống mới (v2), N8 không còn phụ thuộc hoàn toàn vào LLM để sinh hoạt động. N8 sử dụng chiến lược **Database-first với LLM Fallback**:
 
 ```mermaid
-%%{init: { 'theme': 'neutral', 'themeVariables': { 'actorTextColor': '#000000', 'signalTextColor': '#000000', 'noteTextColor': '#000000' } }}%%
+%%{init: { 'theme': 'neutral' } }%%
 sequenceDiagram
     autonumber
-    participant N16 as N16: Next.js Web App
+    participant N16 as N16: Web App
     participant N8 as N8: Orchestrator
-    participant N3 as N3: Database
-    participant N5 as N5: Sinh hoạt động
+    participant N3 as N3: Database (N9-N14)
+    participant N5 as N5: Sinh hoạt động (LLM)
     participant N1 as N1: Embedding
     participant N6 as N6: Xếp hạng
 
-    N16->>N8: POST /activities (location_id + context)
-    N8->>N3: Truy vấn danh sách hoạt động đã lưu
-    alt Nếu tìm thấy trong Database
-        N3-->>N8: Danh sách hoạt động (đã kèm vector & metadata)
-    else Nếu không có hoạt động hoặc truy vấn lỗi (Fallback)
-        N8->>N5: Sinh danh sách hoạt động ứng viên mới (LLM)
-        N5-->>N8: Danh sách hoạt động thô
-        N8->>N1: Nhúng (Embed) các hoạt động mới sinh
-        N1-->>N8: Vector của các hoạt động
-        N8->>N3: Lưu các hoạt động & vector mới vào Database
-        N3-->>N8: Xác nhận lưu trữ
+    N16->>N8: POST /activities (location_id, user context)
+    N8->>N3: Truy vấn hoạt động thực tế từ 6 nguồn (OSM, Goong, Foursquare...)
+    
+    alt Số hoạt động >= ngưỡng tối thiểu (5)
+        N3-->>N8: Danh sách hoạt động (đã có vector từ seed offline)
+    else DB trống hoặc truy vấn lỗi
+        N8->>N5: Gọi LLM sinh hoạt động mới (Groq/Gemini)
+        N5-->>N8: Danh sách hoạt động sinh ra
+        N8->>N1: Nhúng vector đa kênh cho các hoạt động mới
+        N1-->>N8: Vectors
     end
-    N8->>N6: Xếp hạng hoạt động theo sở thích
-    N6-->>N8: Danh sách hoạt động đã xếp hạng
-    N8-->>N16: Trả về JSON (Hoạt động + Metadata)
+    
+    N8->>N6: Xếp hạng danh sách bằng Hybrid Scoring (Semantic + Attribute)
+    N6-->>N8: Hoạt động đã xếp hạng + User Prefs
+    N8-->>N16: Trả về kết quả hiển thị
 ```
-### 7.1. Vai trò của N8 trong việc tối ưu hóa và fallback sinh hoạt động
 
-Đây là một điểm thiết kế quan trọng:
-
-- **Tối ưu hóa tài nguyên:** N8 luôn ưu tiên lấy dữ liệu hoạt động đã lưu kèm vector sẵn từ Database (N3). Điều này giảm thiểu thời gian chờ đợi (latency) và chi phí API đáng kể so với việc liên tục sinh mới.
-- **Cơ chế Fallback & Nhúng động:** Chỉ khi không tìm thấy dữ liệu trong Database, N8 mới gọi N5 để sinh hoạt động qua LLM. Lúc này, do hoạt động mới sinh chưa có vector, N8 đóng vai trò "bắc cầu" gọi N1 để nhúng các hoạt động này, sau đó lưu toàn bộ vào N3 để phục vụ cho các yêu cầu sau.
+Chiến lược này giúp hệ thống phản hồi cực nhanh (vì dữ liệu đã được N9-N14 cào sẵn), đồng thời luôn có lưới an toàn LLM nếu địa điểm chưa được phủ sóng.
 
 ---
 
-## 9. Workflow feedback
+## 5. Cơ chế chống sập (Anti-Crash Mechanisms)
 
-N8 có hai workflow feedback:
+N8 là lá chắn thép bảo vệ sự sống còn của pipeline. Nó tích hợp các cơ chế bảo vệ cấp độ hệ thống:
 
-- feedback cho gợi ý địa điểm
-- feedback cho gợi ý hoạt động
+### 5.1. Chống sập Database (Circuit Breaker & Fallback JSON)
+- Khi kết nối Postgres (N3) bị gián đoạn (do quá tải hoặc sập mạng), N8 sử dụng **Circuit-Breaker**.
+- Sau 3 lần kết nối thất bại với cấp số nhân thời gian chờ, N8 ngắt kết nối vật lý và chuyển trạng thái sang **MỞ (OPEN)** trong 30 giây.
+- Trong lúc này, mọi yêu cầu đọc/ghi tự động chuyển hướng về file JSON lưu tạm (`fallback_db.json`) trên đĩa cứng máy chủ, đảm bảo N16 vẫn có dữ liệu để hiển thị.
 
-Trong cả hai trường hợp, pattern đều giống nhau:
+### 5.2. Chống sập LLM (Rate Limit Retry & Offline Template Engine)
+- Nếu Groq API trả mã `429 Too Many Requests` hoặc sập hệ thống, N8 kết hợp N5 tự động retry hoặc đổi provider sang Gemini.
+- Nếu LLM hoàn toàn tê liệt, hệ thống kích hoạt **Template Engine ngoại tuyến** để sinh nội dung thay thế dựa trên location profile, đảm bảo quá trình không bao giờ bị gián đoạn bằng một error 500.
+- Fallback cuối cùng là một danh sách rỗng an toàn `[]` để UI không crash.
 
-1. nhận phản hồi mới
-2. tinh chỉnh lại đầu vào hiện tại
-3. chạy lại workflow chính
-4. đính kèm payload `refined` vào response
+### 5.3. Bảo vệ Request & Chống nhấp nháy UI
+- Các API route nội bộ đều yêu cầu `X-Internal-Key` chống timing attack qua `hmac.compare_digest`.
+- Tích hợp bộ lọc **Thread-safe Request Fingerprint**: nếu người dùng bấm nút tìm kiếm liên tục, request đúp sẽ bị block trả về `409 Conflict` để bảo vệ tài nguyên LLM đắt đỏ.
 
-### 8.1. Ý nghĩa của cách làm này
+---
 
-Thay vì bắt frontend tự tự chỉnh input rồi gửi lại từ đầu, N8 để quá trình refine diễn ra ở backend. Điều này giúp:
+## 6. Vòng phản hồi tinh chỉnh truy vấn
 
-- UI đơn giản hơn
-- logic refine tập trung hơn
-- hệ thống có thể giải thích được cụ thể điều gì đã được thay đổi
+N8 không chỉ gọi luồng một chiều. Với endpoint `/feedback`, N8 tích hợp module N17:
+
+1. N16 gửi context hiện tại + chuỗi phản hồi (VD: "Tôi muốn đi chỗ nào yên tĩnh hơn")
+2. N8 gửi vào N17 để phân tích và tinh chỉnh tham số `text`, `tags`
+3. Sau khi nhận tham số mới, N8 tự động chạy lại luồng `recommend_service` hoặc `activities_v2_service` ngay bên trong nội bộ, mà không bắt N16 phải gọi thêm API.
+4. Điều này giúp kiến trúc feedback loop khép kín tại lớp Orchestrator.
 
 ```mermaid
 %%{init: { 'theme': 'neutral', 'themeVariables': { 'actorTextColor': '#000000', 'signalTextColor': '#000000', 'noteTextColor': '#000000' } }}%%
@@ -293,129 +182,22 @@ sequenceDiagram
     participant N16 as N16: Next.js Web App
     participant N8 as N8: Orchestrator
     participant N17 as N17: Xử lý phản hồi
-    participant Workflow as Workflow chính (Gợi ý)
+    participant Tags as ALL_TAGS Filter
 
-    N16->>N8: Gửi phản hồi văn bản (Feedback)
-    N8->>N17: Yêu cầu tinh chỉnh tham số (Refine)
-    N17-->>N8: Payload đã tinh chỉnh (Refined)
-    N8->>Workflow: Thực thi lại luồng chính với tham số mới
-    Workflow-->>N8: Kết quả gợi ý đã cập nhật
-    N8-->>N16: Trả về JSON (Kèm thông tin 'refined')
-```
----
-
-## 10. Chiến lược cache nhiều tầng
-
-Một trong những điểm đáng giá nhất của N8 là hệ thống cache lai:
-
-1. **RAM cache**
-2. **Disk cache** qua `location_cache.json`
-3. **Image cache** qua thư mục `image_cache/`
-
-```mermaid
-%%{init: {'flowchart': {'useMaxWidth': false}}}%%
-graph TD
-    classDef flow fill:#f1f5f9,stroke:#475569,stroke-width:1px,color:#000000;
-    classDef ram fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
-    classDef disk fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
-    classDef check fill:#fff1f2,stroke:#ef4444,stroke-width:2px,color:#000000;
-    classDef db fill:#f5f3ff,stroke:#818cf8,stroke-width:2.5px,color:#000000;
-    
-    START["Yêu cầu dữ liệu địa điểm"]:::flow --> DB_CHECK["Lấy Fingerprint từ DB"]:::flow
-    
-    subgraph "N8: Bộ nhớ RAM"
-        M_F["_db_fingerprint (RAM)"]:::ram
-        M_C["_locations_cache (RAM slim)"]:::ram
-    end
-    
-    subgraph "N8: Lưu trữ Đĩa (Disk Cache)"
-        D_C["location_cache.json (slim, không chứa ảnh Base64)"]:::disk
-    end
-    
-    DB_CHECK --> MATCH{"Khớp Fingerprint?"}:::check
-    MATCH -- "Không khớp" --> N3["Truy vấn mới: get_all_locations(include_images=False)"]:::db
-    MATCH -- "Khớp" --> RAM_CHECK{"Có trong RAM?"}:::check
-    
-    RAM_CHECK -- "Có" --> DONE["Trả kết quả slim"]:::flow
-    RAM_CHECK -- "Không" --> DISK_CHECK{"Có trên đĩa?"}:::check
-    
-    DISK_CHECK -- "Có" --> LOAD["Nạp vào RAM"]:::flow
-    LOAD --> M_C
-    M_C --> DONE
-    
-    DISK_CHECK -- "Không" --> N3
-    N3 --> SAVE["Lưu vào đĩa + RAM"]:::flow
-    SAVE --> D_C
-    SAVE --> M_C
-    SAVE --> M_F
-    SAVE --> DONE
+    N16->>N8: POST /feedback/recommend (context + feedback string)
+    N8->>N17: process_feedback(context, feedback)
+    N17-->>N8: {refined_text, refined_tags, refined_img_desc, explanation}
+    N8->>Tags: Lọc refined_tags qua danh sách hợp lệ
+    Tags-->>N8: filtered_tags
+    N8->>N8: recommend_service(refined_text, filtered_tags, refined_img_desc)
+    N8-->>N16: Trả về kết quả mới (Kèm metadata N17)
 ```
 
-### 9.1. Vì sao cần fingerprint?
-
-N8 không muốn nạp lại toàn bộ dữ liệu địa điểm ở mọi request. Nhưng nếu chỉ tin tuyệt đối vào cache, dữ liệu sẽ dễ stale. Fingerprint là cách cân bằng:
-
-- chi phí kiểm tra rất thấp
-- đủ để biết dữ liệu đã thay đổi hay chưa
-
-Đây là một thiết kế rất thực tế và có giá trị báo cáo cao vì nó thể hiện tư duy đồng bộ incremental thay vì reload thô.
-
-### 9.2. Vì sao ảnh được cache thành file cục bộ?
-
-Ảnh Base64 rất nặng nếu giữ lâu trong RAM hoặc JSON cache. Việc tách ảnh ra thành file JPEG cục bộ giúp:
-
-- giảm kích thước cache JSON
-- giảm áp lực bộ nhớ
-- vẫn cho phép rehydrate dữ liệu ảnh khi cần render
-
-Đây là một kiểu “mini asset persistence layer” rất đáng chú ý trong quy mô dự án này.
-
 ---
 
-## 11. Hình dạng response
+## 7. Workflow Quản lý Người dùng & Lịch sử (User Profiles)
 
-Tùy endpoint, response của N8 có thể chứa:
-
-- `locations`
-- `activities`
-- `metadata`
-- `meta`
-- `ranking_meta`
-- `trace`
-- `refined`
-
-### 10.1. Ý nghĩa của `trace`
-
-Khi bật debug runtime, response gợi ý địa điểm có thể kèm `trace`. Đây là một quyết định rất tốt cho:
-
-- benchmark
-- giải thích pipeline
-- viết báo cáo
-- debug sai lệch semantic
-
-Nó giúp người phát triển quan sát được:
-
-- input gốc
-- `img_desc`
-- tín hiệu `text_k`, `tags_k`
-- preprocessed text
-- vector dimensions
-- weights được dùng trong ranking
-
----
-
-## 12. Ghi chú vận hành
-
-- Flask app bật CORS theo danh sách origin cấu hình
-- routes được đăng ký bằng blueprint
-- module ghi log ở mức service loading, cache hit/miss và runtime execution
-- host, port, debug mode và internal key đều lấy từ cấu hình dự án
-
----
-
-## 12. Luồng Authentication và Lưu Lịch sử (Auth & Rec History)
-
-N8 bổ sung phân khu routes người dùng chuyên biệt để bảo vệ tài khoản và ghi nhận lịch sử khuyến nghị:
+N8 chịu trách nhiệm điều phối toàn bộ dữ liệu lịch sử và xác thực qua các endpoint `/api/profile/*`. Đây là tính năng rất quan trọng giúp hệ thống hỗ trợ khôi phục phiên (JSONB Restore) mà không tốn chi phí gọi lại LLM.
 
 ```mermaid
 %%{init: { 'theme': 'neutral', 'themeVariables': { 'actorTextColor': '#000000', 'signalTextColor': '#000000', 'noteTextColor': '#000000' } }}%%
@@ -423,52 +205,81 @@ sequenceDiagram
     autonumber
     participant N16 as N16: Next.js Web App
     participant N8 as N8: Orchestrator
-    participant N3 as N3: Database
-
-    Note over N16, N3: Đăng ký & Đăng nhập
-    N16->>N8: POST /api/auth/register (username, password)
-    N8->>N3: register_user() -> Băm mật khẩu (generate_password_hash) & lưu
-    N3-->>N8: user_id / status
-    N8-->>N16: Phản hồi Đăng ký thành công / thất bại
-
-    N16->>N8: POST /api/auth/login (username, password)
-    N8->>N3: login_user() -> Truy vấn hash & check_password_hash()
-    N3-->>N8: success, user_id
-    N8-->>N16: Phản hồi Đăng nhập (Lưu Session user_id ở Client)
-
-    Note over N16, N3: Lưu Lịch sử Gợi ý (Rec History)
-    N16->>N8: POST /api/profile/history (user_id, input_data, output_data)
-    N8->>N3: save_rec_turn() -> Lưu JSONB lịch sử
-    N3-->>N8: history_id
-    N8-->>N16: Lưu lịch sử thành công
-
-    Note over N16, N3: Đọc Lịch sử Gợi ý
+    participant N3 as PostgreSQL (users, rec_history)
+    
+    %% Đăng nhập
+    N16->>N8: POST /api/profile/login (username, password)
+    N8->>N3: Truy vấn thông tin người dùng
+    N3-->>N8: Kết quả xác thực (user_id)
+    N8-->>N16: Trả về Token xác thực & Session
+    
+    %% Lưu lịch sử tự động
+    Note over N16, N3: Quá trình lưu lịch sử tự động sau mỗi lần gợi ý
+    N16->>N8: POST /api/profile/history/save (JSON Input/Output)
+    N8->>N3: Lưu toàn bộ cấu trúc vào cột JSONB
+    N3-->>N8: Xác nhận lưu thành công
+    N8-->>N16: HTTP 201 Created
+    
+    %% Tải / Khôi phục lịch sử
+    Note over N16, N3: Người dùng bấm "Tải phiên" từ trang Profile
     N16->>N8: GET /api/profile/history/{user_id}
-    N8->>N3: get_user_history()
-    N3-->>N8: Danh sách lịch sử gợi ý (sắp xếp mới nhất trước)
-    N8-->>N16: Trả về mảng lịch sử gợi ý
+    N8->>N3: Truy vấn danh sách lịch sử JSONB
+    N3-->>N8: Danh sách chi tiết các chuyến đi cũ
+    N8-->>N16: JSON Payload (để phục hồi Zustand Store)
 ```
 
----
-
-## 13. Kết luận
-
-N8 là lớp biến các module rời rạc thành một ứng dụng thực thụ. Giá trị lớn nhất của nó không nằm ở một thuật toán đơn lẻ, mà ở khả năng:
-
-- nối contract dữ liệu giữa các module
-- bảo vệ và kiểm soát request
-- tối ưu cache
-- enrich response cho frontend
-- hỗ trợ feedback loop
-
-Đây là một ví dụ rất rõ của tư duy kiến trúc ứng dụng: cùng một hệ thống AI chỉ thực sự hữu dụng khi có một lớp điều phối đủ tốt để biến các thành phần chuyên môn thành một sản phẩm hoàn chỉnh.
+Điều này minh chứng khả năng của N8 trong việc không chỉ đóng vai trò proxy cho AI mà còn xử lý trọn vẹn nghiệp vụ ứng dụng Web.
 
 ---
 
-## 14. Tài liệu tham khảo
+## 8. Cơ chế Đồng bộ Cache (Hybrid Caching & Fingerprint)
+
+Để cân bằng giữa tốc độ đọc và dung lượng lưu trữ, N8 triển khai cơ chế **Hybrid Cache (RAM + Disk File Cache)** kết hợp với kiểm tra Fingerprint TTL.
+- **RAM Cache (LRU)**: Chứa các response nhỏ, request thường xuyên để trả về < 10ms.
+- **Disk Cache (File-based)**: Lưu trữ các mảng dữ liệu lớn hơn (nhưng vẫn không chứa Base64 ảnh) để giải phóng RAM, tránh Out-of-Memory.
+
+Thay vì hash toàn bộ dữ liệu Postgres (rất nặng) hoặc bỏ qua cache (rất chậm), N8 chỉ lấy một chuỗi băm siêu nhẹ chứa `MAX(updated_at)` và `COUNT(*)` từ DB, và giữ nó trong 10 giây (TTL).
+
+```mermaid
+%%{init: { 'theme': 'neutral', 'themeVariables': { 'actorTextColor': '#000000', 'signalTextColor': '#000000', 'noteTextColor': '#000000' } }}%%
+sequenceDiagram
+    autonumber
+    participant N8 as N8: Orchestrator
+    participant Cache as Hybrid Cache (RAM + Disk)
+    participant DB as PostgreSQL (N3)
+
+    N8->>Cache: Yêu cầu lấy Locations
+    Cache->>Cache: Kiểm tra Fingerprint TTL (10s)
+    
+    alt Nếu Fingerprint đã quá hạn 10s (Expired TTL)
+        Cache->>DB: get_db_fingerprint()
+        DB-->>Cache: "count: 152 | max_updated: 2026-05-15T08:00"
+        
+        alt Fingerprint MỚI khác Fingerprint CŨ
+            Cache->>Cache: Invalidate Cache (Xóa đệm LRU & Xóa File Disk)
+            Cache->>DB: get_all_locations(include_images=False)
+            DB-->>Cache: Dữ liệu Locations Slim mới
+            Cache->>Cache: Cập nhật RAM, ghi xuống Disk + Fingerprint mới
+        end
+    end
+    
+    Cache-->>N8: Trả về danh sách địa điểm (Cache Hit hoặc vừa làm mới)
+```
+
+Cơ chế này ngăn chặn tình trạng N8 query liên tục xuống ổ cứng mỗi khi người dùng tìm kiếm, nhưng vẫn đảm bảo nếu có bản ghi mới trong DB, UI sẽ nhận được chậm nhất sau 10 giây.
+
+---
+
+## 9. Kết luận
+
+N8 không xử lý logic AI trực tiếp, nhưng quyết định cách các khối AI hoạt động cùng nhau. Những tinh chỉnh như Lazy Image Loading, Database-first Fallback, và Circuit-Breaker biến N8 từ một "router" đơn giản thành một Orchestrator cấp độ production có khả năng chịu tải, chịu lỗi và phục hồi mạnh mẽ.
+
+---
+
+## 8. Tài liệu tham khảo
 
 | # | Chủ đề | Nguồn tham khảo |
 |---|---|---|
-| 1 | Flask Documentation | [flask.palletsprojects.com](https://flask.palletsprojects.com/) |
-| 2 | Flask-CORS | [flask-cors.readthedocs.io](https://flask-cors.readthedocs.io/) |
-| 3 | Requests Documentation | [requests.readthedocs.io](https://requests.readthedocs.io/) |
+| 1 | Circuit Breaker Pattern | [martinfowler.com/bliki/CircuitBreaker](https://martinfowler.com/bliki/CircuitBreaker.html) |
+| 2 | Flask Documentation | [flask.palletsprojects.com](https://flask.palletsprojects.com/) |
+| 3 | N9-N14 Activity Retrievals | [modules/n9_n14_activity_retrievals.md](n9_n14_activity_retrievals.md) |

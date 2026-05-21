@@ -9,85 +9,73 @@ from .utils import _safe_vec
 
 logger = setup_logging("N8.services")
 
-import threading
+# ── Clean & Thread-Safe Lazy-Loading Proxies ──
 
-logger.info("N8 — Spawning background thread for heavy modules...")
+def get_all_locations(*args, **kwargs):
+    global get_all_locations
+    from n3_database import get_all_locations as fn
+    get_all_locations = fn
+    return fn(*args, **kwargs)
 
-def _warmup_modules():
-    try:
-        from n3_database import get_all_locations
-        from n3_database.db_manager import get_db_fingerprint, get_activities_for_location
-        from modules.n1_embedding import embed, embed_batch
-        from modules.n2_image_processing import process_image
-        from modules.n4_location_ranking import rank_locations
-        from modules.n6_activity_ranking.rank_activities import rank_activities
-        from modules.n5_activity_generation.n5_activity_generator import generate_activities
-        from modules.n17_feedback_processing import process_feedback
-        from shared.weights import get_weights
-        
-        globals()["get_all_locations"] = get_all_locations
-        globals()["get_db_fingerprint"] = get_db_fingerprint
-        globals()["get_activities_for_location"] = get_activities_for_location
-        globals()["embed"] = embed
-        globals()["embed_batch"] = embed_batch
-        globals()["process_image"] = process_image
-        globals()["rank_locations"] = rank_locations
-        globals()["rank_activities"] = rank_activities
-        globals()["generate_activities"] = generate_activities
-        globals()["process_feedback"] = process_feedback
-        globals()["get_weights"] = get_weights
-        logger.info("N8 — All heavy modules warmed up successfully in background.")
-    except Exception as e:
-        logger.error(f"N8 — Background warmup failed: {e}")
+def get_db_fingerprint(*args, **kwargs):
+    global get_db_fingerprint
+    from n3_database.db_manager import get_db_fingerprint as fn
+    get_db_fingerprint = fn
+    return fn(*args, **kwargs)
 
-threading.Thread(target=_warmup_modules, daemon=True).start()
+def get_activities_for_location(*args, **kwargs):
+    global get_activities_for_location
+    from n3_database.db_manager import get_activities_for_location as fn
+    get_activities_for_location = fn
+    return fn(*args, **kwargs)
 
-def __getattr__(name):
-    if name == "get_all_locations":
-        from n3_database import get_all_locations
-        globals()[name] = get_all_locations
-        return get_all_locations
-    if name == "get_db_fingerprint":
-        from n3_database.db_manager import get_db_fingerprint
-        globals()[name] = get_db_fingerprint
-        return get_db_fingerprint
-    if name == "get_activities_for_location":
-        from n3_database.db_manager import get_activities_for_location
-        globals()[name] = get_activities_for_location
-        return get_activities_for_location
-    if name == "embed":
-        from modules.n1_embedding import embed
-        globals()[name] = embed
-        return embed
-    if name == "embed_batch":
-        from modules.n1_embedding import embed_batch
-        globals()[name] = embed_batch
-        return embed_batch
-    if name == "process_image":
-        from modules.n2_image_processing import process_image
-        globals()[name] = process_image
-        return process_image
-    if name == "rank_locations":
-        from modules.n4_location_ranking import rank_locations
-        globals()[name] = rank_locations
-        return rank_locations
-    if name == "rank_activities":
-        from modules.n6_activity_ranking.rank_activities import rank_activities
-        globals()[name] = rank_activities
-        return rank_activities
-    if name == "generate_activities":
-        from modules.n5_activity_generation.n5_activity_generator import generate_activities
-        globals()[name] = generate_activities
-        return generate_activities
-    if name == "process_feedback":
-        from modules.n17_feedback_processing import process_feedback
-        globals()[name] = process_feedback
-        return process_feedback
-    if name == "get_weights":
-        from shared.weights import get_weights
-        globals()[name] = get_weights
-        return get_weights
-    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+def embed(*args, **kwargs):
+    global embed
+    from modules.n1_embedding import embed as fn
+    embed = fn
+    return fn(*args, **kwargs)
+
+def embed_batch(*args, **kwargs):
+    global embed_batch
+    from modules.n1_embedding import embed_batch as fn
+    embed_batch = fn
+    return fn(*args, **kwargs)
+
+def process_image(*args, **kwargs):
+    global process_image
+    from modules.n2_image_processing import process_image as fn
+    process_image = fn
+    return fn(*args, **kwargs)
+
+def rank_locations(*args, **kwargs):
+    global rank_locations
+    from modules.n4_location_ranking import rank_locations as fn
+    rank_locations = fn
+    return fn(*args, **kwargs)
+
+def rank_activities(*args, **kwargs):
+    global rank_activities
+    from modules.n6_activity_ranking.rank_activities import rank_activities as fn
+    rank_activities = fn
+    return fn(*args, **kwargs)
+
+def generate_activities(*args, **kwargs):
+    global generate_activities
+    from modules.n5_activity_generation.n5_activity_generator import generate_activities as fn
+    generate_activities = fn
+    return fn(*args, **kwargs)
+
+def process_feedback(*args, **kwargs):
+    global process_feedback
+    from modules.n17_feedback_processing import process_feedback as fn
+    process_feedback = fn
+    return fn(*args, **kwargs)
+
+def get_weights(*args, **kwargs):
+    global get_weights
+    from shared.weights import get_weights as fn
+    get_weights = fn
+    return fn(*args, **kwargs)
 
 # ── Centralized Pydantic Contracts ──
 from backend.shared.contracts.n1_contracts import N1EmbedInput

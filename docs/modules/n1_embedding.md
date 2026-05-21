@@ -1,322 +1,192 @@
-# Module N1: Nhúng Vector và Tiền xử lý Ngữ nghĩa
+# Module N1: Nhúng Vector Đa Kênh
 
 **Dự án:** Travel Experience Planner  
-**Ngày:** 2026-05-15
+**Ngày:** 2026-05-21
 
 ---
 
 ## 1. Vai trò của Module N1
 
-N1 là lớp chuyển đổi tín hiệu đầu vào thành biểu diễn ngữ nghĩa có thể tính toán được. Nếu xem toàn bộ hệ thống như một pipeline ra quyết định, thì N1 chính là nơi biến các mô tả tự nhiên của người dùng hoặc dữ liệu địa điểm thành không gian vector 1024 chiều, nơi các thao tác so khớp, xếp hạng và suy luận phía sau có thể hoạt động một cách nhất quán.
+N1 là điểm vào ngữ nghĩa của toàn bộ hệ thống. Trước khi bất kỳ địa điểm hay hoạt động nào có thể được xếp hạng, hệ thống cần chuyển đổi tín hiệu thô của người dùng — văn bản tự do, tag lựa chọn, mô tả hình ảnh — thành các biểu diễn vector số học mà máy tính có thể so sánh được.
 
-Tuy nhiên, vai trò của N1 không dừng ở việc "gọi model embedding". Điểm giá trị thực sự của module này nằm ở ba tầng xử lý:
+Không một module nào trong hệ thống có thể thực hiện semantic matching nếu thiếu output của N1. Đây là nền tảng của toàn bộ khả năng hiểu ngữ nghĩa.
 
-1. **Chuẩn hóa tín hiệu đầu vào:** tách và làm sạch các nguồn tín hiệu như `text`, `tags`, `img_desc`.
-2. **Augmentation ngữ nghĩa:** mở rộng nội dung đầu vào để làm giàu tín hiệu trước khi nhúng.
-3. **Xuất ra nhiều kênh vector độc lập:** giúp hệ thống phía sau có thể thực hiện **dynamic weighting** thay vì ép mọi thông tin vào một vector duy nhất.
-
-Nói cách khác, N1 không chỉ "mã hóa", mà còn "tổ chức lại ý nghĩa" của đầu vào để phục vụ retrieval.
+Điểm đặc biệt là N1 không chỉ nhúng một kênh duy nhất mà duy trì **bốn kênh vector song song**, mỗi kênh phản ánh một khía cạnh ngữ nghĩa khác nhau của cùng một đầu vào.
 
 ---
 
-## 2. Lý do lựa chọn mô hình nhúng
+## 2. Tư tưởng thiết kế: Multi-channel Embedding
 
-N1 hiện sử dụng model `BAAI/bge-m3`, một embedding model mạnh cho các tác vụ semantic retrieval.
+### 2.1. Vì sao không nhúng một vector duy nhất?
 
-### 2.1. Vì sao chọn BGE-M3?
+Nếu gộp tất cả tín hiệu vào một vector duy nhất:
 
-Lý do lựa chọn không chỉ vì đây là model phổ biến, mà vì nó phù hợp với đặc thù của bài toán:
+- text và tags sẽ "pha loãng" nhau
+- hình ảnh nếu có sẽ bị hòa tan vào phần còn lại
+- không còn khả năng điều chỉnh trọng số theo từng tín hiệu
 
-- **Đa ngôn ngữ:** dữ liệu của hệ thống có thể trộn giữa tiếng Việt và tiếng Anh, đặc biệt trong tags, mô tả địa điểm và mô tả ảnh.
-- **Biểu diễn retrieval mạnh:** BGE-M3 phù hợp với bài toán so khớp truy vấn ngắn với dữ liệu mô tả giàu ngữ nghĩa.
-- **Không gian vector 1024 chiều:** đủ rộng để giữ các sắc thái như bối cảnh, cảm xúc, loại trải nghiệm và phong cách du lịch.
-- **Tính ổn định tốt cho pipeline nhiều bước:** rất quan trọng khi vector từ N1 còn được sử dụng lặp lại ở nhiều bước sau, thay vì chỉ phục vụ một truy vấn đơn lẻ.
+Người dùng chỉ nhập text chi tiết nhưng không chọn tag sẽ bị xử lý giống hệt người chỉ chọn tag nhưng không viết gì. Đây là điều không mong muốn.
 
-### 2.2. Ý nghĩa của việc chuẩn hóa vector
+### 2.2. Lý do chọn bốn kênh
 
-N1 sinh embedding với `normalize_embeddings=True`. Điều này mang lại hai lợi ích lớn:
+N1 giữ bốn kênh riêng biệt:
 
-- giảm sự phụ thuộc vào độ lớn tuyệt đối của vector
-- làm cho cosine similarity trở thành thước đo ổn định và dễ diễn giải hơn
+| Kênh | Nội dung |
+|---|---|
+| `text` | Văn bản gốc, trim |
+| `aug_text` | Văn bản gốc + mở rộng từ khóa cảm xúc/ngữ cảnh |
+| `aug_tags` | Mở rộng ontology từ các giá trị tag hợp lệ |
+| `img_desc` | Mô tả hình ảnh ngắn từ N2 |
 
-Với cách này, hệ thống phía sau có thể tập trung vào "hướng ngữ nghĩa" của vector thay vì bị ảnh hưởng bởi chuẩn độ dài của đầu ra model.
+Mỗi kênh được nhúng độc lập. Điều này cho phép các module ranking sau (N4, N6) **lựa chọn và điều chỉnh trọng số** từng kênh dựa trên chất lượng tín hiệu thực tế của truy vấn.
+
+### 2.3. Ý nghĩa của text_k và tags_k
+
+Cùng với vector, N1 trả về hai bộ đếm:
+
+- `text_k`: số lần mở rộng ngữ cảnh/cảm xúc được thêm vào `aug_text`
+- `tags_k`: số lần mở rộng ontology tag hợp lệ
+
+Hai con số này là tín hiệu về **mức độ phong phú** của tín hiệu đầu vào. N4 và N6 dùng chúng để giải quyết trọng số kênh động — khi `tags_k` cao, có nghĩa là người dùng đã chọn nhiều tag có nghĩa, hệ thống nên tin tưởng kênh `aug_tags` hơn.
 
 ---
 
-## 3. Giao diện công khai của module
+## 3. Cấu trúc module
 
-N1 cung cấp hai hàm public:
+```
+backend/modules/n1_embedding/
+├── __init__.py      # API công khai: embed() và embed_batch()
+├── embedder.py      # SentenceTransformer wrapper, model singleton, embed_strings()
+├── preprocessor.py  # Mở rộng text, tra cứu ontology tag, xây dựng chuỗi kênh
+└── requirements.txt
+```
+
+---
+
+## 4. API công khai
 
 ```python
-embed(data: dict[str, Any]) -> dict[str, Any]
-embed_batch(data_list: list[dict[str, Any]]) -> list[dict[str, Any]]
+from modules.n1_embedding import embed, embed_batch
+
+embed(data: Union[N1EmbedInput, dict]) -> dict
+embed_batch(data_list: list[Union[N1EmbedInput, dict]]) -> list[dict]
 ```
 
-Trong đó:
+`embed()` là wrapper mỏng của `embed_batch([data])`. Cả hai hàm đều xác thực input bằng **Pydantic V2** tại biên module.
 
-- `embed()` là wrapper cho trường hợp một phần tử duy nhất
-- `embed_batch()` là đường xử lý tối ưu cho nhiều phần tử cùng lúc
+---
 
-### 3.1. Cấu trúc đầu vào
+## 5. Contract đầu vào và đầu ra
+
+### 5.1. Đầu vào
 
 ```python
-{
-    "text": str,
-    "tags": list[str],
-    "img_desc": str,
-}
+class N1EmbedInput(BaseModel):
+    text: str = ""       # Văn bản tự do của người dùng
+    tags: List[str] = [] # Danh sách tag du lịch có kiểm soát
+    img_desc: str = ""   # Mô tả hình ảnh từ N2 (tùy chọn)
 ```
 
-Ý nghĩa các trường:
+Tất cả trường đều tùy chọn. Cần ít nhất một trường không rỗng để tạo ra vector có ích.
 
-- `text`: mô tả nhu cầu du lịch hoặc mô tả địa điểm
-- `tags`: bộ nhãn sở thích hay thuộc tính ngữ nghĩa
-- `img_desc`: mô tả hình ảnh ở dạng văn bản
-
-### 3.2. Cấu trúc đầu ra
+### 5.2. Đầu ra
 
 ```python
-{
-    "text_k": int,
-    "tags_k": int,
-    "preprocessed": {
-        "text": str,
-        "aug_text": str,
-        "aug_tags": str,
-        "img_desc": str,
-    },
-    "vectors": {
-        "text": list[float] | None,
-        "aug_text": list[float] | None,
-        "aug_tags": list[float] | None,
-        "img_desc": list[float] | None,
-    },
-    "metadata": {
-        "model": str,
-        "device": str,
-        "latency_ms": float,
-    },
-}
+class N1EmbedOutput(BaseModel):
+    text_k: int                    # Số lần mở rộng aug_text
+    tags_k: int                    # Số lần mở rộng ontology tag
+    preprocessed: PreprocessedText # Chuỗi thực tế gửi cho model
+    vectors: EmbedVectors          # Bốn kênh vector 1024 chiều
+    metadata: Dict[str, Any]       # {model, device, latency_ms}
 ```
 
-Đây là một cấu trúc đầu ra giàu thông tin, không chỉ chứa vector mà còn giữ:
-
-- phiên bản văn bản sau khi tiền xử lý
-- số lượng tín hiệu augmentation hữu ích
-- metadata vận hành để debug và benchmark
+Vector `None` được tạo ra khi kênh tương ứng không có nội dung — cấu trúc được bảo toàn nhưng không thực hiện embedding.
 
 ---
 
-## 4. Tư tưởng thiết kế: Multi-channel Embedding
+## 6. Luồng tiền xử lý
 
-Một quyết định thiết kế rất quan trọng trong N1 là **không nhúng mọi thứ vào một chuỗi duy nhất**. Thay vào đó, module giữ bốn kênh riêng biệt:
-
-- `text`
-- `aug_text`
-- `aug_tags`
-- `img_desc`
-
-### 4.1. Vì sao không gộp tất cả thành một vector?
-
-Nếu gộp hết thông tin thành một câu dài rồi nhúng một lần, hệ thống sẽ gặp ba vấn đề:
-
-1. **Mất khả năng giải thích:** không biết tín hiệu đến từ text, tags hay ảnh.
-2. **Mất khả năng điều tiết trọng số:** mọi tín hiệu bị "trộn" vào cùng một không gian.
-3. **Giảm độ linh hoạt của ranking:** không thể ưu tiên tags khi tags mạnh, hoặc ưu tiên text khi text rõ.
-
-Việc giữ nhiều kênh embedding riêng giúp pipeline sau đó áp dụng **dynamic weighting** một cách có kiểm soát. Đây là một quyết định kiến trúc quan trọng, không chỉ là chi tiết cài đặt.
-
----
-
-## 5. Augmentation: Lõi tư duy ngữ nghĩa của N1
-
-Một trong những điểm học thuật đáng giá nhất của module này là giai đoạn **augmentation**.
-
-### 5.1. Augmentation là gì?
-
-Augmentation trong N1 là quá trình làm giàu nội dung đầu vào trước khi nhúng, nhằm tăng mật độ ngữ nghĩa của vector đầu ra.
-
-Thay vì nhúng nguyên văn một truy vấn ngắn như:
-
-```text
-đi biển
-```
-
-N1 cố gắng "giải nén" ý định ẩn sau truy vấn đó bằng cách thêm các tín hiệu liên quan:
-
-- cảm xúc
-- ngữ cảnh
-- ontology của tags
-- mô tả mở rộng cho hành vi du lịch
-
-### 5.2. Vì sao augmentation cần thiết?
-
-Trong bài toán recommendation du lịch, người dùng thường mô tả rất ngắn, nhưng kỳ vọng kết quả lại rất giàu sắc thái. Ví dụ:
-
-- "đi biển"
-- "yên tĩnh"
-- "đi với gia đình"
-- "muốn nơi chill"
-
-Nếu nhúng trực tiếp các cụm ngắn như vậy, vector tạo ra thường:
-
-- thiếu ngữ cảnh
-- không đủ tín hiệu để tách biệt các loại trải nghiệm gần nhau
-- khó hỗ trợ ranking ổn định ở những bước sau
-
-Augmentation giải quyết đúng điểm yếu này bằng cách mở rộng tín hiệu trước khi đưa vào model.
-
-### 5.3. Hai dạng augmentation chính
-
-#### a. `aug_text`
-
-`aug_text` được tạo từ:
-
-- text gốc
-- các expansion theo emotion
-- các expansion theo context
-
-Ví dụ, nếu text chứa ý "yên bình", "gia đình", "nghỉ dưỡng", module có thể biến truy vấn gốc thành một câu giàu nghĩa hơn, phản ánh rõ hơn loại trải nghiệm mong muốn.
-
-#### b. `aug_tags`
-
-`aug_tags` được tạo từ ontology của hệ thống tags.  
-Ví dụ, một tag ngắn như `trekking` có thể được mở rộng thành cụm mô tả giàu thông tin hơn về địa hình, cường độ, bối cảnh và tính trải nghiệm.
-
-Điều này đặc biệt quan trọng vì tags thường có tính biểu tượng cao nhưng quá ngắn nếu đem nhúng trực tiếp.
-
----
-
-## 6. Hai tín hiệu trung gian `text_k` và `tags_k`
-
-N1 không chỉ trả ra vector. Nó còn trả hai tín hiệu chất lượng cực kỳ quan trọng:
-
-- `text_k`
-- `tags_k`
-
-### 6.1. `text_k` là gì?
-
-`text_k` là số lượng tín hiệu augmentation phía text mà module thực sự tìm thấy và áp dụng được.
-
-Nó cho biết:
-
-- text đầu vào có giàu ngữ cảnh hay không
-- augmentation phía text có đóng góp thực chất hay không
-
-### 6.2. `tags_k` là gì?
-
-`tags_k` là số lượng tag hợp lệ mà hệ thống nhận diện được và mở rộng thành công.
-
-Nó phản ánh:
-
-- chất lượng cấu trúc của phần tags
-- mức độ đáng tin cậy của kênh tags trong so khớp ngữ nghĩa
-
-### 6.3. Tại sao hai giá trị này quan trọng?
-
-Đây chính là cầu nối trực tiếp từ N1 sang chiến lược **dynamic weighting** của toàn hệ thống.
-
-Ví dụ:
-
-- nếu `text_k` thấp, truy vấn text có thể nghèo tín hiệu, khi đó hệ thống nên tin vào `aug_text` nhiều hơn `text`
-- nếu `tags_k` cao, nghĩa là người dùng đã cung cấp một bộ tags chất lượng, khi đó có thể tăng trọng số cho `aug_tags`
-
-Như vậy, `text_k` và `tags_k` không phải metadata thừa, mà là tín hiệu điều khiển mức độ tin cậy giữa các kênh vector.
-
----
-
-## 7. Luồng xử lý nội bộ
+Trước khi gọi model, `preprocessor.preprocess()` xây dựng bốn chuỗi kênh:
 
 ```mermaid
 %%{init: {'flowchart': {'useMaxWidth': false}}}%%
 graph TD
-    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
-    classDef op fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
-    classDef channel fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#000000;
-    classDef out fill:#f5f3ff,stroke:#818cf8,stroke-width:2.5px,color:#000000;
-    
-    A["Đầu vào: text, tags, img_desc"]:::client --> B["Tiền xử lý"]:::op
-    B --> C["text ban đầu"]:::channel
-    B --> D["aug_text"]:::channel
-    B --> E["aug_tags"]:::channel
-    B --> F["img_desc ban đầu"]:::channel
-    C --> G["Gom nhóm toàn bộ kênh"]:::op
-    D --> G
-    E --> G
-    F --> G
-    G --> H["Mã hóa hàng loạt"]:::op
-    H --> I["Tách kết quả theo từng mục"]:::op
-    I --> J["Kết quả vector + metadata"]:::out
+    classDef in fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef proc fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
+    classDef out fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
+
+    A["text (gốc)"]:::in --> B["text: trim"]:::proc
+    A --> C["aug_text: text + keyword expansion"]:::proc
+    D["tags (gốc)"]:::in --> E["aug_tags: ontology expansion"]:::proc
+    F["img_desc (gốc)"]:::in --> G["img_desc: trim"]:::proc
+
+    B --> H["embed_strings() — 1 lần duy nhất"]:::out
+    C --> H
+    E --> H
+    G --> H
 ```
 
-Các bước thực thi ở mức code:
+Các bước mở rộng:
 
-1. preprocess từng phần tử đầu vào
-2. tạo bốn chuỗi theo bốn kênh
-3. flatten toàn bộ batch thành một danh sách chuỗi lớn
-4. gọi `SentenceTransformer.encode()` đúng một lần
-5. unflatten lại theo từng item
-6. gắn metadata model, device và latency
+- `aug_text`: text gốc cộng thêm các từ khóa cảm xúc và ngữ cảnh được tìm thấy trong từ điển mở rộng
+- `aug_tags`: mỗi tag hợp lệ được tra trong ontology và mở rộng thành một chuỗi giàu nghĩa hơn
 
 ---
 
-## 8. Tối ưu hiệu năng: Batch-first Strategy
+## 7. Chiến lược batch embedding
 
-Thiết kế `embed_batch()` là một điểm tối ưu quan trọng.
+`embed_batch()` là đường xử lý thông lượng cao, được N8 dùng cho cả hai tình huống: nhúng truy vấn người dùng và nhúng hàng loạt hoạt động.
 
-### 8.1. Vì sao batch trước rồi mới encode?
+```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
+graph LR
+    classDef in fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#000000;
+    classDef op fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#000000;
+    classDef model fill:#fdf2ff,stroke:#c084fc,stroke-width:2.5px,color:#000000;
+    classDef out fill:#f5f3ff,stroke:#818cf8,stroke-width:2px,color:#000000;
 
-Nếu nhúng từng item riêng lẻ:
+    A["N item đầu vào"]:::in --> B["Tiền xử lý: N × 4 chuỗi"]:::op
+    B --> C["Flatten → danh sách 4N chuỗi"]:::op
+    C --> D["BGE-M3 encode() — 1 lần duy nhất"]:::model
+    D --> E["Unflatten → N dict kết quả"]:::op
+    E --> F["Output list[dict]"]:::out
+```
 
-- số lần gọi model tăng mạnh
-- overhead Python tăng
-- độ trễ tổng thể cao hơn đáng kể
+Điểm mấu chốt: chỉ **một lần forward pass** qua model cho toàn bộ batch, bất kể số item. Điều này giúp tối ưu throughput đáng kể so với gọi lặp lại cho từng item.
 
-Ngược lại, khi flatten mọi kênh của cả batch rồi encode một lần:
+### 7.1. Vì sao thiết kế batch quan trọng?
 
-- tận dụng tốt khả năng batching của `SentenceTransformer`
-- giảm chi phí gọi model lặp lại
-- đảm bảo hành vi thống nhất giữa chế độ đơn lẻ và chế độ hàng loạt
-
-### 8.2. Lợi ích học thuật và thực tiễn
-
-Đây là một ví dụ tốt của nguyên tắc:
-
-- **tách tiền xử lý khỏi encode**
-- **vectorize càng nhiều càng tốt**
-- **giảm số lần đi qua model**
-
-Trong báo cáo kỹ thuật, đây là một quyết định kiến trúc có thể giải thích rõ cả về độ đúng lẫn hiệu năng.
+Trong pipeline activities v2, N8 cần nhúng đồng thời nhiều chục hoạt động trước khi xếp hạng. Nếu mỗi hoạt động được nhúng riêng, chi phí sẽ tăng tuyến tính với số lượng. Với batch, chi phí inference gần như không đổi nhờ xử lý song song trên GPU/CPU.
 
 ---
 
-## 9. Ghi chú vận hành
+## 8. Ghi chú vận hành
 
-- Model mặc định: `BAAI/bge-m3`
-- Chuẩn hóa embedding: `normalize_embeddings=True`
-- Kênh rỗng được giữ nguyên cấu trúc nhưng vector trả về là `None`
-- Model được nạp toàn cục để tránh cold-start lặp lại
-
----
-
-## 10. Kết luận
-
-N1 là một module có chiều sâu thiết kế cao hơn vẻ ngoài của nó. Nếu chỉ nhìn bề mặt, đây là một embedding wrapper. Nhưng ở mức kiến trúc, N1 thực hiện ba việc rất quan trọng cho toàn hệ thống:
-
-1. biến dữ liệu thô thành biểu diễn ngữ nghĩa có cấu trúc
-2. làm giàu tín hiệu bằng **augmentation**
-3. tạo nền tảng cho **dynamic weighting** ở các bước ranking phía sau
-
-Chính ba điểm này giúp pipeline recommendation không chỉ "hiểu câu chữ", mà còn hiểu được cường độ tín hiệu, nguồn gốc tín hiệu và mức độ tin cậy của từng kênh semantic.
+- Model: `BAAI/bge-m3` theo `config.EMBEDDING_MODEL_NAME`
+- `normalize_embeddings=True` — vector đơn vị, sẵn sàng cho cosine similarity
+- Chuỗi rỗng tạo ra vector `None`, bảo toàn cấu trúc trong output
+- Model được load một lần dưới dạng module-level singleton qua `embedder.get_model()`
+- Device (CPU/GPU) được tự động phát hiện và ghi nhận trong metadata
 
 ---
 
-## 11. Tài liệu tham khảo
+## 9. Kết luận
+
+N1 là module cơ sở hạ tầng ngữ nghĩa của toàn bộ hệ thống. Giá trị của nó không chỉ là "tạo vector", mà còn là:
+
+- duy trì bốn kênh semantic tách biệt để giữ nguồn gốc tín hiệu
+- cung cấp tín hiệu đếm `text_k`/`tags_k` để hệ thống ranking có thể điều chỉnh trọng số thích ứng
+- tối ưu throughput qua batch embedding với một lần forward pass duy nhất
+
+Không có N1, toàn bộ hệ thống chỉ là xử lý ký tự, không phải semantic intelligence.
+
+---
+
+## 10. Tài liệu tham khảo
 
 | # | Chủ đề | Nguồn tham khảo |
 |---|---|---|
-| 1 | BGE-M3 Paper | [arxiv.org/abs/2402.03216](https://arxiv.org/abs/2402.03216) |
-| 2 | Model card `BAAI/bge-m3` | [huggingface.co/BAAI/bge-m3](https://huggingface.co/BAAI/bge-m3) |
-| 3 | Sentence-Transformers Documentation | [www.sbert.net](https://www.sbert.net/) |
-| 4 | Hệ thống tagging của dự án | [docs/architecture/tagging_system.md](../architecture/tagging_system.md) |
-| 5 | Tài liệu dynamic weighting của dự án | [docs/architecture/dynamic_weighting.md](../architecture/dynamic_weighting.md) |
+| 1 | BAAI/bge-m3 | [huggingface.co/BAAI/bge-m3](https://huggingface.co/BAAI/bge-m3) |
+| 2 | SentenceTransformers | [sbert.net](https://www.sbert.net/) |
+| 3 | Dynamic weighting | [docs/architecture/dynamic_weighting.md](../architecture/dynamic_weighting.md) |
+| 4 | Pydantic V2 | [docs.pydantic.dev](https://docs.pydantic.dev/) |
