@@ -1,116 +1,127 @@
-# Module N0: Mẫu khởi tạo Module
+# Module N0: Khởi tạo Module (Mẫu tham chiếu)
 
 **Dự án:** Travel Experience Planner  
-**Ngày:** 2026-05-15
+**Ngày:** 2026-05-21
 
 ---
 
 ## 1. Vai trò của Module N0
 
-N0 không phải module nghiệp vụ thật, mà là một module mẫu dùng để chuẩn hóa cách bắt đầu một module mới trong hệ thống. Giá trị của N0 không nằm ở logic tính toán, mà ở việc nó đóng vai trò như một “khung tham chiếu” cho:
+N0 không phải là một module chứa logic nghiệp vụ thực tế của hệ thống. Đây là một **module mẫu (boilerplate/reference)** được thiết kế để chuẩn hóa cách khởi tạo các module mới.
 
-- cấu trúc package
-- cách export API
-- cách validate input
-- cách trả response envelope
-- cách viết tài liệu module
+Giá trị của N0 không nằm ở logic tính toán, mà ở việc nó đóng vai trò như một "khung tham chiếu kiến trúc" cho:
 
-Trong bối cảnh một dự án nhiều module đánh số, N0 giúp tránh việc mỗi người tạo module theo một phong cách khác nhau.
+- Cấu trúc thư mục chuẩn
+- Cách export API công khai (`__init__.py`)
+- Cơ chế xác thực đầu vào bằng Pydantic
+- Khung phản hồi dữ liệu (response envelope) thống nhất
+- Cách viết tài liệu module
 
----
-
-## 2. Tư tưởng thiết kế
-
-Một hệ thống nhiều module dễ bị phân mảnh nếu không có một convention đủ rõ. N0 được tạo ra để giải quyết đúng vấn đề đó.
-
-### 2.1. N0 minh họa điều gì?
-
-N0 minh họa một pattern cơ bản nhưng hữu ích:
-
-1. nhận payload đầu vào dạng `dict`
-2. chuẩn hóa dữ liệu về shape an toàn
-3. validate các trường tối thiểu
-4. trả response có cấu trúc ổn định
-
-### 2.2. Vì sao cần một module mẫu thay vì chỉ viết guideline?
-
-Vì guideline bằng chữ thường khó buộc mọi người làm giống nhau. Một module mẫu có lợi thế:
-
-- copy được ngay
-- nhìn thấy cấu trúc thật
-- dễ dùng cho onboarding
-- giảm chi phí suy nghĩ khi bootstrap module mới
+Trong bối cảnh một hệ thống module hóa phân tán, N0 giúp giữ cho các thành phần do nhiều người phát triển không bị phân mảnh về phong cách code.
 
 ---
 
-## 3. Giao diện công khai
+## 2. Tư tưởng thiết kế: Convention over Configuration
+
+### 2.1. Vì sao cần module mẫu thay vì tài liệu hướng dẫn?
+
+Tài liệu bằng văn bản (guideline) thường khó đảm bảo tính tuân thủ tuyệt đối và dễ bị lạc hậu. Một module mẫu bằng code thật mang lại lợi thế:
+
+- **Có thể sao chép ngay lập tức:** giảm thao tác thủ công, tiết kiệm thời gian bootstrap
+- **Minh họa bằng hành động:** code mẫu tự giải thích rõ ràng cấu trúc dữ liệu
+- **Dễ dàng onboarding:** người mới có thể đọc N0 để hiểu nhanh về contract của hệ thống
+
+### 2.2. N0 minh họa mẫu thiết kế nào?
+
+N0 hiện thực hóa một vòng đời chuẩn của một API chức năng:
+
+1. Nhận payload từ bên ngoài (thường là `dict`)
+2. Validate và chuẩn hóa ngay tại biên giới module (Pydantic models)
+3. Xử lý nghiệp vụ bên trong
+4. Gói kết quả vào envelope (`status`, `data`, `metadata`, `error`)
+
+---
+
+## 3. Cấu trúc module
+
+```
+backend/modules/n0_sample/
+├── __init__.py          # Export hàm API chính `run_sample`
+├── sample_logic.py      # Nơi chứa logic nghiệp vụ cốt lõi
+└── requirements.txt     # Các thư viện phụ thuộc cục bộ
+```
+
+---
+
+## 4. API công khai
 
 ```python
+from modules.n0_sample import run_sample
+
 run_sample(data: dict[str, Any]) -> dict[str, Any]
 ```
 
-### 3.1. Cấu trúc đầu vào
+---
+
+## 5. Contract đầu vào và đầu ra
+
+### 5.1. Đầu vào (Minh họa)
 
 ```python
-{
-    "text": str,
-    "tags": list[str],
-    "metadata": dict[str, Any],
-}
+class N0SampleInput(BaseModel):
+    text: str = ""
+    tags: List[str] = []
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 ```
 
-### 3.2. Cấu trúc đầu ra
+Sử dụng Pydantic V2 giúp xác thực kiểu dữ liệu nghiêm ngặt và xử lý tự động các giá trị mặc định thiếu.
+
+### 5.2. Đầu ra (Envelope chuẩn)
 
 ```python
 {
-    "status": "success" | "error",
+    "status": "success",
     "normalized": {
-        "text": str,
-        "tags": list[str],
-        "metadata": dict[str, Any],
+        "text": "normalized string",
+        "tags": ["tag1", "tag2"],
+        "metadata": {}
     },
     "metadata": {
         "module": "n0_sample",
-        "tag_count": int,
-        "has_text": bool,
+        "latency_ms": 12,
+        "tag_count": 2
     },
-    "error": str,
+    "error": None
 }
 ```
 
----
-
-## 4. Ý nghĩa của logic mẫu
-
-Mặc dù đơn giản, logic của `run_sample()` thể hiện một số nguyên tắc tốt:
-
-- không tin tuyệt đối vào input
-- luôn normalize trước khi xử lý tiếp
-- tách phần dữ liệu nghiệp vụ khỏi phần metadata chẩn đoán
-- dùng response envelope ổn định cho cả success và error
-
-Đây là các nguyên tắc rất nên được giữ lại khi phát triển các module thật trong dự án.
+Mọi module (như N1, N2, N4, N6) đều tuân theo dạng thức có payload nghiệp vụ song song với object `metadata` dành cho việc benchmark và debug hệ thống.
 
 ---
 
-## 5. Cách sử dụng trong thực tế
+## 6. Cách tái sử dụng trong thực tế
 
-Khi cần khởi tạo module mới, có thể dùng N0 theo quy trình:
+Khi cần khởi tạo một module mới (ví dụ `N18_New_Feature`), lập trình viên sẽ làm theo quy trình:
 
-1. copy thư mục mẫu
-2. đổi tên module
-3. đổi tên hàm public
-4. thay logic `run_sample()` bằng nghiệp vụ thật
-5. cập nhật README và docs tương ứng
+1. Sao chép thư mục `n0_sample` và đổi tên thành `n18_new_feature`
+2. Cập nhật `__init__.py` để expose hàm mới (ví dụ `run_feature`)
+3. Sửa lại contract Pydantic trong `backend/shared/contracts/n18_contracts.py`
+4. Thay thế logic trong file Python bên trong bằng nghiệp vụ thực
+5. Cập nhật README của module
 
-Nhờ đó, các module mới sẽ có:
-
-- cấu trúc quen thuộc
-- API surface rõ ràng
-- tài liệu dễ đồng bộ
+Nhờ N0, module N18 sẽ tự động kế thừa bộ khung kiểm tra, bắt lỗi và phản hồi tương thích 100% với chuẩn của Orchestrator N8.
 
 ---
 
-## 6. Kết luận
+## 7. Kết luận
 
-N0 là một module nhỏ nhưng có giá trị tổ chức lớn. Nó giúp biến việc phát triển thêm module mới từ một công việc “tự do tùy ý” thành một công việc có khuôn mẫu, giảm sai khác giữa các phần của codebase và làm cho tài liệu toàn hệ thống đồng đều hơn.
+N0 tuy không chạy trên production, nhưng đóng vai trò như bản vẽ tiêu chuẩn kiến trúc cho mã nguồn. Nó là minh chứng cho một hệ thống được thiết kế hướng tới bảo trì dài hạn, nơi tính đồng nhất giữa các thành phần được coi trọng ngang với độ phức tạp của thuật toán bên trong.
+
+---
+
+## 8. Tài liệu tham khảo
+
+| # | Chủ đề | Nguồn tham khảo |
+|---|---|---|
+| 1 | Pydantic V2 Documentation | [docs.pydantic.dev](https://docs.pydantic.dev/) |
+| 2 | Python Project Structure | [realpython.com/python-application-layouts/](https://realpython.com/python-application-layouts/) |

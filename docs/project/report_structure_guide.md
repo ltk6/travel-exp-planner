@@ -56,11 +56,11 @@ Phần này rất quan trọng vì nó giải thích nền tảng học thuật 
    Dùng:
    - `docs/modules/n0_sample.md`
 
-9. **N1 - Nhúng vector và tiền xử lý ngữ nghĩa**  
+9. **N1 - Nhúng vector đa kênh**  
    Dùng:
    - `docs/modules/n1_embedding.md`
 
-10. **N2 - Xử lý hình ảnh**  
+10. **N2 - Xử lý hình ảnh (Vision-to-text)**  
     Dùng:
     - `docs/modules/n2_image_processing.md`
 
@@ -72,23 +72,27 @@ Phần này rất quan trọng vì nó giải thích nền tảng học thuật 
     Dùng:
     - `docs/modules/n4_location_ranking.md`
 
-13. **N5 - Sinh hoạt động**  
+13. **N9–N14 - Thu thập hoạt động đa nguồn**  
+    Dùng:
+    - `docs/modules/n9_n14_activity_retrievals.md`
+
+14. **N5 - Sinh hoạt động (LLM Fallback)**  
     Dùng:
     - `docs/modules/n5_activity_generation.md`
 
-14. **N6 - Xếp hạng hoạt động**  
+15. **N6 - Xếp hạng hoạt động**  
     Dùng:
     - `docs/modules/n6_activity_ranking.md`
 
-15. **N16 - Giao diện người dùng**  
+16. **N16 - Giao diện Next.js Web App**  
     Dùng:
     - `docs/modules/n16_nextjs_ui.md`
 
-16. **N8 - Điều phối API**  
+17. **N8 - Điều phối API (Orchestrator)**  
     Dùng:
     - `docs/modules/n8_orchestrator.md`
 
-17. **N17 - Xử lý phản hồi**  
+18. **N17 - Xử lý phản hồi và tinh chỉnh truy vấn**  
     Dùng:
     - `docs/modules/n17_feedback_processing.md`
 
