@@ -1,6 +1,6 @@
 # N6 — Module Activity Ranking: Báo Cáo Bench Test
 
-**Ngày:** 2026-05-15  
+**Ngày:** 2026-05-21  
 **Phương pháp:** Semantic (50%) + Attribute (50%) Scoring  
 **Số ca test:** 8  
 **Pass rate:** 8/8  
@@ -56,11 +56,11 @@ _User vector beach → activity về biển phải đứng #1_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 1 ms |
+| Độ trễ | 0 ms |
 | Kết quả | **PASS** |
 | Top 1 | `act_snorkel` |
 | User prefs | `{'intensity': None, 'physical': None, 'social': None}` |
-| Điểm số | `[1.0, 0.4, 0.4]` |
+| Điểm số | `[0.95, 0.65, 0.65]` |
 | top1_correct | ✓ |
 
 ### ✓ `attribute_relaxed_user_avoids_high_intensity`
@@ -69,11 +69,11 @@ _User 'yên bình' → activity intensity thấp phải lên trên_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 0 ms |
+| Độ trễ | 14 ms |
 | Kết quả | **PASS** |
 | Top 1 | `act_relax` |
 | User prefs | `{'intensity': 0.214, 'physical': 0.343, 'social': 0.389}` |
-| Điểm số | `[1.0, 0.4]` |
+| Điểm số | `[0.8869, 0.8575]` |
 | top1_correct | ✓ |
 
 ### ✓ `preference_inference_adventure_tags`
@@ -106,11 +106,11 @@ _Sau normalize: top score trong [0.8, 1.0], bottom score trong [0.4, 0.6]_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 3 ms |
+| Độ trễ | 1 ms |
 | Kết quả | **PASS** |
 | Top 1 | `act_1` |
 | User prefs | `{'intensity': None, 'physical': None, 'social': None}` |
-| Điểm số | `[1.0, 1.0, 0.4, 0.4, 0.4]` |
+| Điểm số | `[0.95, 0.95, 0.65, 0.65, 0.65]` |
 | top_score_ok | ✓ |
 | bottom_score_ok | ✓ |
 
@@ -124,7 +124,7 @@ _Activity có vectors=None không crash, rơi về attribute score_
 | Kết quả | **PASS** |
 | Top 1 | `act_b` |
 | User prefs | `{'intensity': None, 'physical': None, 'social': None}` |
-| Điểm số | `[1.0, 0.4]` |
+| Điểm số | `[0.95, 0.8]` |
 | no_crash | ✓ |
 | count_correct | ✓ |
 
@@ -134,11 +134,11 @@ _top_k=3 với 10 activities → chỉ trả về 3_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 4 ms |
+| Độ trễ | 3 ms |
 | Kết quả | **PASS** |
-| Top 1 | `act_0` |
+| Top 1 | `act_7` |
 | User prefs | `{'intensity': None, 'physical': None, 'social': None}` |
-| Điểm số | `[1.0, 0.9333, 0.8667]` |
+| Điểm số | `[0.95, 0.95, 0.95]` |
 | count_correct | ✓ |
 
 ### ✓ `performance_50_activities`
@@ -147,11 +147,11 @@ _50 activities (realistic) — kiểm tra tốc độ_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 21 ms |
+| Độ trễ | 13 ms |
 | Kết quả | **PASS** |
 | Top 1 | `act_000` |
 | User prefs | `{'intensity': 0.731, 'physical': 0.69, 'social': None}` |
-| Điểm số | `[1.0, 0.7974, 0.7875, 0.7689, 0.7689]` |
+| Điểm số | `[0.8323, 0.7893, 0.7893, 0.782, 0.7681]` |
 | count_correct | ✓ |
 | perf_ok | ✓ |
 
@@ -161,16 +161,16 @@ _50 activities (realistic) — kiểm tra tốc độ_
 
 | Ca test | Độ trễ (ms) | Top 1 | Kết quả |
 |---------|:-----------:|-------|:-------:|
-| `semantic_beach_user_ranks_beach_activity_first` | 1 | `act_snorkel` | ✓ PASS |
-| `attribute_relaxed_user_avoids_high_intensity` | 0 | `act_relax` | ✓ PASS |
+| `semantic_beach_user_ranks_beach_activity_first` | 0 | `act_snorkel` | ✓ PASS |
+| `attribute_relaxed_user_avoids_high_intensity` | 14 | `act_relax` | ✓ PASS |
 | `preference_inference_adventure_tags` | 0 | — | ✓ PASS |
 | `preference_inference_peaceful_tags` | 0 | — | ✓ PASS |
-| `normalization_spread` | 3 | `act_1` | ✓ PASS |
+| `normalization_spread` | 1 | `act_1` | ✓ PASS |
 | `null_vectors_graceful` | 0 | `act_b` | ✓ PASS |
-| `top_k_truncation` | 4 | `act_0` | ✓ PASS |
-| `performance_50_activities` | 21 | `act_000` | ✓ PASS |
+| `top_k_truncation` | 3 | `act_7` | ✓ PASS |
+| `performance_50_activities` | 13 | `act_000` | ✓ PASS |
 
-**TB latency:** 3.6ms &nbsp;**Pass:** 8/8
+**TB latency:** 3.9ms &nbsp;**Pass:** 8/8
 
 ---
 

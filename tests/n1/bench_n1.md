@@ -1,6 +1,6 @@
 # N1 — Module Embedding: Báo Cáo Bench Test
 
-**Ngày:** 2026-05-13  
+**Ngày:** 2026-05-21  
 **Model:** `BAAI/bge-m3` (568M tham số, đa ngôn ngữ)  
 **Thiết bị:** CPU  
 **Số chiều vector:** 1024  
@@ -67,7 +67,7 @@ Bộ tiền xử lý quét văn bản để tìm từ khóa cảm xúc/ngữ c�
 | Ca | text_k | tags_k | Kênh null |
 |----|:------:|:------:|-----------|
 | user_1 | 3 | 1 | — |
-| user_2 | 1 | 0 | `aug_tags` |
+| user_2 | 1 | 0 | — |
 | user_3 | 2 | 2 | `img_desc` |
 | loc_1 | 2 | 3 | `img_desc` |
 | loc_2 | 3 | 2 | `img_desc` |
@@ -92,33 +92,33 @@ Bộ tiền xử lý quét văn bản để tìm từ khóa cảm xúc/ngữ c�
 
 ## 4. Kết Quả Độ Trễ
 
-Tất cả đo trên CPU, không có GPU. Lần gọi đầu tiên bao gồm thời gian khởi động model (~2.8s); các lần sau ổn định ở ~1–1.8s.
+Tất cả đo trên CPU. Lần gọi đầu tiên bao gồm thời gian khởi động model (~2.8s); các lần sau ổn định ở ~1–1.8s.
 
 ### Gọi đơn lẻ embed()
 
 | Ca | Độ trễ (ms) | Ghi chú |
 |----|:-----------:|---------|
-| user_1 | 2812.75 | Lần gọi đầu — bao gồm thời gian tải model |
-| user_2 | 957.82 | |
-| user_3 | 1235.13 | |
-| loc_1 | 1208.53 | |
-| loc_2 | 1788.47 | |
-| loc_3 | 1161.46 | |
+| user_1 | 3530.00 | Lần gọi đầu — bao gồm thời gian tải model |
+| user_2 | 348.00 |  |
+| user_3 | 341.00 |  |
+| loc_1 | 395.00 |  |
+| loc_2 | 643.00 |  |
+| loc_3 | 335.00 |  |
 
 | Chỉ số | Giá trị |
 |--------|--------:|
-| Trung bình user | 1668.57 ms |
-| Trung bình location | 1386.15 ms |
-| Trung bình tổng thể | 1527.36 ms |
+| Trung bình user | 1406.33 ms |
+| Trung bình location | 457.67 ms |
+| Trung bình tổng thể | 932.00 ms |
 
 ### Gọi batch embed_batch()
 
 | Batch | Số item | Tổng (ms) | Mỗi item (ms) |
 |-------|:-------:|:---------:|:-------------:|
-| user batch | 3 | 4323.43 | 1441.14 |
-| location batch | 3 | 4662.64 | 1554.21 |
+| user batch | 3 | 1471.04 | 490.35 |
+| location batch | 3 | 1336.62 | 445.54 |
 
-**Batch so với từng lần riêng lẻ:** Xử lý 3 item theo batch mất ~4300–4700ms, so với ~4500ms nếu gọi tuần tự (3 × ~1500ms). Lợi thế ở batch size 3 còn khiêm tốn vì nút cổ chai là forward pass của model, không phải overhead Python. Hiệu quả tăng rõ hơn ở batch size lớn hơn.
+**Batch so với từng lần riêng lẻ:** Xử lý 3 item theo batch mất ~1471.0–1336.6ms, so với ~2796.0ms nếu gọi tuần tự. Lợi thế ở batch size 3 còn khiêm tốn vì nút cổ chai là forward pass của model, không phải overhead Python. Hiệu quả tăng rõ hơn ở batch size lớn hơn.
 
 Thiết kế mã hóa `N_items × 4 kênh` chuỗi trong một lần forward pass duy nhất — đây là đặc tính hiệu quả cốt lõi cho `activities_service` của N8, nơi embed tới 10+ activity cùng lúc qua `embed_batch`.
 
@@ -132,9 +132,9 @@ Thiết kế mã hóa `N_items × 4 kênh` chuỗi trong một lần forward pas
 | Đầu ra batch == đầu ra đơn lẻ (từng kênh, tol=1e-5) | **PASS** |
 | Tất cả vector có số chiều = 1024 | **PASS** |
 
-**Kiểm tra norm:** `BAAI/bge-m3` được load với `normalize_embeddings=True`. Tất cả 20 vector không-null trong 6 ca test đơn lẻ đều trả về norm = 1.000000, xác nhận rằng cosine similarity trong N4/N6 tương đương với tích vô hướng trên các vector này.
+**Kiểm tra norm:** `BAAI/bge-m3` được load với `normalize_embeddings=True`. Tất cả các vector không-null trong các ca test đơn lẻ đều trả về norm = 1.000000, xác nhận rằng cosine similarity tương đương với tích vô hướng trên các vector này.
 
-**Tính nhất quán batch:** Với cả 6 ca test, mỗi vector kênh từ `embed_batch([item])` đều giống hệt `embed([item])` trong giới hạn sai số dấu phẩy động. Luồng batch không tạo ra độ lệch so với luồng đơn lẻ.
+**Tính nhất quán batch:** Với các ca test, mỗi vector kênh từ `embed_batch([item])` đều giống hệt `embed([item])` trong giới hạn sai số dấu phẩy động. Luồng batch không tạo ra độ lệch so với luồng đơn lẻ.
 
 ---
 
@@ -146,7 +146,7 @@ Tất cả vector được tạo ra đều có 1024 chiều (kích thước đ�
 |------|:--------------------:|--------------|
 | `text` | 6/6 | Không bao giờ (text luôn có) |
 | `aug_text` | 6/6 | Không bao giờ (fallback về text thô) |
-| `aug_tags` | 5/6 | Tags có nhưng không khớp bảng từ vựng ALL_TAGS |
+| `aug_tags` | 6/6 | Tags có nhưng không khớp bảng từ vựng ALL_TAGS |
 | `img_desc` | 2/6 | Không có ảnh đầu vào (hầu hết đầu vào location) |
 
 ---
@@ -161,4 +161,4 @@ Tất cả vector được tạo ra đều có 1024 chiều (kích thước đ�
 
 4. **Kiểm soát từ vựng tag chặt chẽ.** Các tag tiếng Anh về lối sống (`healing`, `relax`, `nature`) không có trong `ALL_TAGS`. Người dùng nhập các tag này sẽ nhận `tags_k=0` và mất kênh tính điểm tag. Đây không phải là hạn chế mà là điểm mạnh: việc kiểm soát tags chặt chẽ giúp tránh nhiễu và đảm bảo tính chính xác cho các phép tính toán học phía sau.
 
-5. **Chế độ batch là lựa chọn đúng cho embedding activity ở N5.** Khi N8 embed 10 activity sau khi sinh, `embed_batch` xử lý toàn bộ 40 chuỗi (10 × 4 kênh) trong một lần forward pass. Ở batch size 10, overhead mỗi item giảm thêm nhờ tận dụng tốt hơn tài nguyên CPU/GPU.
+5. **Chế độ batch là lựa chọn đúng cho embedding activity ở N5.** Khi N8 embed 10 activity sau khi sinh, `embed_batch` xử lý toàn bộ 40 chuỗi (10 × 4 kênh) trong một lần forward pass. Ở batch size 10, overhead mỗi item giảm thêm nhờ tận dụng tốt hơn tài nguyên hệ thống.
