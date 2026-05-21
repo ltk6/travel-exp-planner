@@ -8,7 +8,7 @@
     {
       "name": "beach_user_ranks_beach_first",
       "desc": "User mê biển → Beach phải đứng #1",
-      "latency_ms": 1,
+      "latency_ms": 0,
       "status": "PASS",
       "checks": {
         "top1_correct": true,
@@ -64,7 +64,7 @@
     {
       "name": "mixed_user_prefers_beach",
       "desc": "User mix beach+mountain (70/30) → Beach phải đứng #1",
-      "latency_ms": 1,
+      "latency_ms": 0,
       "status": "PASS",
       "checks": {
         "top1_correct": true,
@@ -92,7 +92,7 @@
     {
       "name": "null_vectors_graceful",
       "desc": "Partial null vectors không crash, vẫn trả về kết quả",
-      "latency_ms": 1,
+      "latency_ms": 0,
       "status": "PASS",
       "checks": {
         "top1_correct": true
@@ -167,7 +167,7 @@
     {
       "name": "performance_28_locations",
       "desc": "28 địa điểm (realistic DB size) — kiểm tra tốc độ",
-      "latency_ms": 7,
+      "latency_ms": 6,
       "status": "PASS",
       "checks": {
         "count_correct": true,

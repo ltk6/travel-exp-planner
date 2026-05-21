@@ -4213,7 +4213,7 @@ LOCATIONS = [
                            'romantic',
                            'photography',
                            'picturesque']},
-     'geo': {'lat': 11.9833, 'lng': 108.3833}},
+     'geo': {'lat': 12.0203, 'lng': 108.3841}},
 
     {'location_id': 'loc_225',
      'metadata': {'name': 'Làng Cù Lần Đà Lạt',
@@ -4241,7 +4241,7 @@ LOCATIONS = [
                                  'không gian xanh mát mang lại những phút giây thư giãn tâm hồn tuyệt '
                                  'đối.',
                   'tags': ['valley', 'pine forest', 'lake', 'camping', 'peaceful', 'romantic']},
-     'geo': {'lat': 11.9833, 'lng': 108.3833}},
+     'geo': {'lat': 12.0063, 'lng': 108.3809}},
 
     {'location_id': 'loc_227',
      'metadata': {'name': 'Nhà thờ Domaine de Marie Đà Lạt',
@@ -4274,7 +4274,7 @@ LOCATIONS = [
                                  'bao la bát ngát xuống thung lũng rừng thông là phông nền hoàn hảo '
                                  'cho mọi bức ảnh check-in mang phong cách mộc mạc.',
                   'tags': ['pine forest', 'photography', 'instagrammable', 'chill', 'picturesque']},
-     'geo': {'lat': 11.9167, 'lng': 108.3833}},
+     'geo': {'lat': 11.9268, 'lng': 108.3713}},
 
     {'location_id': 'loc_229',
      'metadata': {'name': 'Chùa Linh Phước Đà Lạt',

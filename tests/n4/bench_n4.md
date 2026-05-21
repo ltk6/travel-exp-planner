@@ -49,7 +49,7 @@ _User mê biển → Beach phải đứng #1_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 1 ms |
+| Độ trễ | 0 ms |
 | Kết quả | **PASS** |
 | Top 1 | `loc_beach` (score=0.95) |
 | Weights used | `{'text': 0.5, 'aug_text': 0.2, 'aug_tags': 0.3, 'img_desc': 0.2}` |
@@ -79,7 +79,7 @@ _User mix beach+mountain (70/30) → Beach phải đứng #1_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 1 ms |
+| Độ trễ | 0 ms |
 | Kết quả | **PASS** |
 | Top 1 | `loc_beach` (score=0.9444) |
 | Weights used | `{'text': 0.5, 'aug_text': 0.2, 'aug_tags': 0.3, 'img_desc': 0.2}` |
@@ -94,7 +94,7 @@ _Partial null vectors không crash, vẫn trả về kết quả_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 1 ms |
+| Độ trễ | 0 ms |
 | Kết quả | **PASS** |
 | Top 1 | `loc_b` (score=0.95) |
 | Weights used | `{'text': 0.1, 'aug_text': 0.6, 'aug_tags': 0.3, 'img_desc': 0.2}` |
@@ -136,7 +136,7 @@ _28 địa điểm (realistic DB size) — kiểm tra tốc độ_
 
 | Chỉ số | Giá trị |
 |--------|---------|
-| Độ trễ | 7 ms |
+| Độ trễ | 6 ms |
 | Kết quả | **PASS** |
 | Top 1 | `loc_000` (score=0.95) |
 | Weights used | `{'text': 0.5, 'aug_text': 0.2, 'aug_tags': 0.3, 'img_desc': 0.2}` |
@@ -151,15 +151,15 @@ _28 địa điểm (realistic DB size) — kiểm tra tốc độ_
 
 | Ca test | Độ trễ (ms) | Top 1 | Kết quả |
 |---------|:-----------:|-------|:-------:|
-| `beach_user_ranks_beach_first` | 1 | `loc_beach` | ✓ PASS |
+| `beach_user_ranks_beach_first` | 0 | `loc_beach` | ✓ PASS |
 | `city_user_ranks_city_first` | 0 | `loc_city` | ✓ PASS |
-| `mixed_user_prefers_beach` | 1 | `loc_beach` | ✓ PASS |
-| `null_vectors_graceful` | 1 | `loc_b` | ✓ PASS |
+| `mixed_user_prefers_beach` | 0 | `loc_beach` | ✓ PASS |
+| `null_vectors_graceful` | 0 | `loc_b` | ✓ PASS |
 | `top_k_truncation` | 1 | `loc_0` | ✓ PASS |
 | `normalization_top1_is_1` | 1 | `loc_beach` | ✗ FAIL |
-| `performance_28_locations` | 7 | `loc_000` | ✓ PASS |
+| `performance_28_locations` | 6 | `loc_000` | ✓ PASS |
 
-**TB latency:** 1.7ms &nbsp;**Pass:** 6/7
+**TB latency:** 1.1ms &nbsp;**Pass:** 6/7
 
 ---
 
