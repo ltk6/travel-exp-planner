@@ -42,6 +42,8 @@ if str(PROJECT_ROOT) not in sys.path:
 from backend.n3_database.db_manager import (
     ACTIVITY_PROVIDERS,
     count_activities_by_provider,
+    delete_activities_for_location,
+    get_all_locations,
     get_fetch_status_map,
     init_activities_db,
     mark_fetch_status,
@@ -50,14 +52,18 @@ from backend.n3_database.db_manager import (
 from backend.n3_database.seeds.seed_data import LOCATIONS
 from backend.modules.activity_retrievals.orchestrator import _run_source
 from backend.modules.activity_retrievals.processor import (
-    _dedupe_by_name,
+    _dedupe_aggressive,
     _drop_anchor_duplicates,
     _enrich_descriptions,
+    _fix_mojibake_names,
     _has_required,
     _quality_score,
     _rank_key,
     cap_per_source,
     drop_foreign_script,
+    drop_non_vietnamese,
+    drop_off_anchor,
+    filter_by_distance,
     filter_by_quality,
 )
 from backend.modules.n1_embedding import embed_batch
@@ -65,6 +71,7 @@ from backend.modules.n1_embedding import embed_batch
 RADIUS_M = 20000
 MAX_PER_SOURCE = 30
 MIN_QUALITY = 0.3
+MAX_DISTANCE_M = 8000.0   # bán kính cho "phải nằm tại" anchor (city-level OK).
 
 # Status được coi là đã "xong" — không retry trừ khi --force
 DONE_STATUSES = {"success", "empty"}
@@ -108,6 +115,13 @@ def _seed_one_location(loc: Dict[str, Any], force: bool = False) -> Dict[str, An
     if not todo_providers:
         print(f"  [skip] All 6 providers already fetched")
         return {"loc_id": loc_id, "skipped": True}
+
+    # Khi --force: xoá toàn bộ rows cũ cho loc này để tránh leftover từ pipeline cũ
+    # (pipeline mới drop nhiều POI hơn → activity_id cũ thành stale).
+    if force:
+        n_deleted = delete_activities_for_location(loc_id)
+        if n_deleted:
+            print(f"  [reset] deleted {n_deleted} stale rows from previous run")
 
     ctx = {
         "location_id":    loc_id,
@@ -158,6 +172,10 @@ def _seed_one_location(loc: Dict[str, Any], force: bool = False) -> Dict[str, An
     all_acts = _drop_anchor_duplicates(all_acts, loc_name)
     n_anchor = len(all_acts)
 
+    # Strict distance — phải nằm TẠI anchor location, không chỉ "gần đó".
+    all_acts = filter_by_distance(all_acts, max_distance_m=MAX_DISTANCE_M)
+    n_dist = len(all_acts)
+
     for a in all_acts:
         a["_quality"] = _quality_score(a)
     all_acts.sort(key=_rank_key)
@@ -168,13 +186,14 @@ def _seed_one_location(loc: Dict[str, Any], force: bool = False) -> Dict[str, An
     all_acts = filter_by_quality(all_acts, min_quality=MIN_QUALITY)
     n_quality = len(all_acts)
 
-    all_acts = _dedupe_by_name(all_acts)
+    # Aggressive dedupe (translation-aware + coord bucket + core-name).
+    all_acts = _dedupe_aggressive(all_acts)
     n_dedupe = len(all_acts)
 
     all_acts = cap_per_source(all_acts, max_per=MAX_PER_SOURCE)
     n_cap = len(all_acts)
 
-    print(f"  filter: raw={n_raw} req={n_req} anchor={n_anchor} foreign={n_foreign} quality={n_quality} dedupe={n_dedupe} cap={n_cap}")
+    print(f"  filter: raw={n_raw} req={n_req} anchor={n_anchor} dist={n_dist} foreign={n_foreign} quality={n_quality} dedupe={n_dedupe} cap={n_cap}")
 
     if not all_acts:
         for provider in todo_providers:
@@ -182,13 +201,42 @@ def _seed_one_location(loc: Dict[str, Any], force: bool = False) -> Dict[str, An
                 mark_fetch_status(loc_id, provider, "empty", 0)
         return {"loc_id": loc_id, "total_saved": 0, "providers": per_provider_stats}
 
-    # ─── 3. Eager LLM enrich (Vietnamese name + description) ────────────────
+    # ─── 3. Eager LLM enrich — name VN, description VN, tags từ ontology,
+    #        at_anchor flag (compound model có web-search để xác minh).
     t_e = time.time()
+    n_before_enrich = len(all_acts)
     enriched_count = _enrich_descriptions(all_acts, loc_name)
+    # Đánh dấu activities đã được LLM chạm vào → DB.enriched=True chỉ với những
+    # POI thật sự có _confidence > 0 (đã có name+desc+tags từ LLM).
     for a in all_acts:
-        if enriched_count > 0:
+        if a.get("_confidence") is not None:
             a["enriched"] = True
-    print(f"  enrich: {enriched_count}/{len(all_acts)} via LLM ({time.time()-t_e:.1f}s)")
+
+    # Recover mojibake (vd "VƯỜN" → "VÉN") trước các filter ngôn ngữ — LLM enrich
+    # đôi khi re-encode sai tên có dấu, phải restore từ name_original nếu sạch.
+    all_acts = _fix_mojibake_names(all_acts)
+
+    # Hậu lọc dựa trên đánh giá của LLM (at_anchor + ngôn ngữ).
+    all_acts = drop_off_anchor(all_acts)
+    n_after_anchor = len(all_acts)
+    all_acts = drop_non_vietnamese(all_acts)
+    n_after_vn = len(all_acts)
+
+    # Strip transient flags trước khi embed/save.
+    for a in all_acts:
+        a.pop("_at_anchor", None)
+        a.pop("_confidence", None)
+
+    print(
+        f"  enrich: {enriched_count}/{n_before_enrich} via LLM "
+        f"→ at_anchor={n_after_anchor} → vn={n_after_vn} ({time.time()-t_e:.1f}s)"
+    )
+
+    if not all_acts:
+        for provider in todo_providers:
+            if per_provider_stats.get(provider, {}).get("status") == "ok":
+                mark_fetch_status(loc_id, provider, "empty", 0)
+        return {"loc_id": loc_id, "total_saved": 0, "providers": per_provider_stats}
 
     # ─── 4. N1 batch embed ──────────────────────────────────────────────────
     t_n1 = time.time()
@@ -229,23 +277,66 @@ def _seed_one_location(loc: Dict[str, Any], force: bool = False) -> Dict[str, An
     }
 
 
+def _load_all_locations_union() -> List[Dict[str, Any]]:
+    """
+    Merge LOCATIONS (seed_data.py) với toàn bộ rows trong DB locations table.
+    Lý do: locations mới được add qua add_more_locs/importer.py chỉ vào DB chứ
+    không quay lại seed_data.py → cần lấy từ DB để cover loc_026+.
+
+    Ưu tiên entry từ seed_data.py (canonical metadata) khi trùng location_id.
+    """
+    by_id: Dict[str, Dict[str, Any]] = {}
+    for L in LOCATIONS:
+        by_id[L["location_id"]] = L
+
+    db_resp = get_all_locations(include_images=False)
+    if db_resp.get("status") == "success":
+        for d in db_resp.get("data", []):
+            lid = d.get("location_id")
+            if not lid or lid in by_id:
+                continue
+            geo = d.get("geo") or {}
+            md  = d.get("metadata") or {}
+            by_id[lid] = {
+                "location_id": lid,
+                "metadata":    md,
+                "geo":         {"lat": geo.get("lat"), "lng": geo.get("lng")},
+                "address":     d.get("address"),
+            }
+    return sorted(by_id.values(), key=lambda L: L["location_id"])
+
+
 def main():
     parser = argparse.ArgumentParser(description="Seed activities for N9-N14 sources")
     parser.add_argument("--reset", action="store_true", help="Drop and recreate all activity tables")
     parser.add_argument("--force", action="store_true", help="Re-fetch even success/empty providers")
     parser.add_argument("--loc", type=str, default=None, help="Seed only this location_id")
+    parser.add_argument("--from-loc", type=str, default=None,
+                        help="Seed from this location_id onwards (inclusive)")
+    parser.add_argument("--to-loc", type=str, default=None,
+                        help="Seed up to this location_id (inclusive)")
     args = parser.parse_args()
 
+    all_locs = _load_all_locations_union()
+
     print("=" * 70)
-    print(f"N9-N14 ACTIVITY SEEDING — {len(LOCATIONS)} loc total")
-    print(f"  reset={args.reset}  force={args.force}  loc={args.loc or 'all'}")
+    print(f"N9-N14 ACTIVITY SEEDING — {len(all_locs)} loc total (seed_data + DB)")
+    print(f"  reset={args.reset}  force={args.force}  loc={args.loc or 'all'}"
+          f"  from={args.from_loc or '-'}  to={args.to_loc or '-'}")
     print("=" * 70)
 
     init_activities_db(drop_existing=args.reset)
 
-    targets = LOCATIONS if not args.loc else [l for l in LOCATIONS if l["location_id"] == args.loc]
+    targets = all_locs
+    if args.loc:
+        targets = [l for l in targets if l["location_id"] == args.loc]
+    if args.from_loc:
+        targets = [l for l in targets if l["location_id"] >= args.from_loc]
+    if args.to_loc:
+        targets = [l for l in targets if l["location_id"] <= args.to_loc]
     if not targets:
-        print(f"[ERROR] Location {args.loc!r} not found in LOCATIONS")
+        print(f"[ERROR] No locations matched filter "
+              f"(loc={args.loc!r} from={args.from_loc!r} to={args.to_loc!r})")
         sys.exit(1)
 
     t_total = time.time()

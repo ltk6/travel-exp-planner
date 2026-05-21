@@ -12,9 +12,15 @@ from backend.shared.contracts.n6_contracts import N6RankInput
 from backend.shared.weights import get_weights
 from .preferences import infer_user_preferences
 
-W_SEMANTIC  = 0.50
-W_TAG       = 0.25
-W_ATTRIBUTE = 0.25
+W_SEMANTIC     = 0.30
+W_TAG          = 0.15
+W_ATTRIBUTE    = 0.15
+W_COMPLETENESS = 0.15
+W_DISTANCE     = 0.25
+
+# Bán kính tham chiếu cho distance score — seed pipeline cap pool ở 8km nên dùng
+# cùng giá trị: act ngay anchor → 1.0, act ở rìa pool 8km → 0.0.
+DISTANCE_DECAY_M = 8000.0
 
 # =============================================================================
 # SEMANTIC SCORE
@@ -70,6 +76,65 @@ def _tag_overlap_score(user_tags: List[str], act_tags: List[str]) -> float:
 # =============================================================================
 # ATTRIBUTE SCORE
 # =============================================================================
+
+_COMPLETENESS_WEIGHTS = {
+    "description":     0.45,
+    "tags":            0.30,
+    "image_url":       0.10,
+    "rating":          0.10,
+    "opening_hours":   0.05,
+}
+
+
+def _completeness_score(activity: Dict) -> float:
+    """0.0 → 1.0 — ưu tiên acts có đủ desc + tags để hiển thị cho user.
+
+    desc + tags chiếm 75% trọng số; signals (ảnh, rating, giờ mở cửa) chia phần còn lại.
+    """
+    md = activity.get("metadata") or {}
+    sg = activity.get("signals") or {}
+    score = 0.0
+
+    desc = md.get("description")
+    if desc and str(desc).strip():
+        score += _COMPLETENESS_WEIGHTS["description"]
+
+    tags = md.get("tags") or []
+    cats = md.get("categories_raw") or []
+    if (tags and len(tags) > 0) or (cats and len(cats) > 0):
+        score += _COMPLETENESS_WEIGHTS["tags"]
+
+    if sg.get("image_url"):
+        score += _COMPLETENESS_WEIGHTS["image_url"]
+    if sg.get("rating") is not None:
+        score += _COMPLETENESS_WEIGHTS["rating"]
+    if sg.get("opening_hours"):
+        score += _COMPLETENESS_WEIGHTS["opening_hours"]
+
+    return score
+
+
+def _distance_score(activity: Dict) -> Tuple[float, bool]:
+    """0.0 → 1.0 — ưu tiên acts gần anchor.
+
+    Linear decay từ 1.0 (tại anchor, 0m) xuống 0.0 (≥ DISTANCE_DECAY_M).
+    Return (score, matched). matched=False khi không có dữ liệu distance → caller
+    bỏ nhánh này khỏi dynamic weighting thay vì gán 0.5 neutral.
+    """
+    place = activity.get("place") or {}
+    d = place.get("distance_from_anchor_m")
+    if d is None:
+        return 0.5, False
+    try:
+        d = float(d)
+    except (TypeError, ValueError):
+        return 0.5, False
+    if d <= 0:
+        return 1.0, True
+    if d >= DISTANCE_DECAY_M:
+        return 0.0, True
+    return 1.0 - (d / DISTANCE_DECAY_M), True
+
 
 def _attribute_score(activity: Dict, user_prefs: Dict[str, Optional[float]]) -> float:
     metadata = activity.get("metadata", {}) or {}
@@ -173,16 +238,29 @@ def rank_activities(data: Union[N6RankInput, Dict[str, Any]]) -> Dict[str, Any]:
         sem_scaled = max(0.0, min(1.0, (sem_score - 0.5) * 2.0)) if sem_matched else 0.5
         tag_score  = _tag_overlap_score(user_tags, act_tags)
         attr_score = _attribute_score(activity, user_prefs)
-        
+        comp_score = _completeness_score(activity)
+        dist_score, dist_matched = _distance_score(activity)
+
         # ── Dynamic category weighting ──
+        # Completeness + distance luôn available khi có dữ liệu → giữ trọng số cố
+        # định, các nhánh khác zero ra nếu thiếu input. Distance bị bỏ khi act
+        # không có distance_from_anchor_m (vd N5 fallback chưa có anchor distance).
         has_attr_pref = any(v is not None for v in user_prefs.values())
         w_sem  = W_SEMANTIC if sem_matched else 0.0
         w_tag  = W_TAG if user_tags else 0.0
         w_attr = W_ATTRIBUTE if has_attr_pref else 0.0
-        
-        sum_cat_w = w_sem + w_tag + w_attr
+        w_comp = W_COMPLETENESS
+        w_dist = W_DISTANCE if dist_matched else 0.0
+
+        sum_cat_w = w_sem + w_tag + w_attr + w_comp + w_dist
         if sum_cat_w > 0:
-            total = (w_sem * sem_scaled + w_tag * tag_score + w_attr * attr_score) / sum_cat_w
+            total = (
+                w_sem  * sem_scaled
+                + w_tag  * tag_score
+                + w_attr * attr_score
+                + w_comp * comp_score
+                + w_dist * dist_score
+            ) / sum_cat_w
         else:
             total = 0.5
 
