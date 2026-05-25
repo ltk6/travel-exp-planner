@@ -14,7 +14,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-# lib/ — commented out: conflicts with frontend/web/src/lib/
+# lib/ — commented out: conflicts with frontend/n16_web_ui/src/lib/
 lib64/
 parts/
 sdist/

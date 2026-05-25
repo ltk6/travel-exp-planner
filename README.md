@@ -29,7 +29,7 @@ run.bat
 - Cài đặt Node.js dependencies cho Next.js (bỏ qua nếu đã có)
 - Khởi động backend trên `:5000` và frontend trên `:3000`
 - Tự động mở trình duyệt tại `http://localhost:3000`
-- Fallback Streamlit cũ: `run-legacy.bat`
+- Fallback Streamlit cũ: `legacy_run.bat`
 
 ### Chạy trên Linux / macOS
 

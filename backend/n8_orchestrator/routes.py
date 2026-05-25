@@ -158,11 +158,25 @@ def list_locations():
 
 @bp.get("/api/images/<path:filename>")
 def serve_image(filename):
-    """Serve location images directly from PostgreSQL on demand (lazy-fetch).
+    """Serve location images from N8's local disk cache, falling back to PostgreSQL and caching on-the-fly.
     Public (not in PROTECTED_ROUTES) so <img src=...> works without auth header.
     Browser caches via max_age. Returns transparent pixel fallback if not found."""
     if ".." in filename or filename.startswith("/") or filename.startswith("\\"):
         abort(400)
+    
+    import os
+    file_path = os.path.join(IMG_CACHE_DIR, filename)
+    
+    # 1. Check local disk cache
+    if os.path.exists(file_path):
+        try:
+            with open(file_path, "rb") as f:
+                img_bytes = f.read()
+            return Response(img_bytes, mimetype="image/jpeg", headers={"Cache-Control": "public, max-age=86400"})
+        except Exception as e:
+            logger.warning(f"Failed to read image from local cache {filename}: {e}")
+
+    # 2. Cache miss: Fetch from PostgreSQL database
     try:
         base = filename.rsplit(".", 1)[0]
         if "_" not in base:
@@ -176,6 +190,14 @@ def serve_image(filename):
             # 1x1 transparent PNG fallback
             transparent_1x1 = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15c4\x00\x00\x00\rIDATx\x9cc`\x00\x00\x00\x02\x00\x01H\xaf\xa4q\x00\x00\x00\x00IEND\xaeB`\x82'
             return Response(transparent_1x1, mimetype="image/png")
+            
+        # Save to local disk cache for subsequent requests
+        try:
+            os.makedirs(IMG_CACHE_DIR, exist_ok=True)
+            with open(file_path, "wb") as f:
+                f.write(img_bytes)
+        except Exception as e:
+            logger.warning(f"Failed to write image to local cache {filename}: {e}")
             
         return Response(img_bytes, mimetype="image/jpeg", headers={"Cache-Control": "public, max-age=86400"})
     except Exception as e:

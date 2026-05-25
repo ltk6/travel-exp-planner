@@ -522,10 +522,21 @@ def init_profile_db(drop_existing: bool = False):
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     """)
+
+    # 3. Bang luu general feedback cua app
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS app_feedback (
+            feedback_id SERIAL PRIMARY KEY,
+            name VARCHAR(255),
+            email VARCHAR(255),
+            content TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
     conn.commit()
     cur.close()
     conn.close()
-    logger.info(f"Khoi tao bang users va rec_history thanh cong! (drop_existing={drop_existing})")
+    logger.info(f"users, history and app_feedback tables successfully initialized (drop_existing={drop_existing})")
 
 # PHAN 1: AUTHENTICATION (DANG KY DANG NHAP)
 
@@ -626,3 +637,21 @@ def get_location_image_by_index(location_id: str, idx: int) -> Optional[bytes]:
     except Exception as e:
         logger.error(f"Lỗi lấy ảnh lazy từ DB: {e}")
         return None
+
+def save_app_feedback(name: str, email: str, content: str) -> Dict[str, Any]:
+    try:
+        conn = _get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO app_feedback (name, email, content)
+            VALUES (%s, %s, %s) RETURNING feedback_id;
+        """, (name, email, content))
+        feedback_id = cur.fetchone()["feedback_id"]
+        conn.commit()
+        cur.close()
+        conn.close()
+        return {"status": "success", "message": "Cảm ơn bạn đã gửi feedback!", "feedback_id": feedback_id}
+    except Exception as e:
+        logger.error(f"Lỗi lưu feedback vào DB: {e}")
+        return {"status": "error", "message": str(e)}
+
