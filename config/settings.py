@@ -27,9 +27,6 @@ INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "")
 # ====================== LLM MODELS ======================
 # Embedding Models
 EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", "BAAI/bge-m3")
-ALT_EMBEDDING_MODEL_NAME = os.getenv(
-    "ALT_EMBEDDING_MODEL_NAME", "intfloat/multilingual-e5-small"
-)
 
 # Groq Models
 GROQ_MODEL_NAME = os.getenv("GROQ_MODEL_NAME", "llama-3.1-8b-instant")
@@ -92,16 +89,32 @@ ALLOWED_ORIGINS = os.getenv(
 USER_AGENT = os.getenv("USER_AGENT", "travel-exp-planner/1.0")
 
 # ====================== LOGGING ======================
-LOG_FORMAT = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
 LOG_DATEFMT = "%H:%M:%S"
 LOG_LEVEL = logging.INFO
 
 
+class DynamicFormatter(logging.Formatter):
+    DETAILED_FORMAT = "%(asctime)s [%(levelname)s] %(name)s [%(filename)s:%(lineno)d]: %(message)s"
+    SIMPLE_FORMAT = "[%(levelname)s] %(name)s: %(message)s"
+
+    def __init__(self, datefmt=None):
+        super().__init__(datefmt=datefmt)
+        self.detailed_formatter = logging.Formatter(self.DETAILED_FORMAT, datefmt=datefmt)
+        self.simple_formatter = logging.Formatter(self.SIMPLE_FORMAT, datefmt=datefmt)
+
+    def format(self, record):
+        if record.name.startswith("N8"):
+            return self.detailed_formatter.format(record)
+        return self.simple_formatter.format(record)
+
+
 def setup_logging(name: str = __name__) -> logging.Logger:
     """Khởi tạo logging theo chuẩn dự án."""
-    logging.basicConfig(
-        level=LOG_LEVEL,
-        format=LOG_FORMAT,
-        datefmt=LOG_DATEFMT,
-    )
+    root = logging.getLogger()
+    if not root.handlers:
+        handler = logging.StreamHandler()
+        formatter = DynamicFormatter(datefmt=LOG_DATEFMT)
+        handler.setFormatter(formatter)
+        root.addHandler(handler)
+        root.setLevel(LOG_LEVEL)
     return logging.getLogger(name)

@@ -14,6 +14,8 @@ import { cn } from "@/lib/utils";
 export function ResultView() {
   const results = usePlannerStore((s) => s.results);
   const activityResults = usePlannerStore((s) => s.activityResults);
+  const activityResultsLlm = usePlannerStore((s) => s.activityResultsLlm);
+  const preferLlmActivities = usePlannerStore((s) => s.preferLlmActivities);
 
   const locations = results?.locations ?? [];
   const topLocations = locations.slice(0, 5);
@@ -21,16 +23,22 @@ export function ResultView() {
   function handleSave() {
     const data = {
       saved_at: new Date().toISOString(),
-      locations: topLocations.map((loc, i) => ({
-        rank: i + 1,
-        location_id: loc.location_id,
-        score: loc.score,
-        reason: loc.reason,
-        metadata: loc.metadata,
-        images: loc.images,
-        geo: loc.geo,
-        activities: activityResults[loc.location_id]?.activities?.slice(0, 5) ?? [],
-      })),
+      locations: topLocations.map((loc, i) => {
+        const preferLlm = preferLlmActivities[loc.location_id] ?? false;
+        const currentActivities = preferLlm
+          ? activityResultsLlm[loc.location_id]
+          : activityResults[loc.location_id];
+        return {
+          rank: i + 1,
+          location_id: loc.location_id,
+          score: loc.score,
+          reason: loc.reason,
+          metadata: loc.metadata,
+          images: loc.images,
+          geo: loc.geo,
+          activities: currentActivities?.activities?.slice(0, 5) ?? [],
+        };
+      }),
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);

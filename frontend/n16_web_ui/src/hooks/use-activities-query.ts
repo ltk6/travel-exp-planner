@@ -34,6 +34,7 @@ export function useActivitiesQuery(
   const locations = results?.locations ?? [];
   const currentIndex = locations.findIndex((l) => l.location_id === loc.location_id);
   const previousLocation = currentIndex > 0 ? locations[currentIndex - 1] : null;
+  const isCurrentFetched = !!activityResults[loc.location_id] || !!activityResultsLlm[loc.location_id];
   const previousFetched = previousLocation ? !!activityResults[previousLocation.location_id] || !!activityResultsLlm[previousLocation.location_id] : true;
 
   const payload: ActivitiesPayload = {
@@ -93,7 +94,7 @@ export function useActivitiesQuery(
       }
       return data;
     },
-    enabled: enabled && !!loc.geo && !cached && previousFetched,
+    enabled: enabled && !!loc.geo && !cached && (isCurrentFetched || previousFetched),
     initialData: cached,
     staleTime: Infinity,
     retry: 1,
