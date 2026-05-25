@@ -34,13 +34,10 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(f"Cannot initialize table: {e}")
 
-    if DEBUG:
-        app.run(host=HOST, port=PORT, debug=True)
-    else:
-        try:
-            from waitress import serve
-            logger.info("N8 — Starting production WSGI server (waitress) on http://%s:%d", HOST, PORT)
-            serve(app, host=HOST, port=PORT)
-        except ImportError:
-            logger.warning("Waitress WSGI server not installed. Falling back to Werkzeug development server...")
-            app.run(host=HOST, port=PORT, debug=False)
+    try:
+        from waitress import serve
+        logger.info("N8 — Starting production WSGI server (waitress) on http://%s:%d", HOST, PORT)
+        serve(app, host=HOST, port=PORT, threads=6)
+    except ImportError:
+        logger.error("Waitress WSGI server is not installed in the virtual environment! Please install it by running 'pip install waitress'. Never fallback to Werkzeug 'app.run()' in production.")
+        sys.exit(1)

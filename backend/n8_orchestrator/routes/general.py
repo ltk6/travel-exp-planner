@@ -19,7 +19,8 @@ def health():
         from modules.n1_embedding.embedder import get_model
         n1_status = "ok" if get_model() is not None else "not_loaded"
     except Exception as e:
-        n1_status = f"error: {str(e)}"
+        logger.error("N1 embedding model failed to load: %s", e)
+        n1_status = "error"
 
     # 2. Check N3 Database
     try:

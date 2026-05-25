@@ -150,13 +150,9 @@ def recommend_service(body):
     return response
 
 def feedback_recommend_service(body):
-    user_input_nested = body.get("user_input") or {}
-    old_text = body.get("text") or user_input_nested.get("text") or ""
-    
-    # Handle tags which might be in either body.get("tags") or user_input_nested.get("tags")
-    old_tags = body.get("tags") or user_input_nested.get("tags") or []
-    
-    old_img_desc = body.get("img_desc") or user_input_nested.get("img_desc") or ""
+    old_text = body.get("text", "")
+    old_tags = body.get("tags", [])
+    old_img_desc = body.get("img_desc", "")
     feedback = body.get("feedback", "")
 
     if not feedback:
