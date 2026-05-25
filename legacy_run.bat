@@ -1,4 +1,6 @@
 @echo off
+:: Ensure standard Windows directories are in PATH
+set PATH=%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SystemRoot%\System32\WindowsPowerShell\v1.0\;%PATH%
 chcp 65001 >nul
 echo =======================================
 echo   Travel Planner - Legacy Streamlit

@@ -22,21 +22,25 @@ type ActivityFeedbackBody = {
   tags_k: number;
   user_vectors: Record<string, unknown>;
   location: { location_id: string; metadata: Record<string, unknown> };
+  v2?: boolean;
+  prefer_llm?: boolean;
 };
 
 type RecommendFeedbackBody = {
   feedback: string;
-  user_input: { text: string; tags: string[]; img_desc: string };
-  image: string;
-  constraints: Record<string, unknown>;
-  context: Record<string, unknown>;
+  text: string;
+  tags: string[];
+  img_desc: string;
+  image?: string;
+  constraints?: Record<string, unknown>;
+  context?: Record<string, unknown>;
 };
 
 /** Display the N17 refinement explanation when present, otherwise a generic success. */
 function showRefinedToast(refined: RefinedFeedback | undefined, fallback: string) {
   const explanation = refined?.explanation?.trim();
   if (explanation) {
-    toast.success("✨ AI đã hiểu yêu cầu của bạn", {
+    toast.success("Phản hồi của bạn đã được AI xử lý", {
       description: explanation,
       duration: 6000,
     });
@@ -46,15 +50,20 @@ function showRefinedToast(refined: RefinedFeedback | undefined, fallback: string
 }
 
 export function useActivityFeedback(locId: string) {
-  const setActivityResult = usePlannerStore((s) => s.setActivityResult);
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (body: ActivityFeedbackBody) =>
       apiClient.feedback<ActivitiesResponse>("activities", body),
     onSuccess: (data) => {
       const finalLocId = data.location_id ?? locId;
-      setActivityResult(finalLocId, data);
-      qc.setQueryData(["activities", finalLocId], data);
+      const store = usePlannerStore.getState();
+      const preferLlm = store.preferLlmActivities[finalLocId] ?? false;
+      if (preferLlm) {
+        store.setActivityResultLlm(finalLocId, data);
+      } else {
+        store.setActivityResult(finalLocId, data);
+      }
+      qc.setQueriesData({ queryKey: ["activities", finalLocId] }, data);
       showRefinedToast(data.refined, "Đã cập nhật danh sách hoạt động.");
     },
     onError: (err) => {

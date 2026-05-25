@@ -98,7 +98,7 @@ if !WAIT! gtr 30 (
 )
 python -c "import urllib.request; urllib.request.urlopen('http://localhost:3000', timeout=1)" >nul 2>&1
 if errorlevel 1 (
-    ping -n 3 127.0.0.1 >nul
+    python -c "import time; time.sleep(2)"
     goto WAIT_LOOP
 )
 echo [OK] Frontend ready after ~!WAIT! polls
