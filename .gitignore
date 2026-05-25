@@ -234,3 +234,6 @@ backend/modules/activity_retrievals/processed/
 
 # JSON Cache Files
 *cache*.json
+
+# N8 Image Cache
+backend/n8_orchestrator/image_cache/

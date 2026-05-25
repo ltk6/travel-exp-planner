@@ -107,13 +107,13 @@ def _score_location(
     
     if text_sims:
         max_text_sim = max(text_sims)
-        parts.append(f"matches your request ({max_text_sim:.2f})")
+        parts.append(f"Phù hợp văn bản tự do ({max_text_sim:.2f})")
     if weights["aug_tags"] > 0 and sim_aug_tags >= 0.3:
-        parts.append(f"matches your interests ({sim_aug_tags:.2f})")
+        parts.append(f"Phù hợp trắc nghiệm ({sim_aug_tags:.2f})")
     if weights["img_desc"] > 0 and sim_img_desc >= 0.3:
-        parts.append(f"visually similar ({sim_img_desc:.2f})")
+        parts.append(f"Phù hợp hình ảnh ({sim_img_desc:.2f})")
     
-    reason = " · ".join(parts) if parts else "Popular destination"
+    reason = " · ".join(parts) if parts else "Địa điểm phổ biến"
 
     return round(float(score), 4), reason
 

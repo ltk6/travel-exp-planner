@@ -1,6 +1,6 @@
 # N17 — Feedback Processing: Báo Cáo Bench Test
 
-**Ngày:** 2026-05-21  
+**Ngày:** 2026-05-25  
 **Chain:** groq_70b, qwen_32b, groq_8b, groq_scout  
 **Số ca test:** 3  
 
@@ -46,71 +46,71 @@ N17 xử lý phản hồi tự do của người dùng để tinh chỉnh ý đ�
 
 | Case | Latency (ms) | Total Tok | Status |
 |------|:------------:|:---------:|:------:|
-| quiet_beach | 1074 | 1490 | ✓ PASS |
-| dalat_coffee | 1583 | 1670 | ✓ PASS |
-| hanoi_history | 1913 | 1791 | ✓ PASS |
+| quiet_beach | 2637 | 2566 | ✓ PASS |
+| dalat_coffee | 2258 | 2498 | ✓ PASS |
+| hanoi_history | 3210 | 3044 | ✓ PASS |
 
-**TB latency:** 1523.3ms &nbsp; **Pass rate:** 100%
+**TB latency:** 2701.7ms &nbsp; **Pass rate:** 100%
 
 ### groq_70b (`llama-3.3-70b-versatile`)
 
 | Case | Latency (ms) | Total Tok | Status |
 |------|:------------:|:---------:|:------:|
-| quiet_beach | 931 | 1259 | ✓ PASS |
-| dalat_coffee | 875 | 1236 | ✓ PASS |
-| hanoi_history | 876 | 1217 | ✓ PASS |
+| quiet_beach | 1106 | 1860 | ✓ PASS |
+| dalat_coffee | 834 | 1779 | ✓ PASS |
+| hanoi_history | 829 | 1804 | ✓ PASS |
 
-**TB latency:** 894.0ms &nbsp; **Pass rate:** 100%
+**TB latency:** 923.0ms &nbsp; **Pass rate:** 100%
 
 ### qwen_32b (`qwen/qwen3-32b`)
 
 | Case | Latency (ms) | Total Tok | Status |
 |------|:------------:|:---------:|:------:|
-| quiet_beach | 1902 | 1669 | ✓ PASS |
-| dalat_coffee | 1475 | 1548 | ✓ PASS |
-| hanoi_history | 255 | — | ✗ FAIL |
+| quiet_beach | 1774 | 2320 | ✓ PASS |
+| dalat_coffee | 2223 | 2106 | ✓ PASS |
+| hanoi_history | 2650 | 2698 | ✓ PASS |
 
-**TB latency:** 1210.7ms &nbsp; **Pass rate:** 67%
+**TB latency:** 2215.7ms &nbsp; **Pass rate:** 100%
 
 ### groq_8b (`llama-3.1-8b-instant`)
 
 | Case | Latency (ms) | Total Tok | Status |
 |------|:------------:|:---------:|:------:|
-| quiet_beach | 641 | 1248 | ✓ PASS |
-| dalat_coffee | 690 | 1216 | ✓ PASS |
-| hanoi_history | 684 | 1208 | ✓ PASS |
+| quiet_beach | 1801 | 1839 | ✓ PASS |
+| dalat_coffee | 1023 | 1770 | ✓ PASS |
+| hanoi_history | 1640 | 1773 | ✓ PASS |
 
-**TB latency:** 671.7ms &nbsp; **Pass rate:** 100%
+**TB latency:** 1488.0ms &nbsp; **Pass rate:** 100%
 
 ### gpt_20b (`openai/gpt-oss-20b`)
 
 | Case | Latency (ms) | Total Tok | Status |
 |------|:------------:|:---------:|:------:|
-| quiet_beach | 976 | 1698 | ✓ PASS |
-| dalat_coffee | 2613 | — | ✗ FAIL |
-| hanoi_history | 1641 | 2335 | ✓ PASS |
+| quiet_beach | 2994 | — | ✗ FAIL |
+| dalat_coffee | 1200 | 2372 | ✓ PASS |
+| hanoi_history | 1754 | 2952 | ✓ PASS |
 
-**TB latency:** 1743.3ms &nbsp; **Pass rate:** 67%
+**TB latency:** 1982.7ms &nbsp; **Pass rate:** 67%
 
 ### gpt_safeguard (`openai/gpt-oss-safeguard-20b`)
 
 | Case | Latency (ms) | Total Tok | Status |
 |------|:------------:|:---------:|:------:|
-| quiet_beach | 937 | 1562 | ✓ PASS |
-| dalat_coffee | 1096 | 1735 | ✓ PASS |
-| hanoi_history | 889 | 1602 | ✓ PASS |
+| quiet_beach | 1664 | 2695 | ✓ PASS |
+| dalat_coffee | 1186 | 2251 | ✓ PASS |
+| hanoi_history | 1600 | 2372 | ✓ PASS |
 
-**TB latency:** 974.0ms &nbsp; **Pass rate:** 100%
+**TB latency:** 1483.3ms &nbsp; **Pass rate:** 100%
 
 ### groq_scout (`meta-llama/llama-4-scout-17b-16e-instruct`)
 
 | Case | Latency (ms) | Total Tok | Status |
 |------|:------------:|:---------:|:------:|
-| quiet_beach | 1084 | 1156 | ✓ PASS |
-| dalat_coffee | 939 | 1139 | ✓ PASS |
-| hanoi_history | 1241 | 1173 | ✓ PASS |
+| quiet_beach | 685 | 1751 | ✓ PASS |
+| dalat_coffee | 713 | 1716 | ✓ PASS |
+| hanoi_history | 1065 | 1714 | ✓ PASS |
 
-**TB latency:** 1088.0ms &nbsp; **Pass rate:** 100%
+**TB latency:** 821.0ms &nbsp; **Pass rate:** 100%
 
 ---
 
@@ -118,13 +118,13 @@ N17 xử lý phản hồi tự do của người dùng để tinh chỉnh ý đ�
 
 | Alias | Model name | TB latency (ms) | Pass rate |
 |-------|------------|:---------------:|:---------:|
-| gpt_120b | `openai/gpt-oss-120b` | 1523.3 | 100% |
-| groq_70b | `llama-3.3-70b-versatile` | 894.0 | 100% |
-| qwen_32b | `qwen/qwen3-32b` | 1210.7 | 67% |
-| groq_8b | `llama-3.1-8b-instant` | 671.7 | 100% |
-| gpt_20b | `openai/gpt-oss-20b` | 1743.3 | 67% |
-| gpt_safeguard | `openai/gpt-oss-safeguard-20b` | 974.0 | 100% |
-| groq_scout | `meta-llama/llama-4-scout-17b-16e-instruct` | 1088.0 | 100% |
+| gpt_120b | `openai/gpt-oss-120b` | 2701.7 | 100% |
+| groq_70b | `llama-3.3-70b-versatile` | 923.0 | 100% |
+| qwen_32b | `qwen/qwen3-32b` | 2215.7 | 100% |
+| groq_8b | `llama-3.1-8b-instant` | 1488.0 | 100% |
+| gpt_20b | `openai/gpt-oss-20b` | 1982.7 | 67% |
+| gpt_safeguard | `openai/gpt-oss-safeguard-20b` | 1483.3 | 100% |
+| groq_scout | `meta-llama/llama-4-scout-17b-16e-instruct` | 821.0 | 100% |
 
 ---
 
@@ -132,11 +132,11 @@ N17 xử lý phản hồi tự do của người dùng để tinh chỉnh ý đ�
 
 Chạy `process_feedback()` với full chain failover.
 
-**Trung bình độ trễ:** 970.3ms  
+**Trung bình độ trễ:** 954.0ms  
 **Tỉ lệ fallback:** 0/3  
 
 | Case | Model thực tế | Latency (ms) | Tokens | Status | Tags |
 |------|---------------|:------------:|:------:|:------:|:----:|
-| quiet_beach | `llama-3.3-70b-versatile` | 1031 | 1252 | OK | 5 |
-| dalat_coffee | `llama-3.3-70b-versatile` | 1027 | 1228 | OK | 4 |
-| hanoi_history | `llama-3.3-70b-versatile` | 853 | 1220 | OK | 4 |
+| quiet_beach | `llama-3.3-70b-versatile` | 1015 | 1860 | OK | 6 |
+| dalat_coffee | `llama-3.3-70b-versatile` | 974 | 1786 | OK | 4 |
+| hanoi_history | `llama-3.3-70b-versatile` | 873 | 1805 | OK | 4 |

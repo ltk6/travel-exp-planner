@@ -16,16 +16,24 @@ export function FeedbackBox({ loc }: Props) {
   const mutation = useActivityFeedback(loc.location_id);
 
   const onSubmit = () => {
-    if (!text.trim() || !userTrace) return;
+    if (!text.trim()) return;
+    const store = usePlannerStore.getState();
+    const storePayload = store.payload;
+    const storeFreeformText = store.freeformText;
+    const storeSelectedKeys = store.selectedKeys;
+    const preferLlm = store.preferLlmActivities[loc.location_id] ?? false;
+
     mutation.mutate({
       feedback: text.trim(),
-      text: userTrace.input?.text ?? "",
-      tags: userTrace.input?.tags ?? [],
-      img_desc: userTrace.n2_image?.img_desc ?? "",
-      text_k: userTrace.n1_embedding?.text_k ?? 0,
-      tags_k: userTrace.n1_embedding?.tags_k ?? 0,
-      user_vectors: userTrace.user_vectors ?? {},
+      text: userTrace?.input?.text || storePayload?.text || storeFreeformText || "",
+      tags: userTrace?.input?.tags || storePayload?.tags || storeSelectedKeys || [],
+      img_desc: userTrace?.n2_image?.img_desc || storePayload?.img_desc || "",
+      text_k: userTrace?.n1_embedding?.text_k ?? 0,
+      tags_k: userTrace?.n1_embedding?.tags_k ?? 0,
+      user_vectors: userTrace?.user_vectors ?? {},
       location: { location_id: loc.location_id, metadata: loc.metadata ?? {} },
+      v2: !preferLlm,
+      prefer_llm: preferLlm,
     });
     setText("");
   };

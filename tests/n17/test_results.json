@@ -13,27 +13,25 @@
       "feedback": "Thực ra tôi thấy hơi mệt, tôi muốn tìm một nơi nào đó cực kỳ yên tĩnh, không dùng cái ảnh này nữa"
     },
     "output": {
-      "refined_text": "Tôi muốn tìm một nơi yên tĩnh để du lịch",
+      "refined_text": "Tôi muốn đi du lịch biển yên bình",
       "refined_tags": [
+        "beach",
         "peaceful",
-        "cozy",
-        "nature reserve",
-        "luxury travel",
-        "wellness retreat"
+        "resort"
       ],
       "refined_img_desc": "",
-      "explanation": "Tôi đã cập nhật lại tìm kiếm để ưu tiên các không gian yên tĩnh và gỡ bỏ ảnh cũ cho bạn. Bạn sẽ tìm thấy những nơi tuyệt vời để thư giãn và tận hưởng không gian yên bình.",
+      "explanation": "Tôi hiểu rằng bạn muốn tìm một nơi yên tĩnh và thư giãn. Tôi đã cập nhật yêu cầu của bạn để tìm kiếm một bãi biển yên bình và đẹp. Tôi cũng đã bỏ qua ảnh cũ như bạn yêu cầu.",
       "metadata": {
         "model": "llama-3.3-70b-versatile",
         "provider": "groq",
         "usage": {
-          "queue_time": 0.162097082,
-          "prompt_tokens": 1143,
-          "prompt_time": 0.057225109,
-          "completion_tokens": 116,
-          "completion_time": 0.292653069,
-          "total_tokens": 1259,
-          "total_time": 0.349878178
+          "queue_time": 0.160921212,
+          "prompt_tokens": 1909,
+          "prompt_time": 0.129174798,
+          "completion_tokens": 110,
+          "completion_time": 0.315382324,
+          "total_tokens": 2019,
+          "total_time": 0.444557122
         }
       }
     }
@@ -56,21 +54,21 @@
         "coffee",
         "cloud sea",
         "cool climate",
-        "hill"
+        "peaceful"
       ],
-      "refined_img_desc": "Ảnh chụp cảnh săn mây và thưởng thức cà phê tại Đà Lạt",
-      "explanation": "Tôi đã cập nhật lại tìm kiếm của bạn để ưu tiên các hoạt động trải nghiệm cà phê và săn mây tại Đà Lạt, cùng với đó là những cảnh quan thiên nhiên tuyệt đẹp và khí hậu mát mẻ. Bạn sẽ có những trải nghiệm tuyệt vời với cà phê và săn mây tại đây!",
+      "refined_img_desc": "Hình ảnh những quán cà phê đẹp và view săn mây tại Đà Lạt",
+      "explanation": "Tôi đã cập nhật thông tin du lịch của bạn với trải nghiệm cà phê và săn mây tại Đà Lạt. Bạn sẽ được tận hưởng không khí mát mẻ và cảnh quan thiên nhiên tuyệt đẹp của thành phố này.",
       "metadata": {
         "model": "llama-3.3-70b-versatile",
         "provider": "groq",
         "usage": {
-          "queue_time": 0.165426822,
-          "prompt_tokens": 1102,
-          "prompt_time": 0.082122288,
-          "completion_tokens": 146,
-          "completion_time": 0.409722018,
-          "total_tokens": 1248,
-          "total_time": 0.491844306
+          "queue_time": 0.160446753,
+          "prompt_tokens": 1836,
+          "prompt_time": 0.165634775,
+          "completion_tokens": 133,
+          "completion_time": 0.405576641,
+          "total_tokens": 1969,
+          "total_time": 0.571211416
         }
       }
     }

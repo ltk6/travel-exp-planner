@@ -1,7 +1,7 @@
 {
   "metadata": {
     "module": "N17 — Feedback Processing",
-    "date": "2026-05-21",
+    "date": "2026-05-25",
     "chain": [
       "groq_70b",
       "qwen_32b",
@@ -16,35 +16,35 @@
       "cases": [
         {
           "case": "quiet_beach",
-          "latency_ms": 1074,
-          "prompt_tokens": 1155,
-          "completion_tokens": 335,
-          "total_tokens": 1490,
+          "latency_ms": 2637,
+          "prompt_tokens": 1770,
+          "completion_tokens": 796,
+          "total_tokens": 2566,
           "parse_success": true,
           "model_used": "openai/gpt-oss-120b"
         },
         {
           "case": "dalat_coffee",
-          "latency_ms": 1583,
-          "prompt_tokens": 1110,
-          "completion_tokens": 560,
-          "total_tokens": 1670,
+          "latency_ms": 2258,
+          "prompt_tokens": 1691,
+          "completion_tokens": 807,
+          "total_tokens": 2498,
           "parse_success": true,
           "model_used": "openai/gpt-oss-120b"
         },
         {
           "case": "hanoi_history",
-          "latency_ms": 1913,
-          "prompt_tokens": 1129,
-          "completion_tokens": 662,
-          "total_tokens": 1791,
+          "latency_ms": 3210,
+          "prompt_tokens": 1718,
+          "completion_tokens": 1326,
+          "total_tokens": 3044,
           "parse_success": true,
           "model_used": "openai/gpt-oss-120b"
         }
       ],
       "summary": {
-        "avg_latency_ms": 1523.3,
-        "avg_total_tokens": 1650.3,
+        "avg_latency_ms": 2701.7,
+        "avg_total_tokens": 2702.7,
         "pass_count": 3,
         "total_cases": 3,
         "pass_rate": 1.0
@@ -56,35 +56,35 @@
       "cases": [
         {
           "case": "quiet_beach",
-          "latency_ms": 931,
-          "prompt_tokens": 1128,
+          "latency_ms": 1106,
+          "prompt_tokens": 1729,
           "completion_tokens": 131,
-          "total_tokens": 1259,
+          "total_tokens": 1860,
           "parse_success": true,
           "model_used": "llama-3.3-70b-versatile"
         },
         {
           "case": "dalat_coffee",
-          "latency_ms": 875,
-          "prompt_tokens": 1086,
-          "completion_tokens": 150,
-          "total_tokens": 1236,
+          "latency_ms": 834,
+          "prompt_tokens": 1654,
+          "completion_tokens": 125,
+          "total_tokens": 1779,
           "parse_success": true,
           "model_used": "llama-3.3-70b-versatile"
         },
         {
           "case": "hanoi_history",
-          "latency_ms": 876,
-          "prompt_tokens": 1104,
-          "completion_tokens": 113,
-          "total_tokens": 1217,
+          "latency_ms": 829,
+          "prompt_tokens": 1680,
+          "completion_tokens": 124,
+          "total_tokens": 1804,
           "parse_success": true,
           "model_used": "llama-3.3-70b-versatile"
         }
       ],
       "summary": {
-        "avg_latency_ms": 894.0,
-        "avg_total_tokens": 1237.3,
+        "avg_latency_ms": 923.0,
+        "avg_total_tokens": 1814.3,
         "pass_count": 3,
         "total_cases": 3,
         "pass_rate": 1.0
@@ -96,38 +96,38 @@
       "cases": [
         {
           "case": "quiet_beach",
-          "latency_ms": 1902,
-          "prompt_tokens": 1104,
-          "completion_tokens": 565,
-          "total_tokens": 1669,
+          "latency_ms": 1774,
+          "prompt_tokens": 1715,
+          "completion_tokens": 605,
+          "total_tokens": 2320,
           "parse_success": true,
           "model_used": "qwen/qwen3-32b"
         },
         {
           "case": "dalat_coffee",
-          "latency_ms": 1475,
-          "prompt_tokens": 1064,
-          "completion_tokens": 484,
-          "total_tokens": 1548,
+          "latency_ms": 2223,
+          "prompt_tokens": 1644,
+          "completion_tokens": 462,
+          "total_tokens": 2106,
           "parse_success": true,
           "model_used": "qwen/qwen3-32b"
         },
         {
           "case": "hanoi_history",
-          "latency_ms": 255,
-          "prompt_tokens": null,
-          "completion_tokens": null,
-          "total_tokens": null,
-          "parse_success": false,
-          "model_used": null
+          "latency_ms": 2650,
+          "prompt_tokens": 1674,
+          "completion_tokens": 1024,
+          "total_tokens": 2698,
+          "parse_success": true,
+          "model_used": "qwen/qwen3-32b"
         }
       ],
       "summary": {
-        "avg_latency_ms": 1210.7,
-        "avg_total_tokens": 1608.5,
-        "pass_count": 2,
+        "avg_latency_ms": 2215.7,
+        "avg_total_tokens": 2374.7,
+        "pass_count": 3,
         "total_cases": 3,
-        "pass_rate": 0.67
+        "pass_rate": 1.0
       }
     },
     {
@@ -136,35 +136,35 @@
       "cases": [
         {
           "case": "quiet_beach",
-          "latency_ms": 641,
-          "prompt_tokens": 1128,
-          "completion_tokens": 120,
-          "total_tokens": 1248,
+          "latency_ms": 1801,
+          "prompt_tokens": 1729,
+          "completion_tokens": 110,
+          "total_tokens": 1839,
           "parse_success": true,
           "model_used": "llama-3.1-8b-instant"
         },
         {
           "case": "dalat_coffee",
-          "latency_ms": 690,
-          "prompt_tokens": 1086,
-          "completion_tokens": 130,
-          "total_tokens": 1216,
+          "latency_ms": 1023,
+          "prompt_tokens": 1654,
+          "completion_tokens": 116,
+          "total_tokens": 1770,
           "parse_success": true,
           "model_used": "llama-3.1-8b-instant"
         },
         {
           "case": "hanoi_history",
-          "latency_ms": 684,
-          "prompt_tokens": 1104,
-          "completion_tokens": 104,
-          "total_tokens": 1208,
+          "latency_ms": 1640,
+          "prompt_tokens": 1680,
+          "completion_tokens": 93,
+          "total_tokens": 1773,
           "parse_success": true,
           "model_used": "llama-3.1-8b-instant"
         }
       ],
       "summary": {
-        "avg_latency_ms": 671.7,
-        "avg_total_tokens": 1224.0,
+        "avg_latency_ms": 1488.0,
+        "avg_total_tokens": 1794.0,
         "pass_count": 3,
         "total_cases": 3,
         "pass_rate": 1.0
@@ -176,16 +176,7 @@
       "cases": [
         {
           "case": "quiet_beach",
-          "latency_ms": 976,
-          "prompt_tokens": 1155,
-          "completion_tokens": 543,
-          "total_tokens": 1698,
-          "parse_success": true,
-          "model_used": "openai/gpt-oss-20b"
-        },
-        {
-          "case": "dalat_coffee",
-          "latency_ms": 2613,
+          "latency_ms": 2994,
           "prompt_tokens": null,
           "completion_tokens": null,
           "total_tokens": null,
@@ -193,18 +184,27 @@
           "model_used": null
         },
         {
+          "case": "dalat_coffee",
+          "latency_ms": 1200,
+          "prompt_tokens": 1691,
+          "completion_tokens": 681,
+          "total_tokens": 2372,
+          "parse_success": true,
+          "model_used": "openai/gpt-oss-20b"
+        },
+        {
           "case": "hanoi_history",
-          "latency_ms": 1641,
-          "prompt_tokens": 1129,
-          "completion_tokens": 1206,
-          "total_tokens": 2335,
+          "latency_ms": 1754,
+          "prompt_tokens": 1718,
+          "completion_tokens": 1234,
+          "total_tokens": 2952,
           "parse_success": true,
           "model_used": "openai/gpt-oss-20b"
         }
       ],
       "summary": {
-        "avg_latency_ms": 1743.3,
-        "avg_total_tokens": 2016.5,
+        "avg_latency_ms": 1982.7,
+        "avg_total_tokens": 2662.0,
         "pass_count": 2,
         "total_cases": 3,
         "pass_rate": 0.67
@@ -216,35 +216,35 @@
       "cases": [
         {
           "case": "quiet_beach",
-          "latency_ms": 937,
-          "prompt_tokens": 1155,
-          "completion_tokens": 407,
-          "total_tokens": 1562,
+          "latency_ms": 1664,
+          "prompt_tokens": 1770,
+          "completion_tokens": 925,
+          "total_tokens": 2695,
           "parse_success": true,
           "model_used": "openai/gpt-oss-safeguard-20b"
         },
         {
           "case": "dalat_coffee",
-          "latency_ms": 1096,
-          "prompt_tokens": 1110,
-          "completion_tokens": 625,
-          "total_tokens": 1735,
+          "latency_ms": 1186,
+          "prompt_tokens": 1691,
+          "completion_tokens": 560,
+          "total_tokens": 2251,
           "parse_success": true,
           "model_used": "openai/gpt-oss-safeguard-20b"
         },
         {
           "case": "hanoi_history",
-          "latency_ms": 889,
-          "prompt_tokens": 1129,
-          "completion_tokens": 473,
-          "total_tokens": 1602,
+          "latency_ms": 1600,
+          "prompt_tokens": 1718,
+          "completion_tokens": 654,
+          "total_tokens": 2372,
           "parse_success": true,
           "model_used": "openai/gpt-oss-safeguard-20b"
         }
       ],
       "summary": {
-        "avg_latency_ms": 974.0,
-        "avg_total_tokens": 1633.0,
+        "avg_latency_ms": 1483.3,
+        "avg_total_tokens": 2439.3,
         "pass_count": 3,
         "total_cases": 3,
         "pass_rate": 1.0
@@ -256,35 +256,35 @@
       "cases": [
         {
           "case": "quiet_beach",
-          "latency_ms": 1084,
-          "prompt_tokens": 1076,
-          "completion_tokens": 80,
-          "total_tokens": 1156,
+          "latency_ms": 685,
+          "prompt_tokens": 1654,
+          "completion_tokens": 97,
+          "total_tokens": 1751,
           "parse_success": true,
           "model_used": "meta-llama/llama-4-scout-17b-16e-instruct"
         },
         {
           "case": "dalat_coffee",
-          "latency_ms": 939,
-          "prompt_tokens": 1038,
-          "completion_tokens": 101,
-          "total_tokens": 1139,
+          "latency_ms": 713,
+          "prompt_tokens": 1586,
+          "completion_tokens": 130,
+          "total_tokens": 1716,
           "parse_success": true,
           "model_used": "meta-llama/llama-4-scout-17b-16e-instruct"
         },
         {
           "case": "hanoi_history",
-          "latency_ms": 1241,
-          "prompt_tokens": 1058,
-          "completion_tokens": 115,
-          "total_tokens": 1173,
+          "latency_ms": 1065,
+          "prompt_tokens": 1617,
+          "completion_tokens": 97,
+          "total_tokens": 1714,
           "parse_success": true,
           "model_used": "meta-llama/llama-4-scout-17b-16e-instruct"
         }
       ],
       "summary": {
-        "avg_latency_ms": 1088.0,
-        "avg_total_tokens": 1156.0,
+        "avg_latency_ms": 821.0,
+        "avg_total_tokens": 1727.0,
         "pass_count": 3,
         "total_cases": 3,
         "pass_rate": 1.0
@@ -292,37 +292,37 @@
     }
   ],
   "end_to_end": {
-    "total_latency_ms": 2911,
-    "avg_latency_ms": 970.3,
+    "total_latency_ms": 2862,
+    "avg_latency_ms": 954.0,
     "fallback_count": 0,
     "total_cases": 3,
     "cases": [
       {
         "case": "quiet_beach",
-        "latency_ms": 1031,
+        "latency_ms": 1015,
         "fallback_used": false,
         "refined_text_present": true,
-        "refined_tags_count": 5,
+        "refined_tags_count": 6,
         "model_used": "llama-3.3-70b-versatile",
-        "total_tokens": 1252
+        "total_tokens": 1860
       },
       {
         "case": "dalat_coffee",
-        "latency_ms": 1027,
+        "latency_ms": 974,
         "fallback_used": false,
         "refined_text_present": true,
         "refined_tags_count": 4,
         "model_used": "llama-3.3-70b-versatile",
-        "total_tokens": 1228
+        "total_tokens": 1786
       },
       {
         "case": "hanoi_history",
-        "latency_ms": 853,
+        "latency_ms": 873,
         "fallback_used": false,
         "refined_text_present": true,
         "refined_tags_count": 4,
         "model_used": "llama-3.3-70b-versatile",
-        "total_tokens": 1220
+        "total_tokens": 1805
       }
     ]
   }
