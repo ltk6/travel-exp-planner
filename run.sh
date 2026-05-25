@@ -100,11 +100,11 @@ echo -e "${BLUE}=======================================${RESET}"
 echo -e "${BOLD}2/3  Verifying frontend dependencies  ${RESET}"
 echo -e "${BLUE}=======================================${RESET}"
 
-if [ ! -d "frontend/web/node_modules" ]; then
+if [ ! -d "frontend/n16_web_ui/node_modules" ]; then
     echo -e "${BLUE}[INFO] Installing Next.js dependencies (1-2 min, one-time)...${RESET}"
-    (cd frontend/web && npm install)
+    (cd frontend/n16_web_ui && npm install)
 else
-    echo -e "${GREEN}[OK] frontend/web/node_modules ready${RESET}"
+    echo -e "${GREEN}[OK] frontend/n16_web_ui/node_modules ready${RESET}"
 fi
 
 # 5. Detect running services
@@ -132,7 +132,7 @@ if [ "$FRONTEND_RUNNING" -eq 1 ]; then
     echo -e "${GREEN}[OK] Frontend already running on :3000 - skip launching${RESET}"
 else
     echo -e "${BLUE}[INFO] Launching frontend on :3000 (logs: frontend.log)...${RESET}"
-    (cd frontend/web && nohup npm run dev > ../../frontend.log 2>&1 &)
+    (cd frontend/n16_web_ui && nohup npm run dev > ../../frontend.log 2>&1 &)
     # Give a tiny slice of time for subshell to spawn dev server and write pid
     sleep 0.5
     # Find the PID of the npm/next dev server process

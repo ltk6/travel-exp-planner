@@ -54,13 +54,13 @@ set PYTHONPATH=%cd%
 echo =======================================
 echo 2/3  Verifying frontend dependencies
 echo =======================================
-if not exist "frontend\web\node_modules" (
+if not exist "frontend\n16_web_ui\node_modules" (
     echo [INFO] Installing Next.js dependencies ^(1-2 min, one-time^)...
-    pushd "frontend\web"
+    pushd "frontend\n16_web_ui"
     call npm install
     popd
 ) else (
-    echo [OK] frontend\web\node_modules ready
+    echo [OK] frontend\n16_web_ui\node_modules ready
 )
 
 :: 4. Detect running services and launch only what's missing
@@ -84,7 +84,7 @@ if "%FRONTEND_RUNNING%"=="1" (
     echo [OK] Frontend already on :3000 - skip launching
 ) else (
     echo [INFO] Launching frontend on :3000...
-    start "Travel Planner - Frontend (:3000)" /D "%cd%\frontend\web" cmd /k "npm run dev"
+    start "Travel Planner - Frontend (:3000)" /D "%cd%\frontend\n16_web_ui" cmd /k "npm run dev"
 )
 
 echo.
@@ -110,7 +110,7 @@ echo [SUCCESS] Services:
 echo   Frontend:  http://localhost:3000
 echo   Backend:   http://localhost:5000/health
 echo.
-echo Legacy Streamlit fallback: run-legacy.bat
+echo Legacy Streamlit fallback: legacy_run.bat
 echo.
 pause
 endlocal

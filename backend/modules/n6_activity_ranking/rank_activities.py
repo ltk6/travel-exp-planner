@@ -18,8 +18,8 @@ W_ATTRIBUTE    = 0.15
 W_COMPLETENESS = 0.15
 W_DISTANCE     = 0.25
 
-# Bán kính tham chiếu cho distance score — seed pipeline cap pool ở 8km nên dùng
-# cùng giá trị: act ngay anchor → 1.0, act ở rìa pool 8km → 0.0.
+# Reference radius for distance score — seed pipeline caps the pool at 8km, so we use
+# the same value: act at the anchor → 1.0, act at the 8km pool edge → 0.0.
 DISTANCE_DECAY_M = 8000.0
 
 # =============================================================================
@@ -87,9 +87,9 @@ _COMPLETENESS_WEIGHTS = {
 
 
 def _completeness_score(activity: Dict) -> float:
-    """0.0 → 1.0 — ưu tiên acts có đủ desc + tags để hiển thị cho user.
+    """0.0 → 1.0 — prioritises acts that have a full desc + tags to display to the user.
 
-    desc + tags chiếm 75% trọng số; signals (ảnh, rating, giờ mở cửa) chia phần còn lại.
+    desc + tags account for 75% of the weight; signals (image, rating, opening hours) share the rest.
     """
     md = activity.get("metadata") or {}
     sg = activity.get("signals") or {}
@@ -115,11 +115,11 @@ def _completeness_score(activity: Dict) -> float:
 
 
 def _distance_score(activity: Dict) -> Tuple[float, bool]:
-    """0.0 → 1.0 — ưu tiên acts gần anchor.
+    """0.0 → 1.0 — prioritises acts closest to the anchor.
 
-    Linear decay từ 1.0 (tại anchor, 0m) xuống 0.0 (≥ DISTANCE_DECAY_M).
-    Return (score, matched). matched=False khi không có dữ liệu distance → caller
-    bỏ nhánh này khỏi dynamic weighting thay vì gán 0.5 neutral.
+    Linear decay from 1.0 (at anchor, 0m) down to 0.0 (≥ DISTANCE_DECAY_M).
+    Returns (score, matched). matched=False when no distance data is available — the caller
+    drops this branch from dynamic weighting instead of assigning a neutral 0.5.
     """
     place = activity.get("place") or {}
     d = place.get("distance_from_anchor_m")
@@ -242,9 +242,9 @@ def rank_activities(data: Union[N6RankInput, Dict[str, Any]]) -> Dict[str, Any]:
         dist_score, dist_matched = _distance_score(activity)
 
         # ── Dynamic category weighting ──
-        # Completeness + distance luôn available khi có dữ liệu → giữ trọng số cố
-        # định, các nhánh khác zero ra nếu thiếu input. Distance bị bỏ khi act
-        # không có distance_from_anchor_m (vd N5 fallback chưa có anchor distance).
+        # Completeness + distance are always available when data exists → keep fixed weights.
+        # Other branches zero out when input is missing. Distance is dropped when the act
+        # has no distance_from_anchor_m (e.g. N5 fallback activities without anchor distance).
         has_attr_pref = any(v is not None for v in user_prefs.values())
         w_sem  = W_SEMANTIC if sem_matched else 0.0
         w_tag  = W_TAG if user_tags else 0.0

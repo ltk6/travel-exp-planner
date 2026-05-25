@@ -33,7 +33,7 @@ from backend.shared.math import cosine as _cosine_shared
 
 
 def _cosine(a: list[float] | None, b: list[float] | None) -> float:
-    """Cosine similarity in [-1, 1], 0.0 nếu vector None/rỗng/khác length."""
+    """Cosine similarity in [-1, 1]; returns 0.0 if either vector is None, empty, or different length."""
     if a and b and len(a) != len(b):
         logger.warning("[N4] Vector length mismatch: %d vs %d", len(a), len(b))
     return _cosine_shared(a, b)
@@ -107,13 +107,13 @@ def _score_location(
     
     if text_sims:
         max_text_sim = max(text_sims)
-        parts.append(f"phù hợp yêu cầu ({max_text_sim:.2f})")
+        parts.append(f"matches your request ({max_text_sim:.2f})")
     if weights["aug_tags"] > 0 and sim_aug_tags >= 0.3:
-        parts.append(f"phù hợp sở thích ({sim_aug_tags:.2f})")
+        parts.append(f"matches your interests ({sim_aug_tags:.2f})")
     if weights["img_desc"] > 0 and sim_img_desc >= 0.3:
-        parts.append(f"hình ảnh tương đồng ({sim_img_desc:.2f})")
+        parts.append(f"visually similar ({sim_img_desc:.2f})")
     
-    reason = " · ".join(parts) if parts else "Địa điểm phổ biến"
+    reason = " · ".join(parts) if parts else "Popular destination"
 
     return round(float(score), 4), reason
 
@@ -133,7 +133,7 @@ def rank_locations(data: Union[N4RankInput, dict[str, Any]]) -> dict[str, Any]:
     top_k        = max(1, validated.top_k)
 
     if not locations:
-        logger.warning("[N4] Không có địa điểm nào để xếp hạng")
+        logger.warning("[N4] No locations to rank")
         return {"locations": [], "metadata": {"text_k": text_k, "tags_k": tags_k, "latency_ms": 0}}
 
     # ── resolve weights from text_k & tags_k ──────────────────
@@ -153,8 +153,8 @@ def rank_locations(data: Union[N4RankInput, dict[str, Any]]) -> dict[str, Any]:
             raise
         except (TypeError, ValueError, ZeroDivisionError) as exc:
             # Runtime data issue (vector length mismatch, NaN, …) — log + score 0.
-            logger.warning("[N4] Lỗi tính điểm cho %s: %s: %s", loc_id, type(exc).__name__, exc)
-            score, reason = 0.0, "Lỗi tính điểm"
+            logger.warning("[N4] Scoring error for %s: %s: %s", loc_id, type(exc).__name__, exc)
+            score, reason = 0.0, "Scoring error"
 
         scored.append({
             "location_id": loc_id,
@@ -174,7 +174,7 @@ def rank_locations(data: Union[N4RankInput, dict[str, Any]]) -> dict[str, Any]:
             r["score"] = round(0.65 + shaped * 0.30, 4)
 
     elapsed_ms = int((time.time() - t0) * 1000)
-    logger.info("[N4] Đã xếp hạng %d địa điểm → top %d (normalized) in %dms", len(locations), len(result), elapsed_ms)
+    logger.info("[N4] Ranked %d locations → top %d (normalized) in %dms", len(locations), len(result), elapsed_ms)
     
     return {
         "locations": result,

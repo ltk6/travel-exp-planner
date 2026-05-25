@@ -522,10 +522,21 @@ def init_profile_db(drop_existing: bool = False):
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     """)
+
+    # 3. Bang luu general feedback cua app
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS app_feedback (
+            feedback_id SERIAL PRIMARY KEY,
+            name VARCHAR(255),
+            email VARCHAR(255),
+            content TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
     conn.commit()
     cur.close()
     conn.close()
-    logger.info(f"Khoi tao bang users va rec_history thanh cong! (drop_existing={drop_existing})")
+    logger.info(f"users, history and app_feedback tables successfully initialized (drop_existing={drop_existing})")
 
 # PHAN 1: AUTHENTICATION (DANG KY DANG NHAP)
 
@@ -562,25 +573,36 @@ def login_user(username, password) -> Dict[str, Any]:
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
-# PHAN 2: REC HISTORY (LUU TOAN BO DATA KHI REC)
+# PART 2: RECOMMENDATION HISTORY PERSISTENCE
 
-def save_rec_turn(user_id: int, input_data: Dict[str, Any], output_data: Dict[str, Any]) -> Dict[str, Any]:
-    """Sau moi lan rec, frontend goi den day de luu vao database"""
+def save_rec_turn(user_id: int, input_data: Dict[str, Any], output_data: Dict[str, Any], history_id: Optional[int] = None) -> Dict[str, Any]:
+    """Save recommendation turn or update loaded activities in the database."""
     try:
         conn = _get_connection()
         cur = conn.cursor()
-        cur.execute("""
-            INSERT INTO rec_history (user_id, input_data, output_data)
-            VALUES (%s, %s, %s) RETURNING history_id;
-        """, (user_id, json.dumps(input_data), json.dumps(output_data)))
-        row = cur.fetchone()
-        history_id = row["history_id"] if row else None
-        conn.commit()
-        cur.close()
-        conn.close()
-        return {"status": "success", "message": "Da luu lich su goi y thanh cong", "history_id": history_id}
+        if history_id:
+            cur.execute("""
+                UPDATE rec_history 
+                SET input_data = %s, output_data = %s
+                WHERE history_id = %s AND user_id = %s;
+            """, (json.dumps(input_data), json.dumps(output_data), history_id, user_id))
+            conn.commit()
+            cur.close()
+            conn.close()
+            return {"status": "success", "message": "Successfully updated recommendation history", "history_id": history_id}
+        else:
+            cur.execute("""
+                INSERT INTO rec_history (user_id, input_data, output_data)
+                VALUES (%s, %s, %s) RETURNING history_id;
+            """, (user_id, json.dumps(input_data), json.dumps(output_data)))
+            row = cur.fetchone()
+            history_id = row["history_id"] if row else None
+            conn.commit()
+            cur.close()
+            conn.close()
+            return {"status": "success", "message": "Successfully saved recommendation history", "history_id": history_id}
     except Exception as e:
-        logger.error(f"Loi luu lich su rec: {e}")
+        logger.error(f"Error saving/updating recommendation history: {e}")
         return {"status": "error", "message": str(e)}
 
 def get_user_history(user_id: int) -> Dict[str, Any]:
@@ -626,3 +648,21 @@ def get_location_image_by_index(location_id: str, idx: int) -> Optional[bytes]:
     except Exception as e:
         logger.error(f"Lỗi lấy ảnh lazy từ DB: {e}")
         return None
+
+def save_app_feedback(name: str, email: str, content: str) -> Dict[str, Any]:
+    try:
+        conn = _get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO app_feedback (name, email, content)
+            VALUES (%s, %s, %s) RETURNING feedback_id;
+        """, (name, email, content))
+        feedback_id = cur.fetchone()["feedback_id"]
+        conn.commit()
+        cur.close()
+        conn.close()
+        return {"status": "success", "message": "Cảm ơn bạn đã gửi feedback!", "feedback_id": feedback_id}
+    except Exception as e:
+        logger.error(f"Lỗi lưu feedback vào DB: {e}")
+        return {"status": "error", "message": str(e)}
+
