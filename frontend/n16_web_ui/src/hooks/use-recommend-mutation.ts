@@ -35,7 +35,7 @@ export function useRecommendMutation() {
       // Auto-save search history if logged in
       if (user?.userId) {
         if (!user.token) {
-          console.warn("Phiên đăng nhập cũ không có token. Đang đăng xuất...");
+          console.warn("Stale session without token. Logging out...");
           logout();
         } else {
           try {
@@ -48,7 +48,7 @@ export function useRecommendMutation() {
               setCurrentSessionId(res.history_id);
             }
           } catch (e) {
-            console.error("Lỗi tự động lưu lịch sử:", e);
+            console.error("Auto-save history error:", e);
             if (e instanceof Error && e.message.includes("401")) {
               toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
               logout();

@@ -231,3 +231,6 @@ obj/
 # Activity retrievals API response caches (regenerated at runtime)
 backend/modules/activity_retrievals/**/cache/
 backend/modules/activity_retrievals/processed/
+
+# JSON Cache Files
+*cache*.json

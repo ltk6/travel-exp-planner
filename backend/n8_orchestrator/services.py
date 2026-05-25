@@ -93,16 +93,16 @@ CACHE_DIR = os.path.dirname(__file__)
 CACHE_FILE = os.path.join(CACHE_DIR, "location_cache.json")
 IMG_CACHE_DIR = os.path.join(CACHE_DIR, "image_cache")
 
-# Đảm bảo thư mục cache ảnh tồn tại
+# Ensure the image cache directory exists
 os.makedirs(IMG_CACHE_DIR, exist_ok=True)
 
-# Fingerprint TTL — tránh hit DB mỗi request trong dev
+# Fingerprint TTL — avoid hitting DB on every request during development
 _FP_TTL_SEC = 10.0
 _FP_CACHE = {"value": None, "expires": 0.0}
 
 
 def _fingerprint_cached() -> str:
-    """Wrap get_db_fingerprint() với TTL ngắn để giảm round-trip Postgres."""
+    """Wrap get_db_fingerprint() with a short TTL to reduce Postgres round-trips."""
     now = time.time()
     if _FP_CACHE["value"] is not None and now < _FP_CACHE["expires"]:
         return _FP_CACHE["value"]
@@ -112,7 +112,7 @@ def _fingerprint_cached() -> str:
     return fp
 
 def _save_images_to_local_cache(location_id, images_b64):
-    """Lưu danh sách ảnh Base64 từ N3 thành file cục bộ của N8."""
+    """Save a list of Base64 images from N3 as local files for N8."""
     saved_paths = []
     for i, b64_data in enumerate(images_b64):
         try:
@@ -125,11 +125,11 @@ def _save_images_to_local_cache(location_id, images_b64):
                 f.write(img_bytes)
             saved_paths.append(file_path)
         except Exception as e:
-            logger.warning(f"Lỗi lưu ảnh cache cho {location_id}: {e}")
+            logger.warning(f"Failed to save image cache for {location_id}: {e}")
     return saved_paths
 
 def _get_image_urls(location_id):
-    """Trả về list URL trỏ tới /api/images/{filename}. Frontend lazy-load."""
+    """Return a list of URLs pointing to /api/images/{filename}. Frontend lazy-loads these."""
     # Pure lazy loading: return up to 3 image URLs. If any index does not exist in DB,
     # the server will return a 1x1 transparent PNG fallback to avoid broken images.
     return [
@@ -166,7 +166,7 @@ def get_all_locations_cached(force_refresh=False):
                         logger.info(f"Cache Hit (Disk): Loaded {len(_CACHED_LOCATIONS_DATA)} locations")
                         return _CACHED_LOCATIONS_DATA
             except Exception as e:
-                logger.warning(f"Lỗi đọc Disk Cache: {e}")
+                logger.warning(f"Failed to read disk cache: {e}")
 
     # Miss: Fetch from N3
     logger.info("Cache Miss: Fetching fresh data from N3 (lazy images)...")
@@ -192,18 +192,18 @@ def get_all_locations_cached(force_refresh=False):
                 "data": _CACHED_LOCATIONS_DATA
             }, f, ensure_ascii=False)
     except Exception as e:
-        logger.warning(f"Lỗi lưu Disk Cache: {e}")
+        logger.warning(f"Failed to write disk cache: {e}")
 
     return _CACHED_LOCATIONS_DATA
 
 def explore_locations_service():
     """
-    Trả về danh sách địa điểm cho chế độ Khám phá (Explore).
+    Return the list of locations for Explore mode.
 
-    Slim shape: chỉ giữ `location_id`, `metadata`, `geo` và 1 ảnh đại diện.
-    Vectors (text, aug_text, aug_tags, img_desc) bị strip để giảm payload —
-    UI không cần tới chúng. Ảnh được nạp lại từ disk cache (N3 cleared sau khi
-    save vào IMG_CACHE_DIR).
+    Slim shape: keeps only `location_id`, `metadata`, `geo`, and one representative image.
+    Vectors (text, aug_text, aug_tags, img_desc) are stripped to reduce payload size —
+    the UI does not need them. Images are reloaded from disk cache (N3 clears them after
+    saving to IMG_CACHE_DIR).
     """
     locations = get_all_locations_cached()
     out = []
@@ -337,7 +337,7 @@ def recommend_service(body):
 
 def activities_service(body):
     """
-    Pipeline chuyên biệt cho việc sinh hoạt động.
+    Dedicated pipeline for LLM-based activity generation.
     """
     text = body.get("text", "").strip()
     img_desc = body.get("img_desc", "")
@@ -470,8 +470,8 @@ def activities_service(body):
     }
 
 
-# Gợi ý ngôn ngữ tự nhiên cho N5 LLM khi user chọn chip — tag literal như "nature"
-# không gọi gợi cho prompt; cụm tiếng Việt mô tả sở thích thì có.
+# Natural language hints for the N5 LLM when the user selects a chip — a bare tag like "nature"
+# does not provide enough signal for the prompt; these Vietnamese phrases describe user preferences.
 _TYPE_HINT_TEXT = {
     "nature":      "thích thiên nhiên, ngắm cảnh, leo núi, ngắm thác, công viên, biển",
     "culture":     "thích văn hoá, di tích, đền chùa, lịch sử, bảo tàng",
@@ -487,16 +487,16 @@ _TYPE_HINT_TEXT = {
 
 def _n5_fallback_generate(location: dict, preferred_types: list, top_k: int) -> list:
     """
-    Gọi N5 LLM sinh top_k activities cho location, dùng preferred_types làm
-    gợi ý tiếng Việt ('thích thiên nhiên, ngắm cảnh, ...'). Trả list activities
-    theo unified schema (giống output v2).
+    Call the N5 LLM to generate top_k activities for a location, using preferred_types
+    as Vietnamese preference hints ('thích thiên nhiên, ngắm cảnh, ...'). Returns a list
+    of activities following the unified schema (same shape as v2 output).
     """
     if preferred_types:
         user_text = "; ".join(_TYPE_HINT_TEXT.get(t, t) for t in preferred_types)
     else:
         user_text = ""
 
-    # Đảm bảo location.metadata.coordinates có lat/lng để n5 normalizer kế thừa.
+    # Ensure location.metadata.coordinates has lat/lng so the n5 normalizer can inherit them.
     loc_for_n5 = {
         "location_id": location["location_id"],
         "metadata": {
@@ -531,7 +531,7 @@ def _n5_fallback_generate(location: dict, preferred_types: list, top_k: int) -> 
 
 
 def _name_key(name: str) -> str:
-    """Normalize name cho dedupe (lowercase + bỏ dấu + bỏ ký tự đặc biệt)."""
+    """Normalize a name for deduplication (lowercase + strip accents + strip special characters)."""
     import re, unicodedata
     if not name:
         return ""
@@ -549,10 +549,10 @@ def _merge_v2_n5(
     top_k: int,
 ) -> list:
     """
-    Trộn V2 (POI thật) + N5 (LLM sinh), dedupe theo normalized name.
-    Khi có preferred_types: ưu tiên N5 cho slot preferred (LLM biết địa danh,
-    sinh được hoạt động cụ thể), dùng V2 cho diversity. Khi không: V2 trước
-    (POI thật ưu thế), N5 chỉ lấp slot trống.
+    Merge V2 (real POIs) + N5 (LLM-generated), deduplicating by normalized name.
+    When preferred_types is set: N5 fills preferred slots first (LLM knows the location
+    and can generate specific activities), V2 fills the rest for diversity.
+    Without preferred_types: V2 goes first (real POIs preferred), N5 only fills gaps.
     """
     seen: set = set()
     out: list = []
@@ -569,20 +569,20 @@ def _merge_v2_n5(
         prefs = set(preferred_types)
         pref_quota = max(1, int(round(top_k * 0.7)))
 
-        # 1. N5 acts khớp preferred (LLM context-aware → tốt cho ngữ cảnh location)
+        # 1. N5 acts matching preferred types (LLM is context-aware → good fit for location)
         for a in n5_acts:
             if a.get("metadata", {}).get("activity_type") in prefs and _add(a) and len(out) >= pref_quota:
                 break
-        # 2. V2 acts khớp preferred — lấp thêm slot preferred
+        # 2. V2 acts matching preferred types — fill remaining preferred slots
         for a in v2_acts:
             if a.get("metadata", {}).get("activity_type") in prefs and _add(a) and len(out) >= pref_quota:
                 break
-        # 3. V2 non-preferred cho diversity
+        # 3. V2 non-preferred for diversity
         for a in v2_acts:
             if a.get("metadata", {}).get("activity_type") not in prefs:
                 if _add(a) and len(out) >= top_k:
                     break
-        # 4. N5 non-preferred (last resort)
+        # 4. N5 non-preferred (last resort fallback)
         for a in n5_acts:
             if a.get("metadata", {}).get("activity_type") not in prefs:
                 if _add(a) and len(out) >= top_k:
@@ -599,12 +599,12 @@ def _merge_v2_n5(
 
 def activities_v2_service(body):
     """
-    Pipeline v2 (DB-backed): đọc activities đã seed sẵn ở N9-N14 từ Postgres,
-    embed user_input qua N1 → rank qua N6 (cosine + 3 trục attribute).
-    Fallback N5 LLM nếu DB sparse (chưa seed hoặc seed thất bại).
+    Pipeline v2 (DB-backed): reads activities seeded by N9-N14 from Postgres,
+    embeds user_input via N1 → ranks via N6 (cosine + 3 attribute axes).
+    Falls back to N5 LLM if DB is sparse (not yet seeded or seed failed).
 
-    Khác v2 cũ: KHÔNG fetch+embed runtime. Acts + vectors đã có sẵn ở DB sau
-    khi chạy seed_activities.py.
+    Unlike the old v2: does NOT fetch+embed at runtime. Acts + vectors are
+    pre-stored in DB after running seed_activities.py.
     """
     import time
 
@@ -632,7 +632,7 @@ def activities_v2_service(body):
     pref_raw = body.get("preferred_types") or []
     preferred_types = [str(t).lower().strip() for t in pref_raw if isinstance(t, str) and t.strip()]
 
-    # ── 1. Đọc activities từ DB (UNION 6 bảng cho 1 loc) ────────────────────
+    # ── 1. Read activities from DB (UNION 6 tables for 1 location) ─────────────────
     db_acts = get_activities_for_location(loc_id, include_vectors=True)
     logger.info("activities_v2: loc=%s db_acts=%d", loc_id, len(db_acts))
     
@@ -642,7 +642,7 @@ def activities_v2_service(body):
         if "tag" in vecs:
             vecs["aug_tags"] = vecs.pop("tag")
 
-    # ── 2. Fallback N5 khi DB sparse (chưa seed hoặc seed lỗi) ─────────────
+    # ── 2. N5 fallback when DB is sparse (not yet seeded or seed failed) ──────
     fallback_used = False
     fallback_n5_count = 0
     if len(db_acts) < 3:
@@ -651,7 +651,7 @@ def activities_v2_service(body):
         from modules.activity_retrievals.processor import _drop_anchor_duplicates
         n5_acts = _drop_anchor_duplicates(n5_acts, loc_name)
         if n5_acts:
-            # N5 sinh act không có vectors → embed batch ngay
+            # N5 generates acts without vectors → embed them in batch immediately
             n1_inputs = []
             for a in n5_acts:
                 md = a.get("metadata", {})
@@ -682,7 +682,7 @@ def activities_v2_service(body):
                 "latency_ms":    elapsed_ms,
                 "fallback_used": fallback_used,
                 "db_acts_count": 0,
-                "warning":       "Location chưa được seed — chạy seed_activities.py",
+                "warning":       "Location not yet seeded — run seed_activities.py",
             },
             "ranking_meta": {},
         }
@@ -718,7 +718,7 @@ def activities_v2_service(body):
                 "img_desc": v.get("img_desc")
             }
 
-    # ── 3. Embed user_input nếu chưa có hoặc thiếu user_vectors (BGE-M3) ──
+    # ── 3. Embed user_input if missing or user_vectors is incomplete (BGE-M3) ──
     if not user_vectors or not user_vectors.get("text") or len(user_vectors.get("text", [])) != 1024:
         logger.info("activities_v2: embedding user input using BGE-M3...")
         n1_input = N1EmbedInput(
@@ -752,7 +752,7 @@ def activities_v2_service(body):
     n6_result = rank_activities(n6_input)
     ranked = n6_result.get("activities", []) or []
 
-    # ── 5. Map về FE ActivityResult shape ──────────────────────────────────
+    # ── 5. Map to the frontend ActivityResult shape ───────────────────────────
     act_map = {a["activity_id"]: a for a in db_acts}
     enriched = []
     for ra in ranked:
@@ -803,7 +803,7 @@ def activities_v2_service(body):
 
 def feedback_recommend_service(body):
     """
-    Xử lý phản hồi và chạy lại pipeline gợi ý địa điểm.
+    Process user feedback and re-run the location recommendation pipeline.
     Response structure matches recommend_service + 'refined' metadata.
     """
     old_text = body.get("text", "")
@@ -814,7 +814,7 @@ def feedback_recommend_service(body):
     if not feedback:
         return recommend_service(body)
 
-    # 1. N17 — Phân tích phản hồi
+    # 1. N17 — Analyze feedback
     logger.info(f"N17 — Processing recommend feedback: '{feedback}'")
     feedback_input = N17FeedbackInput(
         user_input=old_text,
@@ -824,16 +824,16 @@ def feedback_recommend_service(body):
     )
     refined = process_feedback(feedback_input)
     
-    # 2. Cập nhật body
+    # 2. Update request body with refined inputs
     new_body = body.copy()
     new_body["text"] = refined.get("refined_text", old_text)
     new_body["tags"] = refined.get("refined_tags", old_tags)
     new_body["img_desc"] = refined.get("refined_img_desc", old_img_desc)
     
-    # 3. Chạy lại recommend_service
+    # 3. Re-run the recommend_service with the refined body
     result = recommend_service(new_body)
     
-    # 4. Đính kèm thông tin tinh chỉnh để UI sử dụng
+    # 4. Attach refinement info for UI consumption
     result["refined"] = {
         "text": new_body["text"],
         "tags": new_body["tags"],
@@ -845,7 +845,7 @@ def feedback_recommend_service(body):
 
 def feedback_activities_service(body):
     """
-    Xử lý phản hồi và chạy lại pipeline sinh hoạt động cho địa điểm cụ thể.
+    Process user feedback and re-run the activity generation pipeline for a specific location.
     Response structure matches activities_service + 'refined' metadata.
     """
     old_text = body.get("text", "")
@@ -856,7 +856,7 @@ def feedback_activities_service(body):
     if not feedback:
         return activities_service(body)
 
-    # 1. N17 — Phân tích phản hồi
+    # 1. N17 — Analyze feedback
     logger.info(f"N17 — Processing activity feedback: '{feedback}'")
     feedback_input = N17FeedbackInput(
         user_input=old_text,
@@ -866,16 +866,16 @@ def feedback_activities_service(body):
     )
     refined = process_feedback(feedback_input)
     
-    # 2. Cập nhật body
+    # 2. Update request body with refined inputs
     new_body = body.copy()
     new_body["text"] = refined.get("refined_text", old_text)
     new_body["tags"] = refined.get("refined_tags", old_tags)
     new_body["img_desc"] = refined.get("refined_img_desc", old_img_desc)
     
-    # 3. Chạy lại activities_service
+    # 3. Re-run the activities_service with the refined body
     result = activities_service(new_body)
     
-    # 4. Đính kèm thông tin tinh chỉnh
+    # 4. Attach refinement info for UI consumption
     result["refined"] = {
         "text": new_body["text"],
         "tags": new_body["tags"],

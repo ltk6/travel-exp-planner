@@ -26,8 +26,8 @@ export type ActivityTypeMeta = {
   classes: string;
 };
 
-// Pattern: bg-{color}-100 text-{color}-800 border-{color}-400 font-bold — đậm
-// và rõ hơn bản trước (200/700/300) để mỗi type dễ phân biệt trên card.
+// Pattern: bg-{color}-100 text-{color}-800 border-{color}-400 font-bold — bolder
+// and clearer than the previous version (200/700/300) so each type is easy to distinguish on the card.
 export const ACTIVITY_TYPE_META: Record<ActivityType, ActivityTypeMeta> = {
   food: {
     label: "Ẩm thực",
@@ -85,7 +85,7 @@ export const ACTIVITY_TYPE_META: Record<ActivityType, ActivityTypeMeta> = {
   },
 };
 
-/** Thứ tự hiển thị chip filter — sightseeing trước, activity sau. */
+/** Display order for filter chips — sightseeing first, activities after. */
 export const ACTIVITY_TYPE_ORDER: ActivityType[] = [
   "nature",
   "culture",

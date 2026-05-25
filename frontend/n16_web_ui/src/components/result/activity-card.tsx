@@ -37,19 +37,6 @@ export function ActivityCard({ activity, index }: { activity: ActivityResult; in
       transition={{ duration: 0.2, delay: index * 0.04 }}
       className="border-border bg-card/70 hover:border-primary/30 overflow-hidden rounded-lg border transition-colors"
     >
-      {imgSrc ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={imgSrc}
-          alt={name}
-          loading="lazy"
-          className="bg-muted h-32 w-full object-cover"
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).style.display = "none";
-          }}
-        />
-      ) : null}
-
       <div className="p-3.5">
         <div className="flex items-baseline justify-between gap-2">
           <div className="text-foreground text-base leading-tight font-semibold">{name}</div>

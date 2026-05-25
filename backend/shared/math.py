@@ -1,5 +1,5 @@
 """
-Math utilities shared giữa các ranking module (N4 location ranking, N6 activity ranking).
+Math utilities shared among the ranking modules (N4 location ranking, N6 activity ranking).
 """
 
 from __future__ import annotations
@@ -10,12 +10,12 @@ from typing import Optional, Sequence
 
 def cosine(a: Optional[Sequence[float]], b: Optional[Sequence[float]]) -> float:
     """
-    Cosine similarity giữa hai vector. Trả về 0.0 nếu:
-    - Một trong hai vector là None hoặc rỗng.
-    - Hai vector khác độ dài.
-    - Một trong hai vector có norm = 0 (toàn zero).
+    Cosine similarity between two vectors. Returns 0.0 if:
+    - One of the vectors is None or empty.
+    - The two vectors have different lengths.
+    - One of the vectors has norm = 0 (all zeros).
 
-    Kết quả nằm trong [-1.0, 1.0].
+    The result is in the range [-1.0, 1.0].
     """
     if not a or not b:
         return 0.0
@@ -37,9 +37,9 @@ def cosine(a: Optional[Sequence[float]], b: Optional[Sequence[float]]) -> float:
 
 def cosine_normalized_unit(a: Optional[Sequence[float]], b: Optional[Sequence[float]]) -> float:
     """
-    Cosine similarity được dịch về [0.0, 1.0]: `(cos + 1) / 2`.
+    Cosine similarity shifted/scaled to [0.0, 1.0]: `(cos + 1) / 2`.
 
-    Dùng khi cần đưa similarity vào điểm tổng [0, 1] cùng các signal khác
-    (constraint score, context score, …) — tránh điểm âm.
+    Used when merging similarity into a total score [0, 1] along with other signals
+    (constraint score, context score, etc.) — avoiding negative scores.
     """
     return (cosine(a, b) + 1.0) / 2.0

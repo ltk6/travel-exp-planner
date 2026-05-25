@@ -32,6 +32,6 @@ if __name__ == "__main__":
     try:
         init_profile_db()
     except Exception as e:
-        logger.error(f"Khong the khoi tao bang: {e}")
+        logger.error(f"Cannot initialize table: {e}")
 
     app.run(host=HOST, port=PORT, debug=DEBUG)

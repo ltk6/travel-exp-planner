@@ -87,7 +87,8 @@ export const apiClient = {
     saveHistory: (body: {
       user_id: number;
       input_data: RecommendPayload;
-      output_data: RecommendResponse;
+      output_data: RecommendResponse | Record<string, unknown>;
+      history_id?: number;
     }) =>
       postJson<{ status: string; message: string; history_id?: number }>(
         "/api/profile/history",

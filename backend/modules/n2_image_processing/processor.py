@@ -11,9 +11,9 @@ from backend.shared.contracts.n2_contracts import N2ImageInput
 
 def process_image(data: Union[N2ImageInput, dict]) -> dict:
     """
-    Hàm xử lý ảnh duy nhất (Public API) của Module N2
-    Sử dụng Groq Vision (Llama 3.2 Vision)
-    Input: {"image": bytes}
+    The sole public API function of Module N2 (image processing).
+    Uses Groq Vision (Llama 3.2 Vision).
+    Input:  {"image": bytes}
     Output: {"img_desc": "..."}
     """
     validated = N2ImageInput.model_validate(data) if isinstance(data, dict) else data

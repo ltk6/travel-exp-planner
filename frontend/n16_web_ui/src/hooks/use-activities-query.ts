@@ -12,29 +12,29 @@ export function useActivitiesQuery(
   const enabled = options?.enabled ?? true;
   const preferredTypes = options?.preferredTypes ?? [];
 
-  // `trace` chỉ có khi backend chạy với API_DEBUG=True; v2 không cần trace,
-  // chỉ cần location.geo + top_k. Giữ các field user_* để nếu sau này quay lại
-  // v1 (N5 LLM gen, cần user_vectors) thì có sẵn.
+  // trace is only available when backend runs with API_DEBUG=True
   const userTrace = usePlannerStore((s) => s.results?.trace?.user);
   const storePayload = usePlannerStore((s) => s.payload);
   const storeSelectedKeys = usePlannerStore((s) => s.selectedKeys);
   const storeFreeformText = usePlannerStore((s) => s.freeformText);
   const setActivityResult = usePlannerStore((s) => s.setActivityResult);
+  const setActivityResultLlm = usePlannerStore((s) => s.setActivityResultLlm);
+  const preferLlmActivities = usePlannerStore((s) => s.preferLlmActivities[loc.location_id] ?? false);
 
-  // Cache key chỉ dùng cho lần fetch không filter — khi user chọn chip thì
-  // không cache để tránh hiển thị nhầm với danh sách mặc định.
+  // Cache key only used for unfiltered fetches
   const results = usePlannerStore((s) => s.results);
   const activityResults = usePlannerStore((s) => s.activityResults);
-  const baseCache = activityResults[loc.location_id];
+  const activityResultsLlm = usePlannerStore((s) => s.activityResultsLlm);
+  
+  const baseCache = preferLlmActivities ? activityResultsLlm[loc.location_id] : activityResults[loc.location_id];
   const useCache = preferredTypes.length === 0;
   const cached = useCache ? baseCache : undefined;
 
-  // Hỗ trợ tải tuần tự (Sequential loading): Chỉ bắt đầu fetch địa điểm này
-  // nếu địa điểm xếp hạng ngay trên nó đã hoàn thành tải dữ liệu.
+  // Sequential loading support: start fetching only if the card above has finished loading
   const locations = results?.locations ?? [];
   const currentIndex = locations.findIndex((l) => l.location_id === loc.location_id);
   const previousLocation = currentIndex > 0 ? locations[currentIndex - 1] : null;
-  const previousFetched = previousLocation ? !!activityResults[previousLocation.location_id] : true;
+  const previousFetched = previousLocation ? !!activityResults[previousLocation.location_id] || !!activityResultsLlm[previousLocation.location_id] : true;
 
   const payload: ActivitiesPayload = {
     text: userTrace?.input?.text || storePayload?.text || storeFreeformText || "",
@@ -52,7 +52,7 @@ export function useActivitiesQuery(
     ...(preferredTypes.length > 0 ? { preferred_types: preferredTypes } : {}),
   };
 
-  // Tạo signature cho sở thích của người dùng để tránh trùng lặp cache khi đổi gu/sở thích tìm kiếm mới
+  // Generate preference signature to prevent cache pollution
   const preferenceSignature = `${payload.text}|${[...payload.tags].sort().join(",")}|${payload.img_desc}`;
 
   return useQuery({
@@ -61,10 +61,36 @@ export function useActivitiesQuery(
       loc.location_id,
       preferenceSignature,
       [...preferredTypes].sort().join(","),
+      preferLlmActivities,
     ],
     queryFn: async () => {
-      const data = await apiClient.activitiesV2(payload);
-      if (preferredTypes.length === 0) setActivityResult(loc.location_id, data);
+      const data = preferLlmActivities
+        ? await apiClient.activities(payload)
+        : await apiClient.activitiesV2(payload);
+      
+      if (preferredTypes.length === 0) {
+        if (preferLlmActivities) {
+          setActivityResultLlm(loc.location_id, data);
+        } else {
+          setActivityResult(loc.location_id, data);
+        }
+
+        // Auto-save/update history session if user is logged in
+        if (typeof window !== "undefined") {
+          try {
+            const user = sessionStorage.getItem("auth_user");
+            if (user) {
+              const parsed = JSON.parse(user);
+              if (parsed?.userId) {
+                // Async database update
+                usePlannerStore.getState().saveHistorySession(parsed.userId);
+              }
+            }
+          } catch (e) {
+            // Ignore storage errors
+          }
+        }
+      }
       return data;
     },
     enabled: enabled && !!loc.geo && !cached && previousFetched,

@@ -91,6 +91,7 @@ class N3SaveHistoryInput(BaseModel):
     user_id: int
     input_data: Dict[str, Any] = Field(default_factory=dict)
     output_data: Dict[str, Any] = Field(default_factory=dict)
+    history_id: Optional[int] = None
 
 class N3HistoryItem(BaseModel):
     history_id: Optional[int] = None

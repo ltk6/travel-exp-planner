@@ -25,7 +25,7 @@ export default function ProfilePage() {
     if (!user) {
       router.replace("/");
     } else if (!user.token) {
-      console.warn("Phiên đăng nhập cũ không có token. Đang đăng xuất...");
+      console.warn("Stale session without token. Logging out...");
       logout();
       toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
       router.replace("/");
@@ -40,7 +40,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (error) {
-      console.error("Lỗi lấy lịch sử:", error);
+      console.error("Failed to fetch history:", error);
       if (error instanceof Error && error.message.includes("401")) {
         toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
         logout();
@@ -119,23 +119,47 @@ function HistoryCard({ item }: { item: HistoryItem }) {
     // Restore payload
     store.setPayload(item.input_data as RecommendPayload);
 
-    // Extract activities and restore results
     const outputData = item.output_data as Record<string, unknown>;
-    const { activities, ...results } = outputData;
+    
+    // Extract both activities caches and switcher preferences
+    const preferLlm = (outputData.preferLlmActivities ?? {}) as Record<string, boolean>;
+    const actResults = (outputData.activityResults ?? {}) as Record<string, ActivitiesResponse>;
+    const actResultsLlm = (outputData.activityResultsLlm ?? {}) as Record<string, ActivitiesResponse>;
+    
+    // Backward compatibility for legacy recommendations
+    const legacyActivities = outputData.activities as Record<string, ActivitiesResponse> | undefined;
+
+    // Remove customized metadata keys before setting main location results
+    const { preferLlmActivities, activityResults, activityResultsLlm, activities, ...results } = outputData;
     store.setResults(results as RecommendResponse);
 
-    // Restore activities
+    // Restore location switcher preferences
+    Object.entries(preferLlm).forEach(([locId, val]) => {
+      store.setPreferLlmActivities(locId, val);
+    });
+
+    // Clear and restore both activities caches
     store.clearActivityResults();
-    if (activities && typeof activities === "object") {
-      Object.entries(activities).forEach(([locId, data]) => {
-        store.setActivityResult(locId, data as ActivitiesResponse);
+    
+    Object.entries(actResults).forEach(([locId, data]) => {
+      store.setActivityResult(locId, data);
+    });
+
+    Object.entries(actResultsLlm).forEach(([locId, data]) => {
+      store.setActivityResultLlm(locId, data);
+    });
+
+    // Restore legacy data structure if present
+    if (legacyActivities && typeof legacyActivities === "object") {
+      Object.entries(legacyActivities).forEach(([locId, data]) => {
+        store.setActivityResult(locId, data);
       });
     }
 
     // Restore session ID to continue the session
     store.setCurrentSessionId(item.history_id);
 
-    toast.success("Đã tải phiên gợi ý");
+    toast.success("Recommendation session loaded successfully");
     router.push("/results");
   };
 

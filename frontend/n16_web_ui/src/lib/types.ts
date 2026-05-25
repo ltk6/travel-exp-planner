@@ -40,7 +40,7 @@ export type ExploreLocation = {
   location_id: string;
   metadata?: LocationMetadata;
   geo?: LocationGeo;
-  /** Data URI cho ảnh đại diện, hoặc null nếu location không có ảnh. */
+  /** Data URI for the representative image, or null if the location has no image. */
   image: string | null;
   images_count: number;
 };
@@ -139,7 +139,7 @@ export type ActivitiesPayload = {
   tags_k: number;
   user_vectors: UserVectors;
   location: { location_id: string; metadata: LocationMetadata; geo?: LocationGeo };
-  /** UI chip selection — boost các activity_type này trong N9-N14 processor. */
+  /** UI chip selection — boost these activity_types in the N9-N14 processor. */
   preferred_types?: string[];
   provider?: string | null;
   top_k_activities?: number;

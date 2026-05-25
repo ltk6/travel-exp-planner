@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { ActivitiesResponse, RecommendPayload, RecommendResponse } from "@/lib/types";
+import { apiClient } from "@/lib/api-client";
 
 // One-time cleanup: previous versions persisted to localStorage, which leaked
 // stale tags/text/images across browser sessions. Strip the old key on load.
@@ -43,7 +44,9 @@ type PlannerState = {
   setResults: (r: RecommendResponse | null) => void;
 
   activityResults: Record<string, ActivitiesResponse>;
+  activityResultsLlm: Record<string, ActivitiesResponse>;
   setActivityResult: (locId: string, data: ActivitiesResponse) => void;
+  setActivityResultLlm: (locId: string, data: ActivitiesResponse) => void;
   clearActivityResults: () => void;
 
   /** ID of the current history session (set after /recommend save, used to update with activities). */
@@ -58,6 +61,12 @@ type PlannerState = {
   focusedLocationId: string | null;
   focusedAt: number;
   setFocusedLocation: (id: string | null) => void;
+
+  preferLlmActivities: Record<string, boolean>;
+  setPreferLlmActivities: (locId: string, p: boolean) => void;
+  clearActivityResultForLocation: (locId: string) => void;
+
+  saveHistorySession: (userId: number) => Promise<void>;
 
   reset: () => void;
 };
@@ -105,9 +114,12 @@ export const usePlannerStore = create<PlannerState>()(
       setResults: (results) => set({ results }),
 
       activityResults: {},
+      activityResultsLlm: {},
       setActivityResult: (locId, data) =>
         set((s) => ({ activityResults: { ...s.activityResults, [locId]: data } })),
-      clearActivityResults: () => set({ activityResults: {} }),
+      setActivityResultLlm: (locId, data) =>
+        set((s) => ({ activityResultsLlm: { ...s.activityResultsLlm, [locId]: data } })),
+      clearActivityResults: () => set({ activityResults: {}, activityResultsLlm: {} }),
 
       currentSessionId: null,
       setCurrentSessionId: (currentSessionId) => set({ currentSessionId }),
@@ -115,6 +127,44 @@ export const usePlannerStore = create<PlannerState>()(
       focusedLocationId: null,
       focusedAt: 0,
       setFocusedLocation: (id) => set({ focusedLocationId: id, focusedAt: Date.now() }),
+
+      preferLlmActivities: {},
+      setPreferLlmActivities: (locId, preferLlm) =>
+        set((s) => ({
+          preferLlmActivities: { ...s.preferLlmActivities, [locId]: preferLlm },
+        })),
+      clearActivityResultForLocation: (locId) =>
+        set((s) => {
+          const next = { ...s.activityResults };
+          const nextLlm = { ...s.activityResultsLlm };
+          delete next[locId];
+          delete nextLlm[locId];
+          return { activityResults: next, activityResultsLlm: nextLlm };
+        }),
+
+      saveHistorySession: async (userId) => {
+        const { payload, results, preferLlmActivities, activityResults, activityResultsLlm, currentSessionId } = usePlannerStore.getState();
+        if (!payload || !results) return;
+
+        try {
+          const res = await apiClient.profile.saveHistory({
+            user_id: userId,
+            input_data: payload,
+            output_data: {
+              ...results,
+              preferLlmActivities,
+              activityResults,
+              activityResultsLlm,
+            },
+            history_id: currentSessionId || undefined,
+          });
+          if (res.status === "success" && res.history_id) {
+            set({ currentSessionId: res.history_id });
+          }
+        } catch (e) {
+          console.error("Failed to update history session:", e);
+        }
+      },
 
       reset: () =>
         set({
@@ -125,16 +175,18 @@ export const usePlannerStore = create<PlannerState>()(
           payload: null,
           results: null,
           activityResults: {},
+          activityResultsLlm: {},
           currentSessionId: null,
           focusedLocationId: null,
           focusedAt: 0,
+          preferLlmActivities: {},
         }),
     }),
     {
       name: "travel-planner-state",
       version: 5,
       // sessionStorage: state survives HMR & navigation, but a fresh browser tab
-      // (e.g. opened by run.bat) starts empty. Avoids "data từ phiên trước" leaking.
+      // (e.g. opened by run.bat) starts empty. Avoids stale data from a previous session leaking.
       storage: createJSONStorage(() =>
         typeof window !== "undefined" ? window.sessionStorage : (undefined as unknown as Storage),
       ),

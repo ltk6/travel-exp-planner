@@ -9,6 +9,7 @@ import { GlobalFeedback } from "./global-feedback";
 import { MapView } from "./map-view";
 import { usePlannerStore } from "@/store/planner-store";
 import { ArrowLeft, Download, MapIcon, Sparkles } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function ResultView() {
   const results = usePlannerStore((s) => s.results);
@@ -73,6 +74,7 @@ export function ResultView() {
             để điều chỉnh từng địa điểm.
           </p>
         </div>
+
         <Button variant="outline" size="sm" onClick={handleSave} title="Lưu kết quả ra file JSON">
           <Download className="size-3.5" />
           Lưu

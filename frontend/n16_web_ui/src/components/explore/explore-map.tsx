@@ -25,7 +25,7 @@ export function ExploreMap({ locations, selectedId, onSelect }: Props) {
   const mapRef = useRef<MapRef>(null);
   const hasFitBoundsRef = useRef(false);
 
-  // Khi selectedId thay đổi → fly tới location đó
+  // When selectedId changes → fly to that location
   useEffect(() => {
     if (!selectedId || !mapRef.current) return;
     const target = withGeo.find((l) => l.location_id === selectedId);

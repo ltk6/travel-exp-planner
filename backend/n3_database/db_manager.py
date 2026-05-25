@@ -573,25 +573,36 @@ def login_user(username, password) -> Dict[str, Any]:
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
-# PHAN 2: REC HISTORY (LUU TOAN BO DATA KHI REC)
+# PART 2: RECOMMENDATION HISTORY PERSISTENCE
 
-def save_rec_turn(user_id: int, input_data: Dict[str, Any], output_data: Dict[str, Any]) -> Dict[str, Any]:
-    """Sau moi lan rec, frontend goi den day de luu vao database"""
+def save_rec_turn(user_id: int, input_data: Dict[str, Any], output_data: Dict[str, Any], history_id: Optional[int] = None) -> Dict[str, Any]:
+    """Save recommendation turn or update loaded activities in the database."""
     try:
         conn = _get_connection()
         cur = conn.cursor()
-        cur.execute("""
-            INSERT INTO rec_history (user_id, input_data, output_data)
-            VALUES (%s, %s, %s) RETURNING history_id;
-        """, (user_id, json.dumps(input_data), json.dumps(output_data)))
-        row = cur.fetchone()
-        history_id = row["history_id"] if row else None
-        conn.commit()
-        cur.close()
-        conn.close()
-        return {"status": "success", "message": "Da luu lich su goi y thanh cong", "history_id": history_id}
+        if history_id:
+            cur.execute("""
+                UPDATE rec_history 
+                SET input_data = %s, output_data = %s
+                WHERE history_id = %s AND user_id = %s;
+            """, (json.dumps(input_data), json.dumps(output_data), history_id, user_id))
+            conn.commit()
+            cur.close()
+            conn.close()
+            return {"status": "success", "message": "Successfully updated recommendation history", "history_id": history_id}
+        else:
+            cur.execute("""
+                INSERT INTO rec_history (user_id, input_data, output_data)
+                VALUES (%s, %s, %s) RETURNING history_id;
+            """, (user_id, json.dumps(input_data), json.dumps(output_data)))
+            row = cur.fetchone()
+            history_id = row["history_id"] if row else None
+            conn.commit()
+            cur.close()
+            conn.close()
+            return {"status": "success", "message": "Successfully saved recommendation history", "history_id": history_id}
     except Exception as e:
-        logger.error(f"Loi luu lich su rec: {e}")
+        logger.error(f"Error saving/updating recommendation history: {e}")
         return {"status": "error", "message": str(e)}
 
 def get_user_history(user_id: int) -> Dict[str, Any]:

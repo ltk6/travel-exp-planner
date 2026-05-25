@@ -76,6 +76,7 @@ def api_save_history():
     user_id = data.get("user_id")
     input_data = data.get("input_data")
     output_data = data.get("output_data")
+    history_id = data.get("history_id")
 
     if not user_id or not input_data or not output_data:
         return jsonify({"status": "error", "message": "Thieu parameters luu lich su"}), 400
@@ -87,8 +88,9 @@ def api_save_history():
         "user_id": user_id,
         "input_data": input_data,
         "output_data": output_data,
+        "history_id": history_id,
     })
-    res = save_rec_turn(validated.user_id, validated.input_data, validated.output_data)
+    res = save_rec_turn(validated.user_id, validated.input_data, validated.output_data, validated.history_id)
     return jsonify(res)
 
 @profile_bp.route("/api/profile/history/<int:user_id>", methods=["GET"])
