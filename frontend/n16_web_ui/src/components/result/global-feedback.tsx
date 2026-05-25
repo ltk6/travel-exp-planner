@@ -10,21 +10,21 @@ import { usePlannerStore } from "@/store/planner-store";
 
 export function GlobalFeedback() {
   const [text, setText] = useState("");
-  const userTrace = usePlannerStore((s) => s.results?.trace?.user);
+  const payload = usePlannerStore((s) => s.payload);
+  const results = usePlannerStore((s) => s.results);
   const mutation = useRecommendFeedback();
 
   const onSubmit = () => {
-    if (!text.trim() || !userTrace) return;
+    if (!text.trim() || !payload) return;
+
     mutation.mutate({
       feedback: text.trim(),
-      user_input: {
-        text: userTrace.input?.text ?? "",
-        tags: userTrace.input?.tags ?? [],
-        img_desc: userTrace.n2_image?.img_desc ?? "",
-      },
-      image: "",
-      constraints: userTrace.input?.constraints ?? {},
-      context: userTrace.input?.context ?? {},
+      text: payload.text || "",
+      tags: payload.tags || [],
+      img_desc: payload.img_desc || results?.refined?.img_desc || "",
+      image: payload.image || "",
+      constraints: payload.constraints || {},
+      context: payload.context || {},
     });
     setText("");
   };
@@ -51,7 +51,7 @@ export function GlobalFeedback() {
           placeholder="Ví dụ: 'Tôi muốn tìm những nơi yên tĩnh và ít khách du lịch hơn', 'Đổi sang điểm đến gần biển', hoặc 'Tối ưu lộ trình với ngân sách tiết kiệm'…"
           className="min-h-[100px] resize-y"
         />
-        <Button onClick={onSubmit} disabled={!text.trim() || mutation.isPending} className="w-full">
+        <Button onClick={onSubmit} disabled={!text.trim() || !payload || mutation.isPending} className="w-full">
           {mutation.isPending ? (
             <>
               <Loader2 className="mr-2 size-4 animate-spin" />

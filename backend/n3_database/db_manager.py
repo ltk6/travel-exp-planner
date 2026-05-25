@@ -26,12 +26,12 @@ class CircuitBreaker:
         if self.failure_count >= self.failure_threshold:
             self.state = "OPEN"
             self.last_state_change = time.time()
-            logger.warning(f"🚨 Circuit Breaker OPENED: DB connections will fail-fast for {self.recovery_timeout}s.")
+            logger.warning(f"Circuit Breaker OPENED: DB connections will fail-fast for {self.recovery_timeout}s.")
 
     def record_success(self):
         self.failure_count = 0
         self.state = "CLOSED"
-        logger.info("✅ Circuit Breaker CLOSED: DB connection restored.")
+        logger.info("Circuit Breaker CLOSED: DB connection restored.")
 
     def can_attempt(self) -> bool:
         if self.state == "CLOSED":
@@ -39,7 +39,7 @@ class CircuitBreaker:
         if self.state == "OPEN":
             if time.time() - self.last_state_change > self.recovery_timeout:
                 self.state = "HALF-OPEN"
-                logger.info("🔄 Circuit Breaker HALF-OPEN: testing DB connection...")
+                logger.info("Circuit Breaker HALF-OPEN: testing DB connection...")
                 return True
             return False
         return True
@@ -62,7 +62,7 @@ def _get_connection():
             _DB_CIRCUIT_BREAKER.record_success()
             return conn
         except Exception as e:
-            logger.warning(f"⚠️ Kết nối DB thất bại (Lần {attempt}/{max_retries}): {e}")
+            logger.warning(f"Ket noi DB that bai (Lan {attempt}/{max_retries}): {e}")
             if attempt < max_retries:
                 time.sleep(delay)
                 delay *= 2
@@ -107,7 +107,7 @@ def init_db(drop_existing: bool = False):
 
     cur.close()
     conn.close()
-    logger.info(f"✨ Khởi tạo DB thành công (drop_existing={drop_existing}).")
+    logger.info(f"Khoi tao DB thanh cong (drop_existing={drop_existing}).")
 
 def get_db_fingerprint() -> str:
     """Tạo dấu vân tay duy nhất cho trạng thái hiện tại của DB."""

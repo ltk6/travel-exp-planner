@@ -33,7 +33,6 @@ export function ActivityList({ loc }: { loc: LocationResult }) {
           size="icon"
           onClick={() => {
             setPreferLlmActivities(loc.location_id, !preferLlm);
-            clearActivityResultForLocation(loc.location_id);
           }}
           className={cn(
             "size-6 rounded-full border transition-all duration-300 ml-auto shrink-0",

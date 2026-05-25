@@ -34,4 +34,14 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(f"Cannot initialize table: {e}")
 
-    app.run(host=HOST, port=PORT, debug=DEBUG)
+    if DEBUG:
+        # Keep development auto-reloader but permanently disable the dangerous interactive debugger console
+        app.run(host=HOST, port=PORT, debug=True, use_debugger=False, use_evalex=False)
+    else:
+        try:
+            from waitress import serve
+            logger.info("N8 — Starting production WSGI server (waitress) on http://%s:%d", HOST, PORT)
+            serve(app, host=HOST, port=PORT)
+        except ImportError:
+            logger.warning("Waitress WSGI server not installed. Falling back to Werkzeug development server...")
+            app.run(host=HOST, port=PORT, debug=False)

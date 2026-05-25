@@ -5,6 +5,7 @@ import { Clock, ExternalLink, Home, MapPin, Star, Trees } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { metaForActivityType } from "@/lib/activity-types";
 import { cn } from "@/lib/utils";
+import { labelForTag } from "@/lib/tag-map";
 import type { ActivityResult } from "@/lib/types";
 
 // Wikimedia returns http URLs; upgrade so the page can load them over https.
@@ -110,7 +111,7 @@ export function ActivityCard({ activity, index }: { activity: ActivityResult; in
           <div className="mt-2 flex flex-wrap gap-1">
             {tagList.map((t) => (
               <Badge key={t} variant="ghost" className="text-muted-foreground text-[10px]">
-                {t}
+                {labelForTag(t)}
               </Badge>
             ))}
           </div>
